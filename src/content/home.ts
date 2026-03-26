@@ -46,7 +46,7 @@ export const homeContent = {
       eyebrow: "Commercial support",
       title: "Commercial septic, grease trap, and lift pump service.",
       description:
-        "Restaurants, facilities, and pressurized-system customers can use a direct request lane built for commercial service.",
+        "Restaurants, facilities, and pressurized-system customers can use a direct request form built for commercial service.",
       href: "/services/commercial",
       hrefLabel: "Request Commercial Support",
     },
@@ -56,7 +56,7 @@ export const homeContent = {
       eyebrow: "Home-sale and Realtor support",
       title: "Keep closings moving with well and septic evaluations.",
       description:
-        "Buyers, sellers, and Realtors can send property details, timing needs, and access notes through a lane built for sale deadlines.",
+        "Buyers, sellers, and Realtors can send property details, scheduling notes, and access information for home-sale evaluations.",
       href: "/realtors",
       hrefLabel: "Open Realtor Resources",
     },
@@ -77,13 +77,13 @@ export const homeContent = {
     {
       title: "Buying or selling a home?",
       description:
-        "Use the dedicated well and septic evaluation lane for buyers, sellers, and local Realtors who need deadlines, property details, and access instructions captured up front.",
+        "Use the well and septic evaluation form for buyers, sellers, and local Realtors who need property details and access instructions submitted up front.",
       href: "/services/well-septic-evaluations",
     },
     {
       title: "Need portable toilets or commercial support?",
       description:
-        "Request portable toilet rentals, grease trap cleaning, or lift pump service through a sales-focused lane built for job sites, facilities, schools, events, and businesses.",
+        "Request portable toilet rentals, grease trap cleaning, or lift pump service through the forms built for job sites, facilities, schools, events, and businesses.",
       href: "/services/commercial",
     },
   ],
@@ -100,14 +100,14 @@ export const homeContent = {
       "Robinson is built around the jobs customers need done right and done quickly: septic pumping, emergency response, fast real-estate support, portable toilet rentals, grease trap cleaning, and lift pump service from a local team with decades of field experience.",
     highlights: [
       "24/7 emergency septic service stays visible across the site.",
-      "Dedicated request paths for homeowners, Realtors, events, and commercial customers.",
+      "Dedicated request forms for homeowners, Realtors, events, and commercial customers.",
       "Local West Michigan service backed by long-running field experience.",
     ],
   },
   realtorLane: {
     title: "Realtor and home-sale support",
     body:
-      "Need a well and septic evaluation during a sale? Robinson works with local Realtors, buyers, and sellers to help keep closings moving with a dedicated request lane built around property details, access notes, and scheduling urgency.",
+      "Need a well and septic evaluation during a sale? Robinson works with local Realtors, buyers, and sellers to help keep closings moving with a request form built around property details, access notes, and scheduling information.",
     href: "/realtors",
     ctaLabel: "Open Realtor Resources",
   },
@@ -130,7 +130,7 @@ export const homeContent = {
     {
       question: "How quickly can a home-sale evaluation usually be scheduled?",
       answer:
-        "Turnaround is usually easier when the property details, timing needs, and access notes are submitted clearly up front, especially when a closing deadline is already on the calendar.",
+        "Scheduling is easier when the property details, access instructions, and contact information are submitted clearly up front, especially when a closing date is already on the calendar.",
     },
   ],
 };

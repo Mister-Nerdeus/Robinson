@@ -20,17 +20,17 @@ export const servicesContent = {
   evaluations: {
     title: "Well & Septic Evaluations",
     intro:
-      "Designed for home purchasing and selling, this lane helps Robinson gather the property, access, and deadline details needed for buyers, sellers, and local Realtors. Legacy materials also highlight turnaround that is often completed within 1 to 3 business days.",
+      "Well and septic evaluations are available for buyers, sellers, and Realtors who need property details reviewed as part of a home sale. Robinson uses the request form to collect the information needed to schedule the job and respond more clearly.",
     bullets: [
-      "Purpose-built for home-sale workflows",
-      "Works well for buyers, sellers, and Realtors",
-      "Often scheduled quickly when property details are submitted early",
-      "Captures property and timeline details up front",
+      "Well suited for home-sale well and septic evaluations",
+      "Works for buyers, sellers, and Realtors",
+      "Collects property and contact information up front",
+      "Makes access instructions and scheduling details easier to review",
     ],
     sellingPoints: [
-      "Useful when a transaction needs clear next steps instead of back-and-forth calls.",
-      "Helps gather access notes, deadline pressure, and contact information in one place.",
-      "Keeps a dedicated lane open for the real-estate side of the business.",
+      "Useful when a home sale needs clear communication instead of repeated back-and-forth calls.",
+      "Helps gather property details, access notes, and key contacts in one request.",
+      "Keeps Realtor and evaluation work visible as an important part of the business.",
     ],
     cta: "/services/well-septic-evaluations",
   },
@@ -54,7 +54,7 @@ export const servicesContent = {
   commercial: {
     title: "Commercial Services",
     intro:
-      "Commercial support includes grease trap cleaning along with lift pump replacement or service for pressurized septic systems that have become inoperable. Robinson keeps this work in its own lane so restaurants, facilities, and other commercial customers can request help fast.",
+      "Commercial support includes grease trap cleaning along with lift pump replacement or service for pressurized septic systems that have become inoperable. Robinson keeps this work in its own service area so restaurants, facilities, and other commercial customers can request help fast.",
     bullets: [
       "Grease trap cleaning for exterior tanks and smaller interior basins",
       "Lift pump replacement for residential or commercial pressurized systems",
