@@ -34,7 +34,7 @@ export const homeContent = {
       src: "/images/enhanced/portable_toilets_group_ai_enhanced.jpg",
       alt: "Robinson portable toilet rental units grouped together for delivery",
       eyebrow: "Portable toilet rentals",
-      title: "Portable toilets for events, schools, job sites, and long-term needs.",
+      title: "Portable toilets for events, schools, job sites, and long-term rentals.",
       description:
         "Robinson can deliver, maintain, and pick up single units or larger rental sets without extra hassle.",
       href: "/services/portable-toilets",
@@ -44,7 +44,7 @@ export const homeContent = {
       src: "/images/enhanced/truck_closeup_ai_enhanced.jpg",
       alt: "Close-up of Robinson Septic truck branding and equipment",
       eyebrow: "Commercial support",
-      title: "Commercial septic, grease trap, and lift pump service stays easy to reach.",
+      title: "Commercial septic, grease trap, and lift pump service.",
       description:
         "Restaurants, facilities, and pressurized-system customers can use a direct request lane built for commercial service.",
       href: "/services/commercial",
@@ -65,25 +65,25 @@ export const homeContent = {
     {
       title: "Need emergency septic service?",
       description:
-        "Backups, warning signs, and urgent pumping needs should never get buried. Robinson keeps 24/7 emergency service front and center.",
+        "Backups, warning signs, and urgent pumping needs should never get buried. Robinson puts 24/7 emergency service front and center so you can call or submit the details quickly.",
       href: "/services/septic-cleaning",
     },
     {
       title: "Need routine septic pumping?",
       description:
-        "Stay ahead of expensive problems with scheduled pumping, tank-location help, and clear property notes before the truck arrives.",
+        "Stay ahead of expensive problems with scheduled residential or commercial pumping, tank-location help, and clear property notes before the truck arrives.",
       href: "/services/septic-cleaning",
     },
     {
       title: "Buying or selling a home?",
       description:
-        "Use the well and septic evaluation lane for buyers, sellers, and local Realtors who need deadlines, property details, and access instructions captured up front.",
+        "Use the dedicated well and septic evaluation lane for buyers, sellers, and local Realtors who need deadlines, property details, and access instructions captured up front.",
       href: "/services/well-septic-evaluations",
     },
     {
       title: "Need portable toilets or commercial support?",
       description:
-        "Request portable toilet rentals, grease trap cleaning, or lift pump service for job sites, facilities, schools, events, and businesses.",
+        "Request portable toilet rentals, grease trap cleaning, or lift pump service through a sales-focused lane built for job sites, facilities, schools, events, and businesses.",
       href: "/services/commercial",
     },
   ],
