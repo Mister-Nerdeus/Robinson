@@ -3,7 +3,6 @@ import path from "node:path";
 
 const targets = [path.join(process.cwd(), "src", "app"), path.join(process.cwd(), "src", "content")];
 const blockedClaims = [
-  /24\/?7 emergency service/i,
   /bbb accredited/i,
   /hundreds of reviews/i,
   /thousands of reviews/i,

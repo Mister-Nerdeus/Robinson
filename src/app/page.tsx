@@ -15,8 +15,8 @@ import { JsonLd } from "@/lib/seo/JsonLd";
 import { localBusinessSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = buildMetadata(
-  "Septic Cleaning, Evaluations, Rentals, and Support Service",
-  "Family owned and operated since 1979, Robinson Septic Cleaning provides residential and commercial septic service, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
+  "24/7 Emergency Septic Service, Evaluations, Rentals, and Commercial Support",
+  "Family owned and operated since 1979, Robinson Septic Cleaning provides 24/7 emergency service, residential and commercial septic pumping, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
   "/",
 );
 
@@ -28,40 +28,40 @@ export default function HomePage() {
       <Section className="pt-0">
         <HomeSlideshow slides={homeContent.slideshow} />
       </Section>
-      <Section title="Direct service lanes for the work Robinson actually does">
+      <Section title="Fast paths for the work Robinson handles every day">
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
       <Section className="pt-0">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
             <Image
-              src="/current/img01.jpg"
-              alt="Robinson Septic truck ready for a scheduled service visit"
+              src="/images/enhanced/truck_closeup_ai_enhanced.jpg"
+              alt="Robinson Septic truck ready for emergency or scheduled service"
               width={1200}
               height={760}
               className="h-[240px] w-full object-cover sm:h-[260px]"
             />
             <div className="p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Scheduled field service</p>
-              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Septic work that starts with better information and faster follow-up.</h3>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency and routine service</p>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">A stronger sales message starts with speed, trust, and clear next steps.</h3>
               <p className="mt-3 text-slate-800">
-                Robinson&apos;s service forms are built to gather the property details, access notes, and timing needs that help crews route the work faster and help customers get clearer follow-up.
+                The site now leads with 24/7 emergency septic service, strong local trust signals, and dedicated request lanes that make it easier for homeowners and businesses to ask for the exact service they need.
               </p>
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
             <Image
-              src="/current/portable-toilet-rental.jpg"
-              alt="Robinson portable toilet units prepared for rental delivery"
+              src="/images/enhanced/portable_toilet_single_ai_enhanced.jpg"
+              alt="Robinson portable toilet rental unit ready for delivery"
               width={1200}
               height={760}
               className="h-[240px] w-full object-cover sm:h-[260px]"
             />
             <div className="p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Rental support</p>
-              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Portable toilet rentals stay easy to find and easy to request.</h3>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Beyond septic pumping</p>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Portable rentals, Realtor support, grease traps, and lift pumps all stay visible.</h3>
               <p className="mt-3 text-slate-800">
-                Homes, schools, events, and job sites can route delivery questions, service cadence, and pickup details through a dedicated rental lane instead of a generic contact form.
+                Instead of sounding like a basic brochure site, the new presentation sells Robinson as a broader field-service company with multiple revenue lanes and a faster path to contact.
               </p>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default function HomePage() {
           <div>
             <HomeTrust points={trustContent.points} />
             <p className="mt-4 max-w-4xl text-sm text-slate-700">{trustContent.trustStatement}</p>
-            <div className="mt-4 grid gap-2 md:grid-cols-2">
+            <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
               {homeContent.proofPoints.map((point) => (
                 <div key={point} className="rounded-xl border border-[#ead6d6] bg-[#fff9f8] px-4 py-3 text-sm font-semibold text-slate-800">
                   {point}
@@ -91,6 +91,25 @@ export default function HomePage() {
           </div>
         </div>
       </Section>
+      <Section title="Service lanes built to convert the highest-value work">
+        <div className="grid gap-5 md:grid-cols-3">
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency septic</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Lead with urgency</h3>
+            <p className="mt-3 text-sm text-slate-800">Visitors immediately see that Robinson handles emergency septic calls 24/7 instead of hiding urgent response behind generic local-business copy.</p>
+          </div>
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Real-estate lane</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Capture inspection work</h3>
+            <p className="mt-3 text-sm text-slate-800">Buyers, sellers, and Realtors get their own clear path, which helps Robinson present as a practical partner during time-sensitive transactions.</p>
+          </div>
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Commercial and rentals</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Sell more than one service</h3>
+            <p className="mt-3 text-sm text-slate-800">Portable toilets, grease traps, and lift pump service are no longer buried, making the site work harder as a sales tool for the full business.</p>
+          </div>
+        </div>
+      </Section>
       <Section title={homeContent.realtorLane.title}>
         <div className="grid gap-5 md:grid-cols-[1.1fr,0.9fr]">
           <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-6">
@@ -101,7 +120,7 @@ export default function HomePage() {
           </div>
           <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
             <Image
-              src="/current/residential-01-tmb.jpg"
+              src="/images/enhanced/tech_evaluation_ai_enhanced.jpg"
               alt="Robinson field technician working through a residential service or evaluation visit"
               width={900}
               height={700}
@@ -114,7 +133,7 @@ export default function HomePage() {
         <FaqPreview items={homeContent.faqPreview} />
       </Section>
       <Section>
-        <CtaBand heading="Not sure which request lane fits your job?" href="/contact" label="Open General Contact Form" />
+        <CtaBand heading="Need help right now? Call Robinson for 24/7 emergency septic service or use the online request forms." href="/contact" label="Open Contact and Request Forms" />
       </Section>
     </>
   );

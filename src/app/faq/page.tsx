@@ -19,11 +19,11 @@ export default function FaqPage() {
       <div className="mb-6 grid gap-6 md:grid-cols-[1.1fr,0.9fr]">
         <div>
           <p className="text-slate-800">
-            These are the questions customers ask most often before booking septic service, planning a home-sale evaluation, or arranging portable toilet rentals. Use the answers below to get your bearings, then open the request lane that fits the job.
+            These are the questions customers ask most often before booking septic service, planning a home-sale evaluation, or arranging portable toilet rentals. Use the answers below to get your bearings, then call for urgent problems or open the request lane that fits the job.
           </p>
         </div>
         <div className="overflow-hidden rounded-xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-          <Image src="/current/img05.jpg" alt="Robinson septic truck close-up for service and FAQ context" width={1200} height={720} className="h-[220px] w-full object-cover" />
+          <Image src="/images/enhanced/truck_closeup_ai_enhanced.jpg" alt="Robinson septic truck close-up for service and FAQ context" width={1200} height={720} className="h-[220px] w-full object-cover" />
         </div>
       </div>
       <div className="grid gap-3">

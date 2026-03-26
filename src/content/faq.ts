@@ -12,7 +12,7 @@ export const faqContent = [
   {
     question: "What are the warning signs of septic system failure?",
     answer:
-      "Common warning signs include sewage backing up in the home, seepage in the yard, or fixtures that are suddenly hard to flush. If you are seeing those signs, submit a septic request or call Robinson directly so the crew can help you decide the next step.",
+      "Common warning signs include sewage backing up in the home, seepage in the yard, or fixtures that are suddenly hard to flush. If you are seeing those signs, call Robinson directly for faster help or submit a septic request with the details so the crew can help you decide the next step.",
   },
   {
     question: "Where are my septic tanks located?",
@@ -27,7 +27,7 @@ export const faqContent = [
   {
     question: "How far in advance should I schedule?",
     answer:
-      "For routine septic service, earlier scheduling gives Robinson more route flexibility. For home-sale evaluations, faster turnaround is often possible when property details and timing needs are submitted clearly from the start.",
+      "For routine septic service, earlier scheduling gives Robinson more route flexibility. For urgent septic issues, call right away. For home-sale evaluations, faster turnaround is often possible when property details and timing needs are submitted clearly from the start.",
   },
   {
     question: "Can portable toilet rentals include ongoing service?",

@@ -31,7 +31,7 @@ export default function CommercialPage() {
               <Image src="/current/grease-01-tmb.jpg" alt="Grease trap related field work and service context" width={1000} height={720} className="h-[240px] w-full object-cover" />
             </div>
             <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
-              <Image src="/current/img01.jpg" alt="Robinson support truck staged for commercial or route work" width={1000} height={720} className="h-[240px] w-full object-cover" />
+              <Image src="/images/enhanced/truck_closeup_ai_enhanced.jpg" alt="Robinson support truck staged for commercial or route work" width={1000} height={720} className="h-[240px] w-full object-cover" />
             </div>
           </div>
           <ul className="mb-5 mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">

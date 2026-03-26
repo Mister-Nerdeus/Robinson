@@ -6,7 +6,7 @@ import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
-type Props = {
+ type Props = {
   type: SubmissionType;
   title: string;
   extraFields?: Array<{ name: string; label: string; required?: boolean }>;
@@ -29,16 +29,16 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
       });
       if (!res.ok) {
         const body = await res.json();
-        setMessage(body?.error ? "Validation failed. Review required fields." : "Request failed.");
+        setMessage(body?.error ? "Please review the required fields and submit again." : "Request could not be sent right now.");
         setStatus("error");
         await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
         return;
       }
-      setMessage("Request submitted. Delivery notification status recorded.");
+      setMessage("Request submitted successfully. Robinson can now review your details and follow up.");
       setStatus("success");
       await trackEvent({ event: analyticsEvents.formSubmitSuccess, submissionType: type });
     } catch {
-      setMessage("Network error while submitting.");
+      setMessage("Network error while submitting. Please call if your need is urgent.");
       setStatus("error");
       await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
     }
@@ -59,6 +59,7 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
       className="grid gap-3 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
+      <p className="text-sm text-slate-700">For emergency septic needs, calling is still the fastest path. Use this form to send the job details Robinson should know before follow-up.</p>
       <input type="hidden" name="type" value={type} />
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
       <FormField name="fullName" label="Full Name" required />

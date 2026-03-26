@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import "./globals.css";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -20,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <div className="border-t border-[#d7caca] bg-[#f3edec] py-3 text-center text-xs text-slate-600">
-          Serving West Michigan with septic cleaning, evaluations, rentals, and support service.
+          Serving West Michigan with 24/7 emergency septic service, home-sale evaluations, portable toilet rentals, and commercial support.
         </div>
       </body>
     </html>

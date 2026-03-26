@@ -23,12 +23,13 @@ export default function RealtorsPage() {
           </div>
           <ul className="grid gap-2 rounded-2xl border border-[#ead6d6] bg-[var(--surface)] p-4 text-sm text-slate-700">
             <li>• Built for buyers, sellers, and Realtors.</li>
+            <li>• Legacy source materials describe evaluations typically completed within 1 to 3 business days.</li>
             <li>• Helps collect property access notes before dispatch follow-up.</li>
             <li>• Gives the office one place to review sale-related timing needs.</li>
           </ul>
         </div>
         <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-          <Image src="/current/residential-03-tmb.jpg" alt="Robinson team member on site during a property-service visit" width={1000} height={780} className="h-full min-h-[320px] w-full object-cover" />
+          <Image src="/images/enhanced/tech_evaluation_ai_enhanced.jpg" alt="Robinson team member on site during a property-service visit" width={1000} height={780} className="h-full min-h-[320px] w-full object-cover" />
         </div>
       </div>
       <div className="mt-6">

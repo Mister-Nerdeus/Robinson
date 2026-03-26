@@ -15,8 +15,8 @@ export function Footer() {
             height={88}
             className="h-auto w-[180px]"
           />
-          <p className="mt-3 text-sm font-semibold text-[var(--brand)]">{company.trustHeadline}</p>
-          <p className="mt-2 max-w-xl text-sm text-slate-700">Residential and commercial septic cleaning, evaluations, rentals, and support service.</p>
+          <p className="mt-3 inline-flex rounded-full bg-[var(--brand)] px-3 py-1 text-sm font-semibold text-white">{company.emergencyService.claim}</p>
+          <p className="mt-3 max-w-xl text-sm text-slate-700">Residential and commercial septic cleaning, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service across West Michigan.</p>
           <div className="mt-4 grid gap-1 text-sm">
             <p className="font-semibold">Call for service: {company.primaryPhone}</p>
             <p>Additional office line: {company.secondaryPhone}</p>
@@ -28,11 +28,11 @@ export function Footer() {
           </div>
         </div>
         <div>
-          <h2 className="font-display text-lg text-[var(--brand)]">Service Area and Request Paths</h2>
+          <h2 className="font-display text-lg text-[var(--brand)]">Service Area and Fast Request Paths</h2>
           <p className="mt-2 text-sm">{serviceAreaContent.summary}</p>
           <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
             <Link className="underline" href="/services/septic-cleaning">
-              Septic Cleaning
+              Emergency Septic Service
             </Link>
             <Link className="underline" href="/services/well-septic-evaluations">
               Evaluations

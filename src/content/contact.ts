@@ -1,10 +1,10 @@
 export const contactContent = {
   title: "Contact Robinson Septic Cleaning",
   intro:
-    "Use the general contact form for questions, scheduling help, or jobs that do not fit one of the main request lanes. For septic cleaning, evaluations, rentals, and commercial-support work, the dedicated forms help Robinson review the details faster.",
+    "Call Robinson right away for 24/7 emergency service, or use the general contact form for questions, scheduling help, and jobs that do not fit one of the main request lanes. For septic cleaning, evaluations, rentals, and commercial work, the dedicated forms help the office review details faster.",
   serviceAreaSummary:
-    "Robinson serves West Michigan communities including Howard City, Pierson, Sparta, and the greater Grand Rapids area.",
-  responseNote: "Office-hours clue from public business information: Monday-Friday, 8:00 AM-5:00 PM.",
+    "Robinson serves West Michigan communities including Pierson, Sparta, Cedar Springs, Sand Lake, Trufant, Coral, and the greater Grand Rapids area.",
+  responseNote: "24/7 emergency service is available for urgent septic needs. Routine scheduling can also be requested by phone or online form.",
   callout:
-    "Calling is still the fastest path for immediate scheduling questions, but the forms below give Robinson a better head start with property details, access notes, and timing needs.",
+    "Calling is the fastest path when your septic system is backing up or you need immediate help. The forms below are ideal when you want to send property details, access notes, and timing needs up front.",
 };

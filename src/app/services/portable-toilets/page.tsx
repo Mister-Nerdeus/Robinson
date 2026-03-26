@@ -28,10 +28,10 @@ export default function PortableToiletsPage() {
           <p className="mb-4 text-slate-800">{servicesContent.portableToilets.intro}</p>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
-              <Image src="/current/img03.jpg" alt="Single Robinson portable toilet on location" width={1000} height={720} className="h-[260px] w-full object-cover" />
+              <Image src="/images/enhanced/portable_toilet_single_ai_enhanced.jpg" alt="Single Robinson portable toilet on location" width={1000} height={720} className="h-[260px] w-full object-cover" />
             </div>
             <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
-              <Image src="/current/portable-toilet-rental.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
+              <Image src="/images/enhanced/portable_toilets_group_ai_enhanced.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
             </div>
           </div>
           <ul className="mb-5 mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">

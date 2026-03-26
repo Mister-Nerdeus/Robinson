@@ -28,7 +28,7 @@ export default function WellSepticEvaluationsPage() {
         <div>
           <p className="mb-4 text-slate-800">{servicesContent.evaluations.intro}</p>
           <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-            <Image src="/current/residential-01-tmb.jpg" alt="Robinson team member handling a residential property visit" width={1200} height={720} className="h-[320px] w-full object-cover" />
+            <Image src="/images/enhanced/tech_evaluation_ai_enhanced.jpg" alt="Robinson team member handling a residential property visit" width={1200} height={720} className="h-[320px] w-full object-cover" />
           </div>
           <ul className="mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
             {servicesContent.evaluations.bullets.map((bullet) => (
@@ -36,7 +36,7 @@ export default function WellSepticEvaluationsPage() {
             ))}
           </ul>
           <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-4 text-sm text-slate-800">
-            Robinson works with local Realtors, buyers, and sellers. When property details are submitted early, this lane is designed to help the office review the job faster and keep real-estate timelines moving.
+            Robinson works with local Realtors, buyers, and sellers. Legacy source materials highlight evaluations that are typically completed within 1 to 3 business days, helping the site sell urgency for real-estate timelines.
           </div>
           <div className="rounded-md bg-[#f5eded] p-3">
             <Link className="font-semibold underline" href="/realtors">Open Realtor Resources</Link>

@@ -17,6 +17,26 @@ const navLinks = [
 export function Header() {
   return (
     <header className="sticky top-0 z-20 border-b border-[#b8a8a8] bg-[var(--surface)]/95 backdrop-blur">
+      <div className="bg-[var(--brand)] text-white">
+        <div className="container flex flex-col gap-2 py-2 text-sm font-semibold sm:flex-row sm:items-center sm:justify-between">
+          <p>{company.emergencyService.claim}</p>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <a
+              href={`tel:${company.primaryPhone}`}
+              onClick={() => {
+                void trackEvent({
+                  event: analyticsEvents.callCtaClick,
+                  metadata: { location: "header-emergency-bar" },
+                });
+              }}
+              className="underline underline-offset-2"
+            >
+              Call {company.primaryPhone}
+            </a>
+            {company.secondaryPhone ? <span className="text-white/85">Office {company.secondaryPhone}</span> : null}
+          </div>
+        </div>
+      </div>
       <div className="container py-3">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <Link href="/" className="flex min-w-0 items-center gap-3 sm:gap-4">
@@ -30,24 +50,31 @@ export function Header() {
             />
             <div className="min-w-0">
               <p className="truncate font-display text-lg leading-none text-[var(--brand)] sm:text-xl">{company.publicBrand}</p>
-              <p className="mt-1 text-sm leading-snug text-slate-700">Family owned and operated septic cleaning, evaluations, rentals, and support service.</p>
+              <p className="mt-1 text-sm leading-snug text-slate-700">24/7 emergency septic service, pumping, evaluations, rentals, and commercial support.</p>
             </div>
           </Link>
-          <div className="flex flex-col items-start gap-1 lg:items-end">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--brand)] sm:text-xs">{company.trustHeadline}</p>
-            <a
-              href={`tel:${company.primaryPhone}`}
-              onClick={() => {
-                void trackEvent({
-                  event: analyticsEvents.callCtaClick,
-                  metadata: { location: "header" },
-                });
-              }}
-              className="rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-            >
-              Call {company.primaryPhone}
-            </a>
-            <p className="text-xs text-slate-700">Residential, commercial, evaluations, rentals, and support service.</p>
+          <div className="flex flex-col items-start gap-2 lg:items-end">
+            <p className="rounded-full bg-[#fff2f2] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--brand)] sm:text-xs">
+              {company.trustHeadline}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href={`tel:${company.primaryPhone}`}
+                onClick={() => {
+                  void trackEvent({
+                    event: analyticsEvents.callCtaClick,
+                    metadata: { location: "header-primary" },
+                  });
+                }}
+                className="rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+              >
+                Emergency or Service Call
+              </a>
+              <Link href="/contact" className="rounded-md border border-[var(--brand)] px-4 py-2 text-sm font-semibold text-[var(--brand)]">
+                Request Service Online
+              </Link>
+            </div>
+            <p className="text-xs text-slate-700">Residential, commercial, real-estate evaluations, portable toilets, grease traps, and lift pumps.</p>
           </div>
         </div>
         <nav className="mt-3 flex flex-wrap gap-2 text-sm sm:gap-3">
