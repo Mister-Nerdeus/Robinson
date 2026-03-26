@@ -6,10 +6,24 @@ import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
- type Props = {
+type Props = {
   type: SubmissionType;
   title: string;
   extraFields?: Array<{ name: string; label: string; required?: boolean }>;
+};
+
+const helperByType: Record<SubmissionType, string> = {
+  "general-contact": "For active septic emergencies, calling is fastest. Use this form for detailed requests or scheduling questions.",
+  "septic-service": "For active backups or urgent warnings, call immediately. Use this form to share tank and access details before follow-up.",
+  "well-septic-evaluation": "For transaction timelines, include buyer/seller/agent details and access notes so scheduling can be coordinated quickly.",
+  "portable-toilet-rental": "Share event dates, unit count, and site access details so quoting and delivery planning can start quickly.",
+};
+
+const submitLabelByType: Record<SubmissionType, string> = {
+  "general-contact": "Send Request",
+  "septic-service": "Request Septic Service",
+  "well-septic-evaluation": "Request Evaluation",
+  "portable-toilet-rental": "Request Rental Quote",
 };
 
 export function RequestForm({ type, title, extraFields = [] }: Props) {
@@ -59,11 +73,11 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
       className="grid gap-3 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
-      <p className="text-sm text-slate-700">For emergency septic needs, calling is still the fastest path. Use this form to send the job details Robinson should know before follow-up.</p>
+      <p className="text-sm text-slate-700">{helperByType[type]}</p>
       <input type="hidden" name="type" value={type} />
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
       <FormField name="fullName" label="Full Name" required />
-      <FormField name="phone" label="Phone" required />
+      <FormField name="phone" label="Best Phone" required />
       <FormField name="email" label="Email" type="email" required />
       <FormField name="address" label="Service Address" />
       <FormField name="preferredDate" label="Preferred Date" type="date" />
@@ -74,12 +88,8 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
         <span className="font-semibold">Request Details</span>
         <textarea className="min-h-28 rounded-md border border-[#bdb4a2] bg-white px-3 py-2" name="message" required />
       </label>
-      <button
-        disabled={status === "submitting"}
-        className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
-        type="submit"
-      >
-        {status === "submitting" ? "Submitting..." : "Submit Request"}
+      <button disabled={status === "submitting"} className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60" type="submit">
+        {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
       </button>
       {message ? <p className="text-sm">{message}</p> : null}
     </form>

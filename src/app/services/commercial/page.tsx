@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
+import { RequestForm } from "@/components/forms/RequestForm";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
@@ -23,6 +24,11 @@ export default function CommercialPage() {
           "/services/commercial",
         )}
       />
+      <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Commercial septic support</p>
+        <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Keep facilities and operations running.</h2>
+        <p className="mt-3 text-sm sm:text-base">Grease trap and lift pump issues can become urgent quickly. Send site details and service needs in one request.</p>
+      </div>
       <div className="grid gap-6 md:grid-cols-[1.05fr,0.95fr]">
         <div>
           <p className="mb-4 text-slate-800">{servicesContent.commercial.intro}</p>
@@ -39,21 +45,29 @@ export default function CommercialPage() {
               <li key={bullet}>• {bullet}</li>
             ))}
           </ul>
-          <Link className="mt-2 inline-block font-semibold underline" href="/contact">
-            Request Commercial Support
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+              <h3 className="font-display text-2xl text-[var(--brand)]">Common reasons to request</h3>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+                {servicesContent.commercial.reasonsToCall.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+              <h3 className="font-display text-2xl text-[var(--brand)]">What to have ready</h3>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+                {servicesContent.commercial.whatToHaveReady.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <Link className="mt-4 inline-block font-semibold underline" href="/contact">
+            Need immediate help? Open Contact
           </Link>
         </div>
-        <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-6">
-          <h3 className="font-display text-3xl text-[var(--brand)]">Support work that should be easy to reach</h3>
-          <p className="mt-3 text-slate-800">
-            Grease trap cleaning and lift pump problems can affect restaurants, facilities, and pressurized septic systems quickly. This lane keeps that work visible so Robinson can review the job without forcing commercial customers through generic residential-only messaging.
-          </p>
-          <ul className="mt-4 grid gap-2 text-sm text-slate-700">
-            {servicesContent.commercial.sellingPoints.map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-          </ul>
-        </div>
+        <RequestForm type="general-contact" title="Request Commercial Service" extraFields={[{ name: "facilityName", label: "Facility or Business Name", required: true }]} />
       </div>
     </Section>
   );

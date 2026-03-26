@@ -1,9 +1,8 @@
-import { chromium, devices } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const outDir = "docs/screenshots";
-const base = "http://127.0.0.1:4850";
+const base = process.env.BASE_URL || "http://127.0.0.1:3001";
 
 async function waitForServer(timeoutMs = 45000) {
   const started = Date.now();
@@ -14,59 +13,53 @@ async function waitForServer(timeoutMs = 45000) {
     } catch {}
     await new Promise((r) => setTimeout(r, 800));
   }
-  throw new Error("Server did not become ready");
+  throw new Error(`Server did not become ready at ${base}`);
+}
+
+async function capture(context, route, file, fullPage = true) {
+  const page = await context.newPage();
+  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  await page.screenshot({ path: `${outDir}/${file}`, fullPage });
+  await page.close();
 }
 
 async function main() {
   await mkdir(outDir, { recursive: true });
+  await waitForServer();
 
-  const server = spawn("npm.cmd", ["run", "dev"], {
-    stdio: "ignore",
-    shell: true,
-  });
+  const browser = await chromium.launch();
 
-  try {
-    await waitForServer();
-    const browser = await chromium.launch();
+  const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const mobile390 = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
+  const mobile360 = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2.5 });
+  const mobile430 = await browser.newContext({ viewport: { width: 430, height: 932 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
 
-    const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-    const mobile = await browser.newContext({ ...devices["iPhone 13"] });
+  const routes = [
+    ["/", "home"],
+    ["/services", "services"],
+    ["/services/septic-cleaning", "septic-cleaning"],
+    ["/services/well-septic-evaluations", "evaluations"],
+    ["/realtors", "realtors"],
+    ["/services/portable-toilets", "portable-toilets"],
+    ["/contact", "contact"],
+  ];
 
-    const desktopPages = [
-      ["/", "home-desktop.png"],
-      ["/services", "services-desktop.png"],
-      ["/contact", "contact-desktop.png"],
-      ["/services/septic-cleaning", "septic-form-desktop.png"],
-      ["/admin/submissions", "admin-gated-desktop.png"],
-    ];
-
-    for (const [route, file] of desktopPages) {
-      const page = await desktop.newPage();
-      await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
-      await page.screenshot({ path: `${outDir}/${file}`, fullPage: true });
-      await page.close();
-    }
-
-    const mobilePages = [
-      ["/", "home-mobile.png"],
-      ["/contact", "contact-mobile.png"],
-      ["/services/portable-toilets", "portable-form-mobile.png"],
-    ];
-
-    for (const [route, file] of mobilePages) {
-      const page = await mobile.newPage();
-      await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
-      await page.screenshot({ path: `${outDir}/${file}`, fullPage: true });
-      await page.close();
-    }
-
-    await desktop.close();
-    await mobile.close();
-    await browser.close();
-    console.log("screenshot capture complete");
-  } finally {
-    server.kill();
+  for (const [route, name] of routes) {
+    await capture(desktop, route, `${name}-desktop-1440.png`);
+    await capture(mobile390, route, `${name}-mobile-390.png`);
   }
+
+  await capture(mobile360, "/", "home-mobile-360.png");
+  await capture(mobile390, "/", "home-mobile-390.png");
+  await capture(mobile430, "/", "home-mobile-430.png");
+
+  await desktop.close();
+  await mobile390.close();
+  await mobile360.close();
+  await mobile430.close();
+  await browser.close();
+
+  console.log(`screenshot capture complete from ${base}`);
 }
 
 main().catch((err) => {

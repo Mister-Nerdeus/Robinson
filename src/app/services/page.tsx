@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildMetadata(
   "Services",
-  "Explore Robinson 24/7 emergency septic service, evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
+  "Explore Robinson emergency septic service, routine pumping, home-sale evaluations, portable rentals, and commercial support.",
   "/services",
 );
 
@@ -22,7 +22,7 @@ export default function ServicesIndexPage() {
   return (
     <Section title="Services">
       <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5 text-slate-800">
-        Robinson is built around the service lanes customers actually use: 24/7 emergency septic pumping, routine septic maintenance, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump support. Choose the lane that matches the job and send the details that help scheduling move faster.
+        Robinson provides four core service categories: emergency and routine septic service, home-sale evaluations, portable toilet rentals, and commercial support for grease trap and lift pump work.
       </div>
       <div className="grid gap-5 md:grid-cols-2">
         {links.map((item) => (

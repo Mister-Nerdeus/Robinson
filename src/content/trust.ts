@@ -1,10 +1,12 @@
 export const trustContent = {
   points: [
-    "24/7 Emergency Service for urgent septic problems.",
-    "Family owned and operated since 1979.",
-    "Residential and commercial septic service across West Michigan.",
-    "Dedicated request paths for septic service, evaluations, rentals, grease traps, and lift pump work.",
+    "Family owned and operated since 1979",
+    "24/7 Emergency Service for urgent septic calls",
+    "Residential and commercial septic support across West Michigan",
+    "Home-sale evaluations for buyers, sellers, and Realtors",
+    "Portable toilet rentals for events and job sites",
+    "Member of the Michigan Septic Tank Association",
   ],
   trustStatement:
-    "Robinson Septic is built around direct local service: fast calls when a septic problem cannot wait, clear scheduling for routine maintenance, and professional support for homeowners, Realtors, businesses, job sites, and events.",
+    "Robinson combines long-running local service with clear communication, fast emergency response, and organized request workflows for homeowners, businesses, and real-estate transactions.",
 };

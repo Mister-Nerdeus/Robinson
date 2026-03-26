@@ -19,10 +19,15 @@ export default function PortableToiletsPage() {
       <JsonLd
         data={serviceSchema(
           "Portable Toilet Rentals",
-          "Portable toilet rental and service planning for events, homes, businesses, schools, and job sites.",
+          "Portable toilet rental and maintenance planning for events, homes, businesses, schools, and job sites.",
           "/services/portable-toilets",
         )}
       />
+      <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Events and site support</p>
+        <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Portable rental service that is easy to schedule.</h2>
+        <p className="mt-3 text-sm sm:text-base">Send delivery dates, unit counts, and site instructions in one request for faster quoting and planning.</p>
+      </div>
       <div className="grid gap-6 md:grid-cols-[1.05fr,0.95fr]">
         <div>
           <p className="mb-4 text-slate-800">{servicesContent.portableToilets.intro}</p>
@@ -39,23 +44,26 @@ export default function PortableToiletsPage() {
               <li key={bullet}>• {bullet}</li>
             ))}
           </ul>
-          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-            <h3 className="font-display text-2xl text-[var(--brand)]">Why customers use this lane</h3>
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-              {servicesContent.portableToilets.sellingPoints.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+              <h3 className="font-display text-2xl text-[var(--brand)]">Common reasons to request</h3>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+                {servicesContent.portableToilets.reasonsToCall.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+              <h3 className="font-display text-2xl text-[var(--brand)]">What to have ready</h3>
+              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+                {servicesContent.portableToilets.whatToHaveReady.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-        <RequestForm
-          type="portable-toilet-rental"
-          title="Portable Toilet Rental Request"
-          extraFields={[
-            { name: "eventType", label: "Event / Jobsite Type", required: true },
-            { name: "unitCount", label: "Unit Count", required: true },
-          ]}
-        />
+        <RequestForm type="portable-toilet-rental" title="Request Portable Toilet Rental" extraFields={[{ name: "eventType", label: "Event / Jobsite Type", required: true }, { name: "unitCount", label: "Unit Count", required: true }]} />
       </div>
     </Section>
   );

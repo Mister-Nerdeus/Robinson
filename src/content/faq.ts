@@ -2,36 +2,36 @@ export const faqContent = [
   {
     question: "How often should I have my septic tanks pumped?",
     answer:
-      "Robinson's older public guidance suggests that many households with one to four people should plan on septic pumping about every three years. Actual timing can vary with tank size, household use, and overall system condition, so it is best to treat that as a practical guideline and schedule based on your property's needs.",
+      "Many households use about a three-year interval as a planning guide. Final timing depends on tank size, household use, and system condition.",
   },
   {
-    question: "How much will septic pumping cost?",
+    question: "What affects septic pumping price?",
     answer:
-      "Cost usually depends on the number of tanks, whether the lids are already open, and how much locating or access work is needed before pumping begins. The septic request form is designed to capture those details up front so Robinson can follow up with more accurate scheduling and pricing information.",
+      "Price depends on factors like number of tanks, access to lids, and whether locating or prep work is needed before pumping.",
   },
   {
-    question: "What are the warning signs of septic system failure?",
+    question: "What warning signs mean I should call now?",
     answer:
-      "Common warning signs include sewage backing up in the home, seepage in the yard, or fixtures that are suddenly hard to flush. If you are seeing those signs, call Robinson directly for faster help or submit a septic request with the details so the crew can help you decide the next step.",
+      "Call immediately for sewage backups, pooling wastewater, strong septic odors, or sudden drain and toilet issues.",
   },
   {
-    question: "Where are my septic tanks located?",
+    question: "What details should I include in a service request?",
     answer:
-      "Tanks are often located in line with the sewer leaving the house and may sit roughly 10 to 20 feet from the structure, though every property is different. If you already know where the lids, covers, or cleanouts are, include that in your request so Robinson can route the job more efficiently.",
+      "Include address, best callback number, tank or cleanout location if known, and any gate, pet, or occupancy notes.",
   },
   {
-    question: "Do I need to be home during the appointment?",
+    question: "Do I need to be home during septic service?",
     answer:
-      "Not always. If the tanks are accessible and the crew has clear instructions about gates, pets, or property access, a service visit may still be possible without the homeowner on site. Use the request form to leave those notes in advance.",
+      "Not always. If access is clear and instructions are complete, service may be possible without the property owner on site.",
   },
   {
-    question: "How far in advance should I schedule?",
+    question: "How should Realtors submit evaluation requests?",
     answer:
-      "For routine septic service, earlier scheduling gives Robinson more route flexibility. For urgent septic issues, call right away. For home-sale evaluations, faster turnaround is often possible when property details and timing needs are submitted clearly from the start.",
+      "Use the Realtor evaluation request form and include property details, transaction contacts, and timing priorities so scheduling can be coordinated quickly.",
   },
   {
-    question: "Can portable toilet rentals include ongoing service?",
+    question: "Can portable toilet rentals include regular maintenance?",
     answer:
-      "Yes. Robinson's rental materials describe daily, weekend, weekly, and monthly options, and longer-term rentals can include routine pumping and cleaning as part of the service plan.",
+      "Yes. Longer rentals can include scheduled pumping and cleaning based on event or project needs.",
   },
 ];
