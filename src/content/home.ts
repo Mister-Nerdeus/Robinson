@@ -13,10 +13,20 @@ export const homeContent = {
     {
       src: "/images/enhanced/truck_full_ai_enhanced.jpg",
       alt: "Robinson Septic service truck parked and ready for emergency or scheduled septic service",
-      eyebrow: "24/7 emergency septic pumping",
-      title: "When sewage backs up or the tank is overdue, Robinson is ready to take the call.",
+      eyebrow: "24/7 emergency service • family owned since 1979",
+      title: "Need septic pumping fast? Call Robinson for 24/7 emergency service and dependable local scheduling.",
       description:
-        "Routine pumping and urgent septic problems both need a fast response. Use the septic service lane to send property details, tank notes, and access instructions so scheduling can move faster.",
+        "Robinson Septic provides residential and commercial septic cleaning, well and septic evaluations for home sales, portable toilet rentals, grease trap cleaning, and lift pump service across West Michigan. When the job cannot wait, emergency calls stay front and center.",
+      href: "/contact",
+      hrefLabel: "Request Service Now",
+    },
+    {
+      src: "/images/enhanced/truck_closeup_ai_enhanced.jpg",
+      alt: "Close-up of Robinson Septic truck branding and equipment",
+      eyebrow: "Septic pumping and scheduled service",
+      title: "Routine pumping and urgent septic problems both get a fast, local response.",
+      description:
+        "Use the septic service lane to share tank details, access notes, and property information so Robinson can schedule routine pumping or urgent service with less back-and-forth.",
       href: "/services/septic-cleaning",
       hrefLabel: "Request Septic Service",
     },

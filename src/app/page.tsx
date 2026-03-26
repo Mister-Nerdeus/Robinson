@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Hero } from "@/components/site/Hero";
 import { Section } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { LaneGrid } from "@/components/home/LaneGrid";
@@ -24,13 +23,12 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={localBusinessSchema()} />
-      <Hero {...homeContent.hero} />
-      <Section className="pt-0">
+      <Section>
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Rotating service highlights</p>
-            <h2 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">See the main jobs Robinson handles every week.</h2>
-            <p className="mt-2 max-w-3xl text-slate-700">The rotating panel keeps emergency septic work, portable toilets, commercial support, and home-sale evaluations visible so customers can move straight to the right request path.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency service and core service highlights</p>
+            <h2 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Start with the most urgent call, then move straight to the right service lane.</h2>
+            <p className="mt-2 max-w-3xl text-slate-700">The rotating panel now carries Robinson’s emergency message along with septic pumping, portable toilets, commercial support, and home-sale evaluations so the homepage stays focused without repeating the same content twice.</p>
           </div>
         </div>
         <HomeSlideshow slides={homeContent.slideshow} />
