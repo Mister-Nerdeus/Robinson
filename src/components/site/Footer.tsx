@@ -16,10 +16,10 @@ export function Footer() {
             className="h-auto w-[180px]"
           />
           <p className="mt-3 text-sm font-semibold text-[var(--brand)]">{company.trustHeadline}</p>
-          <p className="mt-2 max-w-xl text-sm text-slate-700">{company.tagline}</p>
+          <p className="mt-2 max-w-xl text-sm text-slate-700">Residential and commercial septic cleaning, evaluations, rentals, and support service.</p>
           <div className="mt-4 grid gap-1 text-sm">
-            <p className="font-semibold">Primary phone: {company.primaryPhone}</p>
-            <p>Secondary line in public records: {company.secondaryPhone}</p>
+            <p className="font-semibold">Call for service: {company.primaryPhone}</p>
+            <p>Additional office line: {company.secondaryPhone}</p>
             <p>{company.address.line1}</p>
             <p>
               {company.address.city}, {company.address.state} {company.address.postalCode}
@@ -30,7 +30,7 @@ export function Footer() {
         <div>
           <h2 className="font-display text-lg text-[var(--brand)]">Service Area and Request Paths</h2>
           <p className="mt-2 text-sm">{serviceAreaContent.summary}</p>
-          <div className="mt-4 flex flex-wrap gap-2 text-sm">
+          <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
             <Link className="underline" href="/services/septic-cleaning">
               Septic Cleaning
             </Link>

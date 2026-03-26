@@ -56,7 +56,7 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-3 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-5"
+      className="grid gap-3 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <input type="hidden" name="type" value={type} />
@@ -75,7 +75,7 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
       </label>
       <button
         disabled={status === "submitting"}
-        className="rounded-md bg-[var(--brand)] px-4 py-2 font-semibold text-white disabled:opacity-60"
+        className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
         type="submit"
       >
         {status === "submitting" ? "Submitting..." : "Submit Request"}

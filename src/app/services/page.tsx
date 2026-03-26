@@ -21,6 +21,9 @@ const links = [
 export default function ServicesIndexPage() {
   return (
     <Section title="Services">
+      <p className="mb-5 max-w-4xl text-slate-800">
+        Robinson is built around the service lanes customers actually use: septic pumping, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump support. Choose the lane that matches the job and send the details that help scheduling move faster.
+      </p>
       <div className="grid gap-5 md:grid-cols-2">
         {links.map((item) => (
           <Link className="overflow-hidden rounded-2xl border border-[#d7c6c6] bg-[var(--surface)] shadow-sm transition hover:-translate-y-0.5" key={item.href} href={item.href}>

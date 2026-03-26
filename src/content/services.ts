@@ -9,6 +9,11 @@ export const servicesContent = {
       "Pricing factors explained up front when possible",
       "Work completed with as little inconvenience to the homeowner as possible",
     ],
+    sellingPoints: [
+      "Great fit for routine maintenance, route-based pumping, and properties with limited access details.",
+      "Helps customers send tank information, gate notes, pets, and timing needs before the truck arrives.",
+      "Built for homeowners, landlords, businesses, and repeat service work.",
+    ],
     cta: "/services/septic-cleaning",
   },
   evaluations: {
@@ -18,8 +23,13 @@ export const servicesContent = {
     bullets: [
       "Purpose-built for home-sale workflows",
       "Works well for buyers, sellers, and Realtors",
-      "Legacy source materials indicate typical completion within 1-3 business days",
+      "Typical scheduling can often move quickly when property details are submitted early",
       "Captures property and scheduling details up front",
+    ],
+    sellingPoints: [
+      "Useful when a transaction needs clear next steps instead of back-and-forth calls.",
+      "Helps gather access notes, deadline pressure, and contact information in one place.",
+      "Keeps a dedicated lane open for the real-estate side of the business.",
     ],
     cta: "/services/well-septic-evaluations",
   },
@@ -31,7 +41,12 @@ export const servicesContent = {
       "Event and jobsite delivery planning",
       "Daily, weekend, weekly, or monthly options",
       "Long-term service can include routine pumping and cleaning",
-      "Source pack references service within a 60-mile radius of greater Grand Rapids",
+      "Coverage tied to West Michigan and greater Grand Rapids-area demand",
+    ],
+    sellingPoints: [
+      "Good for graduation parties, family events, camps, job sites, sporting events, and seasonal needs.",
+      "Makes it easier to quote unit counts, delivery windows, and ongoing service expectations.",
+      "Keeps rental work visible as a real service line, not an afterthought.",
     ],
     cta: "/services/portable-toilets",
   },
@@ -44,6 +59,11 @@ export const servicesContent = {
       "Lift pump replacement for residential or commercial pressurized systems",
       "Route-based support for recurring and project work",
       "Useful for restaurants, facilities, and field operations",
+    ],
+    sellingPoints: [
+      "Built for restaurants, commercial properties, facilities, and support work that cannot wait behind generic homeowner messaging.",
+      "Gives Robinson a cleaner intake path for grease trap cleaning and lift pump problems.",
+      "Makes commercial-support work easier to spot, quote, and route.",
     ],
     cta: "/services/commercial",
   },

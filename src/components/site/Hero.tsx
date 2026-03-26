@@ -12,11 +12,11 @@ type HeroProps = {
 
 export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondaryCtaHref, secondaryCtaLabel }: HeroProps) {
   return (
-    <section className="section-pad">
-      <div className="container rounded-3xl border border-[#cdb3b3] bg-[var(--surface)] p-8 shadow-sm md:p-10">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">{eyebrow ?? "Robinson Septic Cleaning"}</p>
-        <h1 className="font-display text-4xl leading-tight text-[var(--brand)] md:text-5xl">{heading}</h1>
-        <p className="mt-4 max-w-3xl text-lg text-slate-800">{subheading}</p>
+    <section className="section-pad pb-5 sm:pb-6">
+      <div className="container rounded-3xl border border-[#cdb3b3] bg-[var(--surface)] p-6 shadow-sm sm:p-8 md:p-10">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)] sm:text-sm">{eyebrow ?? "Robinson Septic Cleaning"}</p>
+        <h1 className="font-display text-[2.15rem] leading-[1.02] text-[var(--brand)] sm:text-4xl md:text-5xl">{heading}</h1>
+        <p className="mt-4 max-w-3xl text-base text-slate-800 sm:text-lg">{subheading}</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href={ctaHref} className="inline-block rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
             {ctaLabel}

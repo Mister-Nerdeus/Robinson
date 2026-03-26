@@ -19,12 +19,12 @@ export default function RealtorsPage() {
             Need a well and septic evaluation during the home buying or selling process? Robinson works with local Realtors, buyers, and sellers to help keep transaction timelines moving.
           </p>
           <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-4 text-sm text-slate-800">
-            Our evaluation request lane is designed to capture property details, timeline needs, and contact information up front. Legacy source material indicates this workflow is often completed within 1-3 business days when scheduling allows.
+            This request lane is designed to capture property details, deadline pressure, access notes, and contact information up front so the office can review the job faster and follow up with clearer scheduling.
           </div>
           <ul className="grid gap-2 rounded-2xl border border-[#ead6d6] bg-[var(--surface)] p-4 text-sm text-slate-700">
             <li>• Built for buyers, sellers, and Realtors.</li>
             <li>• Helps collect property access notes before dispatch follow-up.</li>
-            <li>• Replaces the old fax/email-first workflow with a cleaner digital intake path.</li>
+            <li>• Gives the office one place to review sale-related timing needs.</li>
           </ul>
         </div>
         <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">

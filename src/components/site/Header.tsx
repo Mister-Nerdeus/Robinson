@@ -18,23 +18,23 @@ export function Header() {
   return (
     <header className="sticky top-0 z-20 border-b border-[#b8a8a8] bg-[var(--surface)]/95 backdrop-blur">
       <div className="container py-3">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <Link href="/" className="flex items-center gap-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <Link href="/" className="flex min-w-0 items-center gap-3 sm:gap-4">
             <Image
               src="/branding/logo-legacy-clean.png"
-              alt="Robinson Septic Cleaning legacy logo"
+              alt="Robinson Septic Cleaning logo"
               width={220}
               height={88}
-              className="h-auto w-[180px] sm:w-[220px]"
+              className="h-auto w-[150px] shrink-0 sm:w-[190px] lg:w-[220px]"
               priority
             />
-            <div className="hidden min-w-0 sm:block">
-              <p className="font-display text-xl leading-none text-[var(--brand)]">{company.publicBrand}</p>
-              <p className="text-sm text-slate-700">{company.tagline}</p>
+            <div className="min-w-0">
+              <p className="truncate font-display text-lg leading-none text-[var(--brand)] sm:text-xl">{company.publicBrand}</p>
+              <p className="mt-1 text-sm leading-snug text-slate-700">Family owned and operated septic cleaning, evaluations, rentals, and support service.</p>
             </div>
           </Link>
-          <div className="flex flex-col items-start gap-1 md:items-end">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--brand)]">{company.trustHeadline}</p>
+          <div className="flex flex-col items-start gap-1 lg:items-end">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--brand)] sm:text-xs">{company.trustHeadline}</p>
             <a
               href={`tel:${company.primaryPhone}`}
               onClick={() => {
@@ -50,7 +50,7 @@ export function Header() {
             <p className="text-xs text-slate-700">Residential, commercial, evaluations, rentals, and support service.</p>
           </div>
         </div>
-        <nav className="mt-3 flex flex-wrap gap-3 text-sm">
+        <nav className="mt-3 flex flex-wrap gap-2 text-sm sm:gap-3">
           {navLinks.map((link) => (
             <Link
               key={link.href}

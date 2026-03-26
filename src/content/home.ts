@@ -1,9 +1,9 @@
 export const homeContent = {
   hero: {
     eyebrow: "Family owned and operated since 1979",
-    heading: "West Michigan septic service with direct local support.",
+    heading: "Septic service, evaluations, rentals, and support from a local team that answers the phone.",
     subheading:
-      "Robinson Septic provides residential and commercial septic cleaning, well and septic evaluations for home sales, portable toilet rentals, grease trap cleaning, and lift pump service.",
+      "Robinson Septic provides residential and commercial septic cleaning, well and septic evaluations for home sales, portable toilet rentals, grease trap cleaning, and lift pump service across West Michigan.",
     ctaHref: "/contact",
     ctaLabel: "Request Service",
     secondaryCtaHref: "/realtors",
@@ -14,39 +14,39 @@ export const homeContent = {
       src: "/current/img04.jpg",
       alt: "Robinson Septic service truck parked on site for a service visit",
       eyebrow: "Residential and commercial septic service",
-      title: "Field-ready septic pumping and route support.",
+      title: "Scheduled pumping with practical help before the truck arrives.",
       description:
-        "Use the septic service lane to send tank details, property notes, access instructions, and preferred timing before Robinson follows up.",
+        "Use the septic service lane to send tank details, property notes, access instructions, and timing needs up front so the visit is easier to schedule and easier to complete.",
       href: "/services/septic-cleaning",
-      hrefLabel: "Open Septic Service Lane",
+      hrefLabel: "Request Septic Service",
     },
     {
       src: "/current/img03.jpg",
       alt: "Robinson portable toilet unit prepared for delivery and service",
       eyebrow: "Portable toilet rentals",
-      title: "Portable toilet planning for homes, job sites, schools, and events.",
+      title: "Portable toilet rentals for events, job sites, homes, schools, and long-term needs.",
       description:
-        "The rental lane now gives Robinson one place to review delivery timing, unit counts, service cadence, and pickup expectations.",
+        "Request delivery timing, unit counts, rental duration, and ongoing service needs in one place instead of relying on a generic contact message.",
       href: "/services/portable-toilets",
-      hrefLabel: "Open Rental Request",
+      hrefLabel: "Request Rental Quote",
     },
     {
       src: "/current/img05.jpg",
       alt: "Robinson Septic tanker close-up showing truck branding and service equipment",
-      eyebrow: "Commercial support stays visible too",
-      title: "Grease trap cleaning and lift pump service are no longer buried.",
+      eyebrow: "Commercial support",
+      title: "Grease trap cleaning and lift pump service stay easy to find.",
       description:
-        "Commercial and support work now has a visible lane for restaurants, facilities, and inoperable pressurized septic systems.",
+        "Restaurants, facilities, and pressurized septic-system customers can reach a clear commercial-support lane instead of getting buried behind residential-only messaging.",
       href: "/services/commercial",
-      hrefLabel: "Open Commercial Support",
+      hrefLabel: "Request Commercial Support",
     },
     {
       src: "/current/residential-03-tmb.jpg",
       alt: "Robinson service technician working at a residential property",
-      eyebrow: "Home-sale and realtor support",
-      title: "The evaluation lane is built for buyers, sellers, and local Realtors.",
+      eyebrow: "Home-sale and Realtor support",
+      title: "Keep inspection timelines moving during a sale.",
       description:
-        "Property details, access notes, and scheduling needs can be captured up front instead of relying on the old call-and-fax workflow.",
+        "The evaluation lane is built for buyers, sellers, and local Realtors who need property details, access notes, and schedule expectations captured early.",
       href: "/realtors",
       hrefLabel: "Open Realtor Resources",
     },
@@ -61,7 +61,7 @@ export const homeContent = {
     {
       title: "Buying or selling a home?",
       description:
-        "Use the dedicated well and septic evaluation lane built for buyers, sellers, and local Realtors who need property details and timeline needs captured up front.",
+        "Use the dedicated well and septic evaluation lane for buyers, sellers, and local Realtors who need property details and timeline needs captured up front.",
       href: "/services/well-septic-evaluations",
     },
     {
@@ -80,9 +80,19 @@ export const homeContent = {
   proofPoints: [
     "Family owned and operated since 1979.",
     "Residential and commercial septic service.",
-    "Well & septic evaluations for home sales.",
+    "Well and septic evaluations for home sales.",
     "Portable toilet rentals, grease trap cleaning, and lift pump service.",
   ],
+  trustPanel: {
+    title: "Why homeowners, property managers, and Realtors keep Robinson in rotation",
+    body:
+      "Robinson stays focused on the work customers actually need completed: scheduled septic pumping, fast real-estate support, rental service, and commercial support handled by a local team with decades in the field.",
+    highlights: [
+      "Clear service lanes instead of one generic contact path.",
+      "Local scheduling support backed by long-running field experience.",
+      "Useful for homeowners, businesses, job sites, and real-estate timelines.",
+    ],
+  },
   realtorLane: {
     title: "Realtor and home-sale support",
     body:

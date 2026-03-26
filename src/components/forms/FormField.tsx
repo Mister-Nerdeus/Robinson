@@ -17,7 +17,7 @@ export function FormField({
     <label className="grid gap-1 text-sm">
       <span className="font-semibold">{label}</span>
       <input
-        className="rounded-md border border-[#bdb4a2] bg-white px-3 py-2"
+        className="rounded-md border border-[#bdb4a2] bg-white px-3 py-3 text-base"
         name={name}
         type={type}
         required={required}

@@ -36,16 +36,16 @@ export default function HomePage() {
           <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
             <Image
               src="/current/img01.jpg"
-              alt="Robinson Septic truck ready for scheduled field service"
+              alt="Robinson Septic truck ready for a scheduled service visit"
               width={1200}
               height={760}
-              className="h-[260px] w-full object-cover"
+              className="h-[240px] w-full object-cover sm:h-[260px]"
             />
             <div className="p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">On-site septic service</p>
-              <h3 className="mt-2 font-display text-3xl text-[var(--brand)]">Real equipment, direct local dispatch, and route-ready notes.</h3>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Scheduled field service</p>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Septic work that starts with better information and faster follow-up.</h3>
               <p className="mt-3 text-slate-800">
-                The rebuilt homepage now uses actual Robinson field images so the first screen feels closer to the business customers expect to reach.
+                Robinson's service forms are built to gather the property details, access notes, and timing needs that help crews route the work faster and help customers get clearer follow-up.
               </p>
             </div>
           </div>
@@ -55,27 +55,40 @@ export default function HomePage() {
               alt="Robinson portable toilet units prepared for rental delivery"
               width={1200}
               height={760}
-              className="h-[260px] w-full object-cover"
+              className="h-[240px] w-full object-cover sm:h-[260px]"
             />
             <div className="p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Rental support</p>
-              <h3 className="mt-2 font-display text-3xl text-[var(--brand)]">Portable toilet rentals stay visible instead of hidden in legacy navigation.</h3>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Portable toilet rentals stay easy to find and easy to request.</h3>
               <p className="mt-3 text-slate-800">
-                Homes, schools, events, and job sites can now route delivery and service questions through a dedicated lane instead of generic contact copy.
+                Homes, schools, events, and job sites can route delivery questions, service cadence, and pickup details through a dedicated rental lane instead of a generic contact form.
               </p>
             </div>
           </div>
         </div>
       </Section>
       <Section title="Why local customers and Realtors use Robinson">
-        <HomeTrust points={trustContent.points} />
-        <p className="mt-4 max-w-4xl text-sm text-slate-700">{trustContent.trustStatement}</p>
-        <div className="mt-4 grid gap-2 md:grid-cols-2">
-          {homeContent.proofPoints.map((point) => (
-            <div key={point} className="rounded-xl border border-[#ead6d6] bg-[#fff9f8] px-4 py-3 text-sm font-semibold text-slate-800">
-              {point}
+        <div className="grid gap-5 md:grid-cols-[1.2fr,0.8fr] md:items-start">
+          <div>
+            <HomeTrust points={trustContent.points} />
+            <p className="mt-4 max-w-4xl text-sm text-slate-700">{trustContent.trustStatement}</p>
+            <div className="mt-4 grid gap-2 md:grid-cols-2">
+              {homeContent.proofPoints.map((point) => (
+                <div key={point} className="rounded-xl border border-[#ead6d6] bg-[#fff9f8] px-4 py-3 text-sm font-semibold text-slate-800">
+                  {point}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
+            <h3 className="font-display text-2xl text-[var(--brand)]">{homeContent.trustPanel.title}</h3>
+            <p className="mt-3 text-slate-800">{homeContent.trustPanel.body}</p>
+            <ul className="mt-4 grid gap-2 text-sm text-slate-700">
+              {homeContent.trustPanel.highlights.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
       <Section title={homeContent.realtorLane.title}>

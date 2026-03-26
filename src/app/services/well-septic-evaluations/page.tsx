@@ -36,10 +36,18 @@ export default function WellSepticEvaluationsPage() {
             ))}
           </ul>
           <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-4 text-sm text-slate-800">
-            Robinson works with local Realtors, buyers, and sellers, and legacy source material points to a typical 1-3 business day turnaround for this lane when scheduling allows.
+            Robinson works with local Realtors, buyers, and sellers. When property details are submitted early, this lane is designed to help the office review the job faster and keep real-estate timelines moving.
           </div>
           <div className="rounded-md bg-[#f5eded] p-3">
             <Link className="font-semibold underline" href="/realtors">Open Realtor Resources</Link>
+          </div>
+          <div className="mt-5 rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+            <h3 className="font-display text-2xl text-[var(--brand)]">Why buyers, sellers, and Realtors use this lane</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.evaluations.sellingPoints.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
           </div>
         </div>
         <RequestForm

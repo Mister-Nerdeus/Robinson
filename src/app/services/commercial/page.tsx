@@ -34,7 +34,7 @@ export default function CommercialPage() {
               <Image src="/current/img01.jpg" alt="Robinson support truck staged for commercial or route work" width={1000} height={720} className="h-[240px] w-full object-cover" />
             </div>
           </div>
-          <ul className="mt-5 mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+          <ul className="mb-5 mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
             {servicesContent.commercial.bullets.map((bullet) => (
               <li key={bullet}>• {bullet}</li>
             ))}
@@ -44,10 +44,15 @@ export default function CommercialPage() {
           </Link>
         </div>
         <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-6">
-          <h3 className="font-display text-3xl text-[var(--brand)]">Keep support work visible</h3>
+          <h3 className="font-display text-3xl text-[var(--brand)]">Support work that should be easy to reach</h3>
           <p className="mt-3 text-slate-800">
-            The rebuild keeps grease trap cleaning and lift pump replacement in plain view so restaurants, facilities, and pressurized septic-system customers do not disappear into generic contact traffic.
+            Grease trap cleaning and lift pump problems can affect restaurants, facilities, and pressurized septic systems quickly. This lane keeps that work visible so Robinson can review the job without forcing commercial customers through generic residential-only messaging.
           </p>
+          <ul className="mt-4 grid gap-2 text-sm text-slate-700">
+            {servicesContent.commercial.sellingPoints.map((item) => (
+              <li key={item}>• {item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </Section>

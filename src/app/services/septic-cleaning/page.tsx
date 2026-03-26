@@ -39,6 +39,14 @@ export default function SepticCleaningPage() {
               <li key={bullet}>• {bullet}</li>
             ))}
           </ul>
+          <div className="mt-5 rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+            <h3 className="font-display text-2xl text-[var(--brand)]">Why customers use this lane</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.septicCleaning.sellingPoints.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
         <RequestForm type="septic-service" title="Septic Service Request" extraFields={[{ name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true }]} />
       </div>

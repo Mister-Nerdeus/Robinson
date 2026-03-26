@@ -27,8 +27,8 @@ export function HomeSlideshow({ slides }: { slides: Slide[] }) {
 
   return (
     <div className="overflow-hidden rounded-[2rem] border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-      <div className="grid md:grid-cols-[1.2fr,0.9fr]">
-        <div className="relative min-h-[320px] bg-[#ede3df] md:min-h-[440px]">
+      <div className="grid md:grid-cols-[1.12fr,0.88fr]">
+        <div className="relative min-h-[260px] bg-[#ede3df] sm:min-h-[320px] md:min-h-[440px]">
           {slides.map((slide, slideIndex) => (
             <div
               key={slide.src}
@@ -38,20 +38,20 @@ export function HomeSlideshow({ slides }: { slides: Slide[] }) {
                 src={slide.src}
                 alt={slide.alt}
                 fill
-                sizes="(max-width: 768px) 100vw, 62vw"
+                sizes="(max-width: 768px) 100vw, 58vw"
                 className="object-cover"
                 priority={slideIndex === 0}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
             </div>
           ))}
         </div>
-        <div className="flex flex-col justify-between gap-6 p-6 md:p-8">
+        <div className="flex flex-col justify-between gap-5 p-5 sm:p-6 md:p-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--brand)] sm:text-xs">
               {slides[index].eyebrow ?? "Field-ready local service"}
             </p>
-            <h2 className="mt-2 font-display text-3xl leading-tight text-[var(--brand)] md:text-4xl">
+            <h2 className="mt-2 font-display text-2xl leading-tight text-[var(--brand)] sm:text-3xl md:text-4xl">
               {slides[index].title}
             </h2>
             <p className="mt-4 text-base leading-7 text-slate-800">{slides[index].description}</p>

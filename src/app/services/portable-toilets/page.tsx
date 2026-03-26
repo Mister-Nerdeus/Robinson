@@ -34,11 +34,19 @@ export default function PortableToiletsPage() {
               <Image src="/current/portable-toilet-rental.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
             </div>
           </div>
-          <ul className="mt-5 mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+          <ul className="mb-5 mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
             {servicesContent.portableToilets.bullets.map((bullet) => (
               <li key={bullet}>• {bullet}</li>
             ))}
           </ul>
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+            <h3 className="font-display text-2xl text-[var(--brand)]">Why customers use this lane</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.portableToilets.sellingPoints.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
         <RequestForm
           type="portable-toilet-rental"

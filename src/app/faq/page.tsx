@@ -19,7 +19,7 @@ export default function FaqPage() {
       <div className="mb-6 grid gap-6 md:grid-cols-[1.1fr,0.9fr]">
         <div>
           <p className="text-slate-800">
-            These questions come from the older Robinson site and service PDFs, but the rebuilt page organizes them more clearly so homeowners, buyers, sellers, and rental customers can find the right lane faster.
+            These are the questions customers ask most often before booking septic service, planning a home-sale evaluation, or arranging portable toilet rentals. Use the answers below to get your bearings, then open the request lane that fits the job.
           </p>
         </div>
         <div className="overflow-hidden rounded-xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">

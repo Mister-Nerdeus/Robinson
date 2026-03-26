@@ -6,9 +6,9 @@ import { analyticsEvents } from "@/lib/analytics/events";
 
 export function ServiceCard({ title, description, href }: { title: string; description: string; href: string }) {
   return (
-    <article className="rounded-xl border border-[#c7beaa] bg-[var(--surface)] p-5">
+    <article className="rounded-xl border border-[#c7beaa] bg-[var(--surface)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
-      <p className="mt-2 text-base">{description}</p>
+      <p className="mt-2 text-base text-slate-800">{description}</p>
       <Link
         className="mt-4 inline-block text-sm font-semibold underline"
         href={href}
@@ -16,7 +16,7 @@ export function ServiceCard({ title, description, href }: { title: string; descr
           void trackEvent({ event: analyticsEvents.laneClick, lane: title });
         }}
       >
-        Open lane
+        Learn more
       </Link>
     </article>
   );
