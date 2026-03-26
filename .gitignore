@@ -6,3 +6,10 @@ npm-debug.log*
 .DS_Store
 .env
 .env.local
+
+# Local runtime artifacts
+data/
+dev-startup*.log
+
+# Editor-local settings
+.vscode/
