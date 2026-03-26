@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f3f1ea;
+  --foreground: #122117;
+  --muted: #d9d5cb;
+  --brand: #234d2c;
+  --brand-accent: #d6862d;
+  --surface: #fffdf8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% 20%, #e3dccb 0%, transparent 35%),
+    radial-gradient(circle at 85% 10%, #dce8cf 0%, transparent 40%),
+    var(--background);
+  color: var(--foreground);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: min(1120px, 92vw);
+  margin-inline: auto;
+}
+
+.section-pad {
+  padding-block: 3.5rem;
+}
+
+@media (max-width: 767px) {
+  .section-pad {
+    padding-block: 2.5rem;
+  }
+}

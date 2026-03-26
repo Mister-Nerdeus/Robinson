@@ -1,0 +1,47 @@
+{
+  "name": "robinson-local-v1",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4850",
+    "build": "next build",
+    "start": "next start -p 4850",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "check:hardcoded-contact": "node scripts/check-hardcoded-contact.cjs",
+    "check:provisional-claims": "node scripts/check-provisional-claims.mjs",
+    "test:smoke": "tsx tests/smoke-routes.ts",
+    "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run check:hardcoded-contact && npm run check:provisional-claims",
+    "test-stack:up": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-up.ps1",
+    "test-stack:down": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-down.ps1",
+    "test-stack:smoke": "node scripts/test-smoke.mjs",
+    "test-stack:verify": "docker compose -f compose.yaml --env-file .env.test -p robinson-test config && node scripts/test-smoke.mjs"
+  },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "next": "^15.1.5",
+    "nodemailer": "^8.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^7.0.11",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.1.5",
+    "playwright": "^1.58.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

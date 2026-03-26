@@ -1,0 +1,50 @@
+name: robinson-test
+
+services:
+  web:
+    build: .
+    env_file:
+      - .env.test
+    ports:
+      - "3001:4850"
+    volumes:
+      - test_data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4850',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+  api:
+    image: axllent/mailpit:latest
+    profiles: ["api"]
+    ports:
+      - "4001:8025"
+      - "1026:1025"
+    healthcheck:
+      test: ["CMD", "/mailpit", "version"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+
+  db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_DB: robinson_test
+      POSTGRES_USER: robinson
+      POSTGRES_PASSWORD: robinson_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - test_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robinson -d robinson_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+volumes:
+  test_data:
+  test_pg_data:

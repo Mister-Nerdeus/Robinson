@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    container_name: robinson-local-v1
+    ports:
+      - "3017:4850"
+    environment:
+      - LOCAL_ONLY_MODE=true
+      - ENABLE_PRODUCTION_DEPLOY=false
+      - ENABLE_ADMIN_SUBMISSIONS_REVIEW=false

@@ -1,0 +1,45 @@
+import type { SubmissionType } from "./types";
+
+export const formDefaults: Record<SubmissionType, Record<string, string>> = {
+  "general-contact": {
+    type: "general-contact",
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    preferredDate: "",
+    message: "",
+  },
+  "septic-service": {
+    type: "septic-service",
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    preferredDate: "",
+    message: "",
+    tankSizeGallons: "",
+  },
+  "well-septic-evaluation": {
+    type: "well-septic-evaluation",
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    preferredDate: "",
+    message: "",
+    roleInSale: "",
+    realtorCompany: "",
+  },
+  "portable-toilet-rental": {
+    type: "portable-toilet-rental",
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    preferredDate: "",
+    message: "",
+    eventType: "",
+    unitCount: "",
+  },
+};
