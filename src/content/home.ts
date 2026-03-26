@@ -14,19 +14,19 @@ export const homeContent = {
       src: "/images/enhanced/truck_full_ai_enhanced.jpg",
       alt: "Robinson Septic service truck parked and ready for emergency or scheduled septic service",
       eyebrow: "24/7 emergency service • family owned since 1979",
-      title: "Need septic pumping fast? Call Robinson for 24/7 emergency service and dependable local scheduling.",
+      title: "24/7 emergency septic service when the job cannot wait.",
       description:
-        "Robinson Septic provides residential and commercial septic cleaning, well and septic evaluations for home sales, portable toilet rentals, grease trap cleaning, and lift pump service across West Michigan. When the job cannot wait, emergency calls stay front and center.",
+        "Call Robinson fast for backups, urgent pumping, and septic problems that need a dependable local response.",
       href: "/contact",
       hrefLabel: "Request Service Now",
     },
     {
       src: "/images/enhanced/truck_closeup_ai_enhanced.jpg",
       alt: "Close-up of Robinson Septic truck branding and equipment",
-      eyebrow: "Septic pumping and scheduled service",
-      title: "Routine pumping and urgent septic problems both get a fast, local response.",
+      eyebrow: "Routine septic pumping",
+      title: "Routine pumping stays easy to schedule.",
       description:
-        "Use the septic service lane to share tank details, access notes, and property information so Robinson can schedule routine pumping or urgent service with less back-and-forth.",
+        "Send tank details, access notes, and property information up front so routine pumping or urgent service is easier to line up.",
       href: "/services/septic-cleaning",
       hrefLabel: "Request Septic Service",
     },
@@ -34,9 +34,9 @@ export const homeContent = {
       src: "/images/enhanced/portable_toilets_group_ai_enhanced.jpg",
       alt: "Robinson portable toilet rental units grouped together for delivery",
       eyebrow: "Portable toilet rentals",
-      title: "Portable toilets for events, job sites, schools, and long-term needs.",
+      title: "Portable toilets for events, schools, job sites, and long-term needs.",
       description:
-        "Need one unit or several? Robinson can handle delivery, pickup, and routine cleaning so your event or work site stays covered without extra hassle.",
+        "Robinson can deliver, maintain, and pick up single units or larger rental sets without extra hassle.",
       href: "/services/portable-toilets",
       hrefLabel: "Request Rental Quote",
     },
@@ -44,9 +44,9 @@ export const homeContent = {
       src: "/images/enhanced/truck_closeup_ai_enhanced.jpg",
       alt: "Close-up of Robinson Septic truck branding and equipment",
       eyebrow: "Commercial support",
-      title: "Grease traps, lift pumps, and commercial support stay easy to reach.",
+      title: "Commercial septic, grease trap, and lift pump service stays easy to reach.",
       description:
-        "Restaurants, facilities, and pressurized septic-system customers can request service through a dedicated lane built for commercial response instead of buried homeowner messaging.",
+        "Restaurants, facilities, and pressurized-system customers can use a direct request lane built for commercial service.",
       href: "/services/commercial",
       hrefLabel: "Request Commercial Support",
     },
@@ -54,9 +54,9 @@ export const homeContent = {
       src: "/images/enhanced/tech_evaluation_ai_enhanced.jpg",
       alt: "Technician performing evaluation work at a property",
       eyebrow: "Home-sale and Realtor support",
-      title: "Keep inspections moving when a sale is on the clock.",
+      title: "Keep closings moving with well and septic evaluations.",
       description:
-        "Robinson works with buyers, sellers, and Realtors who need property details, deadlines, and access notes reviewed quickly for well and septic evaluations.",
+        "Buyers, sellers, and Realtors can send property details, timing needs, and access notes through a lane built for sale deadlines.",
       href: "/realtors",
       hrefLabel: "Open Realtor Resources",
     },
@@ -65,25 +65,25 @@ export const homeContent = {
     {
       title: "Need emergency septic service?",
       description:
-        "Backups, warning signs, and urgent pumping needs should never get buried. Robinson puts 24/7 emergency service front and center so you can call or submit the details quickly.",
+        "Backups, warning signs, and urgent pumping needs should never get buried. Robinson keeps 24/7 emergency service front and center.",
       href: "/services/septic-cleaning",
     },
     {
       title: "Need routine septic pumping?",
       description:
-        "Stay ahead of expensive problems with scheduled residential or commercial pumping, tank-location help, and clear property notes before the truck arrives.",
+        "Stay ahead of expensive problems with scheduled pumping, tank-location help, and clear property notes before the truck arrives.",
       href: "/services/septic-cleaning",
     },
     {
       title: "Buying or selling a home?",
       description:
-        "Use the dedicated well and septic evaluation lane for buyers, sellers, and local Realtors who need deadlines, property details, and access instructions captured up front.",
+        "Use the well and septic evaluation lane for buyers, sellers, and local Realtors who need deadlines, property details, and access instructions captured up front.",
       href: "/services/well-septic-evaluations",
     },
     {
       title: "Need portable toilets or commercial support?",
       description:
-        "Request portable toilet rentals, grease trap cleaning, or lift pump service through a sales-focused lane built for job sites, facilities, schools, events, and businesses.",
+        "Request portable toilet rentals, grease trap cleaning, or lift pump service for job sites, facilities, schools, events, and businesses.",
       href: "/services/commercial",
     },
   ],
