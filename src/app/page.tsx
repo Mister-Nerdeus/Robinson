@@ -45,7 +45,7 @@ export default function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Scheduled field service</p>
               <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Septic work that starts with better information and faster follow-up.</h3>
               <p className="mt-3 text-slate-800">
-                Robinson's service forms are built to gather the property details, access notes, and timing needs that help crews route the work faster and help customers get clearer follow-up.
+                Robinson&apos;s service forms are built to gather the property details, access notes, and timing needs that help crews route the work faster and help customers get clearer follow-up.
               </p>
             </div>
           </div>
