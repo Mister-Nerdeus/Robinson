@@ -13,3 +13,5 @@ dev-startup*.log
 
 # Editor-local settings
 .vscode/
+cloudflared-run.out.log
+cloudflared-run.err.log

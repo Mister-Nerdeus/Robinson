@@ -26,28 +26,20 @@ No inbound router/NAT port forwarding is required. The connector uses outbound-o
    - `cloudflared --version`
 
 ## Authenticate (Operator-Managed)
-1. Run:
-   - `cloudflared tunnel login`
-2. Complete browser auth.
-3. Verify local credential material exists under:
-   - `%USERPROFILE%\\.cloudflared\\`
+Preferred:
+- `cloudflared tunnel login`
 
-Do not commit credentials/certs from this folder.
+Alternative (used in this execution):
+- Scoped API token for tunnel + DNS operations
 
 ## Create or Attach a Named Tunnel
 Option A (create new):
 - `cloudflared tunnel create robinson-demo`
 
-Option B (use existing):
-- `cloudflared tunnel list`
-- Select the named tunnel for this demo host.
-
-Record (operator-private):
-- tunnel UUID
-- credentials file path
+Option B (API path):
+- Create tunnel via API and capture tunnel ID/token.
 
 ## Publish Hostname -> Local Origin
-Use Cloudflare dashboard Zero Trust tunnel route (Published application):
 - Hostname/subdomain: `<demo-hostname>`
 - Service type: `HTTP`
 - URL/origin: `http://localhost:3001`
@@ -58,33 +50,32 @@ Do not create any route for `localhost:4001`.
 Use repo template:
 - `ops/cloudflare/config.template.yml`
 
-Copy template to local, untracked config path (operator machine):
+Copy template to local, untracked config path:
 - `%USERPROFILE%\\.cloudflared\\config.yml`
-
-Replace placeholders with real values (UUID, hostname, credentials path).
 
 ## Run Tunnel
 - `cloudflared tunnel run <tunnel-name-or-id>`
+or
+- `cloudflared tunnel run --token <tunnel-token>`
 
 ## Windows Service Persistence
 Cloudflare recommends service mode for stability.
 
-1. Ensure `%USERPROFILE%\\.cloudflared\\config.yml` exists with valid tunnel settings.
+1. Ensure valid config at `%USERPROFILE%\\.cloudflared\\config.yml`.
 2. Install service:
    - `cloudflared service install`
-3. Start/verify service:
+3. Verify:
    - `sc query cloudflared`
 
-Update note:
-- When updating cloudflared binary, restart service after replacement.
+If SCM access is denied, rerun from elevated Administrator session.
 
 ## Verification Workflow
 1. Local app check: `http://localhost:3001` returns 200.
 2. Public hostname check: `https://<demo-hostname>` returns 200.
 3. External device/network validation (phone on cellular or off-LAN network).
 
-Use helper script:
-- `scripts/windows/cloudflare-tunnel-verify.ps1 -PublicHostname <demo-hostname>`
+Helper:
+- `scripts/windows/cloudflare-tunnel-verify.ps1`
 
 ## Security Boundary
 - Public exposure allowed only for app origin (`3001`).
@@ -92,11 +83,7 @@ Use helper script:
 - No secrets in git.
 - No direct host public-IP exposure.
 
-## Operator-Owned Manual Steps
-Manual in dashboard/account context:
-- Tunnel creation/selection
-- Published application route creation
-- DNS/hostname selection
-
-Repo-owned artifacts:
-- docs/templates/scripts only
+## Runtime Notes from Execution
+- Live hostname configured: `robinson-demo.hearthcore.app`
+- Tunnel runtime succeeded with active connections.
+- Service install failed in non-elevated context (`Access is denied`), requiring elevated operator step.

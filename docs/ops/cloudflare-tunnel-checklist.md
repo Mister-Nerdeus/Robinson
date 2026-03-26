@@ -1,18 +1,29 @@
-# Cloudflare Tunnel Demo Access Checklist (Operator Closeout)
+# Cloudflare Tunnel Demo Checklist
 
-## Repo-Owned Deliverables
-- [ ] `docs/ops/cloudflare-tunnel-demo-access.md` present
-- [ ] `docs/ops/cloudflare-tunnel-checklist.md` present
-- [ ] `ops/cloudflare/config.template.yml` present and redacted
-- [ ] `scripts/windows/cloudflare-tunnel-verify.ps1` present
-- [ ] `docs/verification/cloudflare-tunnel-demo-proof.md` present
+## Local Origin
+- [x] Docker app responds at `http://localhost:3001`
+- [x] Mailpit responds locally at `http://localhost:4001` (awareness only)
 
-## Manual Operator Tasks
-- [ ] Tunnel created/selected in Cloudflare
-- [ ] Published route created for `https://<hostname>` -> `http://localhost:3001`
-- [ ] Windows service installed and running
-- [ ] External-device validation captured
+## Tunnel Setup
+- [x] `cloudflared` installed and version confirmed
+- [ ] `cloudflared tunnel login` completed (token/API path used in this run)
+- [x] Named tunnel created (`robinson-demo`)
+- [x] Tunnel ingress configured for app hostname only
 
-## Explicit Exclusions
-- [ ] Mailpit is not publicly exposed
-- [ ] No admin/dev tools published
+## Published Route
+- [x] Public hostname mapped to `http://localhost:3001`
+- [x] No route created for `localhost:4001`
+
+## Service Persistence (Windows)
+- [ ] `cloudflared service install` completed (blocked by non-elevated SCM access)
+- [ ] Windows service running
+
+## Verification
+- [x] Local origin check passed
+- [x] Public hostname check passed
+- [~] External device/network check passed (external network probe yes; phone/tablet capture pending)
+- [x] Proof template updated (`docs/verification/cloudflare-tunnel-demo-proof.md`)
+
+## Security
+- [x] No secrets committed
+- [x] No inbound router/NAT changes made
