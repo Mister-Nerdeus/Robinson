@@ -26,6 +26,13 @@ export default function HomePage() {
       <JsonLd data={localBusinessSchema()} />
       <Hero {...homeContent.hero} />
       <Section className="pt-0">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Rotating service highlights</p>
+            <h2 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">See the main jobs Robinson handles every week.</h2>
+            <p className="mt-2 max-w-3xl text-slate-700">The rotating panel keeps emergency septic work, portable toilets, commercial support, and home-sale evaluations visible so customers can move straight to the right request path.</p>
+          </div>
+        </div>
         <HomeSlideshow slides={homeContent.slideshow} />
       </Section>
       <Section title="Fast paths for the work Robinson handles every day">
@@ -43,9 +50,9 @@ export default function HomePage() {
             />
             <div className="p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency and routine service</p>
-              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">A stronger sales message starts with speed, trust, and clear next steps.</h3>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Call fast for backups, slow drains, overdue pumping, or warning signs.</h3>
               <p className="mt-3 text-slate-800">
-                The site now leads with 24/7 emergency septic service, strong local trust signals, and dedicated request lanes that make it easier for homeowners and businesses to ask for the exact service they need.
+                Robinson handles urgent septic problems and routine pumping with one clear path for homeowners, landlords, and commercial customers who need service scheduled without extra back-and-forth.
               </p>
             </div>
           </div>
@@ -61,7 +68,7 @@ export default function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Beyond septic pumping</p>
               <h3 className="mt-2 font-display text-2xl text-[var(--brand)] sm:text-3xl">Portable rentals, Realtor support, grease traps, and lift pumps all stay visible.</h3>
               <p className="mt-3 text-slate-800">
-                Instead of sounding like a basic brochure site, the new presentation sells Robinson as a broader field-service company with multiple revenue lanes and a faster path to contact.
+                Customers can quickly see that Robinson also supports events, job sites, home sales, restaurants, and facilities instead of burying those services under general septic-only messaging.
               </p>
             </div>
           </div>
@@ -91,22 +98,22 @@ export default function HomePage() {
           </div>
         </div>
       </Section>
-      <Section title="Service lanes built to convert the highest-value work">
+      <Section title="Fast ways to reach the right service team">
         <div className="grid gap-5 md:grid-cols-3">
           <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency septic</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Lead with urgency</h3>
-            <p className="mt-3 text-sm text-slate-800">Visitors immediately see that Robinson handles emergency septic calls 24/7 instead of hiding urgent response behind generic local-business copy.</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Get urgent help moving</h3>
+            <p className="mt-3 text-sm text-slate-800">Customers immediately see that Robinson handles emergency septic calls 24/7, which makes the fastest next step obvious when a problem cannot wait.</p>
           </div>
           <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Real-estate lane</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Capture inspection work</h3>
-            <p className="mt-3 text-sm text-slate-800">Buyers, sellers, and Realtors get their own clear path, which helps Robinson present as a practical partner during time-sensitive transactions.</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Keep closings on schedule</h3>
+            <p className="mt-3 text-sm text-slate-800">Buyers, sellers, and Realtors get a direct path for evaluations, property notes, and timing details when a sale is already on the clock.</p>
           </div>
           <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Commercial and rentals</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Sell more than one service</h3>
-            <p className="mt-3 text-sm text-slate-800">Portable toilets, grease traps, and lift pump service are no longer buried, making the site work harder as a sales tool for the full business.</p>
+            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Cover sites, events, and facilities</h3>
+            <p className="mt-3 text-sm text-slate-800">Portable toilets, grease traps, and lift pump service stay visible so customers can request the right work without guessing where to start.</p>
           </div>
         </div>
       </Section>

@@ -1,11 +1,20 @@
-export function FaqPreview({ items }: { items: string[] }) {
+type FaqPreviewItem = {
+  question: string;
+  answer: string;
+};
+
+export function FaqPreview({ items }: { items: FaqPreviewItem[] }) {
   return (
-    <ul className="grid gap-3">
+    <div className="grid gap-3">
       {items.map((item) => (
-        <li key={item} className="rounded-xl border border-[#ebe4df] bg-[var(--surface)] px-4 py-4 text-lg text-slate-900 shadow-sm">
-          {item}
-        </li>
+        <article
+          key={item.question}
+          className="rounded-2xl border border-[#ebe4df] bg-[var(--surface)] px-5 py-5 shadow-sm"
+        >
+          <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">{item.question}</h3>
+          <p className="mt-3 text-base leading-7 text-slate-700">{item.answer}</p>
+        </article>
       ))}
-    </ul>
+    </div>
   );
 }

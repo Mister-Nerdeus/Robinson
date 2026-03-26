@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { company } from "@/config/company";
 
- type HeroProps = {
+type HeroProps = {
   eyebrow?: string;
   heading: string;
   subheading: string;
@@ -12,6 +12,8 @@ import { company } from "@/config/company";
 };
 
 export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondaryCtaHref, secondaryCtaLabel }: HeroProps) {
+  const callHref = `tel:${company.primaryPhone.replace(/[^\d+]/g, "")}`;
+
   return (
     <section className="section-pad pb-5 sm:pb-6">
       <div className="container rounded-3xl border border-[#cdb3b3] bg-[var(--surface)] p-6 shadow-sm sm:p-8 md:p-10">
@@ -29,13 +31,18 @@ export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondar
           </div>
           <div className="rounded-2xl border border-[#ead6d6] bg-[#fff7f6] px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Call now</p>
-            <p className="mt-1 text-sm font-semibold text-slate-900">{company.primaryPhone}</p>
+            <a href={callHref} className="mt-1 inline-block text-sm font-semibold text-slate-900 underline decoration-[#c99] underline-offset-4">
+              {company.primaryPhone}
+            </a>
           </div>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href={ctaHref} className="inline-block rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
             {ctaLabel}
           </Link>
+          <a href={callHref} className="inline-block rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
+            Call {company.primaryPhone}
+          </a>
           {secondaryCtaHref && secondaryCtaLabel ? (
             <Link href={secondaryCtaHref} className="inline-block rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
               {secondaryCtaLabel}

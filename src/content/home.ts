@@ -102,9 +102,25 @@ export const homeContent = {
     ctaLabel: "Open Realtor Resources",
   },
   faqPreview: [
-    "How often should a septic tank be pumped?",
-    "What affects septic pumping cost?",
-    "What warning signs mean I should call right away?",
-    "How quickly can a home-sale evaluation usually be scheduled?",
+    {
+      question: "How often should a septic tank be pumped?",
+      answer:
+        "Many households plan on septic pumping about every three years, but the right timing still depends on tank size, household use, and the condition of the overall system.",
+    },
+    {
+      question: "What affects septic pumping cost?",
+      answer:
+        "Pricing usually depends on the number of tanks, whether lids are already open, how easy the tanks are to locate, and whether extra access work is needed before pumping starts.",
+    },
+    {
+      question: "What warning signs mean I should call right away?",
+      answer:
+        "Call right away if sewage is backing up, the yard is showing seepage, or toilets and drains suddenly stop acting normal. Those are the kinds of problems that should not sit and wait.",
+    },
+    {
+      question: "How quickly can a home-sale evaluation usually be scheduled?",
+      answer:
+        "Turnaround is usually easier when the property details, timing needs, and access notes are submitted clearly up front, especially when a closing deadline is already on the calendar.",
+    },
   ],
 };
