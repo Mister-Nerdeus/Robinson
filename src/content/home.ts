@@ -9,6 +9,48 @@ export const homeContent = {
     secondaryCtaHref: "/realtors",
     secondaryCtaLabel: "Realtor Resources",
   },
+  slideshow: [
+    {
+      src: "/current/img04.jpg",
+      alt: "Robinson Septic service truck parked on site for a service visit",
+      eyebrow: "Residential and commercial septic service",
+      title: "Field-ready septic pumping and route support.",
+      description:
+        "Use the septic service lane to send tank details, property notes, access instructions, and preferred timing before Robinson follows up.",
+      href: "/services/septic-cleaning",
+      hrefLabel: "Open Septic Service Lane",
+    },
+    {
+      src: "/current/img03.jpg",
+      alt: "Robinson portable toilet unit prepared for delivery and service",
+      eyebrow: "Portable toilet rentals",
+      title: "Portable toilet planning for homes, job sites, schools, and events.",
+      description:
+        "The rental lane now gives Robinson one place to review delivery timing, unit counts, service cadence, and pickup expectations.",
+      href: "/services/portable-toilets",
+      hrefLabel: "Open Rental Request",
+    },
+    {
+      src: "/current/img05.jpg",
+      alt: "Robinson Septic tanker close-up showing truck branding and service equipment",
+      eyebrow: "Commercial support stays visible too",
+      title: "Grease trap cleaning and lift pump service are no longer buried.",
+      description:
+        "Commercial and support work now has a visible lane for restaurants, facilities, and inoperable pressurized septic systems.",
+      href: "/services/commercial",
+      hrefLabel: "Open Commercial Support",
+    },
+    {
+      src: "/current/residential-03-tmb.jpg",
+      alt: "Robinson service technician working at a residential property",
+      eyebrow: "Home-sale and realtor support",
+      title: "The evaluation lane is built for buyers, sellers, and local Realtors.",
+      description:
+        "Property details, access notes, and scheduling needs can be captured up front instead of relying on the old call-and-fax workflow.",
+      href: "/realtors",
+      hrefLabel: "Open Realtor Resources",
+    },
+  ],
   lanes: [
     {
       title: "Need your septic tank pumped?",

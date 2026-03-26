@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
-import Image from "next/image";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
@@ -23,29 +23,32 @@ export default function PortableToiletsPage() {
           "/services/portable-toilets",
         )}
       />
-      <p className="mb-4 text-slate-800">{servicesContent.portableToilets.intro}</p>
-      <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-        <Image
-          src="/images/curated/portable-units.jpg"
-          alt="Portable toilet units ready for Robinson delivery and service"
-          width={1200}
-          height={640}
-          className="h-auto w-full object-cover"
+      <div className="grid gap-6 md:grid-cols-[1.05fr,0.95fr]">
+        <div>
+          <p className="mb-4 text-slate-800">{servicesContent.portableToilets.intro}</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image src="/current/img03.jpg" alt="Single Robinson portable toilet on location" width={1000} height={720} className="h-[260px] w-full object-cover" />
+            </div>
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image src="/current/portable-toilet-rental.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
+            </div>
+          </div>
+          <ul className="mt-5 mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+            {servicesContent.portableToilets.bullets.map((bullet) => (
+              <li key={bullet}>• {bullet}</li>
+            ))}
+          </ul>
+        </div>
+        <RequestForm
+          type="portable-toilet-rental"
+          title="Portable Toilet Rental Request"
+          extraFields={[
+            { name: "eventType", label: "Event / Jobsite Type", required: true },
+            { name: "unitCount", label: "Unit Count", required: true },
+          ]}
         />
       </div>
-      <ul className="mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
-        {servicesContent.portableToilets.bullets.map((bullet) => (
-          <li key={bullet}>• {bullet}</li>
-        ))}
-      </ul>
-      <RequestForm
-        type="portable-toilet-rental"
-        title="Portable Toilet Rental Request"
-        extraFields={[
-          { name: "eventType", label: "Event / Jobsite Type", required: true },
-          { name: "unitCount", label: "Unit Count", required: true },
-        ]}
-      />
     </Section>
   );
 }

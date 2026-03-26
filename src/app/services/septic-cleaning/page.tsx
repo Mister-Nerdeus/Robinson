@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
-import Image from "next/image";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
@@ -23,22 +23,25 @@ export default function SepticCleaningPage() {
           "/services/septic-cleaning",
         )}
       />
-      <p className="mb-4 text-slate-800">{servicesContent.septicCleaning.intro}</p>
-      <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-        <Image
-          src="/images/curated/septic-truck.jpg"
-          alt="Robinson Septic truck staged for a scheduled pumping route"
-          width={1200}
-          height={640}
-          className="h-auto w-full object-cover"
-        />
+      <div className="grid gap-6 md:grid-cols-[1.15fr,0.85fr]">
+        <div>
+          <p className="mb-4 text-slate-800">{servicesContent.septicCleaning.intro}</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image src="/current/img05.jpg" alt="Robinson septic tanker and hose setup on route" width={1000} height={640} className="h-[240px] w-full object-cover" />
+            </div>
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image src="/current/septic-01-tmb.jpg" alt="Robinson septic truck at a residential property" width={1000} height={640} className="h-[240px] w-full object-cover" />
+            </div>
+          </div>
+          <ul className="mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+            {servicesContent.septicCleaning.bullets.map((bullet) => (
+              <li key={bullet}>• {bullet}</li>
+            ))}
+          </ul>
+        </div>
+        <RequestForm type="septic-service" title="Septic Service Request" extraFields={[{ name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true }]} />
       </div>
-      <ul className="mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
-        {servicesContent.septicCleaning.bullets.map((bullet) => (
-          <li key={bullet}>• {bullet}</li>
-        ))}
-      </ul>
-      <RequestForm type="septic-service" title="Septic Service Request" extraFields={[{ name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true }]} />
     </Section>
   );
 }
