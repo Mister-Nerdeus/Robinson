@@ -1,12 +1,10 @@
 # Content Proof Map
 
-| Content Module | Source Theme | Claim Status Handling | Notes |
-|---|---|---|---|
-| src/content/home.ts | Legacy homepage + service hierarchy | Uses non-numeric longevity wording only | Three conversion lanes are explicit. |
-| src/content/services.ts | Legacy service pages | Service scope retained, risky claims removed | Realtor path remains first-class. |
-| src/content/faq.ts | Legacy FAQ style content | Includes explicit emergency-claim caution | Structured Q/A for reuse. |
-| src/content/trust.ts | Legacy trust narrative | Family-owned marked safe; other facts provisional | Keeps trust blocks evidence-aware. |
-
-## Rule
-Route files should reference content modules and avoid embedding long marketing copy directly.
-No-inline-long-copy rule: route files may include only short structural text; primary content belongs in `src/content/*`.
+| file | content area | source basis | notes |
+| --- | --- | --- | --- |
+| `src/content/home.ts` | hero, trust proof points, lane headings | source PDFs + evidence inventory | Preserves family-owned, 1979, service-lane, and realtor workflow language in modernized form. |
+| `src/content/trust.ts` | trust band | evidence inventory + homepage PDF | Keeps the trust story local, direct, and Robinson-specific. |
+| `src/content/services.ts` | service intros + bullets | services PDF + evidence inventory | Carries forward septic pumping details, evaluation lane, rental details, grease trap, and lift pump service. |
+| `src/content/faq.ts` | FAQ | legacy FAQ material | Uses actual homeowner guidance from the old site in clearer wording. |
+| `src/content/contact.ts` | contact + service-area framing | evidence inventory | Broad West Michigan wording retained while office/public address strategy remains verification-sensitive. |
+| `src/app/realtors/page.tsx` | realtor lane intro | realtor resources PDF | Keeps buyer/seller/Realtor framing and 1-3 business day draft-safe turnaround wording. |

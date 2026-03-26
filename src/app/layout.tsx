@@ -6,8 +6,8 @@ import { Footer } from "@/components/site/Footer";
 import { AnalyticsPageView } from "@/components/site/AnalyticsPageView";
 
 export const metadata: Metadata = {
-  title: "Robinson Septic Service",
-  description: "Septic cleaning, home-sale evaluations, and portable toilet rentals.",
+  title: "Robinson Septic Cleaning",
+  description: "Family owned and operated septic cleaning, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
   metadataBase: new URL("http://localhost:4850"),
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <main id="main">{children}</main>
         <Footer />
         <div className="container pb-6 text-xs text-slate-700">
-          Local-only mode. See <Link href="/">project routes</Link> for staged v1 surfaces.
+          Local-only test and review mode. See <Link href="/">the rebuilt Robinson routes</Link> for the current staged surfaces.
         </div>
       </body>
     </html>

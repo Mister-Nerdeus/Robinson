@@ -1,28 +1,26 @@
-# SEO Schema Samples
+# SEO / Schema Samples
 
-## LocalBusiness Sample
+## LocalBusiness draft sample
 ```json
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Robinson Septic Service",
-  "telephone": "(717) 555-0147",
+  "name": "Robinson Septic Cleaning",
+  "alternateName": [
+    "Robinson Septic Cleaning",
+    "Robinson Septic Tank Cleaning",
+    "Robinson Septic Tank Cleaning LLC"
+  ],
+  "telephone": "(616) 636-5565",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "120 Robinson Lane",
-    "addressLocality": "Carlisle",
-    "addressRegion": "PA",
-    "postalCode": "17013",
+    "streetAddress": "5757 Henkel Rd",
+    "addressLocality": "Howard City",
+    "addressRegion": "MI",
+    "postalCode": "49329",
     "addressCountry": "US"
   },
-  "openingHours": ["Mo-Fr 07:00-17:00"]
+  "openingHours": ["Mo-Fr 08:00-17:00"],
+  "areaServed": "West Michigan / greater Grand Rapids area"
 }
 ```
-
-## FAQ Sample
-- Source: `src/content/faq.ts`
-- Rendered on: `/faq`
-
-## Service Sample
-- Type: `Service`
-- Rendered on: each major `/services/*` route

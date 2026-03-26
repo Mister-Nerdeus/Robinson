@@ -1,17 +1,14 @@
 # Location Display Strategy
 
-Date: 2026-03-26
-Model: single-office-plus-service-area
+## Current approach
+Use one practical customer-facing contact block plus a broader West Michigan service-area explanation until the owners confirm which office and address details should be public.
 
-## Public Contact Model
-- Show one approved office address in footer and contact contexts.
-- Pair address with service-area explanation to prevent overstatement.
-- Avoid listing unapproved secondary offices.
+## Public-facing draft strategy
+- Brand: Robinson Septic Cleaning
+- Primary phone: (616) 636-5565
+- Secondary public-record phone: (231) 937-8282
+- Draft office anchor used in current config: 5757 Henkel Rd, Howard City, MI 49329
+- Other associated public addresses stay in verification docs until confirmed.
 
-## Canonical Public Values
-- Address: 120 Robinson Lane, Carlisle, PA 17013
-- Primary phone: (717) 555-0147
-- Hours: Monday-Friday 7:00 AM-5:00 PM
-
-## Consistency Targets
-- Footer, contact page, and structured data must match the same canonical values.
+## Why
+The source pack ties Robinson to Howard City, Pierson, Sparta, and the greater Grand Rapids area. Showing one practical office anchor plus a broader service-area summary is safer than pretending every historical address is equally current.

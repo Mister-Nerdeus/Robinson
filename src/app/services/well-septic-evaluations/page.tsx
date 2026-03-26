@@ -6,10 +6,11 @@ import Image from "next/image";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
+import { servicesContent } from "@/content/services";
 
 export const metadata: Metadata = buildMetadata(
   "Well and Septic Evaluations",
-  "Home-sale and realtor well and septic evaluation requests.",
+  "Evaluation requests for buyers, sellers, and Realtor workflows.",
   "/services/well-septic-evaluations",
 );
 
@@ -19,21 +20,29 @@ export default function WellSepticEvaluationsPage() {
       <JsonLd
         data={serviceSchema(
           "Well and Septic Evaluations",
-          "Evaluation requests for buyers, sellers, and real estate workflows.",
+          "Home-sale well and septic evaluations for buyers, sellers, and local Realtor workflows.",
           "/services/well-septic-evaluations",
         )}
       />
-      <p className="mb-4">Use this lane for home-sale and realtor workflow requests.</p>
-      <div className="mb-4 overflow-hidden rounded-xl border border-[#c8c1b1]">
+      <p className="mb-4 text-slate-800">{servicesContent.evaluations.intro}</p>
+      <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
         <Image
           src="/images/curated/evaluation-site.jpg"
-          alt="Technician preparing for a property evaluation visit"
+          alt="Property evaluation visit prepared for a Robinson home-sale workflow"
           width={1200}
           height={640}
           className="h-auto w-full object-cover"
         />
       </div>
-      <div className="mb-4 rounded-md bg-[#edf3e8] p-3">
+      <ul className="mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+        {servicesContent.evaluations.bullets.map((bullet) => (
+          <li key={bullet}>• {bullet}</li>
+        ))}
+      </ul>
+      <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-4 text-sm text-slate-800">
+        Robinson works with local Realtors, buyers, and sellers, and legacy source material points to a typical 1-3 business day turnaround for this lane when scheduling allows.
+      </div>
+      <div className="mb-4 rounded-md bg-[#f5eded] p-3">
         <Link className="font-semibold underline" href="/realtors">Open Realtor Resources</Link>
       </div>
       <RequestForm

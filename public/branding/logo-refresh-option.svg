@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" role="img" aria-label="Robinson Septic Cleaning refresh option">
+  <defs>
+    <linearGradient id="rg" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8f111b"/>
+      <stop offset="100%" stop-color="#c92127"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="20" width="700" height="120" rx="60" fill="#151515" stroke="#b9bcc1" stroke-width="8"/>
+  <rect x="34" y="38" width="652" height="84" rx="42" fill="none" stroke="#44484e" stroke-width="2" opacity="0.95"/>
+  <text x="360" y="98" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="74" fill="url(#rg)" stroke="#ffffff" stroke-width="2">ROBINSON</text>
+  <text x="360" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#1d1f21" letter-spacing="2">SEPTIC CLEANING</text>
+</svg>

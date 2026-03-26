@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 140" role="img" aria-label="Robinson Septic Cleaning">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8b0c16"/>
+      <stop offset="100%" stop-color="#d82424"/>
+    </linearGradient>
+  </defs>
+  <rect width="620" height="140" fill="none"/>
+  <ellipse cx="235" cy="54" rx="220" ry="48" fill="#1b1b1d" stroke="#a4a7ac" stroke-width="10"/>
+  <ellipse cx="235" cy="54" rx="195" ry="36" fill="none" stroke="#5b5d60" stroke-width="2" opacity="0.85"/>
+  <text x="235" y="68" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="58" fill="url(#g)" stroke="#ffffff" stroke-width="2">ROBINSON</text>
+  <text x="310" y="123" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#202124">SEPTIC CLEANING, LLC</text>
+</svg>

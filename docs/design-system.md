@@ -1,19 +1,13 @@
-# Design System (Shared Shell)
+# Design System Notes
 
-## Core Primitives
-- `Header` with click-to-call CTA.
-- `Footer` consuming canonical company config.
-- `Section` container/spacing primitive.
-- `Hero` lead-entry block.
-- `ServiceCard` route lane card.
-- `TrustBand` trust-proof block.
-- `CtaBand` conversion follow-through block.
+## Current brand direction
+- Clean white/light background.
+- Strong dark text.
+- Accent color drawn from the Robinson red / truck-branding palette.
+- Large phone CTA in the header.
+- Trust-first layout rather than a startup-style hero.
 
-## Layout Standards
-- Mobile-first spacing with section padding helper.
-- Reusable container width rule.
-- Typography split: display (`Archivo Black`), body (`Source Sans 3`).
-- Brand color variables in `globals.css`.
-
-## Reuse Rule
-New routes should be assembled from shared primitives before introducing bespoke layout components.
+## Header/footer
+- Use the Robinson legacy-clean logo asset.
+- Keep direct-call language visible.
+- Keep the family-owned-since-1979 trust line near the top of the page.

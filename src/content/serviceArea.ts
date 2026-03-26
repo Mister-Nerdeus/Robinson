@@ -1,8 +1,8 @@
 export const serviceAreaContent = {
-  strategy: "single-office-plus-service-area",
+  strategy: "west-michigan-summary-with-owner-verification-needed",
   summary:
-    "Robinson Septic Service dispatches from Carlisle and serves surrounding communities in Cumberland County with route-based availability.",
-  coreAreas: ["Carlisle", "Mechanicsburg", "Boiling Springs", "Shippensburg"],
+    "Robinson Septic is publicly associated with Howard City, Pierson, Sparta, and the greater Grand Rapids / West Michigan area. The service-area presentation on this rebuilt site is intentionally broad until the owners confirm which office and address details should be customer-facing.",
+  coreAreas: ["Howard City", "Pierson", "Sparta", "Cedar Springs", "Sand Lake", "Trufant", "Coral", "greater Grand Rapids"],
   expansionNote:
-    "If your property is outside the core area list, submit a request and dispatch will confirm availability.",
+    "Portable toilet source material references service within roughly a 60-mile radius of greater Grand Rapids. If your property or event sits outside the core areas, submit a request and Robinson can confirm availability.",
 };

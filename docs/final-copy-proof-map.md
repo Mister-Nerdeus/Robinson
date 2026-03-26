@@ -1,16 +1,21 @@
 # Final Copy Proof Map
 
-| Module | Verified Fact Inputs | Risky Legacy Text Removed | Surface |
-|---|---|---|---|
-| `src/content/home.ts` | brand, core service lanes | provisional wording | homepage |
-| `src/content/services.ts` | finalized service descriptions | generic prototype phrasing | services index + lanes |
-| `src/content/faq.ts` | emergency wording, intake process | 24/7 guarantee language | FAQ page |
-| `src/content/trust.ts` | family-owned + since-1988 claim | provisional trust disclaimer | trust sections |
-| `src/content/contact.ts` | approved hours + service-area phrasing | placeholder contact language | contact page/footer blocks |
+## Homepage
+- Family owned and operated since 1979.
+- Residential and commercial septic service.
+- Well and septic evaluations for home sales.
+- Portable toilet rentals, grease trap cleaning, and lift pump service.
 
-## Before/After Excerpts
-- Before: "Emergency-service claims are currently blocked from publication pending verification."
-- After: "After-hours response may be available for active service customers depending on crew availability."
+## Service pages
+- Septic tank pumping is what Robinson specializes in.
+- Service calls can include tank location, dirt removal if necessary, and pumping.
+- Pricing depends on number of tanks and whether lids are already open.
+- Evaluation lane is designed for home purchasing and selling.
+- Legacy source material indicates a typical 1-3 business day evaluation workflow when scheduling allows.
+- Portable toilets serve homes, businesses, schools, events, and job sites.
+- Long-term rental service can include routine pumping and cleaning.
+- Commercial support includes grease trap cleaning and lift pump replacement/service.
 
-- Before: "Business contact facts remain provisional until checklist verification is complete."
-- After: "Family-owned operation serving local customers since 1988."
+## FAQ
+- Pumping frequency guidance retained as practical guidance, not a universal guarantee.
+- Cost factors, warning signs, tank location, homeowner presence, and scheduling guidance all come from the legacy FAQ substance.

@@ -6,8 +6,8 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: company.publicBrand,
+    alternateName: company.brandVariants,
     telephone: company.primaryPhone,
-    email: company.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: company.address.line1,
@@ -16,7 +16,10 @@ export function localBusinessSchema() {
       postalCode: company.address.postalCode,
       addressCountry: "US",
     },
-    openingHours: ["Mo-Fr 07:00-17:00"],
+    openingHours: ["Mo-Fr 08:00-17:00"],
+    areaServed: "West Michigan / greater Grand Rapids area",
+    description:
+      "Family owned and operated since 1979. Residential and commercial septic cleaning, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
   };
 }
 
@@ -27,7 +30,7 @@ export function serviceSchema(name: string, description: string, path: string) {
     name,
     description,
     provider: { "@type": "LocalBusiness", name: company.publicBrand },
-    areaServed: "Cumberland County, PA",
+    areaServed: "West Michigan / greater Grand Rapids area",
     url: path,
   };
 }

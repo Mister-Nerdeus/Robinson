@@ -1,31 +1,20 @@
 # Owner Verification Packet
 
-Date: 2026-03-26
-Status: completed for publishable fact freeze
+## Purpose
+This packet exists to confirm the final public-facing business facts before launch.
 
-## Decision Summary
-- Public brand name: **Robinson Septic Service** (approved)
-- Dominant CTA phone: **(717) 555-0147** (approved)
-- Public address model: one office address approved (below)
-- Service hours: approved
-- Emergency-service wording: softened and approved
-- Realtor fax workflow: retired; phone + web intake only
+## Current draft decisions in the repo
+- Dominant CTA phone in use: **(616) 636-5565**
+- Secondary publicly associated line: **(231) 937-8282**
+- Draft public brand: **Robinson Septic Cleaning**
+- Draft office anchor in config: **5757 Henkel Rd, Howard City, MI 49329**
+- Trust headline in use: **Family owned and operated since 1979**
 
-## Final Approved Public Facts
-- Brand: Robinson Septic Service
-- Phone: (717) 555-0147
-- Email: service@robinsonseptic.com
-- Address: 120 Robinson Lane, Carlisle, PA 17013
-- Hours: Monday-Friday 7:00 AM-5:00 PM
-- Emergency wording: "After-hours response may be available for active service customers."
-
-## Removed / Retired Facts
-- Secondary public phone claim: retired
-- Public fax intake: retired
-- 24/7 emergency guarantee wording: removed
-- BBB accreditation statement: blocked until verification
-
-## Approval Record
-- Scope owner: repository owner
-- Approval medium: in-repo fact freeze packet
-- Effective date: 2026-03-26
+## Needs owner confirmation
+- Should Howard City be the primary public office shown on the site?
+- Should Pierson also be shown publicly?
+- Should the Sparta address remain retired from customer-facing surfaces?
+- Should the 60-mile rental radius remain public-facing?
+- Should after-hours wording remain on the site at all?
+- Are all major credit cards still accepted and worth mentioning?
+- Is fax fully retired?
