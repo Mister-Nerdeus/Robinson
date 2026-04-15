@@ -1,12 +1,12 @@
 # Cloudflare Routing Map
 
 ## DNS + origin mapping
-- `www.robinsonseptic.com`
+- `robinson.hearthcore.app`
 - Cloudflare record: proxied `A`/`CNAME`
 - Origin: host running Docker port `3010`
 - Target stack: `robinson-main`
 
-- `develop.robinsonseptic.com`
+- `robinson-demo.hearthcore.app`
 - Cloudflare record: proxied `A`/`CNAME`
 - Origin: host running Docker port `3011`
 - Target stack: `robinson-develop`
@@ -16,20 +16,20 @@ If Cloudflare Tunnel is used instead of direct origin DNS, keep this explicit ma
 
 ```yaml
 ingress:
-  - hostname: www.robinsonseptic.com
+  - hostname: robinson.hearthcore.app
     service: http://localhost:3010
-  - hostname: develop.robinsonseptic.com
+  - hostname: robinson-demo.hearthcore.app
     service: http://localhost:3011
   - service: http_status:404
 ```
 
 ## Reproducible verification
 - Resolve and HTTP check both hosts:
-- `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app`
 
 - Manual spot checks:
-- `curl -I https://www.robinsonseptic.com`
-- `curl -I https://develop.robinsonseptic.com`
+- `curl -I https://robinson.hearthcore.app`
+- `curl -I https://robinson-demo.hearthcore.app`
 
 ## Change control
 - Do not point both hostnames to one port.

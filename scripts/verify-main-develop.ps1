@@ -1,6 +1,6 @@
 param(
-  [string]$MainHost = "https://www.robinsonseptic.com",
-  [string]$DevelopHost = "https://develop.robinsonseptic.com"
+  [string]$MainHost = "https://robinson.hearthcore.app",
+  [string]$DevelopHost = "https://robinson-demo.hearthcore.app"
 )
 
 Set-StrictMode -Version Latest

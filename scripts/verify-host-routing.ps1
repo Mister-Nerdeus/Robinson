@@ -1,6 +1,6 @@
 param(
-  [string]$MainHost = "https://www.robinsonseptic.com",
-  [string]$DevelopHost = "https://develop.robinsonseptic.com",
+  [string]$MainHost = "https://robinson.hearthcore.app",
+  [string]$DevelopHost = "https://robinson-demo.hearthcore.app",
   [string]$MainProject = "robinson-main",
   [string]$DevelopProject = "robinson-develop",
   [int]$MainPort = 3010,

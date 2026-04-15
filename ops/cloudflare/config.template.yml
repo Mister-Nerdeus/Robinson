@@ -12,8 +12,8 @@ credentials-file: <ABSOLUTE_PATH_TO_CREDENTIALS_JSON>
 
 ingress:
   # Demo app (in scope)
-  - hostname: <DEMO_HOSTNAME>
-    service: http://localhost:3001
+  - hostname: robinson-demo.hearthcore.app
+    service: http://localhost:3011
 
   # Future expansion example (optional; do not enable until intentionally configured)
   # - hostname: <SECOND_SITE_HOSTNAME>

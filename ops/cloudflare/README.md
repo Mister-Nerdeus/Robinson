@@ -9,8 +9,8 @@ This folder contains redacted templates and operator guidance only.
 - Never commit real tunnel UUIDs, credentials-file paths, API tokens, or hostname secrets.
 - Keep real config at `%USERPROFILE%\\.cloudflared\\config.yml` (untracked).
 
-## In-Scope Public Surface
-- `http://localhost:3001` only.
+## In-Scope Public Surface (develop stack)
+- `http://localhost:3011` only.
 
 ## Out of Scope
 - `http://localhost:4001` (Mailpit)

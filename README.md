@@ -19,8 +19,8 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 ## Deployment Commands
 - Deploy main: `powershell -ExecutionPolicy Bypass -File scripts/deploy-main.ps1`
 - Deploy develop: `powershell -ExecutionPolicy Bypass -File scripts/deploy-develop.ps1`
-- Verify host routing: `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1`
-- Verify both envs: `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1`
+- Verify host routing: `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app`
+- Verify both envs: `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app`
 
 ## App Verification
 - Full gate: `npm run verify:v1`

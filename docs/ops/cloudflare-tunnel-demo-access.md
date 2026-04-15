@@ -1,7 +1,7 @@
 # Cloudflare Tunnel Demo Access Runbook (Windows)
 
 ## Scope
-This runbook exposes only the Docker app at `http://localhost:3001` through Cloudflare Tunnel for demo/public-preview use.
+This runbook exposes only the Docker app at `http://localhost:3011` through Cloudflare Tunnel for demo/public-preview use.
 
 Out of scope:
 - Mailpit (`http://localhost:4001`)
@@ -9,12 +9,12 @@ Out of scope:
 - Production hardening
 
 ## Architecture Boundary
-Public hostname -> Cloudflare Tunnel -> `cloudflared` on Windows host -> `http://localhost:3001`
+Public hostname -> Cloudflare Tunnel -> `cloudflared` on Windows host -> `http://localhost:3011`
 
 No inbound router/NAT port forwarding is required. The connector uses outbound-only connections.
 
 ## Prerequisites
-- Local app running and reachable: `http://localhost:3001`
+- Local app running and reachable: `http://localhost:3011`
 - Cloudflare zone you control
 - `cloudflared` installed on Windows
 - Operator Cloudflare credentials (not in repo)
@@ -42,7 +42,7 @@ Option B (API path):
 ## Publish Hostname -> Local Origin
 - Hostname/subdomain: `<demo-hostname>`
 - Service type: `HTTP`
-- URL/origin: `http://localhost:3001`
+- URL/origin: `http://localhost:3011`
 
 Do not create any route for `localhost:4001`.
 
@@ -70,7 +70,7 @@ Cloudflare recommends service mode for stability.
 If SCM access is denied, rerun from elevated Administrator session.
 
 ## Verification Workflow
-1. Local app check: `http://localhost:3001` returns 200.
+1. Local app check: `http://localhost:3011` returns 200.
 2. Public hostname check: `https://<demo-hostname>` returns 200.
 3. External device/network validation (phone on cellular or off-LAN network).
 
@@ -78,7 +78,7 @@ Helper:
 - `scripts/windows/cloudflare-tunnel-verify.ps1`
 
 ## Security Boundary
-- Public exposure allowed only for app origin (`3001`).
+- Public exposure allowed only for app origin (`3011`).
 - Mailpit (`4001`) remains local-only.
 - No secrets in git.
 - No direct host public-IP exposure.

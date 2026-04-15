@@ -1,7 +1,7 @@
 # Cloudflare Tunnel Demo Checklist
 
 ## Local Origin
-- [x] Docker app responds at `http://localhost:3001`
+- [x] Docker app responds at `http://localhost:3011`
 - [x] Mailpit responds locally at `http://localhost:4001` (awareness only)
 
 ## Tunnel Setup
@@ -11,7 +11,7 @@
 - [x] Tunnel ingress configured for app hostname only
 
 ## Published Route
-- [x] Public hostname mapped to `http://localhost:3001`
+- [x] Public hostname mapped to `http://localhost:3011`
 - [x] No route created for `localhost:4001`
 
 ## Service Persistence (Windows)

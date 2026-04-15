@@ -2,7 +2,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$PublicHostname,
 
-  [string]$LocalAppUrl = "http://localhost:3001",
+  [string]$LocalAppUrl = "http://localhost:3011",
   [string]$MailpitUrl = "http://localhost:4001",
   [int]$TimeoutSec = 15
 )

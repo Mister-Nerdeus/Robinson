@@ -1,8 +1,8 @@
 # Branch Deploy Contract
 
 ## Canonical branch-to-hostname mapping
-- `main` -> `https://www.robinsonseptic.com`
-- `develop` -> `https://develop.robinsonseptic.com`
+- `main` -> `https://robinson.hearthcore.app`
+- `develop` -> `https://robinson-demo.hearthcore.app`
 
 Each branch owns exactly one public hostname.
 

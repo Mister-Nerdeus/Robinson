@@ -4,8 +4,8 @@
 Proof artifacts for issues `#4877` to `#4882`.
 
 ## Branch/host topology
-- Main branch host: `https://www.robinsonseptic.com`
-- Develop branch host: `https://develop.robinsonseptic.com`
+- Main branch host: `https://robinson.hearthcore.app`
+- Develop branch host: `https://robinson-demo.hearthcore.app`
 - Contract reference: `docs/branch-deploy-contract.md`
 - Cloudflare map reference: `docs/cloudflare-routing-map.md`
 
