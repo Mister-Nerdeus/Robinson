@@ -26,8 +26,12 @@ async function run() {
     email: "smoke@example.com",
     address: "Test Lane",
     preferredDate: "2026-03-26",
+    urgency: "urgent",
     message: "Smoke path submission",
     tankSizeGallons: "1200",
+    tankCount: "1",
+    lidsExposed: "yes",
+    backupSigns: "slow drains",
   };
 
   const parsed = submissionSchema.safeParse(payload);
@@ -37,13 +41,15 @@ async function run() {
   const rows = await getSubmissions();
   assert.ok(rows.length > 0, "Submission storage should contain at least one record");
 
-  process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "false";
-  const blocked = await GET();
-  assert.equal(blocked.status, 403, "Admin GET must be blocked when env flag is false");
-
+  process.env.LOCAL_ONLY_MODE = "false";
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
+  process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "false";
+  const blocked = await GET();
+  assert.equal(blocked.status, 403, "Admin GET must be blocked when local-only mode is off without override");
+
+  process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "true";
   const open = await GET();
-  assert.equal(open.status, 200, "Admin GET must open when env flag is true");
+  assert.equal(open.status, 200, "Admin GET must open when explicit admin override is enabled");
 
   console.log("[smoke] routes and submission path pass");
 }
@@ -52,4 +58,3 @@ run().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-

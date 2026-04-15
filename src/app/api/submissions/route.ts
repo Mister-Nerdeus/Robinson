@@ -4,10 +4,11 @@ import { submissionSchema } from "@/lib/forms/schema";
 import { checkRateLimit } from "@/lib/rate-limit/memory";
 import { evaluateSpam } from "@/lib/forms/antiSpam";
 import { logAbuse } from "@/lib/forms/abuseLog";
+import { isAdminReviewEnabled } from "@/lib/runtime/env";
 
 export async function GET() {
-  if (process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW !== "true") {
-    return NextResponse.json({ error: "disabled" }, { status: 403 });
+  if (!isAdminReviewEnabled()) {
+    return NextResponse.json({ error: "admin-review-blocked" }, { status: 403 });
   }
   const rows = await getSubmissions();
   return NextResponse.json({ rows });

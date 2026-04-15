@@ -1,30 +1,73 @@
 import { Section } from "@/components/site/Section";
 import { getSubmissions } from "@/lib/forms/actions";
+import { SubmissionsFilters } from "@/components/admin/SubmissionsFilters";
+import { SubmissionsTable } from "@/components/admin/SubmissionsTable";
+import { getRuntimeEnv, isAdminReviewEnabled } from "@/lib/runtime/env";
+import type { SubmissionRecord } from "@/lib/forms/types";
 
-export default async function AdminSubmissionsPage() {
-  if (process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW !== "true") {
+type SearchParams = {
+  type?: string;
+  dateFrom?: string;
+  dateTo?: string;
+};
+
+function filterRows(rows: SubmissionRecord[], searchParams: SearchParams) {
+  const { type, dateFrom, dateTo } = searchParams;
+
+  return rows.filter((row) => {
+    if (type && row.type !== type) {
+      return false;
+    }
+
+    if (dateFrom) {
+      const start = `${dateFrom}T00:00:00.000Z`;
+      if (row.createdAt < start) {
+        return false;
+      }
+    }
+
+    if (dateTo) {
+      const end = `${dateTo}T23:59:59.999Z`;
+      if (row.createdAt > end) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+}
+
+export default async function AdminSubmissionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
+  const runtime = getRuntimeEnv();
+
+  if (!isAdminReviewEnabled()) {
     return (
       <Section title="Admin Submissions">
-        <p>Disabled. Set ENABLE_ADMIN_SUBMISSIONS_REVIEW=true in local env to enable.</p>
+        <p>Blocked by runtime policy. Enable `ENABLE_ADMIN_SUBMISSIONS_REVIEW=true` and keep `LOCAL_ONLY_MODE=true`.</p>
+        <p className="mt-2 text-sm text-slate-700">Override requires explicit opt-in: `ALLOW_ADMIN_OUTSIDE_LOCAL_MODE=true`.</p>
       </Section>
     );
   }
 
   const rows = await getSubmissions();
+  const filtered = filterRows(rows, params);
 
   return (
-    <Section title="Admin Submissions">
-      <p className="mb-4">Local-only review surface. Do not expose publicly.</p>
-      <div className="grid gap-3">
-        {rows.length === 0 ? <p>No submissions yet.</p> : null}
-        {rows.map((row) => (
-          <article className="rounded-md border border-[#c8c1b1] bg-[var(--surface)] p-3" key={row.id}>
-            <p className="text-xs">{row.createdAt}</p>
-            <p className="font-semibold">{row.type}</p>
-            <p>{row.fullName} | {row.phone} | {row.email}</p>
-            <p>{row.message}</p>
-          </article>
-        ))}
+    <Section title="Admin Submissions Workspace">
+      <p className="mb-3 text-sm">Local/demo review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>.</p>
+      <p className="mb-4 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-3 text-sm">
+        Local-ops only. Do not expose this route in public mode without an explicit admin override.
+      </p>
+
+      <SubmissionsFilters selectedType={params.type} dateFrom={params.dateFrom} dateTo={params.dateTo} />
+      <p className="mt-3 text-xs text-slate-600">Showing {filtered.length} of {rows.length} submissions.</p>
+      <div className="mt-3">
+        <SubmissionsTable rows={filtered} />
       </div>
     </Section>
   );

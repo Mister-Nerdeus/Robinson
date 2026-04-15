@@ -6,7 +6,6 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { LaneGrid } from "@/components/home/LaneGrid";
 import { FaqPreview } from "@/components/home/FaqPreview";
 import { HomeTrust } from "@/components/home/HomeTrust";
-import { HomeSlideshow } from "@/components/home/HomeSlideshow";
 import { homeContent } from "@/content/home";
 import { trustContent } from "@/content/trust";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -55,41 +54,8 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Choose the service you need">
+      <Section title="Service lanes">
         <LaneGrid lanes={homeContent.lanes} />
-      </Section>
-
-      <Section title="Emergency, routine service, and home-sale support">
-        <div className="grid gap-5 md:grid-cols-3">
-          <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Emergency septic calls</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Call now for active backups and urgent warnings</h3>
-            <p className="mt-2 text-sm text-slate-800">The fastest response starts with a direct call, then a quick request with property notes if needed.</p>
-            <Link href="/services/septic-cleaning" className="mt-4 inline-flex font-semibold underline">
-              Open septic service
-            </Link>
-          </div>
-          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Routine pumping</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Schedule before small issues become big repairs</h3>
-            <p className="mt-2 text-sm text-slate-800">Share tank location, access details, and preferred dates so service can be planned quickly.</p>
-            <Link href="/services/septic-cleaning" className="mt-4 inline-flex font-semibold underline">
-              Request routine service
-            </Link>
-          </div>
-          <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Realtor and home-sale evaluations</p>
-            <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Keep transaction deadlines moving</h3>
-            <p className="mt-2 text-sm text-slate-800">Buyers, sellers, and agents can submit contacts, property details, and timing priorities in one place.</p>
-            <Link href="/realtors" className="mt-4 inline-flex font-semibold underline">
-              Open Realtor resources
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="pt-0">
-        <HomeSlideshow slides={homeContent.slideshow} />
       </Section>
 
       <Section title="Built on proven local trust">
@@ -110,40 +76,29 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Portable rentals and commercial support">
+      <Section title="Specialty lanes">
         <div className="grid gap-5 md:grid-cols-[1fr,1fr]">
-          <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-            <Image
-              src="/images/enhanced/portable_toilets_group_ai_enhanced.jpg"
-              alt="Portable toilet rentals prepared for delivery"
-              width={1200}
-              height={760}
-              className="h-[260px] w-full object-cover"
-            />
-            <div className="p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Portable toilets for events and job sites</h3>
-              <p className="mt-2 text-slate-800">Request unit counts, delivery windows, and maintenance schedules for short-term or long-term rentals.</p>
-              <Link href="/services/portable-toilets" className="mt-4 inline-flex font-semibold underline">
-                Request portable rental
-              </Link>
+          {homeContent.specialtyLanes.map((lane) => (
+            <div key={lane.title} className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
+              <Image src={lane.image} alt={lane.alt} width={1200} height={760} className="h-[260px] w-full object-cover" />
+              <div className="p-5">
+                <h3 className="font-display text-2xl text-[var(--brand)]">{lane.title}</h3>
+                <p className="mt-2 text-slate-800">{lane.body}</p>
+                <Link href={lane.href} className="mt-4 inline-flex font-semibold underline">
+                  {lane.ctaLabel}
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-            <Image
-              src="/images/enhanced/truck_closeup_ai_enhanced.jpg"
-              alt="Robinson truck supporting commercial septic work"
-              width={1200}
-              height={760}
-              className="h-[260px] w-full object-cover"
-            />
-            <div className="p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Commercial grease trap and lift pump service</h3>
-              <p className="mt-2 text-slate-800">Restaurants and facilities can request commercial work directly, with site contacts and system notes included up front.</p>
-              <Link href="/services/commercial" className="mt-4 inline-flex font-semibold underline">
-                Request commercial service
-              </Link>
-            </div>
-          </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title={homeContent.realtorLane.title}>
+        <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
+          <p className="text-slate-800">{homeContent.realtorLane.body}</p>
+          <Link href={homeContent.realtorLane.href} className="mt-4 inline-flex font-semibold underline">
+            {homeContent.realtorLane.ctaLabel}
+          </Link>
         </div>
       </Section>
 

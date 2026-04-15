@@ -126,6 +126,24 @@ export const company: CompanyProfile = {
       note: "Presented on the provided portable toilet rental source PDF.",
     },
     {
+      key: "msta_membership",
+      value: "Member of the Michigan Septic Tank Association",
+      status: "confirmed",
+      note: "Association logo appears in legacy trust assets and is safe for trust surfaces.",
+    },
+    {
+      key: "facebook_presence",
+      value: "Facebook page maintained for local service visibility",
+      status: "confirmed",
+      note: "Legacy homepage includes a Facebook visibility prompt.",
+    },
+    {
+      key: "coupon_offer_legacy",
+      value: "Legacy coupon graphic exists in source assets",
+      status: "provisional",
+      note: "Asset exists but active offer terms are not verified; keep out of canonical CTA copy.",
+    },
+    {
       key: "fax_workflow",
       value: "Pump and inspection request forms can also be faxed to (231) 937-8383",
       status: "confirmed",

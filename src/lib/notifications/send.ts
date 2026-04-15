@@ -1,28 +1,73 @@
 import nodemailer from "nodemailer";
 import { notificationConfig } from "@/config/notifications";
 import type { SubmissionRecord } from "@/lib/forms/types";
+import { getSubmissionSummaryFields } from "@/lib/forms/types";
 import type { DeliveryResult } from "./types";
 import { appendNotificationLog } from "./log";
 
+const submissionTypeLabels: Record<SubmissionRecord["type"], string> = {
+  general: "General Contact",
+  "septic-service": "Septic Service",
+  evaluation: "Well/Septic Evaluation",
+  rental: "Portable Toilet Rental",
+  "commercial-service": "Commercial Service",
+};
+
 function renderSubject(record: SubmissionRecord) {
-  return `[${record.type}] New lead - ${record.fullName}`;
+  return `[${submissionTypeLabels[record.type]}] New intake - ${record.fullName}`;
+}
+
+function renderTypeSpecificLines(record: SubmissionRecord): string[] {
+  switch (record.type) {
+    case "general":
+      return [`Topic: ${record.topic}`];
+    case "septic-service":
+      return [
+        `Tank Size (Gallons): ${record.tankSizeGallons}`,
+        `Tank Count: ${record.tankCount}`,
+        `Lids Exposed: ${record.lidsExposed}`,
+        `Backup Signs: ${record.backupSigns}`,
+      ];
+    case "evaluation":
+      return [
+        `Role In Sale: ${record.roleInSale}`,
+        `Brokerage/Company: ${record.brokerageOrCompany}`,
+        `Closing Date: ${record.closingDate}`,
+        `Occupancy Status: ${record.occupancyStatus}`,
+      ];
+    case "rental":
+      return [
+        `Event Type: ${record.eventType}`,
+        `Unit Count: ${record.unitCount}`,
+        `Rental Duration: ${record.rentalDuration}`,
+        `Service Frequency: ${record.serviceFrequency}`,
+        `Site Type: ${record.siteType}`,
+      ];
+    case "commercial-service":
+      return [
+        `Facility Name: ${record.facilityName}`,
+        `Facility Type: ${record.facilityType}`,
+        `Service Needed: ${record.serviceNeeded}`,
+        `Grease Trap Count: ${record.greaseTrapCount}`,
+        `On-Site Contact: ${record.onSiteContact}`,
+      ];
+  }
 }
 
 function renderText(record: SubmissionRecord) {
+  const summaryLines = getSubmissionSummaryFields(record).map(
+    (field) => `${field.label}: ${field.value}`,
+  );
+
   return [
-    `Type: ${record.type}`,
+    `Type: ${submissionTypeLabels[record.type]} (${record.type})`,
     `Created: ${record.createdAt}`,
     `Name: ${record.fullName}`,
     `Phone: ${record.phone}`,
     `Email: ${record.email}`,
-    `Address: ${record.address ?? ""}`,
-    `Preferred Date: ${record.preferredDate ?? ""}`,
+    ...summaryLines,
+    ...renderTypeSpecificLines(record),
     `Message: ${record.message}`,
-    `Tank Size: ${record.tankSizeGallons ?? ""}`,
-    `Sale Role: ${record.roleInSale ?? ""}`,
-    `Realtor Company: ${record.realtorCompany ?? ""}`,
-    `Event Type: ${record.eventType ?? ""}`,
-    `Unit Count: ${record.unitCount ?? ""}`,
   ].join("\n");
 }
 

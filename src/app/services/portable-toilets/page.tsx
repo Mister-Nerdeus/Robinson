@@ -63,7 +63,7 @@ export default function PortableToiletsPage() {
             </div>
           </div>
         </div>
-        <RequestForm type="portable-toilet-rental" title="Request Portable Toilet Rental" extraFields={[{ name: "eventType", label: "Event / Jobsite Type", required: true }, { name: "unitCount", label: "Unit Count", required: true }]} />
+        <RequestForm type="rental" title="Request Portable Toilet Rental" />
       </div>
     </Section>
   );

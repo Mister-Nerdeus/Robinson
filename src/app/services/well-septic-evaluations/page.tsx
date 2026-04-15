@@ -64,14 +64,7 @@ export default function WellSepticEvaluationsPage() {
             </Link>
           </div>
         </div>
-        <RequestForm
-          type="well-septic-evaluation"
-          title="Request Evaluation / Realtor Service"
-          extraFields={[
-            { name: "roleInSale", label: "Your Role (buyer, seller, realtor)", required: true },
-            { name: "realtorCompany", label: "Brokerage / Office" },
-          ]}
-        />
+        <RequestForm type="evaluation" title="Request Evaluation / Realtor Service" />
       </div>
     </Section>
   );

@@ -19,6 +19,9 @@
 | grease_trap_cleaning | Grease trap cleaning | confirmed | Commercial service line. |
 | lift_pump_service | Lift pump service | confirmed | Commercial/service support line. |
 | portable_toilet_radius | Within a 60-mile radius of the greater Grand Rapids area | confirmed | Allowed in rental/service-area messaging. |
+| msta_membership | Member of the Michigan Septic Tank Association | confirmed | Canonical association trust signal. |
+| facebook_presence | Facebook page maintained for local service visibility | confirmed | Canonicalized single trust mention. |
+| coupon_offer_legacy | Legacy coupon graphic exists in source assets | provisional | Asset exists; active terms are not verified for canonical CTA copy. |
 | bbb_accreditation | BBB accreditation claim | do-not-publish-yet | Remains blocked; no accreditation claim allowed. |
 | inflated_reviews | Inflated review-count claims | do-not-publish-yet | Blocked from all customer-facing surfaces. |
 

@@ -2,7 +2,13 @@
 
 | asset | source | status | notes |
 | --- | --- | --- | --- |
-| `public/branding/logo-legacy-clean.png` | legacy site extracted logo | temporary production-safe | White background removed for cleaner header/footer use. |
-| `public/branding/logo-legacy-clean@2x.png` | legacy site extracted logo | temporary production-safe | Higher-resolution raster export. |
-| `public/branding/logo-legacy-wordmark.svg` | recreated from legacy visual language | review asset | Crisp digital approximation for future testing. |
+| `public/branding/logo-legacy-clean.png` | legacy site extracted logo | canonical | Active logo in header/footer. |
+| `public/branding/logo-legacy-clean@2x.png` | legacy site extracted logo | canonical | High-resolution raster variant. |
+| `public/current/mi-septic-tank-assoc-logo.gif` | legacy site trust asset | canonical | Source-backed association trust visual. |
+| `public/current/coupon.gif` | legacy site coupon graphic | review asset | Not canonical; active terms not verified. |
+| `public/branding/logo-legacy-wordmark.svg` | recreated from legacy visual language | review asset | Optional visual refinement; not canonical brand asset. |
 | `public/branding/logo-refresh-option.svg` | modest modernized refresh | review asset | Optional refresh path, not canonical without owner approval. |
+
+## Media Contract
+- Canonical assets are safe for current public/demo surfaces.
+- Review assets require explicit approval before public usage.

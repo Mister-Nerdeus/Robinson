@@ -6,27 +6,182 @@ import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
+type FormFieldConfig = {
+  name: string;
+  label: string;
+  required?: boolean;
+  type?: "text" | "email" | "date" | "tel" | "number";
+  placeholder?: string;
+  helpText?: string;
+  options?: Array<{ value: string; label: string }>;
+  min?: string;
+};
+
 type Props = {
   type: SubmissionType;
   title: string;
-  extraFields?: Array<{ name: string; label: string; required?: boolean }>;
 };
 
 const helperByType: Record<SubmissionType, string> = {
-  "general-contact": "For active septic emergencies, calling is fastest. Use this form for detailed requests or scheduling questions.",
-  "septic-service": "For active backups or urgent warnings, call immediately. Use this form to share tank and access details before follow-up.",
-  "well-septic-evaluation": "For transaction timelines, include buyer/seller/agent details and access notes so scheduling can be coordinated quickly.",
-  "portable-toilet-rental": "Share event dates, unit count, and site access details so quoting and delivery planning can start quickly.",
+  general:
+    "For active emergencies, calling is fastest. Use this form for non-urgent questions or detailed follow-up requests.",
+  "septic-service":
+    "For active backups or overflows, call immediately. Include tank and site access details below to reduce dispatch follow-up.",
+  evaluation:
+    "Share sale role, timeline, and occupancy context so evaluation scheduling can match deadline pressure.",
+  rental:
+    "Include unit count, duration, and site type so rental staging and service cadence can be quoted correctly.",
+  "commercial-service":
+    "Use this intake for facility and business requests so dispatch has location context, service scope, and an on-site contact.",
 };
 
 const submitLabelByType: Record<SubmissionType, string> = {
-  "general-contact": "Send Request",
+  general: "Send Request",
   "septic-service": "Request Septic Service",
-  "well-septic-evaluation": "Request Evaluation",
-  "portable-toilet-rental": "Request Rental Quote",
+  evaluation: "Request Evaluation",
+  rental: "Request Rental Quote",
+  "commercial-service": "Request Commercial Service",
 };
 
-export function RequestForm({ type, title, extraFields = [] }: Props) {
+const laneSpecificFields: Record<SubmissionType, FormFieldConfig[]> = {
+  general: [
+    {
+      name: "topic",
+      label: "Request Topic",
+      required: true,
+      options: [
+        { value: "general-question", label: "General Question" },
+        { value: "billing", label: "Billing / Account" },
+        { value: "schedule-followup", label: "Scheduling Follow-up" },
+        { value: "other", label: "Other" },
+      ],
+    },
+  ],
+  "septic-service": [
+    { name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true },
+    { name: "tankCount", label: "Tank Count", required: true, type: "number", min: "1" },
+    {
+      name: "lidsExposed",
+      label: "Are tank lids exposed?",
+      required: true,
+      options: [
+        { value: "yes", label: "Yes" },
+        { value: "no", label: "No" },
+        { value: "unknown", label: "Unknown" },
+      ],
+    },
+    { name: "backupSigns", label: "Current Warning Signs", required: true, helpText: "Example: sewage backup, strong odors, pooling water." },
+  ],
+  evaluation: [
+    {
+      name: "roleInSale",
+      label: "Your Role in Sale",
+      required: true,
+      options: [
+        { value: "buyer", label: "Buyer" },
+        { value: "seller", label: "Seller" },
+        { value: "realtor", label: "Realtor" },
+        { value: "other", label: "Other" },
+      ],
+    },
+    { name: "brokerageOrCompany", label: "Brokerage / Company" },
+    { name: "closingDate", label: "Closing Date", type: "date" },
+    {
+      name: "occupancyStatus",
+      label: "Property Occupancy Status",
+      required: true,
+      options: [
+        { value: "occupied", label: "Occupied" },
+        { value: "vacant", label: "Vacant" },
+        { value: "tenant-occupied", label: "Tenant Occupied" },
+        { value: "unknown", label: "Unknown" },
+      ],
+    },
+  ],
+  rental: [
+    {
+      name: "eventType",
+      label: "Event / Jobsite Type",
+      required: true,
+      options: [
+        { value: "construction", label: "Construction Site" },
+        { value: "residential-project", label: "Residential Project" },
+        { value: "public-event", label: "Public Event" },
+        { value: "private-event", label: "Private Event" },
+      ],
+    },
+    { name: "unitCount", label: "Unit Count", required: true, type: "number", min: "1" },
+    { name: "rentalDuration", label: "Rental Duration", required: true, placeholder: "Example: 2 weeks" },
+    {
+      name: "serviceFrequency",
+      label: "Service Frequency",
+      required: true,
+      options: [
+        { value: "weekly", label: "Weekly" },
+        { value: "twice-weekly", label: "Twice Weekly" },
+        { value: "event-only", label: "One-time Event" },
+      ],
+    },
+    {
+      name: "siteType",
+      label: "Site Conditions",
+      required: true,
+      options: [
+        { value: "easy-truck-access", label: "Easy Truck Access" },
+        { value: "limited-access", label: "Limited Access" },
+        { value: "requires-coordination", label: "Requires On-site Coordination" },
+      ],
+    },
+  ],
+  "commercial-service": [
+    { name: "facilityName", label: "Facility / Business Name", required: true },
+    {
+      name: "facilityType",
+      label: "Facility Type",
+      required: true,
+      options: [
+        { value: "restaurant", label: "Restaurant / Food Service" },
+        { value: "industrial", label: "Industrial" },
+        { value: "retail", label: "Retail" },
+        { value: "institutional", label: "Institutional / School" },
+        { value: "other", label: "Other" },
+      ],
+    },
+    {
+      name: "serviceNeeded",
+      label: "Service Needed",
+      required: true,
+      options: [
+        { value: "grease-trap", label: "Grease Trap Cleaning" },
+        { value: "lift-pump", label: "Lift Pump Service" },
+        { value: "septic-pumping", label: "Commercial Septic Pumping" },
+        { value: "inspection", label: "Inspection / Troubleshooting" },
+      ],
+    },
+    { name: "greaseTrapCount", label: "Number of Tanks / Traps", required: true, type: "number", min: "1" },
+    { name: "onSiteContact", label: "On-site Contact Name + Role", required: true },
+  ],
+};
+
+const baseFields: FormFieldConfig[] = [
+  { name: "fullName", label: "Full Name", required: true },
+  { name: "phone", label: "Best Phone", type: "tel", required: true },
+  { name: "email", label: "Email", type: "email", required: true },
+  { name: "address", label: "Service Address", required: true },
+  { name: "preferredDate", label: "Preferred Date", type: "date" },
+  {
+    name: "urgency",
+    label: "Urgency",
+    required: true,
+    options: [
+      { value: "normal", label: "Normal" },
+      { value: "urgent", label: "Urgent (same/next day)" },
+      { value: "emergency", label: "Emergency" },
+    ],
+  },
+];
+
+export function RequestForm({ type, title }: Props) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [started, setStarted] = useState(false);
@@ -58,6 +213,8 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
     }
   }
 
+  const fields = [...baseFields, ...laneSpecificFields[type]];
+
   return (
     <form
       action={async (fd) => {
@@ -74,20 +231,34 @@ export function RequestForm({ type, title, extraFields = [] }: Props) {
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
+      <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
+        Fastest for emergencies: call now, then submit details to speed dispatch prep.
+      </p>
       <input type="hidden" name="type" value={type} />
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
-      <FormField name="fullName" label="Full Name" required />
-      <FormField name="phone" label="Best Phone" required />
-      <FormField name="email" label="Email" type="email" required />
-      <FormField name="address" label="Service Address" />
-      <FormField name="preferredDate" label="Preferred Date" type="date" />
-      {extraFields.map((field) => (
-        <FormField key={field.name} name={field.name} label={field.label} required={field.required} />
-      ))}
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        {fields.map((field) => (
+          <div key={field.name} className="sm:col-span-1">
+            <FormField
+              name={field.name}
+              label={field.label}
+              type={field.type}
+              required={field.required}
+              placeholder={field.placeholder}
+              helpText={field.helpText}
+              options={field.options}
+              min={field.min}
+            />
+          </div>
+        ))}
+      </div>
+
       <label className="grid gap-1 text-sm">
-        <span className="font-semibold">Request Details</span>
+        <span className="font-semibold">Dispatch Notes / Request Details</span>
         <textarea className="min-h-28 rounded-md border border-[#bdb4a2] bg-white px-3 py-2" name="message" required />
       </label>
+
       <button disabled={status === "submitting"} className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60" type="submit">
         {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
       </button>

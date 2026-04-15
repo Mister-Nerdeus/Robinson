@@ -1,49 +1,38 @@
 # Submission Contract
 
-All lead forms post to `/api/submissions` using a shared schema.
+## Canonical Lanes
+- `general`
+- `septic-service`
+- `evaluation`
+- `rental`
+- `commercial-service`
 
-## Required Canonical Fields
-- `type` (job type / submission lane)
+## Shared Required Fields
 - `fullName`
 - `phone`
 - `email`
+- `address`
+- `urgency`
 - `message`
 
-## Supported Submission Types
-- `general-contact`
-- `septic-service`
-- `well-septic-evaluation`
-- `portable-toilet-rental`
+Optional shared field: `preferredDate`.
 
-## Type-Specific Fields
-- `septic-service`: `tankSizeGallons`
-- `well-septic-evaluation`: `roleInSale`, optional `realtorCompany`
-- `portable-toilet-rental`: `eventType`, `unitCount`
+## Lane Fields
 
-## Validation Contract
-- Validation is centralized in `src/lib/forms/schema.ts` (Zod).
-- API returns `400` with flattened validation details when invalid.
-- API returns `201` with `{ ok: true, id }` on success.
+| type | lane-specific required fields |
+| --- | --- |
+| `general` | `topic` |
+| `septic-service` | `tankSizeGallons`, `tankCount`, `lidsExposed`, `backupSigns` |
+| `evaluation` | `roleInSale`, `occupancyStatus` (+ optional `brokerageOrCompany`, `closingDate`) |
+| `rental` | `eventType`, `unitCount`, `rentalDuration`, `serviceFrequency`, `siteType` |
+| `commercial-service` | `facilityName`, `facilityType`, `serviceNeeded`, `greaseTrapCount`, `onSiteContact` |
 
-## Example Validated Payloads
-```json
-{
-  "type": "general-contact",
-  "fullName": "Alex Smith",
-  "phone": "555-0123",
-  "email": "alex@example.com",
-  "message": "Need to discuss service options"
-}
-```
+## Lockstep Rule
+Every rendered field must be present in all three places:
+1. schema validation (`src/lib/forms/schema.ts`)
+2. persisted record (`src/lib/forms/types.ts` / storage)
+3. notification output (`src/lib/notifications/send.ts`)
 
-```json
-{
-  "type": "portable-toilet-rental",
-  "fullName": "Jordan Lee",
-  "phone": "555-0456",
-  "email": "jordan@example.com",
-  "message": "Jobsite rental request",
-  "eventType": "construction",
-  "unitCount": "4"
-}
-```
+## Drift Guard Tests
+- `tests/submission-contract.spec.ts`: verifies all lanes preserve fields end-to-end.
+- `tests/commercial-submission.spec.ts`: commercial regression for facility field persistence + notification rendering.

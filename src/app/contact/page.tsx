@@ -32,7 +32,7 @@ export default function ContactPage() {
             <ServiceAreaBlock />
           </div>
         </div>
-        <RequestForm type="general-contact" title="General Contact Request" />
+        <RequestForm type="general" title="General Contact Request" />
       </div>
     </Section>
   );

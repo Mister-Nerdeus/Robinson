@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { canonicalUrl } from "@/lib/runtime/env";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "http://localhost:4850";
   const routes = [
     "",
     "/services",
@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   return routes.map((path) => ({
-    url: `${base}${path}`,
+    url: canonicalUrl(path || "/"),
     changeFrequency: "weekly",
     priority: path === "" ? 1 : 0.8,
   }));

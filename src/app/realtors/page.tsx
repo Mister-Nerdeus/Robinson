@@ -48,14 +48,7 @@ export default function RealtorsPage() {
       </div>
 
       <div className="mt-6">
-        <RequestForm
-          type="well-septic-evaluation"
-          title="Request Realtor / Home-Sale Evaluation"
-          extraFields={[
-            { name: "roleInSale", label: "Your Role (Realtor, Buyer, Seller)", required: true },
-            { name: "realtorCompany", label: "Brokerage / Office" },
-          ]}
-        />
+        <RequestForm type="evaluation" title="Request Realtor / Home-Sale Evaluation" />
       </div>
     </Section>
   );

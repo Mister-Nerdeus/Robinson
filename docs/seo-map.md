@@ -15,5 +15,5 @@
 ## Files
 - Metadata builder: `src/lib/seo/metadata.ts`
 - Schema helpers: `src/lib/seo/schema.ts`
-- Robots: `public/robots.txt`
+- Robots: `src/app/robots.ts`
 - Sitemap: `src/app/sitemap.ts`

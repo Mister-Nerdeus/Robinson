@@ -63,7 +63,7 @@ export default function SepticCleaningPage() {
             </div>
           </div>
         </div>
-        <RequestForm type="septic-service" title="Request Septic Service" extraFields={[{ name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true }]} />
+        <RequestForm type="septic-service" title="Request Septic Service" />
       </div>
     </Section>
   );

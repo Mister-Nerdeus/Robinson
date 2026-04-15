@@ -5,11 +5,9 @@ import { Footer } from "@/components/site/Footer";
 import { AnalyticsPageView } from "@/components/site/AnalyticsPageView";
 import { company } from "@/config/company";
 import { MobileActionRail } from "@/components/site/MobileActionRail";
+import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: company.publicBrand,
-  description: company.tagline,
-};
+export const metadata: Metadata = buildMetadata(company.publicBrand, company.tagline, "/");
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -5,6 +5,13 @@ services:
     ports:
       - "3017:4850"
     environment:
+      - RUNTIME_MODE=local
+      - SITE_URL=http://localhost:3017
       - LOCAL_ONLY_MODE=true
-      - ENABLE_PRODUCTION_DEPLOY=false
+      - ALLOW_ADMIN_OUTSIDE_LOCAL_MODE=false
       - ENABLE_ADMIN_SUBMISSIONS_REVIEW=false
+      - DEPLOYMENT_STAMP_VISIBLE=true
+      - DEPLOY_COMMIT_SHA=docker-local
+      - DEPLOY_REF=refs/heads/local
+      - DEPLOY_BUILD_TIME_UTC=2026-04-15T00:00:00Z
+      - SEO_ALLOW_INDEXING=false

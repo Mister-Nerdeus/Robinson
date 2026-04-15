@@ -67,7 +67,7 @@ export default function CommercialPage() {
             Need immediate help? Open Contact
           </Link>
         </div>
-        <RequestForm type="general-contact" title="Request Commercial Service" extraFields={[{ name: "facilityName", label: "Facility or Business Name", required: true }]} />
+        <RequestForm type="commercial-service" title="Request Commercial Service" />
       </div>
     </Section>
   );

@@ -14,9 +14,10 @@
 - API response includes delivery status for operational visibility.
 
 ## Type-Specific Payload Handling
-- `general-contact`
+- `general`
 - `septic-service`
-- `well-septic-evaluation`
-- `portable-toilet-rental`
+- `evaluation`
+- `rental`
+- `commercial-service`
 
 Each retains `type` through persistence and notification subject/body formatting.
