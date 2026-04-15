@@ -23,6 +23,12 @@ Proof artifacts for issues `#4877` to `#4882`.
 - main = no debug/runtime stamp
 - develop = review/runtime surfaces with nonblank provenance
 
+## Captured screenshots (2026-04-15)
+- `docs/screenshots/main-home-footer-2026-04-15.png`
+- `docs/screenshots/develop-home-footer-2026-04-15.png`
+- `docs/screenshots/develop-contact-default-2026-04-15.png`
+- `docs/screenshots/develop-contact-general-lane-2026-04-15.png`
+
 ## Operator notes
 - Store screenshots in `docs/screenshots/` using date-stamped names.
 - Keep command output transcript in deployment ticket for audit continuity.
