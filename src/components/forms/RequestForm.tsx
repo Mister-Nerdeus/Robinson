@@ -24,7 +24,7 @@ type Props = {
 
 const helperByType: Record<SubmissionType, string> = {
   general:
-    "For active emergencies, calling is fastest. Use this form for non-urgent questions or detailed follow-up requests.",
+    "General fallback lane. For active emergencies, calling is fastest. Use this form for non-urgent questions or detailed follow-up requests.",
   "septic-service":
     "For active backups or overflows, call immediately. Include tank and site access details below to reduce dispatch follow-up.",
   evaluation:

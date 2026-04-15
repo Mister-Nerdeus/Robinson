@@ -34,11 +34,9 @@ export function getRuntimeEnv() {
   const localOnlyMode = parseBool(process.env.LOCAL_ONLY_MODE, mode !== "production");
   const allowAdminOutsideLocalMode = parseBool(process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE, false);
   const enableAdminSubmissionsReview = parseBool(process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW, false);
+  const reviewSurfacesVisible = parseBool(process.env.REVIEW_SURFACES_VISIBLE, mode !== "production");
   const siteUrl = normalizeUrl(process.env.SITE_URL || "http://localhost:4850");
-  const deploymentStampVisible = parseBool(
-    process.env.DEPLOYMENT_STAMP_VISIBLE,
-    mode === "local" || mode === "demo",
-  );
+  const deploymentStampVisible = parseBool(process.env.DEPLOYMENT_STAMP_VISIBLE, mode === "demo");
   const seoAllowIndexing = parseBool(process.env.SEO_ALLOW_INDEXING, mode === "production");
 
   const deploymentProvenance: DeploymentProvenance = {
@@ -52,12 +50,17 @@ export function getRuntimeEnv() {
     localOnlyMode,
     allowAdminOutsideLocalMode,
     enableAdminSubmissionsReview,
+    reviewSurfacesVisible,
     siteUrl,
     deploymentStampVisible,
     seoAllowIndexing,
     deploymentProvenance,
     companyPublicBrand: company.publicBrand,
   };
+}
+
+export function isPublicRuntime(): boolean {
+  return getRuntimeEnv().mode === "production";
 }
 
 export function isAdminReviewEnabled(): boolean {
@@ -70,15 +73,18 @@ export function isAdminReviewEnabled(): boolean {
 
 export function shouldRenderDeploymentStamp(): boolean {
   const env = getRuntimeEnv();
-  return env.deploymentStampVisible;
+  if (env.mode === "production") {
+    return false;
+  }
+  return env.reviewSurfacesVisible && env.deploymentStampVisible;
 }
 
 export function validateDeploymentProvenanceForRuntime() {
-  const env = getRuntimeEnv();
-  if (!env.deploymentStampVisible) {
+  if (!shouldRenderDeploymentStamp()) {
     return;
   }
 
+  const env = getRuntimeEnv();
   const missing: string[] = [];
   if (!env.deploymentProvenance.commitSha) missing.push("DEPLOY_COMMIT_SHA");
   if (!env.deploymentProvenance.ref) missing.push("DEPLOY_REF");
@@ -86,9 +92,32 @@ export function validateDeploymentProvenanceForRuntime() {
 
   if (missing.length > 0) {
     throw new Error(
-      `Deployment provenance is required when DEPLOYMENT_STAMP_VISIBLE=true. Missing: ${missing.join(", ")}`,
+      `Deployment provenance is required when deployment stamp is visible. Missing: ${missing.join(", ")}`,
     );
   }
+}
+
+export function validateRuntimeIdentityForRender() {
+  const env = getRuntimeEnv();
+
+  if (env.mode === "production") {
+    if (env.reviewSurfacesVisible) {
+      throw new Error("Production runtime must set REVIEW_SURFACES_VISIBLE=false.");
+    }
+    if (env.deploymentStampVisible) {
+      throw new Error("Production runtime must set DEPLOYMENT_STAMP_VISIBLE=false.");
+    }
+  }
+
+  if (env.mode === "production" && !env.seoAllowIndexing) {
+    throw new Error("Production runtime must set SEO_ALLOW_INDEXING=true.");
+  }
+
+  if (env.mode !== "production" && env.seoAllowIndexing) {
+    throw new Error("Non-production runtime must set SEO_ALLOW_INDEXING=false.");
+  }
+
+  validateDeploymentProvenanceForRuntime();
 }
 
 export function canonicalUrl(path = "/"): string {

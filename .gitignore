@@ -6,6 +6,8 @@ npm-debug.log*
 .DS_Store
 .env
 .env.local
+.env.main
+.env.develop
 
 # Local runtime artifacts
 data/

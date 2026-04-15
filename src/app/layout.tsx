@@ -6,10 +6,13 @@ import { AnalyticsPageView } from "@/components/site/AnalyticsPageView";
 import { company } from "@/config/company";
 import { MobileActionRail } from "@/components/site/MobileActionRail";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { validateRuntimeIdentityForRender } from "@/lib/runtime/env";
 
 export const metadata: Metadata = buildMetadata(company.publicBrand, company.tagline, "/");
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  validateRuntimeIdentityForRender();
+
   return (
     <html lang="en">
       <body className="pb-20 md:pb-0">

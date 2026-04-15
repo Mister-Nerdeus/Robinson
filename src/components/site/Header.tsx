@@ -19,7 +19,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#b8a8a8] bg-[var(--surface)]/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-[#b8a8a8] bg-[var(--surface-strong)] shadow-[0_2px_10px_rgba(0,0,0,0.07)]">
       <div className="bg-[var(--brand)] text-white">
         <div className="container flex items-center justify-between gap-3 py-1.5 text-xs font-semibold sm:text-sm">
           <p>{company.emergencyService.claim}</p>

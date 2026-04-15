@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
-import { RequestForm } from "@/components/forms/RequestForm";
 import { ServiceAreaBlock } from "@/components/site/ServiceAreaBlock";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { contactContent } from "@/content/contact";
+import { ContactIntakeRouter } from "@/components/forms/ContactIntakeRouter";
 
 export const metadata: Metadata = buildMetadata(
   "Contact",
@@ -20,7 +20,7 @@ export default function ContactPage() {
           <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Fastest path for urgent needs</p>
             <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Call Robinson for 24/7 emergency septic service.</h2>
-            <p className="mt-3 text-sm sm:text-base">Use the form below for general questions, routine scheduling, and detailed requests that benefit from extra property notes.</p>
+            <p className="mt-3 text-sm sm:text-base">Choose the request lane that best matches your need. General contact stays available as a fallback.</p>
           </div>
           <p className="mb-2">{contactContent.intro}</p>
           <p className="mb-2 text-sm text-slate-700">{contactContent.callout}</p>
@@ -32,7 +32,7 @@ export default function ContactPage() {
             <ServiceAreaBlock />
           </div>
         </div>
-        <RequestForm type="general" title="General Contact Request" />
+        <ContactIntakeRouter />
       </div>
     </Section>
   );

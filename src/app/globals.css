@@ -11,6 +11,7 @@
   --brand: #a1121f;
   --brand-accent: #262626;
   --surface: #fffdfc;
+  --surface-strong: #fdf7f5;
 }
 
 * {
@@ -43,11 +44,11 @@ img {
 }
 
 .section-pad {
-  padding-block: 3.5rem;
+  padding-block: 3.35rem;
 }
 
 @media (max-width: 767px) {
   .section-pad {
-    padding-block: 2.5rem;
+    padding-block: 2.4rem;
   }
 }

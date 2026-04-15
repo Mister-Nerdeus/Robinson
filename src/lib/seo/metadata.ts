@@ -7,12 +7,16 @@ const baseTitle = company.publicBrand;
 export function buildMetadata(title: string, description: string, path: string): Metadata {
   const env = getRuntimeEnv();
   const canonical = canonicalUrl(path);
+  const shouldIndex = env.mode === "production" && env.seoAllowIndexing;
 
   return {
     title: `${title} | ${baseTitle}`,
     description,
     metadataBase: new URL(env.siteUrl),
     alternates: { canonical },
+    robots: shouldIndex
+      ? { index: true, follow: true }
+      : { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
     openGraph: {
       title: `${title} | ${baseTitle}`,
       description,

@@ -8,6 +8,7 @@ import { getRuntimeEnv, isAdminReviewEnabled } from "@/lib/runtime/env";
 export function Footer() {
   const runtime = getRuntimeEnv();
   const adminOpen = isAdminReviewEnabled();
+  const showReview = runtime.reviewSurfacesVisible && runtime.mode !== "production";
 
   return (
     <footer className="mt-12 border-t border-[#cdb7b7] bg-[#f4eeee]">
@@ -31,14 +32,18 @@ export function Footer() {
             </p>
             <p>{company.serviceHours}</p>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-700">
-            <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Mode: {runtime.mode}</span>
-            <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Local-only: {runtime.localOnlyMode ? "on" : "off"}</span>
-            <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Admin review: {adminOpen ? "enabled" : "blocked"}</span>
-          </div>
-          <div className="mt-3">
-            <DeploymentStamp />
-          </div>
+          {showReview ? (
+            <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-700">
+              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Mode: {runtime.mode}</span>
+              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Local-only: {runtime.localOnlyMode ? "on" : "off"}</span>
+              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Admin review: {adminOpen ? "enabled" : "blocked"}</span>
+            </div>
+          ) : null}
+          {showReview ? (
+            <div className="mt-3">
+              <DeploymentStamp />
+            </div>
+          ) : null}
         </div>
         <div>
           <h2 className="font-display text-lg text-[var(--brand)]">Service Area and Fast Request Paths</h2>

@@ -9,10 +9,10 @@ export function FaqPreview({ items }: { items: FaqPreviewItem[] }) {
       {items.map((item) => (
         <article
           key={item.question}
-          className="rounded-2xl border border-[#ebe4df] bg-[var(--surface)] px-5 py-5 shadow-sm"
+          className="rounded-2xl border border-[#ebe4df] bg-[var(--surface)] px-5 py-4 shadow-sm"
         >
-          <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">{item.question}</h3>
-          <p className="mt-3 text-base leading-7 text-slate-700">{item.answer}</p>
+          <h3 className="text-[1.34rem] font-semibold leading-tight text-slate-900 sm:text-[1.45rem]">{item.question}</h3>
+          <p className="mt-2.5 text-[0.98rem] leading-7 text-slate-700">{item.answer}</p>
         </article>
       ))}
     </div>

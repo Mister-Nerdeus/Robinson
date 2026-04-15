@@ -1,20 +1,35 @@
-name: robinson-test
+name: robinson-develop
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        RUNTIME_MODE: ${RUNTIME_MODE}
+        SITE_URL: ${SITE_URL}
+        LOCAL_ONLY_MODE: ${LOCAL_ONLY_MODE}
+        ALLOW_ADMIN_OUTSIDE_LOCAL_MODE: ${ALLOW_ADMIN_OUTSIDE_LOCAL_MODE}
+        ENABLE_ADMIN_SUBMISSIONS_REVIEW: ${ENABLE_ADMIN_SUBMISSIONS_REVIEW}
+        REVIEW_SURFACES_VISIBLE: ${REVIEW_SURFACES_VISIBLE}
+        DEPLOYMENT_STAMP_VISIBLE: ${DEPLOYMENT_STAMP_VISIBLE}
+        DEPLOY_COMMIT_SHA: ${DEPLOY_COMMIT_SHA}
+        DEPLOY_REF: ${DEPLOY_REF}
+        DEPLOY_BUILD_TIME_UTC: ${DEPLOY_BUILD_TIME_UTC}
+        SEO_ALLOW_INDEXING: ${SEO_ALLOW_INDEXING}
+    container_name: robinson-develop-web
     env_file:
-      - .env.test
+      - .env.develop
     ports:
-      - "3001:4850"
+      - "3011:4850"
     volumes:
-      - test_data:/app/data
+      - develop_data:/app/data
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:4850',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"]
-      interval: 10s
+      interval: 15s
       timeout: 5s
-      retries: 6
-      start_period: 20s
+      retries: 8
+      start_period: 25s
 
   api:
     image: axllent/mailpit:latest
@@ -46,5 +61,5 @@ services:
       retries: 8
 
 volumes:
-  test_data:
+  develop_data:
   test_pg_data:

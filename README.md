@@ -1,25 +1,28 @@
-# Robinson Rebuild (Local v1)
+# Robinson Rebuild (Main/Develop Topology)
 
 This repository is governed by [`docs/project-contract.md`](docs/project-contract.md).
 
-## Runtime Contracts
-- Deployment truth: [`docs/deployment-truth-contract.md`](docs/deployment-truth-contract.md)
-- Runtime mode/local-only policy: [`docs/runtime-mode-contract.md`](docs/runtime-mode-contract.md)
-- SEO runtime behavior: [`docs/seo-runtime-contract.md`](docs/seo-runtime-contract.md)
+## Branch and Deployment Contracts
+- Branch deploy mapping: [`docs/branch-deploy-contract.md`](docs/branch-deploy-contract.md)
+- Cloudflare routing map: [`docs/cloudflare-routing-map.md`](docs/cloudflare-routing-map.md)
+- Runtime identity: [`docs/runtime-identity-contract.md`](docs/runtime-identity-contract.md)
+- Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
+- Promotion runbook: [`docs/branch-promotion-runbook.md`](docs/branch-promotion-runbook.md)
+- Proof pack: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md)
 
-## Quick Start
-1. Copy `.env.example` to `.env`.
-2. Keep `RUNTIME_MODE=local` and `LOCAL_ONLY_MODE=true` for local work.
-3. Provide deployment provenance fields (`DEPLOY_COMMIT_SHA`, `DEPLOY_REF`, `DEPLOY_BUILD_TIME_UTC`) when `DEPLOYMENT_STAMP_VISIBLE=true`.
-4. Run `npm install && npm run dev` and open `http://localhost:4850`.
+## Environment Templates
+- Local default: `.env.example`
+- Main deployment: `.env.main.example`
+- Develop deployment: `.env.develop.example`
+- Test stack: `.env.test`
 
-## Verification
+## Deployment Commands
+- Deploy main: `powershell -ExecutionPolicy Bypass -File scripts/deploy-main.ps1`
+- Deploy develop: `powershell -ExecutionPolicy Bypass -File scripts/deploy-develop.ps1`
+- Verify host routing: `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1`
+- Verify both envs: `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1`
+
+## App Verification
 - Full gate: `npm run verify:v1`
-- Provenance guard only: `npm run verify:provenance`
-- Docker test runtime: `docker compose -f compose.yaml --env-file .env.test -p robinson-test up --build`
-
-## Admin Review Surface
-- Admin workspace route: `/admin/submissions`
-- Opens only when:
-  - `ENABLE_ADMIN_SUBMISSIONS_REVIEW=true`
-  - and (`LOCAL_ONLY_MODE=true` or `ALLOW_ADMIN_OUTSIDE_LOCAL_MODE=true`)
+- Runtime contract: `npm run test:runtime-contract`
+- SEO contract: `npm run test:seo-contract`
