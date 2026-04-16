@@ -35,6 +35,7 @@ export default function WellSepticEvaluationsPage() {
         <p className="mt-3 text-sm sm:text-base">This request flow is built for buyers, sellers, and Realtors who need clear communication and fast coordination.</p>
       </div>
       <RequestPageLayout
+        routeId="/services/well-septic-evaluations"
         topPrimary={
           <div className="grid gap-5">
             <p className="text-slate-800">{servicesContent.evaluations.intro}</p>

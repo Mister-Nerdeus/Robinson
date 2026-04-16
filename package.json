@@ -15,6 +15,7 @@
     "test:submission-contract": "tsx tests/submission-contract.spec.ts",
     "test:commercial-submission": "tsx tests/commercial-submission.spec.ts",
     "test:seo-contract": "tsx tests/seo-contract.spec.ts",
+    "verify:request-layout:demo": "powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson-demo.hearthcore.app",
     "verify:provenance": "tsx tests/runtime-mode-contract.spec.ts",
     "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run test:runtime-contract && npm run test:submission-contract && npm run test:commercial-submission && npm run test:seo-contract && npm run check:hardcoded-contact && npm run check:provisional-claims",
     "test-stack:up": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-up.ps1",

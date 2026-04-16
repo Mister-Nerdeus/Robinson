@@ -21,6 +21,7 @@ export default function ContactPage() {
   return (
     <Section title={contactContent.title}>
       <RequestPageLayout
+        routeId="/contact"
         topPrimary={
           <div className="grid gap-5">
             <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">

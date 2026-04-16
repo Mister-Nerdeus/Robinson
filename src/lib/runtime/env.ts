@@ -1,4 +1,5 @@
 import { company } from "@/config/company";
+import { REQUEST_LAYOUT_CONTRACT_VERSION } from "@/config/requestLayoutContract";
 
 export type RuntimeMode = "local" | "demo" | "production";
 export type BranchIntent = "main" | "develop" | "local";
@@ -59,6 +60,9 @@ export function getRuntimeEnv() {
     ref: (process.env.DEPLOY_REF || "").trim(),
     buildTimestampUtc: (process.env.DEPLOY_BUILD_TIME_UTC || "").trim(),
   };
+  const requestLayoutContractVersion =
+    (process.env.REQUEST_LAYOUT_CONTRACT_VERSION || "").trim() ||
+    REQUEST_LAYOUT_CONTRACT_VERSION;
 
   const branchIntent: BranchIntent =
     mode === "production" ? "main" : mode === "demo" ? "develop" : "local";
@@ -76,6 +80,7 @@ export function getRuntimeEnv() {
     deploymentStampVisible,
     seoAllowIndexing,
     deploymentProvenance,
+    requestLayoutContractVersion,
     companyPublicBrand: company.publicBrand,
   };
 }
@@ -168,6 +173,12 @@ export function validateRuntimeIdentityForRender() {
   }
 
   validateDeploymentProvenanceForRuntime();
+
+  if (env.requestLayoutContractVersion !== REQUEST_LAYOUT_CONTRACT_VERSION) {
+    throw new Error(
+      `REQUEST_LAYOUT_CONTRACT_VERSION mismatch. Expected ${REQUEST_LAYOUT_CONTRACT_VERSION}, received ${env.requestLayoutContractVersion}.`,
+    );
+  }
 }
 
 export function canonicalUrl(path = "/"): string {

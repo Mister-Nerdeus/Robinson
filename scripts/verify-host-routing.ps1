@@ -1,6 +1,7 @@
 param(
   [string]$MainHost = "https://robinson.hearthcore.app",
   [string]$DevelopHost = "https://robinson-demo.hearthcore.app",
+  [string]$RequestLayoutContractVersion = "form-first-full-width-v2",
   [string]$MainProject = "robinson-main",
   [string]$DevelopProject = "robinson-develop",
   [int]$MainPort = 3010,
@@ -36,6 +37,20 @@ function Get-RuntimeProof {
 
   $response = Invoke-WebRequest -Uri "$Endpoint/api/runtime-proof" -UseBasicParsing -TimeoutSec 20
   return $response.Content | ConvertFrom-Json
+}
+
+function Get-JsonPropertyValue {
+  param(
+    [object]$Object,
+    [string]$Name
+  )
+
+  $prop = $Object.PSObject.Properties[$Name]
+  if ($null -eq $prop) {
+    return ""
+  }
+
+  return [string]$prop.Value
 }
 
 function Show-Project {
@@ -88,6 +103,17 @@ if (
 
 Write-Host "Main proof: mode=$($mainProof.mode) branchIntent=$($mainProof.branchIntent) seoAllowIndexing=$($mainProof.seoAllowIndexing)"
 Write-Host "Develop proof: mode=$($developProof.mode) branchIntent=$($developProof.branchIntent) seoAllowIndexing=$($developProof.seoAllowIndexing)"
+
+if ((Get-JsonPropertyValue -Object $mainProof -Name "requestLayoutContractVersion") -ne $RequestLayoutContractVersion) {
+  throw "Main runtime-proof layout contract mismatch"
+}
+
+if ((Get-JsonPropertyValue -Object $developProof -Name "requestLayoutContractVersion") -ne $RequestLayoutContractVersion) {
+  throw "Develop runtime-proof layout contract mismatch"
+}
+
+& "$PSScriptRoot/verify-request-layout-parity.ps1" -TargetHost $MainHost -ExpectedContractVersion $RequestLayoutContractVersion
+& "$PSScriptRoot/verify-request-layout-parity.ps1" -TargetHost $DevelopHost -ExpectedContractVersion $RequestLayoutContractVersion
 
 Show-Project -Name $MainProject -ExpectedPort $MainPort
 Show-Project -Name $DevelopProject -ExpectedPort $DevelopPort

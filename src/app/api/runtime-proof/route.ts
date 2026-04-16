@@ -1,6 +1,10 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { getRuntimeEnv, hasValidReviewAccessCookie, isAdminReviewEnabled } from "@/lib/runtime/env";
+import {
+  REQUEST_LAYOUT_ROUTE_IDS,
+  REQUEST_LAYOUT_CONTRACT_VERSION,
+} from "@/config/requestLayoutContract";
 
 export async function GET() {
   const env = getRuntimeEnv();
@@ -16,6 +20,9 @@ export async function GET() {
     mode: env.mode,
     siteUrl: env.siteUrl,
     seoAllowIndexing: env.seoAllowIndexing,
+    requestLayoutContractVersion: env.requestLayoutContractVersion,
+    requestLayoutContractVersionExpected: REQUEST_LAYOUT_CONTRACT_VERSION,
+    requestLayoutRoutes: REQUEST_LAYOUT_ROUTE_IDS,
   };
 
   if (env.mode === "production") {

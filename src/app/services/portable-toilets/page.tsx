@@ -34,6 +34,7 @@ export default function PortableToiletsPage() {
         <p className="mt-3 text-sm sm:text-base">Send delivery dates, unit counts, and site instructions in one request for faster quoting and planning.</p>
       </div>
       <RequestPageLayout
+        routeId="/services/portable-toilets"
         topPrimary={
           <div className="grid gap-5">
             <p className="text-slate-800">{servicesContent.portableToilets.intro}</p>

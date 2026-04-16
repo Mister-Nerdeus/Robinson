@@ -10,6 +10,8 @@ Proof artifacts for issues `#35` to `#42`.
 ## Verification commands
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1`
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson.hearthcore.app`
+- `powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson-demo.hearthcore.app`
 - `npm run test:runtime-contract`
 - `npm run test:seo-contract`
 
@@ -17,6 +19,20 @@ Proof artifacts for issues `#35` to `#42`.
 - Endpoint: `/api/runtime-proof`
 - Main: production + main intent + indexing enabled.
 - Develop: demo + develop intent + nonblank provenance.
+- Both hosts: `requestLayoutContractVersion=form-first-full-width-v2` and route list included.
+
+## Route-level layout parity proof
+- Required routes:
+- `/services/septic-cleaning`
+- `/services/well-septic-evaluations`
+- `/services/portable-toilets`
+- `/services/commercial`
+- `/contact`
+- `/realtors`
+- Verification enforces:
+- Current layout markers in HTML.
+- No stale right-rail grid signatures in HTML.
+- `Cache-Control` includes `no-store` for request-heavy routes.
 
 ## Access protection proof
 - Anonymous `/admin/submissions` blocked on develop.
@@ -36,4 +52,5 @@ Proof artifacts for issues `#35` to `#42`.
 
 ## Operator notes
 - Keep Cloudflare route and tunnel ingress aligned with `docs/cloudflare-routing-map.md`.
+- Keep Cloudflare cache rules from overriding origin no-store headers for request-heavy form routes.
 - Keep proof artifacts date-stamped in `docs/screenshots/`.

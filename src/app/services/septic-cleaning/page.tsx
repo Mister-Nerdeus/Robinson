@@ -34,6 +34,7 @@ export default function SepticCleaningPage() {
         <p className="mt-3 text-sm sm:text-base">For urgent backups or overdue routine pumping, Robinson gives you one direct request path with clear next steps.</p>
       </div>
       <RequestPageLayout
+        routeId="/services/septic-cleaning"
         topPrimary={
           <div className="grid gap-5">
             <p className="text-slate-800">{servicesContent.septicCleaning.intro}</p>

@@ -18,6 +18,7 @@ services:
         DEPLOY_REF: ${DEPLOY_REF}
         DEPLOY_BUILD_TIME_UTC: ${DEPLOY_BUILD_TIME_UTC}
         SEO_ALLOW_INDEXING: ${SEO_ALLOW_INDEXING}
+        REQUEST_LAYOUT_CONTRACT_VERSION: ${REQUEST_LAYOUT_CONTRACT_VERSION}
     container_name: robinson-develop-web
     env_file:
       - .env.develop
