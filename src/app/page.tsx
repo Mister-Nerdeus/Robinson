@@ -21,7 +21,11 @@ export const metadata: Metadata = buildMetadata(
 
 export default function HomePage() {
   return (
-    <>
+    <div
+      data-homepage-contract="home-hero-lanes-trust-v1"
+      data-homepage-route="/"
+      data-homepage-structure="hero-lanes-trust-specialty-faq-cta"
+    >
       <JsonLd data={localBusinessSchema()} />
 
       <Section>
@@ -109,6 +113,6 @@ export default function HomePage() {
       <Section>
         <CtaBand heading="Need help right now? Call Robinson for 24/7 Emergency Service or submit a request online." href="/contact" label="Open Contact and Request Forms" />
       </Section>
-    </>
+    </div>
   );
 }

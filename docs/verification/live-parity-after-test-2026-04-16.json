@@ -1,0 +1,45 @@
+﻿{
+    "generatedAtUtc":  "2026-04-16T22:08:44.1938994Z",
+    "targetHost":  "http://localhost:3001",
+    "expectedRequestLayoutContractVersion":  "form-first-full-width-v2",
+    "expectedHomeMarkerVersion":  "home-hero-lanes-trust-v1",
+    "mode":  "strict",
+    "routes":  [
+                   {
+                       "route":  "/",
+                       "url":  "http://localhost:3001/",
+                       "statusCode":  200,
+                       "cacheControl":  "private, no-cache, no-store, max-age=0, must-revalidate",
+                       "cfCacheStatus":  "",
+                       "etag":  "",
+                       "result":  "pass",
+                       "errors":  [
+
+                                  ]
+                   },
+                   {
+                       "route":  "/services/septic-cleaning",
+                       "url":  "http://localhost:3001/services/septic-cleaning",
+                       "statusCode":  200,
+                       "cacheControl":  "no-store, max-age=0, must-revalidate",
+                       "cfCacheStatus":  "",
+                       "etag":  "",
+                       "result":  "pass",
+                       "errors":  [
+
+                                  ]
+                   },
+                   {
+                       "route":  "/contact",
+                       "url":  "http://localhost:3001/contact",
+                       "statusCode":  200,
+                       "cacheControl":  "no-store, max-age=0, must-revalidate",
+                       "cfCacheStatus":  "",
+                       "etag":  "",
+                       "result":  "pass",
+                       "errors":  [
+
+                                  ]
+                   }
+               ]
+}

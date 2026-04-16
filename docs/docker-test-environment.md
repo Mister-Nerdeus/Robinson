@@ -4,7 +4,7 @@
 Isolated pre-launch testing stack for routing, submissions, notifications, persistence, and operator runbook validation.
 
 ## Files
-- `compose.yaml` (canonical)
+- `compose.test.yaml` (canonical test stack)
 - `.env.test`
 - `scripts/test-stack-up.ps1`
 - `scripts/test-stack-down.ps1`

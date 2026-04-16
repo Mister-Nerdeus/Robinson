@@ -1,0 +1,68 @@
+name: robinson-test
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        RUNTIME_MODE: ${RUNTIME_MODE}
+        SITE_URL: ${SITE_URL}
+        LOCAL_ONLY_MODE: ${LOCAL_ONLY_MODE}
+        ALLOW_ADMIN_OUTSIDE_LOCAL_MODE: ${ALLOW_ADMIN_OUTSIDE_LOCAL_MODE}
+        ENABLE_ADMIN_SUBMISSIONS_REVIEW: ${ENABLE_ADMIN_SUBMISSIONS_REVIEW}
+        REVIEW_SURFACES_VISIBLE: ${REVIEW_SURFACES_VISIBLE}
+        REVIEW_ACCESS_KEY: ${REVIEW_ACCESS_KEY}
+        REVIEW_ACCESS_COOKIE_NAME: ${REVIEW_ACCESS_COOKIE_NAME}
+        DEPLOYMENT_STAMP_VISIBLE: ${DEPLOYMENT_STAMP_VISIBLE}
+        DEPLOY_COMMIT_SHA: ${DEPLOY_COMMIT_SHA}
+        DEPLOY_REF: ${DEPLOY_REF}
+        DEPLOY_BUILD_TIME_UTC: ${DEPLOY_BUILD_TIME_UTC}
+        SEO_ALLOW_INDEXING: ${SEO_ALLOW_INDEXING}
+        REQUEST_LAYOUT_CONTRACT_VERSION: ${REQUEST_LAYOUT_CONTRACT_VERSION}
+    container_name: robinson-test-web
+    env_file:
+      - .env.test
+    ports:
+      - "3001:4850"
+    volumes:
+      - test_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4850',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 25s
+
+  api:
+    image: axllent/mailpit:latest
+    profiles: ["api"]
+    ports:
+      - "4001:8025"
+      - "1026:1025"
+    healthcheck:
+      test: ["CMD", "/mailpit", "version"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+
+  db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_DB: robinson_test
+      POSTGRES_USER: robinson
+      POSTGRES_PASSWORD: robinson_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - test_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robinson -d robinson_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+volumes:
+  test_data:
+  test_pg_data:

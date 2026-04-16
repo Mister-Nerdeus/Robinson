@@ -18,10 +18,19 @@ async function run() {
   await waitReady();
 
   const payload = {
-    type: "general-contact",
+    type: "general",
     fullName: "Docker Smoke",
     phone: "555-333-1111",
     email: "docker-smoke@example.com",
+    topic: "general-question",
+    serviceLocationInvolved: "no",
+    urgency: "normal",
+    preferredDate: "",
+    streetAddress: "",
+    city: "",
+    zip: "",
+    state: "MI",
+    address: "",
     message: "Testing stack notification and persistence path",
     companyWebsite: "",
   };
@@ -37,8 +46,16 @@ async function run() {
   assert.ok(submitBody.delivery, "delivery object should be present");
 
   const rowsRes = await fetch(`${base}/api/submissions`);
-  assert.equal(rowsRes.status, 200, "admin submissions endpoint should be enabled in .env.test");
-  const rowsBody = await rowsRes.json();
+  assert.equal(rowsRes.status, 401, "admin submissions endpoint should require explicit review cookie");
+
+  const rowsAuthorized = await fetch(`${base}/api/submissions`, {
+    headers: {
+      cookie: "robinson_review_access=test-review-access-secret",
+    },
+  });
+  assert.equal(rowsAuthorized.status, 200, "admin submissions endpoint should open with review cookie");
+
+  const rowsBody = await rowsAuthorized.json();
   assert.ok(Array.isArray(rowsBody.rows), "rows should be an array");
   assert.ok(rowsBody.rows.length > 0, "rows should contain the submitted record");
 

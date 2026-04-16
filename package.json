@@ -15,14 +15,18 @@
     "test:submission-contract": "tsx tests/submission-contract.spec.ts",
     "test:commercial-submission": "tsx tests/commercial-submission.spec.ts",
     "test:seo-contract": "tsx tests/seo-contract.spec.ts",
+    "test:form-lane-contract": "tsx tests/form-lane-contract.spec.ts",
+    "test:request-layout-contract": "tsx tests/request-layout-contract.spec.ts",
     "verify:request-layout:demo": "powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson-demo.hearthcore.app",
+    "verify:live-parity:test": "powershell -ExecutionPolicy Bypass -File scripts/verify-live-render-parity.ps1 -TargetHost http://localhost:3001",
     "verify:provenance": "tsx tests/runtime-mode-contract.spec.ts",
-    "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run test:runtime-contract && npm run test:submission-contract && npm run test:commercial-submission && npm run test:seo-contract && npm run check:hardcoded-contact && npm run check:provisional-claims",
+    "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run test:runtime-contract && npm run test:submission-contract && npm run test:commercial-submission && npm run test:seo-contract && npm run test:form-lane-contract && npm run test:request-layout-contract && npm run check:hardcoded-contact && npm run check:provisional-claims",
     "test-stack:up": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-up.ps1",
     "test-stack:down": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-down.ps1",
     "test-stack:smoke": "node scripts/test-smoke.mjs",
-    "test-stack:verify": "docker compose -f compose.yaml --env-file .env.test -p robinson-test config && node scripts/test-smoke.mjs",
-    "proof:ux-pack": "node scripts/capture-ux-proof-pack.mjs"
+    "test-stack:verify": "docker compose -f compose.test.yaml --env-file .env.test -p robinson-test config && node scripts/test-smoke.mjs",
+    "proof:ux-pack": "node scripts/capture-ux-proof-pack.mjs",
+    "proof:live-audit-pack": "node scripts/capture-live-proof-77-82.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

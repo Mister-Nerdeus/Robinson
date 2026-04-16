@@ -1,0 +1,56 @@
+﻿{
+    "generatedAtUtc":  "2026-04-16T22:05:41.2470750Z",
+    "targetHost":  "https://robinson-demo.hearthcore.app",
+    "expectedRequestLayoutContractVersion":  "form-first-full-width-v2",
+    "expectedHomeMarkerVersion":  "home-hero-lanes-trust-v1",
+    "mode":  "report",
+    "routes":  [
+                   {
+                       "route":  "/",
+                       "url":  "https://robinson-demo.hearthcore.app/",
+                       "statusCode":  200,
+                       "cacheControl":  "s-maxage=31536000",
+                       "cfCacheStatus":  "DYNAMIC",
+                       "etag":  "",
+                       "result":  "fail",
+                       "errors":  [
+                                      "Missing expected marker/content: data-homepage-contract=\"home-hero-lanes-trust-v1\"",
+                                      "Missing expected marker/content: data-homepage-route=\"/\"",
+                                      "Legacy right-rail signature detected: md:grid-cols-[1.15fr,0.85fr]"
+                                  ]
+                   },
+                   {
+                       "route":  "/services/septic-cleaning",
+                       "url":  "https://robinson-demo.hearthcore.app/services/septic-cleaning",
+                       "statusCode":  200,
+                       "cacheControl":  "s-maxage=31536000",
+                       "cfCacheStatus":  "DYNAMIC",
+                       "etag":  "",
+                       "result":  "fail",
+                       "errors":  [
+                                      "Missing expected marker/content: data-request-layout-contract=\"form-first-full-width-v2\"",
+                                      "Missing expected marker/content: data-request-layout-route=\"/services/septic-cleaning\"",
+                                      "Missing expected marker/content: data-request-layout-geometry=\"top-support-then-full-width-form\"",
+                                      "Missing expected marker/content: data-request-layout-form-width=\"full-width\"",
+                                      "Cache-Control missing no-store: s-maxage=31536000",
+                                      "Legacy right-rail signature detected: md:grid-cols-[1.15fr,0.85fr]"
+                                  ]
+                   },
+                   {
+                       "route":  "/contact",
+                       "url":  "https://robinson-demo.hearthcore.app/contact",
+                       "statusCode":  200,
+                       "cacheControl":  "s-maxage=31536000",
+                       "cfCacheStatus":  "DYNAMIC",
+                       "etag":  "",
+                       "result":  "fail",
+                       "errors":  [
+                                      "Missing expected marker/content: data-request-layout-contract=\"form-first-full-width-v2\"",
+                                      "Missing expected marker/content: data-request-layout-route=\"/contact\"",
+                                      "Missing expected marker/content: data-request-layout-geometry=\"top-support-then-full-width-form\"",
+                                      "Missing expected marker/content: data-request-layout-form-width=\"full-width\"",
+                                      "Cache-Control missing no-store: s-maxage=31536000"
+                                  ]
+                   }
+               ]
+}
