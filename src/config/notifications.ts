@@ -4,6 +4,10 @@ export const notificationConfig = {
   mode: (process.env.NOTIFICATION_MODE ?? "log") as NotificationMode,
   toEmail: process.env.NOTIFICATION_TO_EMAIL ?? "dispatch@robinsonseptic.local",
   fromEmail: process.env.NOTIFICATION_FROM_EMAIL ?? "no-reply@robinsonseptic.local",
+  subjectPrefix: (process.env.NOTIFICATION_SUBJECT_PREFIX ?? "").trim(),
+  developSafeInboxPattern: (
+    process.env.NOTIFICATION_DEVELOP_SAFE_INBOX_PATTERN ?? "develop|sandbox|test"
+  ).trim(),
   smtp: {
     host: process.env.SMTP_HOST ?? "",
     port: Number(process.env.SMTP_PORT ?? "587"),

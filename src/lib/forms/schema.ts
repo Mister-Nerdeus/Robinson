@@ -12,7 +12,7 @@ const baseSchema = z.object({
   fullName: trimmedRequired(2),
   phone: trimmedRequired(7),
   email: z.string().trim().email(),
-  address: trimmedOptional,
+  address: trimmedRequired(4),
   preferredDate: trimmedOptional,
   urgency: z.enum(["normal", "urgent", "emergency"]),
   message: trimmedRequired(8),

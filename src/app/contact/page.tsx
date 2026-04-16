@@ -18,15 +18,38 @@ export default function ContactPage() {
       <div className="grid gap-6 md:grid-cols-[1.02fr,0.98fr]">
         <div>
           <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Fastest path for urgent needs</p>
-            <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Call Robinson for 24/7 emergency septic service.</h2>
-            <p className="mt-3 text-sm sm:text-base">Choose the request lane that best matches your need. General contact stays available as a fallback.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">
+              Fastest path for urgent needs
+            </p>
+            <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">
+              Call Robinson for 24/7 emergency septic service.
+            </h2>
+            <p className="mt-3 text-sm sm:text-base">
+              Choose the request lane that best matches your need. General contact stays available as a fallback.
+            </p>
           </div>
           <p className="mb-2">{contactContent.intro}</p>
           <p className="mb-2 text-sm text-slate-700">{contactContent.callout}</p>
           <p className="mb-4 text-sm">{contactContent.responseNote}</p>
+
+          <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {contactContent.whatHappensNext.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-slate-700">{contactContent.responseExpectation}</p>
+          </div>
+
           <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-            <Image src="/images/enhanced/truck_full_ai_enhanced.jpg" alt="Robinson service truck ready for field dispatch" width={1200} height={720} className="h-[280px] w-full object-cover" />
+            <Image
+              src="/images/enhanced/truck_full_ai_enhanced.jpg"
+              alt="Robinson service truck ready for field dispatch"
+              width={1200}
+              height={720}
+              className="h-[280px] w-full object-cover"
+            />
           </div>
           <div className="mb-4">
             <ServiceAreaBlock />

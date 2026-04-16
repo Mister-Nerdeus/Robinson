@@ -29,3 +29,7 @@
 - `confirmed`: safe to use in customer-facing copy.
 - `provisional`: source-supported but owner-verification-sensitive.
 - `do-not-publish-yet`: keep out of customer-facing surfaces.
+
+## Voice policy note
+- Customer-facing pages should translate confirmed claims into plain, warm language.
+- Governance terms (registry/proof map wording) stay in internal documentation.

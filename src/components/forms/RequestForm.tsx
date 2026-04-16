@@ -70,7 +70,12 @@ const laneSpecificFields: Record<SubmissionType, FormFieldConfig[]> = {
         { value: "unknown", label: "Unknown" },
       ],
     },
-    { name: "backupSigns", label: "Current Warning Signs", required: true, helpText: "Example: sewage backup, strong odors, pooling water." },
+    {
+      name: "backupSigns",
+      label: "Current Warning Signs",
+      required: true,
+      helpText: "Example: sewage backup, strong odors, pooling water.",
+    },
   ],
   evaluation: [
     {
@@ -111,7 +116,12 @@ const laneSpecificFields: Record<SubmissionType, FormFieldConfig[]> = {
       ],
     },
     { name: "unitCount", label: "Unit Count", required: true, type: "number", min: "1" },
-    { name: "rentalDuration", label: "Rental Duration", required: true, placeholder: "Example: 2 weeks" },
+    {
+      name: "rentalDuration",
+      label: "Rental Duration",
+      required: true,
+      placeholder: "Example: 2 weeks",
+    },
     {
       name: "serviceFrequency",
       label: "Service Frequency",
@@ -158,7 +168,13 @@ const laneSpecificFields: Record<SubmissionType, FormFieldConfig[]> = {
         { value: "inspection", label: "Inspection / Troubleshooting" },
       ],
     },
-    { name: "greaseTrapCount", label: "Number of Tanks / Traps", required: true, type: "number", min: "1" },
+    {
+      name: "greaseTrapCount",
+      label: "Number of Tanks / Traps",
+      required: true,
+      type: "number",
+      min: "1",
+    },
     { name: "onSiteContact", label: "On-site Contact Name + Role", required: true },
   ],
 };
@@ -198,7 +214,11 @@ export function RequestForm({ type, title }: Props) {
       });
       if (!res.ok) {
         const body = await res.json();
-        setMessage(body?.error ? "Please review the required fields and submit again." : "Request could not be sent right now.");
+        setMessage(
+          body?.error
+            ? "Please review the required fields and submit again."
+            : "Request could not be sent right now.",
+        );
         setStatus("error");
         await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
         return;

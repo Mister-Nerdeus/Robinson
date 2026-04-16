@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { servicesContent } from "@/content/services";
 
 export const metadata: Metadata = buildMetadata(
   "Realtor Resources",
@@ -36,6 +37,16 @@ export default function RealtorsPage() {
             <li>• Keeps communication organized across all transaction contacts.</li>
             <li>• Supports faster scheduling decisions when timing is tight.</li>
           </ul>
+
+          <div className="rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.evaluations.nextSteps.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-slate-700">{servicesContent.evaluations.responseExpectation}</p>
+          </div>
 
           <div className="rounded-md bg-[#f5eded] p-3 text-sm">
             Looking for the main service page? <Link className="font-semibold underline" href="/services/well-septic-evaluations">Open Well &amp; Septic Evaluations</Link>

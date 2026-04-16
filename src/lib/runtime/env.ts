@@ -1,6 +1,7 @@
 import { company } from "@/config/company";
 
 export type RuntimeMode = "local" | "demo" | "production";
+export type BranchIntent = "main" | "develop" | "local";
 
 export type DeploymentProvenance = {
   commitSha: string;
@@ -29,12 +30,26 @@ function normalizeUrl(value: string): string {
   return value.endsWith("/") ? value.slice(0, -1) : value;
 }
 
+function parseCookieValue(cookieHeader: string | undefined, name: string): string {
+  if (!cookieHeader || !name) return "";
+  const pairs = cookieHeader.split(";");
+  for (const pair of pairs) {
+    const [rawKey, ...rawValue] = pair.trim().split("=");
+    if (rawKey === name) {
+      return decodeURIComponent(rawValue.join("=") || "");
+    }
+  }
+  return "";
+}
+
 export function getRuntimeEnv() {
   const mode = readRuntimeMode();
   const localOnlyMode = parseBool(process.env.LOCAL_ONLY_MODE, mode !== "production");
   const allowAdminOutsideLocalMode = parseBool(process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE, false);
   const enableAdminSubmissionsReview = parseBool(process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW, false);
   const reviewSurfacesVisible = parseBool(process.env.REVIEW_SURFACES_VISIBLE, mode !== "production");
+  const reviewAccessKey = (process.env.REVIEW_ACCESS_KEY || "").trim();
+  const reviewAccessCookieName = (process.env.REVIEW_ACCESS_COOKIE_NAME || "robinson_review_access").trim();
   const siteUrl = normalizeUrl(process.env.SITE_URL || "http://localhost:4850");
   const deploymentStampVisible = parseBool(process.env.DEPLOYMENT_STAMP_VISIBLE, mode === "demo");
   const seoAllowIndexing = parseBool(process.env.SEO_ALLOW_INDEXING, mode === "production");
@@ -45,12 +60,18 @@ export function getRuntimeEnv() {
     buildTimestampUtc: (process.env.DEPLOY_BUILD_TIME_UTC || "").trim(),
   };
 
+  const branchIntent: BranchIntent =
+    mode === "production" ? "main" : mode === "demo" ? "develop" : "local";
+
   return {
     mode,
+    branchIntent,
     localOnlyMode,
     allowAdminOutsideLocalMode,
     enableAdminSubmissionsReview,
     reviewSurfacesVisible,
+    reviewAccessKey,
+    reviewAccessCookieName,
     siteUrl,
     deploymentStampVisible,
     seoAllowIndexing,
@@ -63,12 +84,32 @@ export function isPublicRuntime(): boolean {
   return getRuntimeEnv().mode === "production";
 }
 
+export function isReviewAccessConfigured(): boolean {
+  return getRuntimeEnv().reviewAccessKey.length >= 16;
+}
+
 export function isAdminReviewEnabled(): boolean {
   const env = getRuntimeEnv();
+  if (env.mode === "production") {
+    return false;
+  }
   if (!env.enableAdminSubmissionsReview) {
     return false;
   }
-  return env.localOnlyMode || env.allowAdminOutsideLocalMode;
+  if (!(env.localOnlyMode || env.allowAdminOutsideLocalMode)) {
+    return false;
+  }
+  return isReviewAccessConfigured();
+}
+
+export function hasValidReviewAccessCookie(cookieHeader: string | undefined): boolean {
+  const env = getRuntimeEnv();
+  if (!isAdminReviewEnabled()) {
+    return false;
+  }
+
+  const cookieValue = parseCookieValue(cookieHeader, env.reviewAccessCookieName);
+  return cookieValue.length > 0 && cookieValue === env.reviewAccessKey;
 }
 
 export function shouldRenderDeploymentStamp(): boolean {
@@ -107,6 +148,15 @@ export function validateRuntimeIdentityForRender() {
     if (env.deploymentStampVisible) {
       throw new Error("Production runtime must set DEPLOYMENT_STAMP_VISIBLE=false.");
     }
+    if (env.enableAdminSubmissionsReview) {
+      throw new Error("Production runtime must set ENABLE_ADMIN_SUBMISSIONS_REVIEW=false.");
+    }
+  }
+
+  if (env.mode !== "production" && env.enableAdminSubmissionsReview && !isReviewAccessConfigured()) {
+    throw new Error(
+      "Non-production admin review requires REVIEW_ACCESS_KEY with at least 16 characters.",
+    );
   }
 
   if (env.mode === "production" && !env.seoAllowIndexing) {

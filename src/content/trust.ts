@@ -7,5 +7,5 @@ export const trustContent = {
     "Facebook page maintained for local service visibility",
   ],
   trustStatement:
-    "Robinson trust messaging is governed by source-backed claim and media contracts so public proof points stay consistent across homepage, footer, and service lanes.",
+    "Robinson keeps service promises simple: clear communication, dependable scheduling, and experienced support for homes, businesses, and property-sale timelines.",
 };

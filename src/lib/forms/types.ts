@@ -6,11 +6,22 @@ export const submissionTypes = [
   "commercial-service",
 ] as const;
 
+export const submissionLifecycleStates = [
+  "new",
+  "in-progress",
+  "scheduled",
+  "closed",
+] as const;
+
 export type SubmissionType = (typeof submissionTypes)[number];
+export type SubmissionLifecycleState = (typeof submissionLifecycleStates)[number];
 
 export type SubmissionBase = {
   id: string;
   createdAt: string;
+  triageUpdatedAt: string;
+  lifecycleState: SubmissionLifecycleState;
+  internalNote: string;
   type: SubmissionType;
   fullName: string;
   phone: string;

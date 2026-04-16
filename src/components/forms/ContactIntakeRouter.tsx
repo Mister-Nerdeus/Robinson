@@ -47,14 +47,19 @@ const formTitleByType: Record<SubmissionType, string> = {
 };
 
 export function ContactIntakeRouter() {
-  const [selectedType, setSelectedType] = useState<SubmissionType>("septic-service");
+  const [selectedType, setSelectedType] = useState<SubmissionType | null>(null);
 
-  const selectedLane = useMemo(() => lanes.find((lane) => lane.type === selectedType), [selectedType]);
+  const selectedLane = useMemo(
+    () => lanes.find((lane) => lane.type === selectedType),
+    [selectedType],
+  );
 
   return (
     <div className="grid gap-4">
       <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Choose your intake lane</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">
+          Choose your intake lane
+        </p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {lanes.map((lane) => {
             const active = lane.type === selectedType;
@@ -81,9 +86,19 @@ export function ContactIntakeRouter() {
         <div className="rounded-lg border border-[#ead9d9] bg-[#fffdfc] px-3 py-2 text-sm text-slate-700">
           Active lane: <strong>{selectedLane.title}</strong>. {selectedLane.summary}
         </div>
-      ) : null}
+      ) : (
+        <div className="rounded-lg border border-[#ead9d9] bg-[#fffdfc] px-3 py-2 text-sm text-slate-700">
+          Select a lane to start the structured intake form. If unsure, choose <strong>General contact</strong>.
+        </div>
+      )}
 
-      <RequestForm type={selectedType} title={formTitleByType[selectedType]} />
+      {selectedType ? (
+        <RequestForm type={selectedType} title={formTitleByType[selectedType]} />
+      ) : (
+        <div className="rounded-xl border border-dashed border-[#ccb8b8] bg-white px-4 py-6 text-sm text-slate-700">
+          Form will appear after a lane is selected.
+        </div>
+      )}
     </div>
   );
 }

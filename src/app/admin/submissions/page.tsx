@@ -7,15 +7,20 @@ import type { SubmissionRecord } from "@/lib/forms/types";
 
 type SearchParams = {
   type?: string;
+  status?: string;
   dateFrom?: string;
   dateTo?: string;
 };
 
 function filterRows(rows: SubmissionRecord[], searchParams: SearchParams) {
-  const { type, dateFrom, dateTo } = searchParams;
+  const { type, status, dateFrom, dateTo } = searchParams;
 
   return rows.filter((row) => {
     if (type && row.type !== type) {
+      return false;
+    }
+
+    if (status && row.lifecycleState !== status) {
       return false;
     }
 
@@ -48,8 +53,10 @@ export default async function AdminSubmissionsPage({
   if (!isAdminReviewEnabled()) {
     return (
       <Section title="Admin Submissions">
-        <p>Blocked by runtime policy. Enable `ENABLE_ADMIN_SUBMISSIONS_REVIEW=true` and keep `LOCAL_ONLY_MODE=true`.</p>
-        <p className="mt-2 text-sm text-slate-700">Override requires explicit opt-in: `ALLOW_ADMIN_OUTSIDE_LOCAL_MODE=true`.</p>
+        <p>Admin review is blocked by runtime security policy.</p>
+        <p className="mt-2 text-sm text-slate-700">
+          Non-production review requires explicit enablement and a configured review access secret.
+        </p>
       </Section>
     );
   }
@@ -59,13 +66,22 @@ export default async function AdminSubmissionsPage({
 
   return (
     <Section title="Admin Submissions Workspace">
-      <p className="mb-3 text-sm">Local/demo review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>.</p>
+      <p className="mb-3 text-sm">
+        Protected review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>.
+      </p>
       <p className="mb-4 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-3 text-sm">
-        Local-ops only. Do not expose this route in public mode without an explicit admin override.
+        Internal triage only. This workspace is guarded by runtime policy and explicit review-access control.
       </p>
 
-      <SubmissionsFilters selectedType={params.type} dateFrom={params.dateFrom} dateTo={params.dateTo} />
-      <p className="mt-3 text-xs text-slate-600">Showing {filtered.length} of {rows.length} submissions.</p>
+      <SubmissionsFilters
+        selectedType={params.type}
+        selectedStatus={params.status}
+        dateFrom={params.dateFrom}
+        dateTo={params.dateTo}
+      />
+      <p className="mt-3 text-xs text-slate-600">
+        Showing {filtered.length} of {rows.length} submissions.
+      </p>
       <div className="mt-3">
         <SubmissionsTable rows={filtered} />
       </div>

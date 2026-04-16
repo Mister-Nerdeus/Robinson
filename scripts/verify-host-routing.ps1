@@ -19,14 +19,23 @@ function Test-Url {
       Url = $Url
       StatusCode = $response.StatusCode
       Ok = $response.StatusCode -ge 200 -and $response.StatusCode -lt 400
+      Content = $response.Content
     }
   } catch {
     [PSCustomObject]@{
       Url = $Url
       StatusCode = -1
       Ok = $false
+      Content = ""
     }
   }
+}
+
+function Get-RuntimeProof {
+  param([string]$Endpoint)
+
+  $response = Invoke-WebRequest -Uri "$Endpoint/api/runtime-proof" -UseBasicParsing -TimeoutSec 20
+  return $response.Content | ConvertFrom-Json
 }
 
 function Show-Project {
@@ -57,6 +66,28 @@ Write-Host "Develop host check: $($developHostCheck.Url) status=$($developHostCh
 
 if (-not $mainHostCheck.Ok) { throw "Main host did not respond with success status" }
 if (-not $developHostCheck.Ok) { throw "Develop host did not respond with success status" }
+
+$mainProof = Get-RuntimeProof -Endpoint $MainHost
+$developProof = Get-RuntimeProof -Endpoint $DevelopHost
+
+if ($mainProof.mode -ne "production" -or $mainProof.branchIntent -ne "main" -or -not $mainProof.seoAllowIndexing) {
+  throw "Main runtime-proof identity mismatch"
+}
+
+if ($developProof.mode -ne "demo" -or $developProof.branchIntent -ne "develop" -or $developProof.seoAllowIndexing) {
+  throw "Develop runtime-proof identity mismatch"
+}
+
+if (
+  [string]::IsNullOrWhiteSpace($developProof.deploymentProvenance.commitSha) -or
+  [string]::IsNullOrWhiteSpace($developProof.deploymentProvenance.ref) -or
+  [string]::IsNullOrWhiteSpace($developProof.deploymentProvenance.buildTimestampUtc)
+) {
+  throw "Develop runtime-proof must include nonblank provenance fields"
+}
+
+Write-Host "Main proof: mode=$($mainProof.mode) branchIntent=$($mainProof.branchIntent) seoAllowIndexing=$($mainProof.seoAllowIndexing)"
+Write-Host "Develop proof: mode=$($developProof.mode) branchIntent=$($developProof.branchIntent) seoAllowIndexing=$($developProof.seoAllowIndexing)"
 
 Show-Project -Name $MainProject -ExpectedPort $MainPort
 Show-Project -Name $DevelopProject -ExpectedPort $DevelopPort

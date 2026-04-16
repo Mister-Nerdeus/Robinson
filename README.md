@@ -6,9 +6,18 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Branch deploy mapping: [`docs/branch-deploy-contract.md`](docs/branch-deploy-contract.md)
 - Cloudflare routing map: [`docs/cloudflare-routing-map.md`](docs/cloudflare-routing-map.md)
 - Runtime identity: [`docs/runtime-identity-contract.md`](docs/runtime-identity-contract.md)
+- Runtime host proof: [`docs/runtime-host-proof-contract.md`](docs/runtime-host-proof-contract.md)
+- Review/admin access protection: [`docs/review-surface-access-contract.md`](docs/review-surface-access-contract.md)
 - Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
 - Promotion runbook: [`docs/branch-promotion-runbook.md`](docs/branch-promotion-runbook.md)
-- Proof pack: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md)
+- Proof packs: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md), [`docs/v4-proof-pack.md`](docs/v4-proof-pack.md)
+
+## Feature Contracts
+- Contact form truth: [`docs/contact-form-truth-contract.md`](docs/contact-form-truth-contract.md)
+- Follow-up UX: [`docs/request-followup-ux-contract.md`](docs/request-followup-ux-contract.md)
+- Public trust voice: [`docs/public-trust-voice-contract.md`](docs/public-trust-voice-contract.md)
+- Notification delivery proof: [`docs/notification-delivery-proof-contract.md`](docs/notification-delivery-proof-contract.md)
+- Submissions lifecycle workspace: [`docs/submissions-workspace-lifecycle-contract.md`](docs/submissions-workspace-lifecycle-contract.md)
 
 ## Environment Templates
 - Local default: `.env.example`
@@ -20,7 +29,7 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Deploy main: `powershell -ExecutionPolicy Bypass -File scripts/deploy-main.ps1`
 - Deploy develop: `powershell -ExecutionPolicy Bypass -File scripts/deploy-develop.ps1`
 - Verify host routing: `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app`
-- Verify both envs: `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app`
+- Verify both envs: `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1 -MainHost https://robinson.hearthcore.app -DevelopHost https://robinson-demo.hearthcore.app -DevelopReviewAccessKey <review_access_secret>`
 
 ## App Verification
 - Full gate: `npm run verify:v1`

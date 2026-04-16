@@ -41,15 +41,24 @@ async function run() {
   const rows = await getSubmissions();
   assert.ok(rows.length > 0, "Submission storage should contain at least one record");
 
+  process.env.RUNTIME_MODE = "demo";
   process.env.LOCAL_ONLY_MODE = "false";
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
-  process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "false";
-  const blocked = await GET();
-  assert.equal(blocked.status, 403, "Admin GET must be blocked when local-only mode is off without override");
-
   process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "true";
-  const open = await GET();
-  assert.equal(open.status, 200, "Admin GET must open when explicit admin override is enabled");
+  process.env.REVIEW_ACCESS_COOKIE_NAME = "robinson_review_access";
+  process.env.REVIEW_ACCESS_KEY = "smoke-review-access-secret";
+
+  const blocked = await GET(new Request("http://localhost/api/submissions"));
+  assert.equal(blocked.status, 401, "Admin GET must be blocked without review access cookie");
+
+  const open = await GET(
+    new Request("http://localhost/api/submissions", {
+      headers: {
+        cookie: "robinson_review_access=smoke-review-access-secret",
+      },
+    }),
+  );
+  assert.equal(open.status, 200, "Admin GET must open with valid review access cookie");
 
   console.log("[smoke] routes and submission path pass");
 }

@@ -62,6 +62,15 @@ export default function SepticCleaningPage() {
               </ul>
             </div>
           </div>
+          <div className="mt-5 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.septicCleaning.nextSteps.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-slate-700">{servicesContent.septicCleaning.responseExpectation}</p>
+          </div>
         </div>
         <RequestForm type="septic-service" title="Request Septic Service" />
       </div>

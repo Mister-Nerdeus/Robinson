@@ -4,6 +4,7 @@ import type { SubmissionRecord } from "@/lib/forms/types";
 import { getSubmissionSummaryFields } from "@/lib/forms/types";
 import type { DeliveryResult } from "./types";
 import { appendNotificationLog } from "./log";
+import { getRuntimeEnv } from "@/lib/runtime/env";
 
 const submissionTypeLabels: Record<SubmissionRecord["type"], string> = {
   general: "General Contact",
@@ -14,7 +15,8 @@ const submissionTypeLabels: Record<SubmissionRecord["type"], string> = {
 };
 
 function renderSubject(record: SubmissionRecord) {
-  return `[${submissionTypeLabels[record.type]}] New intake - ${record.fullName}`;
+  const base = `[${submissionTypeLabels[record.type]}] New intake - ${record.fullName}`;
+  return notificationConfig.subjectPrefix ? `${notificationConfig.subjectPrefix} ${base}` : base;
 }
 
 function renderTypeSpecificLines(record: SubmissionRecord): string[] {
@@ -80,11 +82,41 @@ async function getEtherealAccount() {
   return etherealAccountPromise;
 }
 
+function validateDevelopSafeInbox() {
+  const env = getRuntimeEnv();
+  if (env.mode !== "demo" || notificationConfig.mode !== "smtp") {
+    return null;
+  }
+
+  const pattern = new RegExp(notificationConfig.developSafeInboxPattern, "i");
+  if (!pattern.test(notificationConfig.toEmail)) {
+    return `Develop SMTP delivery requires NOTIFICATION_TO_EMAIL to match pattern: ${notificationConfig.developSafeInboxPattern}`;
+  }
+
+  return null;
+}
+
 export async function sendSubmissionNotification(record: SubmissionRecord): Promise<DeliveryResult> {
   const subject = renderSubject(record);
   const text = renderText(record);
 
   try {
+    const developSafetyError = validateDevelopSafeInbox();
+    if (developSafetyError) {
+      const result: DeliveryResult = {
+        ok: false,
+        channel: notificationConfig.mode,
+        error: developSafetyError,
+      };
+      await appendNotificationLog({
+        ts: new Date().toISOString(),
+        result,
+        submissionId: record.id,
+        type: record.type,
+      });
+      return result;
+    }
+
     if (notificationConfig.mode === "smtp") {
       const transporter = nodemailer.createTransport({
         host: notificationConfig.smtp.host,

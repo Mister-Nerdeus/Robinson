@@ -1,13 +1,11 @@
 # Main/Develop Deploy Proof Pack
 
 ## Scope
-Proof artifacts for issues `#4877` to `#4882`.
+Proof artifacts for issues `#35` to `#42`.
 
 ## Branch/host topology
 - Main branch host: `https://robinson.hearthcore.app`
 - Develop branch host: `https://robinson-demo.hearthcore.app`
-- Contract reference: `docs/branch-deploy-contract.md`
-- Cloudflare map reference: `docs/cloudflare-routing-map.md`
 
 ## Verification commands
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-host-routing.ps1`
@@ -15,20 +13,27 @@ Proof artifacts for issues `#4877` to `#4882`.
 - `npm run test:runtime-contract`
 - `npm run test:seo-contract`
 
-## Evidence checklist
-- GitHub branches visible (`main`, `develop`)
-- Docker project containers for `robinson-main` and `robinson-develop`
-- Host checks for both public URLs
-- Footer behavior check:
-- main = no debug/runtime stamp
-- develop = review/runtime surfaces with nonblank provenance
+## Runtime host proof
+- Endpoint: `/api/runtime-proof`
+- Main: production + main intent + indexing enabled.
+- Develop: demo + develop intent + nonblank provenance.
 
-## Captured screenshots (2026-04-15)
-- `docs/screenshots/main-home-footer-2026-04-15.png`
-- `docs/screenshots/develop-home-footer-2026-04-15.png`
-- `docs/screenshots/develop-contact-default-2026-04-15.png`
-- `docs/screenshots/develop-contact-general-lane-2026-04-15.png`
+## Access protection proof
+- Anonymous `/admin/submissions` blocked on develop.
+- Authorized develop access succeeds with `?review_access=...`.
+- Main admin route blocked.
+
+## Notification proof
+- Develop SMTP route configured to controlled inbox with `[DEVELOP PROOF]` prefix.
+
+## Captured screenshots (2026-04-16)
+- `docs/screenshots/develop-admin-blocked-anonymous-2026-04-16.png`
+- `docs/screenshots/develop-admin-authorized-2026-04-16.png`
+- `docs/screenshots/contact-neutral-default-2026-04-16.png`
+- `docs/screenshots/contact-general-selected-2026-04-16.png`
+- `docs/screenshots/runtime-proof-main-2026-04-16.png`
+- `docs/screenshots/runtime-proof-develop-2026-04-16.png`
 
 ## Operator notes
-- Store screenshots in `docs/screenshots/` using date-stamped names.
-- Keep command output transcript in deployment ticket for audit continuity.
+- Keep Cloudflare route and tunnel ingress aligned with `docs/cloudflare-routing-map.md`.
+- Keep proof artifacts date-stamped in `docs/screenshots/`.

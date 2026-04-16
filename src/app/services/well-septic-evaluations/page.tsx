@@ -58,6 +58,15 @@ export default function WellSepticEvaluationsPage() {
               </ul>
             </div>
           </div>
+          <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {servicesContent.evaluations.nextSteps.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-slate-700">{servicesContent.evaluations.responseExpectation}</p>
+          </div>
           <div className="rounded-md bg-[#f5eded] p-3">
             <Link className="font-semibold underline" href="/realtors">
               Open Realtor Resources

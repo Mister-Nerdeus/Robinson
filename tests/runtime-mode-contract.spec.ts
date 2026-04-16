@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import {
+  hasValidReviewAccessCookie,
   isAdminReviewEnabled,
   shouldRenderDeploymentStamp,
   validateDeploymentProvenanceForRuntime,
@@ -10,12 +11,29 @@ function run() {
   process.env.RUNTIME_MODE = "demo";
   process.env.LOCAL_ONLY_MODE = "false";
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
-  process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "false";
-  process.env.REVIEW_SURFACES_VISIBLE = "true";
-  assert.equal(isAdminReviewEnabled(), false, "admin review must be blocked outside local mode without explicit override");
-
   process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "true";
-  assert.equal(isAdminReviewEnabled(), true, "admin review opens only with explicit override");
+  process.env.REVIEW_SURFACES_VISIBLE = "true";
+  process.env.REVIEW_ACCESS_COOKIE_NAME = "robinson_review_access";
+  process.env.REVIEW_ACCESS_KEY = "";
+
+  assert.equal(
+    isAdminReviewEnabled(),
+    false,
+    "admin review must remain blocked without explicit review access key",
+  );
+
+  process.env.REVIEW_ACCESS_KEY = "demo-review-access-secret";
+  assert.equal(isAdminReviewEnabled(), true, "admin review opens only with policy + review secret");
+  assert.equal(
+    hasValidReviewAccessCookie("robinson_review_access=demo-review-access-secret"),
+    true,
+    "review cookie must validate when correct",
+  );
+  assert.equal(
+    hasValidReviewAccessCookie("robinson_review_access=wrong"),
+    false,
+    "review cookie must fail when wrong",
+  );
 
   process.env.DEPLOYMENT_STAMP_VISIBLE = "true";
   process.env.DEPLOY_COMMIT_SHA = "";
@@ -37,12 +55,13 @@ function run() {
 
   assert.doesNotThrow(
     () => validateRuntimeIdentityForRender(),
-    "demo runtime identity should pass when review visibility and provenance are complete",
+    "demo runtime identity should pass when review visibility, access control, and provenance are complete",
   );
 
   process.env.RUNTIME_MODE = "production";
   process.env.REVIEW_SURFACES_VISIBLE = "false";
   process.env.DEPLOYMENT_STAMP_VISIBLE = "false";
+  process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "false";
   process.env.SEO_ALLOW_INDEXING = "true";
 
   assert.equal(shouldRenderDeploymentStamp(), false, "production must not render deployment stamp");
@@ -52,14 +71,14 @@ function run() {
     "production runtime identity should pass with public-safe settings",
   );
 
-  process.env.REVIEW_SURFACES_VISIBLE = "true";
+  process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
   assert.throws(
     () => validateRuntimeIdentityForRender(),
-    /REVIEW_SURFACES_VISIBLE=false/,
-    "production must reject review-surface visibility",
+    /ENABLE_ADMIN_SUBMISSIONS_REVIEW=false/,
+    "production must reject admin review surface enablement",
   );
 
-  console.log("[runtime] mode and provenance guards pass");
+  console.log("[runtime] mode, access-control, and provenance guards pass");
 }
 
 run();

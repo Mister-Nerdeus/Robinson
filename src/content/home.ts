@@ -34,9 +34,9 @@ export const homeContent = {
     },
   ],
   trustPanel: {
-    title: "Local trust, source-backed",
+    title: "Trusted across West Michigan",
     body:
-      "Trust claims shown on this site are governed by the claim registry and tied to documented source evidence.",
+      "Families, Realtors, and local businesses call Robinson because the team shows up prepared, communicates clearly, and stands behind the work.",
     highlights: [
       "Family owned and operated since 1979.",
       "24/7 emergency septic response remains call-first.",

@@ -41,7 +41,7 @@ export const company: CompanyProfile = {
     "Robinson Septic Tank Cleaning LLC",
   ],
   tagline: "24/7 emergency septic service, pumping, evaluations, rentals, and commercial support across West Michigan.",
-  trustHeadline: "Family owned and operated since 1979",
+  trustHeadline: "Local service you can count on since 1979",
   primaryPhone: "(616) 636-5565",
   secondaryPhone: "(616) 887-2060",
   fax: "(231) 937-8383",

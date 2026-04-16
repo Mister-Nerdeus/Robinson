@@ -27,6 +27,13 @@ export const servicesContent = {
       "Gate, fence, pet, or access instructions",
       "Preferred service date or deadline",
     ],
+    nextSteps: [
+      "Call-first emergencies are triaged immediately and routed to dispatch.",
+      "The request form details are reviewed to confirm access and equipment needs.",
+      "Robinson follows up with scheduling, arrival window, and any prep instructions.",
+    ],
+    responseExpectation:
+      "Active emergency symptoms should be called in immediately. Routine requests are handled as quickly as current field load allows.",
     cta: "/services/septic-cleaning",
   },
   evaluations: {
@@ -56,6 +63,13 @@ export const servicesContent = {
       "Access instructions (lockbox, gate, pets)",
       "Target timeline and contract milestones",
     ],
+    nextSteps: [
+      "Your role, closing timeline, and occupancy details are reviewed first.",
+      "Robinson confirms any missing access or contact details before scheduling.",
+      "A follow-up confirms next scheduling steps for the transaction team.",
+    ],
+    responseExpectation:
+      "Timeline-sensitive requests are prioritized based on closing pressure and current schedule availability.",
     cta: "/services/well-septic-evaluations",
   },
   portableToilets: {
@@ -85,6 +99,13 @@ export const servicesContent = {
       "Ground/access limitations",
       "Service frequency expectations",
     ],
+    nextSteps: [
+      "Robinson reviews quantity, duration, and site conditions.",
+      "If needed, staff confirms placement and service-frequency assumptions.",
+      "A follow-up provides next scheduling and delivery planning details.",
+    ],
+    responseExpectation:
+      "Most rental requests receive a follow-up after availability and route planning are checked.",
     cta: "/services/portable-toilets",
   },
   commercial: {
@@ -114,6 +135,13 @@ export const servicesContent = {
       "Access windows and safety requirements",
       "Any required service cadence",
     ],
+    nextSteps: [
+      "Facility details and service type are reviewed for routing.",
+      "Robinson confirms on-site contact and any compliance constraints.",
+      "Follow-up covers recommended next service window and logistics.",
+    ],
+    responseExpectation:
+      "Urgent operational issues are prioritized first, with routine commercial requests scheduled by capacity and route.",
     cta: "/services/commercial",
   },
 };
