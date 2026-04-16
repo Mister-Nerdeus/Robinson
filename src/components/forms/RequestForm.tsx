@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
@@ -10,11 +10,30 @@ type FormFieldConfig = {
   name: string;
   label: string;
   required?: boolean;
-  type?: "text" | "email" | "date" | "tel" | "number";
+  type?: "text" | "email" | "date" | "tel" | "number" | "textarea";
   placeholder?: string;
   helpText?: string;
   options?: Array<{ value: string; label: string }>;
   min?: string;
+  inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
+  rows?: number;
+  span?: "full" | "half";
+};
+
+type CheckboxGroupConfig = {
+  name: string;
+  label: string;
+  required?: boolean;
+  helpText?: string;
+  options: Array<{ value: string; label: string }>;
+};
+
+type FormSection = {
+  id: string;
+  title: string;
+  description?: string;
+  fields?: FormFieldConfig[];
+  checkboxGroups?: CheckboxGroupConfig[];
 };
 
 type Props = {
@@ -26,13 +45,13 @@ const helperByType: Record<SubmissionType, string> = {
   general:
     "General fallback lane. For active emergencies, calling is fastest. Use this form for non-urgent questions or detailed follow-up requests.",
   "septic-service":
-    "For active backups or overflows, call immediately. Include tank and site access details below to reduce dispatch follow-up.",
+    "For active backups or overflows, call immediately. This form captures dispatch details that reduce callback delays.",
   evaluation:
-    "Share sale role, timeline, and occupancy context so evaluation scheduling can match deadline pressure.",
+    "Share sale role, timeline, and property access context so evaluation scheduling can match deadline pressure.",
   rental:
-    "Include unit count, duration, and site type so rental staging and service cadence can be quoted correctly.",
+    "Include unit count, duration, and site setup details so rental staging and service cadence can be quoted correctly.",
   "commercial-service":
-    "Use this intake for facility and business requests so dispatch has location context, service scope, and an on-site contact.",
+    "Use this intake for facility requests so dispatch has site location, service context, and on-site contact details.",
 };
 
 const submitLabelByType: Record<SubmissionType, string> = {
@@ -43,169 +62,556 @@ const submitLabelByType: Record<SubmissionType, string> = {
   "commercial-service": "Request Commercial Service",
 };
 
-const laneSpecificFields: Record<SubmissionType, FormFieldConfig[]> = {
-  general: [
-    {
-      name: "topic",
-      label: "Request Topic",
-      required: true,
-      options: [
-        { value: "general-question", label: "General Question" },
-        { value: "billing", label: "Billing / Account" },
-        { value: "schedule-followup", label: "Scheduling Follow-up" },
-        { value: "other", label: "Other" },
-      ],
-    },
-  ],
-  "septic-service": [
-    { name: "tankSizeGallons", label: "Tank Size (Gallons)", required: true },
-    { name: "tankCount", label: "Tank Count", required: true, type: "number", min: "1" },
-    {
-      name: "lidsExposed",
-      label: "Are tank lids exposed?",
-      required: true,
-      options: [
-        { value: "yes", label: "Yes" },
-        { value: "no", label: "No" },
-        { value: "unknown", label: "Unknown" },
-      ],
-    },
-    {
-      name: "backupSigns",
-      label: "Current Warning Signs",
-      required: true,
-      helpText: "Example: sewage backup, strong odors, pooling water.",
-    },
-  ],
-  evaluation: [
-    {
-      name: "roleInSale",
-      label: "Your Role in Sale",
-      required: true,
-      options: [
-        { value: "buyer", label: "Buyer" },
-        { value: "seller", label: "Seller" },
-        { value: "realtor", label: "Realtor" },
-        { value: "other", label: "Other" },
-      ],
-    },
-    { name: "brokerageOrCompany", label: "Brokerage / Company" },
-    { name: "closingDate", label: "Closing Date", type: "date" },
-    {
-      name: "occupancyStatus",
-      label: "Property Occupancy Status",
-      required: true,
-      options: [
-        { value: "occupied", label: "Occupied" },
-        { value: "vacant", label: "Vacant" },
-        { value: "tenant-occupied", label: "Tenant Occupied" },
-        { value: "unknown", label: "Unknown" },
-      ],
-    },
-  ],
-  rental: [
-    {
-      name: "eventType",
-      label: "Event / Jobsite Type",
-      required: true,
-      options: [
-        { value: "construction", label: "Construction Site" },
-        { value: "residential-project", label: "Residential Project" },
-        { value: "public-event", label: "Public Event" },
-        { value: "private-event", label: "Private Event" },
-      ],
-    },
-    { name: "unitCount", label: "Unit Count", required: true, type: "number", min: "1" },
-    {
-      name: "rentalDuration",
-      label: "Rental Duration",
-      required: true,
-      placeholder: "Example: 2 weeks",
-    },
-    {
-      name: "serviceFrequency",
-      label: "Service Frequency",
-      required: true,
-      options: [
-        { value: "weekly", label: "Weekly" },
-        { value: "twice-weekly", label: "Twice Weekly" },
-        { value: "event-only", label: "One-time Event" },
-      ],
-    },
-    {
-      name: "siteType",
-      label: "Site Conditions",
-      required: true,
-      options: [
-        { value: "easy-truck-access", label: "Easy Truck Access" },
-        { value: "limited-access", label: "Limited Access" },
-        { value: "requires-coordination", label: "Requires On-site Coordination" },
-      ],
-    },
-  ],
-  "commercial-service": [
-    { name: "facilityName", label: "Facility / Business Name", required: true },
-    {
-      name: "facilityType",
-      label: "Facility Type",
-      required: true,
-      options: [
-        { value: "restaurant", label: "Restaurant / Food Service" },
-        { value: "industrial", label: "Industrial" },
-        { value: "retail", label: "Retail" },
-        { value: "institutional", label: "Institutional / School" },
-        { value: "other", label: "Other" },
-      ],
-    },
-    {
-      name: "serviceNeeded",
-      label: "Service Needed",
-      required: true,
-      options: [
-        { value: "grease-trap", label: "Grease Trap Cleaning" },
-        { value: "lift-pump", label: "Lift Pump Service" },
-        { value: "septic-pumping", label: "Commercial Septic Pumping" },
-        { value: "inspection", label: "Inspection / Troubleshooting" },
-      ],
-    },
-    {
-      name: "greaseTrapCount",
-      label: "Number of Tanks / Traps",
-      required: true,
-      type: "number",
-      min: "1",
-    },
-    { name: "onSiteContact", label: "On-site Contact Name + Role", required: true },
-  ],
-};
+const urgencyOptions = [
+  { value: "normal", label: "Normal" },
+  { value: "urgent", label: "Urgent (same/next day)" },
+  { value: "emergency", label: "Emergency" },
+];
 
-const baseFields: FormFieldConfig[] = [
+const locationFieldsRequired: FormFieldConfig[] = [
+  { name: "streetAddress", label: "Street Address", required: true, placeholder: "123 Main St" },
+  { name: "city", label: "City", required: true, placeholder: "Pierson" },
+  {
+    name: "zip",
+    label: "ZIP",
+    required: true,
+    placeholder: "49339",
+    inputMode: "numeric",
+    helpText: "5-digit ZIP code",
+  },
+];
+
+const locationFieldsOptional: FormFieldConfig[] = [
+  {
+    name: "streetAddress",
+    label: "Street Address (if service location applies)",
+    placeholder: "123 Main St",
+  },
+  { name: "city", label: "City (if known)", placeholder: "Pierson" },
+  {
+    name: "zip",
+    label: "ZIP (if known)",
+    placeholder: "49339",
+    inputMode: "numeric",
+  },
+];
+
+const sharedContactFields: FormFieldConfig[] = [
   { name: "fullName", label: "Full Name", required: true },
   { name: "phone", label: "Best Phone", type: "tel", required: true },
   { name: "email", label: "Email", type: "email", required: true },
-  { name: "address", label: "Service Address", required: true },
+];
+
+const sharedSchedulingFields: FormFieldConfig[] = [
   { name: "preferredDate", label: "Preferred Date", type: "date" },
   {
     name: "urgency",
     label: "Urgency",
     required: true,
-    options: [
-      { value: "normal", label: "Normal" },
-      { value: "urgent", label: "Urgent (same/next day)" },
-      { value: "emergency", label: "Emergency" },
-    ],
+    options: urgencyOptions,
   },
 ];
+
+const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
+  general: [
+    {
+      id: "general-topic",
+      title: "Request Type",
+      fields: [
+        {
+          name: "topic",
+          label: "Request Topic",
+          required: true,
+          options: [
+            { value: "general-question", label: "General Question" },
+            { value: "billing", label: "Billing / Account" },
+            { value: "schedule-followup", label: "Scheduling Follow-up" },
+            { value: "other", label: "Other" },
+          ],
+        },
+        {
+          name: "serviceLocationInvolved",
+          label: "Does this request involve on-site service?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unsure", label: "Unsure" },
+          ],
+          helpText: "If yes, add structured location details below.",
+        },
+      ],
+    },
+  ],
+  "septic-service": [
+    {
+      id: "septic-system",
+      title: "System Details",
+      fields: [
+        {
+          name: "tankSizeGallons",
+          label: "Tank Size",
+          required: true,
+          options: [
+            { value: "500", label: "500 gallons" },
+            { value: "750", label: "750 gallons" },
+            { value: "1000", label: "1000 gallons" },
+            { value: "1250", label: "1250 gallons" },
+            { value: "1500", label: "1500 gallons" },
+            { value: "2000-plus", label: "2000+ gallons" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "tankCount",
+          label: "Tank Count",
+          required: true,
+          type: "number",
+          min: "1",
+        },
+        {
+          name: "lidsExposed",
+          label: "Are tank lids exposed?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "tankLocationKnown",
+          label: "Is tank location known?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unsure", label: "Unsure" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "septic-problem",
+      title: "Problem Details",
+      checkboxGroups: [
+        {
+          name: "problemSigns",
+          label: "What are you seeing?",
+          required: true,
+          helpText: "Select all that apply. If unknown, choose Unknown.",
+          options: [
+            { value: "sewage-backup", label: "Sewage backup" },
+            { value: "toilet-wont-flush", label: "Toilet won't flush" },
+            { value: "tub-sink-backup", label: "Tub/sink backup" },
+            { value: "standing-water-yard", label: "Standing water in yard" },
+            { value: "strong-odor", label: "Strong odor" },
+            { value: "slow-drains", label: "Slow drains" },
+            { value: "septic-alarm", label: "Septic alarm going off" },
+            { value: "routine-pumping", label: "No active problem, routine pumping" },
+            { value: "unknown", label: "Unknown" },
+            { value: "other", label: "Other" },
+          ],
+        },
+      ],
+      fields: [
+        {
+          name: "additionalWarningDetails",
+          label: "Additional warning details",
+          type: "textarea",
+          rows: 3,
+          placeholder: "Tell us what you are seeing and where.",
+          span: "full",
+        },
+      ],
+    },
+    {
+      id: "septic-access",
+      title: "Access & Scheduling",
+      checkboxGroups: [
+        {
+          name: "accessIssues",
+          label: "Access issues",
+          required: true,
+          helpText: "Select all that apply.",
+          options: [
+            { value: "gate", label: "Gate" },
+            { value: "pets", label: "Pets" },
+            { value: "snow", label: "Snow" },
+            { value: "landscaping-obstacles", label: "Landscaping obstacles" },
+            { value: "parked-vehicles", label: "Parked vehicles" },
+            { value: "none", label: "None" },
+            { value: "other", label: "Other" },
+          ],
+        },
+      ],
+      fields: [
+        {
+          name: "existingCustomer",
+          label: "Existing customer?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unsure", label: "Unsure" },
+          ],
+        },
+        {
+          name: "propertyUsage",
+          label: "Residential or commercial?",
+          required: true,
+          options: [
+            { value: "residential", label: "Residential" },
+            { value: "commercial", label: "Commercial" },
+            { value: "unsure", label: "Unsure" },
+          ],
+        },
+        {
+          name: "systemPumpedBefore",
+          label: "System pumped before?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unsure", label: "Unsure" },
+          ],
+        },
+      ],
+    },
+  ],
+  evaluation: [
+    {
+      id: "evaluation-details",
+      title: "Evaluation Details",
+      fields: [
+        {
+          name: "roleInSale",
+          label: "Your Role in Sale",
+          required: true,
+          options: [
+            { value: "buyer", label: "Buyer" },
+            { value: "seller", label: "Seller" },
+            { value: "realtor", label: "Realtor" },
+            { value: "other", label: "Other" },
+          ],
+        },
+        { name: "brokerageOrCompany", label: "Brokerage / Company" },
+        { name: "closingDate", label: "Closing Date", type: "date" },
+        {
+          name: "occupancyStatus",
+          label: "Property Occupancy Status",
+          required: true,
+          options: [
+            { value: "occupied", label: "Occupied" },
+            { value: "vacant", label: "Vacant" },
+            { value: "tenant-occupied", label: "Tenant occupied" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "utilityOnStatus",
+          label: "Utilities on?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "occupantPresent",
+          label: "Occupant present during visit?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "propertyType",
+          label: "Property Type",
+          required: true,
+          options: [
+            { value: "single-family", label: "Single-family" },
+            { value: "multi-family", label: "Multi-family" },
+            { value: "vacant-land", label: "Vacant land" },
+            { value: "other", label: "Other" },
+          ],
+        },
+        {
+          name: "accessInstructions",
+          label: "Access instructions",
+          type: "textarea",
+          rows: 3,
+          placeholder: "Gate code, lockbox notes, or access constraints.",
+          span: "full",
+        },
+      ],
+    },
+  ],
+  rental: [
+    {
+      id: "rental-details",
+      title: "Rental Details",
+      fields: [
+        {
+          name: "eventType",
+          label: "Event / Jobsite Type",
+          required: true,
+          options: [
+            { value: "construction", label: "Construction site" },
+            { value: "residential-project", label: "Residential project" },
+            { value: "public-event", label: "Public event" },
+            { value: "private-event", label: "Private event" },
+          ],
+        },
+        { name: "unitCount", label: "Unit Count", required: true, type: "number", min: "1" },
+        {
+          name: "rentalDuration",
+          label: "Rental Duration",
+          required: true,
+          placeholder: "Example: 2 weeks",
+        },
+        {
+          name: "serviceFrequency",
+          label: "Service Frequency",
+          required: true,
+          options: [
+            { value: "weekly", label: "Weekly" },
+            { value: "twice-weekly", label: "Twice weekly" },
+            { value: "event-only", label: "One-time event" },
+          ],
+        },
+        {
+          name: "siteType",
+          label: "Site Conditions",
+          required: true,
+          options: [
+            { value: "easy-truck-access", label: "Easy truck access" },
+            { value: "limited-access", label: "Limited access" },
+            { value: "requires-coordination", label: "Requires coordination" },
+          ],
+        },
+        {
+          name: "handwashStationNeeded",
+          label: "Handwash station needed?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ],
+        },
+        {
+          name: "adaUnitNeeded",
+          label: "ADA unit needed?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ],
+        },
+        {
+          name: "placementSurface",
+          label: "Placement Surface",
+          required: true,
+          options: [
+            { value: "grass", label: "Grass" },
+            { value: "gravel", label: "Gravel" },
+            { value: "pavement", label: "Pavement" },
+            { value: "mixed", label: "Mixed" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "siteAccessNotes",
+          label: "Site access notes",
+          type: "textarea",
+          rows: 3,
+          placeholder: "Delivery constraints or placement notes.",
+          span: "full",
+        },
+      ],
+    },
+  ],
+  "commercial-service": [
+    {
+      id: "commercial-details",
+      title: "Commercial Service Details",
+      fields: [
+        { name: "facilityName", label: "Facility / Business Name", required: true },
+        {
+          name: "facilityType",
+          label: "Facility Type",
+          required: true,
+          options: [
+            { value: "restaurant", label: "Restaurant / Food service" },
+            { value: "industrial", label: "Industrial" },
+            { value: "retail", label: "Retail" },
+            { value: "institutional", label: "Institutional / School" },
+            { value: "other", label: "Other" },
+          ],
+        },
+        {
+          name: "serviceNeeded",
+          label: "Service Needed",
+          required: true,
+          options: [
+            { value: "grease-trap", label: "Grease trap cleaning" },
+            { value: "lift-pump", label: "Lift pump service" },
+            { value: "septic-pumping", label: "Commercial septic pumping" },
+            { value: "inspection", label: "Inspection / troubleshooting" },
+          ],
+        },
+        {
+          name: "greaseTrapCount",
+          label: "Number of tanks / traps",
+          required: true,
+          type: "number",
+          min: "1",
+        },
+        { name: "onSiteContact", label: "On-site Contact Name + Role", required: true },
+        {
+          name: "accessHours",
+          label: "Access hours",
+          placeholder: "Example: Mon-Fri 7am-4pm",
+        },
+        {
+          name: "greaseTrapLocation",
+          label: "Grease trap location",
+          required: true,
+          options: [
+            { value: "indoor", label: "Indoor" },
+            { value: "outdoor", label: "Outdoor" },
+            { value: "mixed", label: "Mixed" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "previousServiceHistoryKnown",
+          label: "Previous service history known?",
+          required: true,
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+            { value: "unknown", label: "Unknown" },
+          ],
+        },
+        {
+          name: "serviceUrgency",
+          label: "Service urgency",
+          required: true,
+          options: urgencyOptions,
+        },
+      ],
+    },
+  ],
+};
+
+const multiValueNames = new Set(["problemSigns", "accessIssues"]);
+
+const requiredCheckboxGroupsByType: Record<SubmissionType, string[]> = {
+  general: [],
+  "septic-service": ["problemSigns", "accessIssues"],
+  evaluation: [],
+  rental: [],
+  "commercial-service": [],
+};
+
+function normalizePayload(formData: FormData) {
+  const payload: Record<string, string | string[]> = {};
+
+  for (const key of new Set(formData.keys())) {
+    if (key === "companyWebsite") {
+      continue;
+    }
+
+    if (multiValueNames.has(key)) {
+      const values = formData
+        .getAll(key)
+        .map((value) => String(value).trim())
+        .filter(Boolean);
+      payload[key] = values;
+      continue;
+    }
+
+    const value = formData.get(key);
+    payload[key] = value == null ? "" : String(value).trim();
+  }
+
+  return payload;
+}
+
+function CheckboxGroup({ config }: { config: CheckboxGroupConfig }) {
+  return (
+    <fieldset className="grid gap-2 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-3">
+      <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
+      {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
+      <div className="grid gap-2 sm:grid-cols-2">
+        {config.options.map((option) => (
+          <label key={`${config.name}-${option.value}`} className="flex items-start gap-2 rounded-md border border-[#e3d8ca] bg-white px-2 py-2 text-sm">
+            <input type="checkbox" name={config.name} value={option.value} className="mt-1" />
+            <span>{option.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 
 export function RequestForm({ type, title }: Props) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [started, setStarted] = useState(false);
 
+  const locationFields = type === "general" ? locationFieldsOptional : locationFieldsRequired;
+
+  const sections = useMemo<FormSection[]>(() => {
+    const shared: FormSection[] = [
+      {
+        id: "contact",
+        title: "Contact",
+        fields: sharedContactFields,
+      },
+      {
+        id: "location",
+        title: "Location",
+        description:
+          type === "general"
+            ? "General contact can be non-location. If this request is on-site, provide location details."
+            : "Use the service location where dispatch should arrive.",
+        fields: locationFields,
+      },
+      {
+        id: "scheduling",
+        title: "Urgency & Scheduling",
+        fields: sharedSchedulingFields,
+      },
+    ];
+
+    return [...shared, ...laneSpecificSections[type]];
+  }, [locationFields, type]);
+
   async function onSubmit(formData: FormData) {
     setStatus("submitting");
     await trackEvent({ event: analyticsEvents.formSubmit, submissionType: type });
-    const payload = Object.fromEntries(formData.entries());
+
+    const requiredGroups = requiredCheckboxGroupsByType[type];
+    for (const groupName of requiredGroups) {
+      if (formData.getAll(groupName).length === 0) {
+        setMessage("Please complete required checklist fields before submitting.");
+        setStatus("error");
+        await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
+        return;
+      }
+    }
+
+    const payload = normalizePayload(formData);
+
+    if (type === "commercial-service" && typeof payload.serviceUrgency === "string" && !payload.urgency) {
+      payload.urgency = payload.serviceUrgency;
+    }
+
     try {
       const res = await fetch("/api/submissions", {
         method: "POST",
@@ -233,12 +639,13 @@ export function RequestForm({ type, title }: Props) {
     }
   }
 
-  const fields = [...baseFields, ...laneSpecificFields[type]];
-
   return (
     <form
       action={async (fd) => {
         fd.set("type", type);
+        if (!fd.get("state")) {
+          fd.set("state", "MI");
+        }
         await onSubmit(fd);
       }}
       onFocusCapture={() => {
@@ -247,7 +654,7 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-3 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
+      className="grid gap-4 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
@@ -255,31 +662,61 @@ export function RequestForm({ type, title }: Props) {
         Fastest for emergencies: call now, then submit details to speed dispatch prep.
       </p>
       <input type="hidden" name="type" value={type} />
+      <input type="hidden" name="state" value="MI" />
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        {fields.map((field) => (
-          <div key={field.name} className="sm:col-span-1">
-            <FormField
-              name={field.name}
-              label={field.label}
-              type={field.type}
-              required={field.required}
-              placeholder={field.placeholder}
-              helpText={field.helpText}
-              options={field.options}
-              min={field.min}
-            />
+      {sections.map((section) => (
+        <section key={section.id} className="grid gap-3 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-3 sm:p-4">
+          <div>
+            <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
+            {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
           </div>
-        ))}
-      </div>
 
-      <label className="grid gap-1 text-sm">
-        <span className="font-semibold">Dispatch Notes / Request Details</span>
-        <textarea className="min-h-28 rounded-md border border-[#bdb4a2] bg-white px-3 py-2" name="message" required />
-      </label>
+          {section.fields ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {section.fields.map((field) => (
+                <div key={field.name} className={field.span === "full" ? "sm:col-span-2" : "sm:col-span-1"}>
+                  <FormField
+                    name={field.name}
+                    label={field.label}
+                    type={field.type}
+                    required={field.required}
+                    placeholder={field.placeholder}
+                    helpText={field.helpText}
+                    options={field.options}
+                    min={field.min}
+                    inputMode={field.inputMode}
+                    rows={field.rows}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : null}
 
-      <button disabled={status === "submitting"} className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60" type="submit">
+          {section.checkboxGroups?.map((group) => (
+            <CheckboxGroup key={group.name} config={group} />
+          ))}
+        </section>
+      ))}
+
+      <section className="grid gap-3 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-3 sm:p-4">
+        <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
+        <FormField
+          name="message"
+          label="Dispatch Notes / Request Details"
+          required
+          type="textarea"
+          rows={5}
+          placeholder="Share anything that will help dispatch or scheduling."
+          helpText="Freeform details remain important for unusual site conditions or nuanced requests."
+        />
+      </section>
+
+      <button
+        disabled={status === "submitting"}
+        className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
+        type="submit"
+      >
         {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
       </button>
       {message ? <p className="text-sm">{message}</p> : null}

@@ -14,7 +14,26 @@ import { sendSubmissionNotification } from "@/lib/notifications/send";
 
 export async function createSubmission(input: SubmissionInput) {
   const parsed = submissionSchema.parse(input);
+
+  if (
+    parsed.type === "general" &&
+    parsed.serviceLocationInvolved === "yes" &&
+    (!parsed.streetAddress || !parsed.city || !parsed.zip)
+  ) {
+    throw new Error("General requests with on-site service must include street, city, and ZIP.");
+  }
+
   const now = new Date().toISOString();
+  const state = parsed.state || "MI";
+  const hasStructuredAddress = Boolean(parsed.streetAddress && parsed.city && parsed.zip);
+  const address = hasStructuredAddress
+    ? `${parsed.streetAddress}, ${parsed.city}, ${state} ${parsed.zip}`
+    : parsed.address || "";
+  const normalizedUrgency =
+    parsed.type === "commercial-service" && parsed.serviceUrgency
+      ? parsed.serviceUrgency
+      : parsed.urgency;
+
   const record: SubmissionRecord = {
     id: randomUUID(),
     createdAt: now,
@@ -22,6 +41,9 @@ export async function createSubmission(input: SubmissionInput) {
     lifecycleState: "new",
     internalNote: "",
     ...parsed,
+    state,
+    address,
+    urgency: normalizedUrgency,
   };
   await saveSubmission(record);
   const delivery = await sendSubmissionNotification(record);

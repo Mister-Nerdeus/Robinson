@@ -22,13 +22,22 @@ function renderSubject(record: SubmissionRecord) {
 function renderTypeSpecificLines(record: SubmissionRecord): string[] {
   switch (record.type) {
     case "general":
-      return [`Topic: ${record.topic}`];
+      return [
+        `Topic: ${record.topic}`,
+        `Service Location Involved: ${record.serviceLocationInvolved}`,
+      ];
     case "septic-service":
       return [
         `Tank Size (Gallons): ${record.tankSizeGallons}`,
         `Tank Count: ${record.tankCount}`,
         `Lids Exposed: ${record.lidsExposed}`,
-        `Backup Signs: ${record.backupSigns}`,
+        `Tank Location Known: ${record.tankLocationKnown}`,
+        `Problem Signs: ${record.problemSigns.join(", ") || "-"}`,
+        `Additional Warning Details: ${record.additionalWarningDetails || "-"}`,
+        `Access Issues: ${record.accessIssues.join(", ") || "-"}`,
+        `Existing Customer: ${record.existingCustomer}`,
+        `Property Usage: ${record.propertyUsage}`,
+        `System Pumped Before: ${record.systemPumpedBefore}`,
       ];
     case "evaluation":
       return [
@@ -36,6 +45,10 @@ function renderTypeSpecificLines(record: SubmissionRecord): string[] {
         `Brokerage/Company: ${record.brokerageOrCompany}`,
         `Closing Date: ${record.closingDate}`,
         `Occupancy Status: ${record.occupancyStatus}`,
+        `Utility On: ${record.utilityOnStatus}`,
+        `Occupant Present: ${record.occupantPresent}`,
+        `Property Type: ${record.propertyType}`,
+        `Access Instructions: ${record.accessInstructions || "-"}`,
       ];
     case "rental":
       return [
@@ -44,6 +57,10 @@ function renderTypeSpecificLines(record: SubmissionRecord): string[] {
         `Rental Duration: ${record.rentalDuration}`,
         `Service Frequency: ${record.serviceFrequency}`,
         `Site Type: ${record.siteType}`,
+        `Handwash Station Needed: ${record.handwashStationNeeded}`,
+        `ADA Unit Needed: ${record.adaUnitNeeded}`,
+        `Placement Surface: ${record.placementSurface}`,
+        `Site Access Notes: ${record.siteAccessNotes || "-"}`,
       ];
     case "commercial-service":
       return [
@@ -52,6 +69,10 @@ function renderTypeSpecificLines(record: SubmissionRecord): string[] {
         `Service Needed: ${record.serviceNeeded}`,
         `Grease Trap Count: ${record.greaseTrapCount}`,
         `On-Site Contact: ${record.onSiteContact}`,
+        `Access Hours: ${record.accessHours || "-"}`,
+        `Grease Trap Location: ${record.greaseTrapLocation}`,
+        `Previous Service History Known: ${record.previousServiceHistoryKnown}`,
+        `Service Urgency: ${record.serviceUrgency}`,
       ];
   }
 }

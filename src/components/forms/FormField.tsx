@@ -8,13 +8,14 @@ type Option = {
 type FormFieldProps = {
   name: string;
   label: string;
-  type?: "text" | "email" | "date" | "tel" | "number";
+  type?: "text" | "email" | "date" | "tel" | "number" | "textarea";
   required?: boolean;
   placeholder?: string;
   helpText?: string;
   options?: Option[];
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
   min?: string;
+  rows?: number;
 };
 
 export function FormField({
@@ -27,6 +28,7 @@ export function FormField({
   options,
   inputMode,
   min,
+  rows,
 }: FormFieldProps) {
   const baseClass = "rounded-md border border-[#bdb4a2] bg-white px-3 py-3 text-base";
 
@@ -45,6 +47,14 @@ export function FormField({
             </option>
           ))}
         </select>
+      ) : type === "textarea" ? (
+        <textarea
+          className={baseClass}
+          name={name}
+          required={required}
+          placeholder={placeholder}
+          rows={rows ?? 4}
+        />
       ) : (
         <input
           className={baseClass}

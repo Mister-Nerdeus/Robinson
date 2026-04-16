@@ -3,6 +3,13 @@ import sitemap from "../src/app/sitemap";
 import robots from "../src/app/robots";
 import { buildMetadata } from "../src/lib/seo/metadata";
 
+function readRobotsIndex(value: unknown) {
+  if (typeof value === "object" && value !== null && "index" in value) {
+    return Boolean((value as { index?: boolean }).index);
+  }
+  return undefined;
+}
+
 function run() {
   process.env.RUNTIME_MODE = "demo";
   process.env.SITE_URL = "https://develop.robinsonseptic.com";
@@ -22,7 +29,7 @@ function run() {
     "canonical should use SITE_URL",
   );
 
-  assert.equal(meta.robots?.index, false, "develop/demo metadata should be noindex");
+  assert.equal(readRobotsIndex(meta.robots), false, "develop/demo metadata should be noindex");
 
   const robotsDoc = robots();
   const firstRule = Array.isArray(robotsDoc.rules) ? robotsDoc.rules[0] : robotsDoc.rules;
@@ -33,7 +40,7 @@ function run() {
   process.env.SEO_ALLOW_INDEXING = "true";
 
   const publicMeta = buildMetadata("Test", "Description", "/");
-  assert.equal(publicMeta.robots?.index, true, "public metadata should allow indexing");
+  assert.equal(readRobotsIndex(publicMeta.robots), true, "public metadata should allow indexing");
 
   const robotsPublic = robots();
   const publicRule = Array.isArray(robotsPublic.rules) ? robotsPublic.rules[0] : robotsPublic.rules;
