@@ -8,6 +8,18 @@ export const contactContent = {
     "24/7 Emergency Service is available for urgent septic problems. Structured lane forms are available online any time.",
   callout:
     "Emergency service remains call-first. Use form routing when you want to include access notes, scheduling details, and lane-specific intake fields up front.",
+  commonReasonsToRequest: [
+    "Urgent septic warning signs or active backup",
+    "Home-sale evaluation coordination",
+    "Portable rental setup and service planning",
+    "Commercial facility service support",
+  ],
+  whatToHaveReady: [
+    "Best callback number and preferred contact method",
+    "Service location address when on-site work applies",
+    "Any access restrictions (gate, pets, hours, lockbox)",
+    "Deadline or timeline constraints",
+  ],
   whatHappensNext: [
     "Emergency and urgent septic requests are triaged first, and a dispatcher reaches out quickly.",
     "Routine, evaluation, rental, and commercial requests are reviewed for scope and scheduling details.",

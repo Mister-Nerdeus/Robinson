@@ -59,7 +59,7 @@ export const septicServiceSchema = baseSchema.extend({
   type: z.literal("septic-service"),
   ...locationRequiredSchema,
   tankSizeGallons: z.enum(["500", "750", "1000", "1250", "1500", "2000-plus", "unknown"]),
-  tankCount: trimmedRequired(1),
+  tankCount: z.enum(["1", "2", "3-plus", "unknown"]),
   lidsExposed: yesNoUnknownSchema,
   tankLocationKnown: yesNoUnsureSchema,
   problemSigns: z

@@ -3,10 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
+import { RequestPageLayout } from "@/components/site/RequestPageLayout";
+import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
 import { servicesContent } from "@/content/services";
+import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(
   "Well and Septic Evaluations",
@@ -15,6 +18,8 @@ export const metadata: Metadata = buildMetadata(
 );
 
 export default function WellSepticEvaluationsPage() {
+  const callHref = `tel:+1${company.primaryPhone.replace(/\D/g, "")}`;
+
   return (
     <Section title="Well & Septic Evaluations">
       <JsonLd
@@ -29,52 +34,43 @@ export default function WellSepticEvaluationsPage() {
         <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Keep your closing timeline moving.</h2>
         <p className="mt-3 text-sm sm:text-base">This request flow is built for buyers, sellers, and Realtors who need clear communication and fast coordination.</p>
       </div>
-      <div className="grid gap-6 md:grid-cols-[1.05fr,0.95fr]">
-        <div>
-          <p className="mb-4 text-slate-800">{servicesContent.evaluations.intro}</p>
-          <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-            <Image src="/images/enhanced/tech_evaluation_ai_enhanced.jpg" alt="Robinson team member handling a residential property visit" width={1200} height={720} className="h-[320px] w-full object-cover" />
-          </div>
-          <ul className="mb-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
-            {servicesContent.evaluations.bullets.map((bullet) => (
-              <li key={bullet}>• {bullet}</li>
-            ))}
-          </ul>
-          <div className="mb-5 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Common reasons to request</h3>
-              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-                {servicesContent.evaluations.reasonsToCall.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
+      <RequestPageLayout
+        topPrimary={
+          <div className="grid gap-5">
+            <p className="text-slate-800">{servicesContent.evaluations.intro}</p>
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image src="/images/enhanced/tech_evaluation_ai_enhanced.jpg" alt="Robinson team member handling a residential property visit" width={1200} height={720} className="h-[320px] w-full object-cover" />
             </div>
-            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">What to have ready</h3>
-              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-                {servicesContent.evaluations.whatToHaveReady.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
-            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-              {servicesContent.evaluations.nextSteps.map((item) => (
-                <li key={item}>• {item}</li>
+            <ul className="grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+              {servicesContent.evaluations.bullets.map((bullet) => (
+                <li key={bullet}>• {bullet}</li>
               ))}
             </ul>
-            <p className="mt-3 text-sm text-slate-700">{servicesContent.evaluations.responseExpectation}</p>
+            <RequestSupportBlocks
+              reasons={servicesContent.evaluations.reasonsToCall}
+              whatToHaveReady={servicesContent.evaluations.whatToHaveReady}
+              nextSteps={servicesContent.evaluations.nextSteps}
+              responseExpectation={servicesContent.evaluations.responseExpectation}
+              noteTitle="Realtor workflow"
+              noteBody="If you are coordinating for multiple stakeholders, include buyer/seller/agent contacts in one request so scheduling decisions stay aligned."
+            />
           </div>
-          <div className="rounded-md bg-[#f5eded] p-3">
-            <Link className="font-semibold underline" href="/realtors">
+        }
+        topSecondary={
+          <div className="grid gap-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Timeline support</p>
+            <h3 className="font-display text-2xl text-[var(--brand)]">Closing deadline pressure?</h3>
+            <p className="text-sm text-slate-700">Call for same-day coordination when contract timelines are at risk, then submit the full request below.</p>
+            <a className="inline-flex w-fit rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white" href={callHref}>
+              Call {company.primaryPhone}
+            </a>
+            <Link className="inline-block text-sm font-semibold underline" href="/realtors">
               Open Realtor Resources
             </Link>
           </div>
-        </div>
-        <RequestForm type="evaluation" title="Request Evaluation / Realtor Service" />
-      </div>
+        }
+        form={<RequestForm type="evaluation" title="Request Evaluation / Realtor Service" />}
+      />
     </Section>
   );
 }

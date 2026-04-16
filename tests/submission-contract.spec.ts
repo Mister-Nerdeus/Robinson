@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { submissionSchema } from "../src/lib/forms/schema";
 import { createSubmission } from "../src/lib/forms/actions";
+import { getSubmissionSummaryFields } from "../src/lib/forms/types";
 
 const payloads = [
   {
@@ -109,6 +110,27 @@ const payloads = [
 ] as const;
 
 async function run() {
+  await assert.rejects(
+    createSubmission({
+      type: "general",
+      fullName: "Missing Location",
+      phone: "555-1010",
+      email: "missing-location@example.com",
+      streetAddress: "",
+      city: "",
+      zip: "",
+      state: "MI",
+      preferredDate: "",
+      urgency: "normal",
+      topic: "general-question",
+      serviceLocationInvolved: "yes",
+      message: "Need on-site help but location is missing.",
+      address: "",
+    }),
+    /on-site service must include street, city, and ZIP/i,
+    "General on-site requests should enforce structured location fields",
+  );
+
   for (const payload of payloads) {
     const parsed = submissionSchema.safeParse(payload);
     assert.ok(parsed.success, `Schema parse failed for ${payload.type}`);
@@ -120,6 +142,14 @@ async function run() {
       if (key === "type") return;
       assert.deepEqual((record as Record<string, unknown>)[key], value, `${payload.type} field dropped: ${key}`);
     });
+
+    const summaryFields = getSubmissionSummaryFields(record).map((field) => field.label);
+    assert.ok(summaryFields.length > 0, `${payload.type} summary fields missing`);
+    if (payload.type === "septic-service") {
+      assert.ok(summaryFields.includes("Problem Signs"), "Septic summary must include Problem Signs");
+      assert.ok(summaryFields.includes("Access Issues"), "Septic summary must include Access Issues");
+      assert.ok(summaryFields.includes("Warning Details"), "Septic summary must include warning details");
+    }
   }
 
   console.log("[submission-contract] all submission lanes preserve required fields");

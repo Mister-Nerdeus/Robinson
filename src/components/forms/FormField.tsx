@@ -16,6 +16,8 @@ type FormFieldProps = {
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
   min?: string;
   rows?: number;
+  value?: string;
+  onValueChange?: (name: string, value: string) => void;
 };
 
 export function FormField({
@@ -29,15 +31,23 @@ export function FormField({
   inputMode,
   min,
   rows,
+  value,
+  onValueChange,
 }: FormFieldProps) {
-  const baseClass = "rounded-md border border-[#bdb4a2] bg-white px-3 py-3 text-base";
+  const baseClass = "w-full rounded-md border border-[#bdb4a2] bg-white px-3 py-3 text-base leading-snug";
 
   return (
-    <label className="grid gap-1 text-sm">
+    <label className="grid gap-1.5 text-sm">
       <span className="font-semibold">{label}</span>
       {helpText ? <span className="text-xs text-slate-600">{helpText}</span> : null}
       {options ? (
-        <select className={baseClass} name={name} required={required} defaultValue="">
+        <select
+          className={baseClass}
+          name={name}
+          required={required}
+          value={value ?? ""}
+          onChange={(event) => onValueChange?.(name, event.target.value)}
+        >
           <option value="" disabled>
             Select one
           </option>
@@ -54,6 +64,8 @@ export function FormField({
           required={required}
           placeholder={placeholder}
           rows={rows ?? 4}
+          value={value ?? ""}
+          onChange={(event) => onValueChange?.(name, event.target.value)}
         />
       ) : (
         <input
@@ -64,6 +76,8 @@ export function FormField({
           placeholder={placeholder}
           inputMode={inputMode}
           min={min}
+          value={value ?? ""}
+          onChange={(event) => onValueChange?.(name, event.target.value)}
         />
       )}
     </label>

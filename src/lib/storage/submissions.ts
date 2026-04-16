@@ -45,6 +45,14 @@ function normalizeRecord(record: SubmissionRecord): SubmissionRecord {
       ? [accessIssuesRaw.trim()]
       : [];
 
+  const rawTankCount = String((record as { tankCount?: string }).tankCount || "").trim();
+  const normalizedTankCount =
+    rawTankCount === "1" || rawTankCount === "2" || rawTankCount === "3-plus" || rawTankCount === "unknown"
+      ? rawTankCount
+      : rawTankCount === "3" || rawTankCount === "4" || rawTankCount === "5" || rawTankCount === "6"
+        ? "3-plus"
+        : "unknown";
+
   return {
     ...record,
     lifecycleState,
@@ -60,6 +68,7 @@ function normalizeRecord(record: SubmissionRecord): SubmissionRecord {
       ? {
           problemSigns,
           accessIssues,
+          tankCount: normalizedTankCount,
           tankLocationKnown:
             (record as { tankLocationKnown?: "yes" | "no" | "unsure" }).tankLocationKnown ||
             "unsure",

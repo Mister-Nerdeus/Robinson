@@ -93,7 +93,7 @@ export function ContactIntakeRouter() {
       )}
 
       {selectedType ? (
-        <RequestForm type={selectedType} title={formTitleByType[selectedType]} />
+        <RequestForm key={selectedType} type={selectedType} title={formTitleByType[selectedType]} />
       ) : (
         <div className="rounded-xl border border-dashed border-[#ccb8b8] bg-white px-4 py-6 text-sm text-slate-700">
           Form will appear after a lane is selected.

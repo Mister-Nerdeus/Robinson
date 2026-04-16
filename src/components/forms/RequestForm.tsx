@@ -34,6 +34,7 @@ type FormSection = {
   description?: string;
   fields?: FormFieldConfig[];
   checkboxGroups?: CheckboxGroupConfig[];
+  fieldOrder?: "fields-first" | "checks-first";
 };
 
 type Props = {
@@ -69,30 +70,49 @@ const urgencyOptions = [
 ];
 
 const locationFieldsRequired: FormFieldConfig[] = [
-  { name: "streetAddress", label: "Street Address", required: true, placeholder: "123 Main St" },
-  { name: "city", label: "City", required: true, placeholder: "Pierson" },
+  {
+    name: "streetAddress",
+    label: "Service Street Address",
+    required: true,
+    placeholder: "123 Main St",
+    helpText: "Use the address where service should arrive.",
+  },
+  {
+    name: "city",
+    label: "Service City",
+    required: true,
+    placeholder: "Pierson",
+    helpText: "If mailing and service addresses differ, use the service location.",
+  },
   {
     name: "zip",
-    label: "ZIP",
+    label: "Service ZIP",
     required: true,
     placeholder: "49339",
     inputMode: "numeric",
-    helpText: "5-digit ZIP code",
+    helpText: "If unsure whether you are in the service area, still submit and Robinson will confirm.",
   },
 ];
 
 const locationFieldsOptional: FormFieldConfig[] = [
   {
     name: "streetAddress",
-    label: "Street Address (if service location applies)",
+    label: "Service Street Address",
     placeholder: "123 Main St",
+    helpText: "Use the address where service should arrive if this request needs on-site service.",
   },
-  { name: "city", label: "City (if known)", placeholder: "Pierson" },
+  {
+    name: "city",
+    label: "Service City",
+    placeholder: "Pierson",
+    helpText: "If mailing and service addresses differ, use the service location.",
+  },
   {
     name: "zip",
-    label: "ZIP (if known)",
+    label: "Service ZIP",
     placeholder: "49339",
     inputMode: "numeric",
+    helpText: "If unsure whether you are in the service area, still submit and Robinson will confirm.",
   },
 ];
 
@@ -152,6 +172,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           name: "tankSizeGallons",
           label: "Tank Size",
           required: true,
+          helpText: "If unknown, choose Unknown.",
           options: [
             { value: "500", label: "500 gallons" },
             { value: "750", label: "750 gallons" },
@@ -166,8 +187,13 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           name: "tankCount",
           label: "Tank Count",
           required: true,
-          type: "number",
-          min: "1",
+          helpText: "If unknown, choose Unknown.",
+          options: [
+            { value: "1", label: "1" },
+            { value: "2", label: "2" },
+            { value: "3-plus", label: "3+" },
+            { value: "unknown", label: "Unknown" },
+          ],
         },
         {
           name: "lidsExposed",
@@ -186,7 +212,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           options: [
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
-            { value: "unsure", label: "Unsure" },
+            { value: "unsure", label: "Unsure (that is okay)" },
           ],
         },
       ],
@@ -194,12 +220,13 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
     {
       id: "septic-problem",
       title: "Problem Details",
+      fieldOrder: "checks-first",
       checkboxGroups: [
         {
           name: "problemSigns",
           label: "What are you seeing?",
           required: true,
-          helpText: "Select all that apply. If unknown, choose Unknown.",
+          helpText: "Select all that apply. If unsure what the issue is, choose Unknown and explain briefly below.",
           options: [
             { value: "sewage-backup", label: "Sewage backup" },
             { value: "toilet-wont-flush", label: "Toilet won't flush" },
@@ -217,10 +244,10 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
       fields: [
         {
           name: "additionalWarningDetails",
-          label: "Additional warning details",
+          label: "Additional warning details (optional)",
           type: "textarea",
           rows: 3,
-          placeholder: "Tell us what you are seeing and where.",
+          placeholder: "If needed, add details about when/where symptoms appear.",
           span: "full",
         },
       ],
@@ -253,7 +280,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           options: [
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
-            { value: "unsure", label: "Unsure" },
+            { value: "unsure", label: "Unsure (that is okay)" },
           ],
         },
         {
@@ -263,7 +290,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           options: [
             { value: "residential", label: "Residential" },
             { value: "commercial", label: "Commercial" },
-            { value: "unsure", label: "Unsure" },
+            { value: "unsure", label: "Unsure (that is okay)" },
           ],
         },
         {
@@ -273,7 +300,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           options: [
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
-            { value: "unsure", label: "Unsure" },
+            { value: "unsure", label: "Unsure (that is okay)" },
           ],
         },
       ],
@@ -542,15 +569,30 @@ function normalizePayload(formData: FormData) {
   return payload;
 }
 
-function CheckboxGroup({ config }: { config: CheckboxGroupConfig }) {
+function CheckboxGroup({
+  config,
+  selectedValues,
+  onToggle,
+}: {
+  config: CheckboxGroupConfig;
+  selectedValues: string[];
+  onToggle: (name: string, value: string, checked: boolean) => void;
+}) {
   return (
-    <fieldset className="grid gap-2 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-3">
+    <fieldset className="grid gap-3 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4">
       <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
       {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2 lg:grid-cols-2">
         {config.options.map((option) => (
-          <label key={`${config.name}-${option.value}`} className="flex items-start gap-2 rounded-md border border-[#e3d8ca] bg-white px-2 py-2 text-sm">
-            <input type="checkbox" name={config.name} value={option.value} className="mt-1" />
+          <label key={`${config.name}-${option.value}`} className="flex items-start gap-2 rounded-md border border-[#e3d8ca] bg-white px-3 py-2.5 text-sm">
+            <input
+              type="checkbox"
+              name={config.name}
+              value={option.value}
+              className="mt-1"
+              checked={selectedValues.includes(option.value)}
+              onChange={(event) => onToggle(config.name, option.value, event.target.checked)}
+            />
             <span>{option.label}</span>
           </label>
         ))}
@@ -563,11 +605,13 @@ export function RequestForm({ type, title }: Props) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [started, setStarted] = useState(false);
+  const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const [multiValues, setMultiValues] = useState<Record<string, string[]>>({});
 
   const locationFields = type === "general" ? locationFieldsOptional : locationFieldsRequired;
 
   const sections = useMemo<FormSection[]>(() => {
-    const shared: FormSection[] = [
+    const baseShared: FormSection[] = [
       {
         id: "contact",
         title: "Contact",
@@ -578,7 +622,7 @@ export function RequestForm({ type, title }: Props) {
         title: "Location",
         description:
           type === "general"
-            ? "General contact can be non-location. If this request is on-site, provide location details."
+            ? "General contact stays location-light until on-site service is relevant."
             : "Use the service location where dispatch should arrive.",
         fields: locationFields,
       },
@@ -589,8 +633,38 @@ export function RequestForm({ type, title }: Props) {
       },
     ];
 
-    return [...shared, ...laneSpecificSections[type]];
+    if (type === "general") {
+      return [
+        baseShared[0],
+        ...laneSpecificSections.general,
+        baseShared[1],
+        baseShared[2],
+      ];
+    }
+
+    return [...baseShared, ...laneSpecificSections[type]];
   }, [locationFields, type]);
+
+  const serviceLocationInvolved = formValues.serviceLocationInvolved ?? "";
+  const showGeneralLocationFields =
+    type !== "general" ||
+    serviceLocationInvolved === "yes" ||
+    serviceLocationInvolved === "unsure";
+
+  function setFieldValue(name: string, value: string) {
+    setFormValues((current) => ({ ...current, [name]: value }));
+  }
+
+  function setMultiValue(name: string, value: string, checked: boolean) {
+    setMultiValues((current) => {
+      const existing = current[name] ?? [];
+      if (checked) {
+        if (existing.includes(value)) return current;
+        return { ...current, [name]: [...existing, value] };
+      }
+      return { ...current, [name]: existing.filter((item) => item !== value) };
+    });
+  }
 
   async function onSubmit(formData: FormData) {
     setStatus("submitting");
@@ -604,6 +678,12 @@ export function RequestForm({ type, title }: Props) {
         await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
         return;
       }
+    }
+
+    if (type === "general" && serviceLocationInvolved === "no") {
+      formData.set("streetAddress", "");
+      formData.set("city", "");
+      formData.set("zip", "");
     }
 
     const payload = normalizePayload(formData);
@@ -654,7 +734,7 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-4 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-4 shadow-sm sm:p-5"
+      className="grid gap-5 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-5 shadow-sm sm:p-6"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
@@ -666,40 +746,68 @@ export function RequestForm({ type, title }: Props) {
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
 
       {sections.map((section) => (
-        <section key={section.id} className="grid gap-3 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-3 sm:p-4">
+        <section key={section.id} className="grid gap-4 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-4 sm:p-5">
           <div>
             <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
             {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
           </div>
 
-          {section.fields ? (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {section.fields.map((field) => (
-                <div key={field.name} className={field.span === "full" ? "sm:col-span-2" : "sm:col-span-1"}>
-                  <FormField
-                    name={field.name}
-                    label={field.label}
-                    type={field.type}
-                    required={field.required}
-                    placeholder={field.placeholder}
-                    helpText={field.helpText}
-                    options={field.options}
-                    min={field.min}
-                    inputMode={field.inputMode}
-                    rows={field.rows}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : null}
+          {type === "general" && section.id === "location" && !showGeneralLocationFields ? (
+            <p className="rounded-md border border-[#eadfce] bg-[#fff7f1] px-3 py-2 text-xs text-slate-700">
+              Location fields appear when on-site service is marked <strong>Yes</strong> or <strong>Unsure</strong>.
+            </p>
+          ) : (
+            <>
+              {section.fieldOrder === "checks-first"
+                ? section.checkboxGroups?.map((group) => (
+                    <CheckboxGroup
+                      key={group.name}
+                      config={group}
+                      selectedValues={multiValues[group.name] ?? []}
+                      onToggle={setMultiValue}
+                    />
+                  ))
+                : null}
 
-          {section.checkboxGroups?.map((group) => (
-            <CheckboxGroup key={group.name} config={group} />
-          ))}
+              {section.fields ? (
+                <div className="grid gap-4 lg:grid-cols-2">
+                  {section.fields.map((field) => (
+                    <div key={field.name} className={field.span === "full" ? "lg:col-span-2" : "lg:col-span-1"}>
+                      <FormField
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        required={field.required}
+                        placeholder={field.placeholder}
+                        helpText={field.helpText}
+                        options={field.options}
+                        min={field.min}
+                        inputMode={field.inputMode}
+                        rows={field.rows}
+                        value={formValues[field.name] ?? ""}
+                        onValueChange={setFieldValue}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {(section.fieldOrder === undefined || section.fieldOrder === "fields-first")
+                ? section.checkboxGroups?.map((group) => (
+                    <CheckboxGroup
+                      key={group.name}
+                      config={group}
+                      selectedValues={multiValues[group.name] ?? []}
+                      onToggle={setMultiValue}
+                    />
+                  ))
+                : null}
+            </>
+          )}
         </section>
       ))}
 
-      <section className="grid gap-3 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-3 sm:p-4">
+      <section className="grid gap-4 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-4 sm:p-5">
         <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
         <FormField
           name="message"
@@ -709,6 +817,8 @@ export function RequestForm({ type, title }: Props) {
           rows={5}
           placeholder="Share anything that will help dispatch or scheduling."
           helpText="Freeform details remain important for unusual site conditions or nuanced requests."
+          value={formValues.message ?? ""}
+          onValueChange={setFieldValue}
         />
       </section>
 

@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
+import { RequestPageLayout } from "@/components/site/RequestPageLayout";
+import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { serviceSchema } from "@/lib/seo/schema";
 import { servicesContent } from "@/content/services";
+import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(
   "Portable Toilet Rentals",
@@ -14,6 +17,8 @@ export const metadata: Metadata = buildMetadata(
 );
 
 export default function PortableToiletsPage() {
+  const callHref = `tel:+1${company.primaryPhone.replace(/\D/g, "")}`;
+
   return (
     <Section title="Portable Toilet Rentals">
       <JsonLd
@@ -28,52 +33,44 @@ export default function PortableToiletsPage() {
         <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Portable rental service that is easy to schedule.</h2>
         <p className="mt-3 text-sm sm:text-base">Send delivery dates, unit counts, and site instructions in one request for faster quoting and planning.</p>
       </div>
-      <div className="grid gap-6 md:grid-cols-[1.05fr,0.95fr]">
-        <div>
-          <p className="mb-4 text-slate-800">{servicesContent.portableToilets.intro}</p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
-              <Image src="/images/enhanced/portable_toilet_single_ai_enhanced.jpg" alt="Single Robinson portable toilet on location" width={1000} height={720} className="h-[260px] w-full object-cover" />
+      <RequestPageLayout
+        topPrimary={
+          <div className="grid gap-5">
+            <p className="text-slate-800">{servicesContent.portableToilets.intro}</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+                <Image src="/images/enhanced/portable_toilet_single_ai_enhanced.jpg" alt="Single Robinson portable toilet on location" width={1000} height={720} className="h-[260px] w-full object-cover" />
+              </div>
+              <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+                <Image src="/images/enhanced/portable_toilets_group_ai_enhanced.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
+              </div>
             </div>
-            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
-              <Image src="/images/enhanced/portable_toilets_group_ai_enhanced.jpg" alt="Multiple Robinson portable toilet units staged together" width={1000} height={720} className="h-[260px] w-full object-cover" />
-            </div>
-          </div>
-          <ul className="mb-5 mt-5 grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
-            {servicesContent.portableToilets.bullets.map((bullet) => (
-              <li key={bullet}>• {bullet}</li>
-            ))}
-          </ul>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Common reasons to request</h3>
-              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-                {servicesContent.portableToilets.reasonsToCall.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">What to have ready</h3>
-              <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-                {servicesContent.portableToilets.whatToHaveReady.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="mt-5 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
-            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-              {servicesContent.portableToilets.nextSteps.map((item) => (
-                <li key={item}>• {item}</li>
+            <ul className="grid gap-2 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4 text-sm text-slate-700">
+              {servicesContent.portableToilets.bullets.map((bullet) => (
+                <li key={bullet}>• {bullet}</li>
               ))}
             </ul>
-            <p className="mt-3 text-sm text-slate-700">{servicesContent.portableToilets.responseExpectation}</p>
+            <RequestSupportBlocks
+              reasons={servicesContent.portableToilets.reasonsToCall}
+              whatToHaveReady={servicesContent.portableToilets.whatToHaveReady}
+              nextSteps={servicesContent.portableToilets.nextSteps}
+              responseExpectation={servicesContent.portableToilets.responseExpectation}
+            />
           </div>
-        </div>
-        <RequestForm type="rental" title="Request Portable Toilet Rental" />
-      </div>
+        }
+        topSecondary={
+          <div className="grid gap-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Delivery support</p>
+            <h3 className="font-display text-2xl text-[var(--brand)]">Need a fast rental quote?</h3>
+            <p className="text-sm text-slate-700">Call for immediate availability checks. Use the form below for quantity, duration, and placement details.</p>
+            <a className="inline-flex w-fit rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white" href={callHref}>
+              Call {company.primaryPhone}
+            </a>
+            <p className="text-xs text-slate-600">The grouped form helps Robinson quote accurately without repeat callback questions.</p>
+          </div>
+        }
+        form={<RequestForm type="rental" title="Request Portable Toilet Rental" />}
+      />
     </Section>
   );
 }

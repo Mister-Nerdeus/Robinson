@@ -45,7 +45,7 @@ export type GeneralSubmissionRecord = SubmissionBase & {
 export type SepticServiceSubmissionRecord = SubmissionBase & {
   type: "septic-service";
   tankSizeGallons: "500" | "750" | "1000" | "1250" | "1500" | "2000-plus" | "unknown";
-  tankCount: string;
+  tankCount: "1" | "2" | "3-plus" | "unknown";
   lidsExposed: "yes" | "no" | "unknown";
   tankLocationKnown: "yes" | "no" | "unsure";
   problemSigns: string[];
@@ -142,6 +142,7 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
         { label: "Lids Exposed", value: record.lidsExposed },
         { label: "Tank Location Known", value: record.tankLocationKnown },
         { label: "Problem Signs", value: formatList(record.problemSigns) },
+        { label: "Warning Details", value: record.additionalWarningDetails || "-" },
         { label: "Access Issues", value: formatList(record.accessIssues) },
         { label: "Existing Customer", value: record.existingCustomer },
         { label: "Property Usage", value: record.propertyUsage },
@@ -153,9 +154,11 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
         { label: "Sale Role", value: record.roleInSale },
         { label: "Closing Date", value: record.closingDate || "-" },
         { label: "Brokerage", value: record.brokerageOrCompany || "-" },
+        { label: "Occupancy", value: record.occupancyStatus },
         { label: "Utility On", value: record.utilityOnStatus },
         { label: "Occupant Present", value: record.occupantPresent },
         { label: "Property Type", value: record.propertyType },
+        { label: "Access Instructions", value: record.accessInstructions || "-" },
         ...shared,
       ];
     case "rental":
@@ -164,9 +167,11 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
         { label: "Units", value: record.unitCount },
         { label: "Duration", value: record.rentalDuration },
         { label: "Service Frequency", value: record.serviceFrequency },
+        { label: "Site Type", value: record.siteType },
         { label: "Handwash Needed", value: record.handwashStationNeeded },
         { label: "ADA Unit Needed", value: record.adaUnitNeeded },
         { label: "Placement Surface", value: record.placementSurface },
+        { label: "Site Access Notes", value: record.siteAccessNotes || "-" },
         ...shared,
       ];
     case "commercial-service":
@@ -174,6 +179,8 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
         { label: "Facility", value: record.facilityName },
         { label: "Facility Type", value: record.facilityType },
         { label: "Service Needed", value: record.serviceNeeded },
+        { label: "Trap Count", value: record.greaseTrapCount },
+        { label: "On-site Contact", value: record.onSiteContact },
         { label: "Grease Trap Location", value: record.greaseTrapLocation },
         { label: "Previous Service Known", value: record.previousServiceHistoryKnown },
         { label: "Service Urgency", value: record.serviceUrgency },

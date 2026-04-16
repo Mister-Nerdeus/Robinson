@@ -34,7 +34,7 @@ a {
 }
 
 .container {
-  width: min(1120px, 92vw);
+  width: min(1200px, 92vw);
   margin-inline: auto;
 }
 
@@ -45,6 +45,44 @@ img {
 
 .section-pad {
   padding-block: 3.35rem;
+}
+
+.request-page-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.request-page-top {
+  display: grid;
+  gap: 1rem;
+}
+
+.request-page-top-primary,
+.request-page-top-secondary,
+.request-page-form,
+.request-page-post-form {
+  min-width: 0;
+}
+
+.request-page-form {
+  border-top: 1px solid #e4d4cf;
+  padding-top: 1rem;
+}
+
+.request-page-top-secondary > * {
+  height: fit-content;
+}
+
+@media (min-width: 1024px) {
+  .request-page-top {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .request-page-form {
+    padding-top: 1.35rem;
+  }
 }
 
 @media (max-width: 767px) {

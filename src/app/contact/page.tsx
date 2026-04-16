@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { ServiceAreaBlock } from "@/components/site/ServiceAreaBlock";
+import { RequestPageLayout } from "@/components/site/RequestPageLayout";
+import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { contactContent } from "@/content/contact";
 import { ContactIntakeRouter } from "@/components/forms/ContactIntakeRouter";
+import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(
   "Contact",
@@ -13,50 +16,62 @@ export const metadata: Metadata = buildMetadata(
 );
 
 export default function ContactPage() {
+  const callHref = `tel:+1${company.primaryPhone.replace(/\D/g, "")}`;
+
   return (
     <Section title={contactContent.title}>
-      <div className="grid gap-6 md:grid-cols-[1.02fr,0.98fr]">
-        <div>
-          <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">
-              Fastest path for urgent needs
-            </p>
-            <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">
-              Call Robinson for 24/7 emergency septic service.
-            </h2>
-            <p className="mt-3 text-sm sm:text-base">
-              Choose the request lane that best matches your need. General contact stays available as a fallback.
-            </p>
-          </div>
-          <p className="mb-2">{contactContent.intro}</p>
-          <p className="mb-2 text-sm text-slate-700">{contactContent.callout}</p>
-          <p className="mb-4 text-sm">{contactContent.responseNote}</p>
+      <RequestPageLayout
+        topPrimary={
+          <div className="grid gap-5">
+            <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">
+                Fastest path for urgent needs
+              </p>
+              <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">
+                Call Robinson for 24/7 emergency septic service.
+              </h2>
+              <p className="mt-3 text-sm sm:text-base">
+                Choose the request lane that best matches your need. General contact stays available as a fallback.
+              </p>
+            </div>
+            <p>{contactContent.intro}</p>
+            <p className="text-sm text-slate-700">{contactContent.callout}</p>
+            <p className="text-sm">{contactContent.responseNote}</p>
 
-          <div className="mb-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
-            <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-              {contactContent.whatHappensNext.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
-            <p className="mt-3 text-sm text-slate-700">{contactContent.responseExpectation}</p>
-          </div>
+            <div className="overflow-hidden rounded-xl border border-[#d3c0c0]">
+              <Image
+                src="/images/enhanced/truck_full_ai_enhanced.jpg"
+                alt="Robinson service truck ready for field dispatch"
+                width={1200}
+                height={720}
+                className="h-[280px] w-full object-cover"
+              />
+            </div>
 
-          <div className="mb-4 overflow-hidden rounded-xl border border-[#d3c0c0]">
-            <Image
-              src="/images/enhanced/truck_full_ai_enhanced.jpg"
-              alt="Robinson service truck ready for field dispatch"
-              width={1200}
-              height={720}
-              className="h-[280px] w-full object-cover"
+            <RequestSupportBlocks
+              reasons={contactContent.commonReasonsToRequest}
+              whatToHaveReady={contactContent.whatToHaveReady}
+              nextSteps={contactContent.whatHappensNext}
+              responseExpectation={contactContent.responseExpectation}
             />
           </div>
-          <div className="mb-4">
-            <ServiceAreaBlock />
+        }
+        topSecondary={
+          <div className="grid gap-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">
+              Call-first emergency lane
+            </p>
+            <h3 className="font-display text-2xl text-[var(--brand)]">Need immediate septic help?</h3>
+            <p className="text-sm text-slate-700">Call now for emergency dispatch. Use form lanes below for full details and non-emergency coordination.</p>
+            <a className="inline-flex w-fit rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white" href={callHref}>
+              Call {company.primaryPhone}
+            </a>
+            <p className="text-xs text-slate-600">General lane keeps location optional until on-site service is relevant.</p>
           </div>
-        </div>
-        <ContactIntakeRouter />
-      </div>
+        }
+        form={<ContactIntakeRouter />}
+        postForm={<ServiceAreaBlock />}
+      />
     </Section>
   );
 }
