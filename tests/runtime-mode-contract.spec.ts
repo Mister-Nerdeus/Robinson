@@ -2,6 +2,7 @@ import assert from "node:assert";
 import {
   hasValidReviewAccessCookie,
   isAdminReviewEnabled,
+  shouldRenderOperatorProofChrome,
   shouldRenderDeploymentStamp,
   validateDeploymentProvenanceForRuntime,
   validateRuntimeIdentityForRender,
@@ -33,6 +34,16 @@ function run() {
     hasValidReviewAccessCookie("robinson_review_access=wrong"),
     false,
     "review cookie must fail when wrong",
+  );
+  assert.equal(
+    shouldRenderOperatorProofChrome(undefined, ""),
+    false,
+    "demo proof chrome stays hidden without explicit operator cookie",
+  );
+  assert.equal(
+    shouldRenderOperatorProofChrome(undefined, "demo-review-access-secret"),
+    true,
+    "demo proof chrome appears only with explicit operator cookie",
   );
 
   process.env.DEPLOYMENT_STAMP_VISIBLE = "true";

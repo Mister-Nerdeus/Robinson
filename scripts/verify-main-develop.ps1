@@ -1,7 +1,8 @@
 param(
   [string]$MainHost = "https://robinson.hearthcore.app",
   [string]$DevelopHost = "https://robinson-demo.hearthcore.app",
-  [string]$DevelopReviewAccessKey = ""
+  [string]$DevelopReviewAccessKey = "",
+  [string]$ProofOutDir = "docs/verification"
 )
 
 Set-StrictMode -Version Latest
@@ -22,6 +23,17 @@ function Get-StatusCode {
 }
 
 & "$PSScriptRoot/verify-host-routing.ps1" -MainHost $MainHost -DevelopHost $DevelopHost
+
+$timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH-mm-ssZ")
+$proofRoutes = @("/services/septic-cleaning", "/contact")
+& "$PSScriptRoot/verify-request-layout-parity.ps1" `
+  -TargetHost $MainHost `
+  -Routes $proofRoutes `
+  -OutputPath "$ProofOutDir/main-request-geometry-$timestamp.json"
+& "$PSScriptRoot/verify-request-layout-parity.ps1" `
+  -TargetHost $DevelopHost `
+  -Routes $proofRoutes `
+  -OutputPath "$ProofOutDir/develop-request-geometry-$timestamp.json"
 
 Write-Host "`nRuntime identity snapshots"
 $mainProof = (Invoke-WebRequest -Uri "$MainHost/api/runtime-proof" -UseBasicParsing -TimeoutSec 20).Content | ConvertFrom-Json

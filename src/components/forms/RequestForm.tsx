@@ -119,7 +119,7 @@ const locationFieldsOptional: FormFieldConfig[] = [
 const sharedContactFields: FormFieldConfig[] = [
   { name: "fullName", label: "Full Name", required: true },
   { name: "phone", label: "Best Phone", type: "tel", required: true },
-  { name: "email", label: "Email", type: "email", required: true },
+  { name: "email", label: "Email", type: "email", required: true, span: "full" },
 ];
 
 const sharedSchedulingFields: FormFieldConfig[] = [
@@ -582,7 +582,7 @@ function CheckboxGroup({
     <fieldset className="grid gap-3 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5">
       <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
       {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
-      <div className="grid gap-3 xl:grid-cols-2">
+      <div className="grid gap-3 2xl:grid-cols-2">
         {config.options.map((option) => (
           <label key={`${config.name}-${option.value}`} className="flex items-start gap-2 rounded-md border border-[#e3d8ca] bg-white px-3 py-3 text-sm leading-snug">
             <input
@@ -638,7 +638,6 @@ export function RequestForm({ type, title }: Props) {
         baseShared[0],
         ...laneSpecificSections.general,
         baseShared[1],
-        baseShared[2],
       ];
     }
 
@@ -726,6 +725,9 @@ export function RequestForm({ type, title }: Props) {
         if (!fd.get("state")) {
           fd.set("state", "MI");
         }
+        if (type === "general" && !fd.get("urgency")) {
+          fd.set("urgency", "normal");
+        }
         await onSubmit(fd);
       }}
       onFocusCapture={() => {
@@ -738,11 +740,18 @@ export function RequestForm({ type, title }: Props) {
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
-      <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
-        Fastest for emergencies: call now, then submit details to speed dispatch prep.
-      </p>
+      {type === "general" ? (
+        <p className="rounded-md border border-[#e6ded0] bg-[#fffaf3] px-3 py-2 text-xs text-slate-700">
+          Lightweight contact lane for questions and follow-up requests. If this becomes urgent, call anytime.
+        </p>
+      ) : (
+        <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
+          Fastest for emergencies: call now, then submit details to speed dispatch prep.
+        </p>
+      )}
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="state" value="MI" />
+      {type === "general" ? <input type="hidden" name="urgency" value="normal" /> : null}
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
 
       {sections.map((section) => (
@@ -770,9 +779,9 @@ export function RequestForm({ type, title }: Props) {
                 : null}
 
               {section.fields ? (
-                <div className="grid gap-4 xl:grid-cols-2">
+                <div className="grid gap-4 2xl:grid-cols-2">
                   {section.fields.map((field) => (
-                    <div key={field.name} className={field.span === "full" ? "xl:col-span-2" : "xl:col-span-1"}>
+                    <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
                       <FormField
                         name={field.name}
                         label={field.label}

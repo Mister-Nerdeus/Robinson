@@ -8,6 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { contactContent } from "@/content/contact";
 import { ContactIntakeRouter } from "@/components/forms/ContactIntakeRouter";
 import { company } from "@/config/company";
+import type { SubmissionType } from "@/lib/forms/types";
 
 export const metadata: Metadata = buildMetadata(
   "Contact",
@@ -15,8 +16,29 @@ export const metadata: Metadata = buildMetadata(
   "/contact",
 );
 
-export default function ContactPage() {
+const contactLaneSet: ReadonlySet<SubmissionType> = new Set([
+  "general",
+  "septic-service",
+  "evaluation",
+  "rental",
+  "commercial-service",
+]);
+
+type ContactPageProps = {
+  searchParams?: Promise<{
+    lane?: string | string[];
+  }>;
+};
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
   const callHref = `tel:+1${company.primaryPhone.replace(/\D/g, "")}`;
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const laneParam = resolvedSearchParams.lane;
+  const requestedLane = Array.isArray(laneParam) ? laneParam[0] : laneParam;
+  const initialLane =
+    requestedLane && contactLaneSet.has(requestedLane as SubmissionType)
+      ? (requestedLane as SubmissionType)
+      : null;
 
   return (
     <Section title={contactContent.title}>
@@ -70,7 +92,7 @@ export default function ContactPage() {
             <p className="text-xs text-slate-600">General lane keeps location optional until on-site service is relevant.</p>
           </div>
         }
-        form={<ContactIntakeRouter />}
+        form={<ContactIntakeRouter initialLane={initialLane} />}
         postForm={<ServiceAreaBlock />}
       />
     </Section>

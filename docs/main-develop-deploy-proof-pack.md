@@ -12,6 +12,7 @@ Proof artifacts for issues `#35` to `#42`.
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-main-develop.ps1`
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson.hearthcore.app`
 - `powershell -ExecutionPolicy Bypass -File scripts/verify-request-layout-parity.ps1 -TargetHost https://robinson-demo.hearthcore.app`
+- `npm run proof:ux-pack`
 - `npm run test:runtime-contract`
 - `npm run test:seo-contract`
 
@@ -33,6 +34,7 @@ Proof artifacts for issues `#35` to `#42`.
 - Current layout markers in HTML.
 - No stale right-rail grid signatures in HTML.
 - `Cache-Control` includes `no-store` for request-heavy routes.
+- `verify-main-develop.ps1` also writes JSON route artifacts for septic/contact into `docs/verification/`.
 
 ## Access protection proof
 - Anonymous `/admin/submissions` blocked on develop.
@@ -49,6 +51,8 @@ Proof artifacts for issues `#35` to `#42`.
 - `docs/screenshots/contact-general-selected-2026-04-16.png`
 - `docs/screenshots/runtime-proof-main-2026-04-16.png`
 - `docs/screenshots/runtime-proof-develop-2026-04-16.png`
+- `docs/screenshots/ux-proof-58-64/*`
+- `docs/verification/local-request-geometry-full-2026-04-16T20-09-02Z.json`
 
 ## Operator notes
 - Keep Cloudflare route and tunnel ingress aligned with `docs/cloudflare-routing-map.md`.

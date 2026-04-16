@@ -2,6 +2,7 @@
 
 ## Goal
 Review and admin surfaces must never be publicly anonymous, even on develop.
+Shared demos must remain business-facing by default, with operator proof chrome explicitly gated.
 
 ## Rules
 - `main` (`RUNTIME_MODE=production`) must hard-block admin review routes.
@@ -15,9 +16,12 @@ Review and admin surfaces must never be publicly anonymous, even on develop.
 - `src/middleware.ts` enforces route gating.
 - Access cookie is set only after `?review_access=<REVIEW_ACCESS_KEY>` on `/admin/submissions`.
 - Cookie name defaults to `robinson_review_access` and is configurable by `REVIEW_ACCESS_COOKIE_NAME`.
+- Footer/runtime proof chrome in demo is hidden unless the same review-access cookie is present.
+- This keeps operator proof available while preventing staging-style chrome on shared demos.
 
 ## Source of truth
 - Runtime policy: `src/lib/runtime/env.ts`
 - Route protection: `src/middleware.ts`
 - Admin page: `src/app/admin/submissions/page.tsx`
 - API read protection: `src/app/api/submissions/route.ts`
+- Shared footer logic: `src/components/site/Footer.tsx`

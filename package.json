@@ -21,7 +21,8 @@
     "test-stack:up": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-up.ps1",
     "test-stack:down": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-down.ps1",
     "test-stack:smoke": "node scripts/test-smoke.mjs",
-    "test-stack:verify": "docker compose -f compose.yaml --env-file .env.test -p robinson-test config && node scripts/test-smoke.mjs"
+    "test-stack:verify": "docker compose -f compose.yaml --env-file .env.test -p robinson-test config && node scripts/test-smoke.mjs",
+    "proof:ux-pack": "node scripts/capture-ux-proof-pack.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

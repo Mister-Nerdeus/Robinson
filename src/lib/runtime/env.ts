@@ -117,6 +117,31 @@ export function hasValidReviewAccessCookie(cookieHeader: string | undefined): bo
   return cookieValue.length > 0 && cookieValue === env.reviewAccessKey;
 }
 
+export function hasValidReviewAccessValue(cookieValue: string | undefined): boolean {
+  const env = getRuntimeEnv();
+  if (!isAdminReviewEnabled()) {
+    return false;
+  }
+
+  return Boolean(cookieValue && cookieValue === env.reviewAccessKey);
+}
+
+export function shouldRenderOperatorProofChrome(
+  cookieHeader: string | undefined,
+  cookieValueOverride?: string,
+): boolean {
+  const env = getRuntimeEnv();
+  if (env.mode === "production" || !env.reviewSurfacesVisible) {
+    return false;
+  }
+
+  if (cookieValueOverride !== undefined) {
+    return hasValidReviewAccessValue(cookieValueOverride);
+  }
+
+  return hasValidReviewAccessCookie(cookieHeader);
+}
+
 export function shouldRenderDeploymentStamp(): boolean {
   const env = getRuntimeEnv();
   if (env.mode === "production") {

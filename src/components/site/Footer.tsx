@@ -1,14 +1,21 @@
 import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
+import { cookies } from "next/headers";
 import { serviceAreaContent } from "@/content/serviceArea";
 import { DeploymentStamp } from "@/components/site/DeploymentStamp";
-import { getRuntimeEnv, isAdminReviewEnabled } from "@/lib/runtime/env";
+import {
+  getRuntimeEnv,
+  isAdminReviewEnabled,
+  shouldRenderOperatorProofChrome,
+} from "@/lib/runtime/env";
 
-export function Footer() {
+export async function Footer() {
   const runtime = getRuntimeEnv();
   const adminOpen = isAdminReviewEnabled();
-  const showReview = runtime.reviewSurfacesVisible && runtime.mode !== "production";
+  const cookieStore = await cookies();
+  const reviewCookieValue = cookieStore.get(runtime.reviewAccessCookieName)?.value;
+  const showReview = shouldRenderOperatorProofChrome(undefined, reviewCookieValue);
 
   return (
     <footer className="mt-12 border-t border-[#cdb7b7] bg-[#f4eeee]">

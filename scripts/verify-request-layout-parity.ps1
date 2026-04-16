@@ -1,6 +1,7 @@
 param(
   [string]$TargetHost = "https://robinson-demo.hearthcore.app",
   [string]$ExpectedContractVersion = "form-first-full-width-v2",
+  [string]$OutputPath = "",
   [string[]]$Routes = @(
     "/services/septic-cleaning",
     "/services/well-septic-evaluations",
@@ -58,6 +59,10 @@ foreach ($route in $Routes) {
     throw "Route parity failed for ${route}: missing full-width form zone marker"
   }
 
+  if ($content -notmatch 'data-request-layout-form-width="full-width"') {
+    throw "Route parity failed for ${route}: missing full-width form width marker"
+  }
+
   foreach ($signature in $staleLayoutSignatures) {
     if ($content.Contains($signature)) {
       throw "Route parity failed for ${route}: stale right-rail signature found ($signature)"
@@ -68,6 +73,9 @@ foreach ($route in $Routes) {
     Route = $route
     StatusCode = $response.StatusCode
     CacheControl = $cacheControl
+    CfCacheStatus = [string]$response.Headers["CF-Cache-Status"]
+    ETag = [string]$response.Headers["ETag"]
+    LastModified = [string]$response.Headers["Last-Modified"]
     Contract = $ExpectedContractVersion
     Result = "pass"
   }
@@ -75,3 +83,20 @@ foreach ($route in $Routes) {
 
 Write-Host "Request layout parity verification passed:"
 $results | Format-Table -AutoSize | Out-String | Write-Host
+
+if (-not [string]::IsNullOrWhiteSpace($OutputPath)) {
+  $directory = Split-Path -Parent $OutputPath
+  if (-not [string]::IsNullOrWhiteSpace($directory) -and -not (Test-Path -LiteralPath $directory)) {
+    New-Item -ItemType Directory -Path $directory -Force | Out-Null
+  }
+
+  $payload = [PSCustomObject]@{
+    generatedAtUtc = (Get-Date).ToUniversalTime().ToString("o")
+    targetHost = $TargetHost
+    expectedContractVersion = $ExpectedContractVersion
+    routes = $results
+  }
+
+  $payload | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputPath -Encoding UTF8
+  Write-Host "Saved parity report to $OutputPath"
+}
