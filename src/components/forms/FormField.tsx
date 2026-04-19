@@ -34,15 +34,16 @@ export function FormField({
   value,
   onValueChange,
 }: FormFieldProps) {
-  const baseClass = "w-full rounded-md border border-[#bdb4a2] bg-white px-3 py-3 text-base leading-snug";
+  const baseClass =
+    "min-h-11 w-full rounded-md border border-[#bdb4a2] bg-white px-3 py-2.5 text-base leading-snug text-slate-900 shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a1121f]/25 focus-visible:border-[#8f0f1a]";
 
   return (
-    <label className="grid gap-1.5 text-sm">
-      <span className="font-semibold">{label}</span>
-      {helpText ? <span className="text-xs text-slate-600">{helpText}</span> : null}
+    <label className="grid gap-2 text-sm">
+      <span className="font-semibold text-slate-900">{label}</span>
+      {helpText ? <span className="text-xs leading-relaxed text-slate-600">{helpText}</span> : null}
       {options ? (
         <select
-          className={baseClass}
+          className={`${baseClass} pr-8`}
           name={name}
           required={required}
           value={value ?? ""}
@@ -59,7 +60,7 @@ export function FormField({
         </select>
       ) : type === "textarea" ? (
         <textarea
-          className={baseClass}
+          className={`${baseClass} min-h-[8rem] py-2.5 leading-relaxed`}
           name={name}
           required={required}
           placeholder={placeholder}

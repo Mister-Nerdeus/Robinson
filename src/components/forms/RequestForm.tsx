@@ -579,17 +579,20 @@ function CheckboxGroup({
   onToggle: (name: string, value: string, checked: boolean) => void;
 }) {
   return (
-    <fieldset className="grid gap-3 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5">
+    <fieldset className="grid gap-3.5 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5">
       <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
       {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
-      <div className="grid gap-3 2xl:grid-cols-2">
+      <div className="grid gap-3.5 xl:grid-cols-2">
         {config.options.map((option) => (
-          <label key={`${config.name}-${option.value}`} className="flex items-start gap-2 rounded-md border border-[#e3d8ca] bg-white px-3 py-3 text-sm leading-snug">
+          <label
+            key={`${config.name}-${option.value}`}
+            className="flex items-start gap-2.5 rounded-md border border-[#e3d8ca] bg-white px-3.5 py-3.5 text-sm leading-snug"
+          >
             <input
               type="checkbox"
               name={config.name}
               value={option.value}
-              className="mt-1"
+              className="mt-1 h-4 w-4 accent-[var(--brand)]"
               checked={selectedValues.includes(option.value)}
               onChange={(event) => onToggle(config.name, option.value, event.target.checked)}
             />
@@ -736,7 +739,7 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-6 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-5 shadow-sm sm:p-7"
+      className="grid gap-7 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-5 shadow-sm sm:p-7"
     >
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
@@ -755,7 +758,7 @@ export function RequestForm({ type, title }: Props) {
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
 
       {sections.map((section) => (
-        <section key={section.id} className="grid gap-5 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-4 sm:p-6">
+        <section key={section.id} className="grid gap-6 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-5 sm:p-6">
           <div>
             <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
             {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
@@ -779,9 +782,9 @@ export function RequestForm({ type, title }: Props) {
                 : null}
 
               {section.fields ? (
-                <div className="grid gap-4 2xl:grid-cols-2">
+                <div className="grid gap-5 xl:grid-cols-2">
                   {section.fields.map((field) => (
-                    <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
+                    <div key={field.name} className={field.span === "full" ? "xl:col-span-2" : "xl:col-span-1"}>
                       <FormField
                         name={field.name}
                         label={field.label}
@@ -816,7 +819,7 @@ export function RequestForm({ type, title }: Props) {
         </section>
       ))}
 
-      <section className="grid gap-5 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-4 sm:p-6">
+      <section className="grid gap-6 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-5 sm:p-6">
         <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
         <FormField
           name="message"
