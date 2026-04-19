@@ -582,7 +582,7 @@ function CheckboxGroup({
     <fieldset className="grid gap-3.5 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5">
       <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
       {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
-      <div className="grid gap-3.5 xl:grid-cols-2">
+      <div className="grid gap-3.5 2xl:grid-cols-2">
         {config.options.map((option) => (
           <label
             key={`${config.name}-${option.value}`}
@@ -782,9 +782,9 @@ export function RequestForm({ type, title }: Props) {
                 : null}
 
               {section.fields ? (
-                <div className="grid gap-5 xl:grid-cols-2">
+                <div className="grid gap-5 2xl:grid-cols-2">
                   {section.fields.map((field) => (
-                    <div key={field.name} className={field.span === "full" ? "xl:col-span-2" : "xl:col-span-1"}>
+                    <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
                       <FormField
                         name={field.name}
                         label={field.label}
