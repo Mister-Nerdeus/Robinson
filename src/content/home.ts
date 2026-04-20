@@ -5,8 +5,28 @@ export const homeContent = {
     subheading:
       "Emergency septic response stays call-first, with structured online intake for evaluations, rentals, and commercial dispatch details.",
     ctaHref: "/contact",
-    ctaLabel: "Request Service",
+    ctaLabel: "Open Request Lanes",
   },
+  primaryTaskCtas: [
+    {
+      title: "Emergency septic dispatch",
+      body: "Active backups or warning signs should be call-first, then documented in the septic service lane.",
+      href: "/services/septic-cleaning",
+      ctaLabel: "Open Septic Service Lane",
+    },
+    {
+      title: "Portable rentals and event support",
+      body: "Capture quantity, duration, and placement details for faster rental quoting and route planning.",
+      href: "/services/portable-toilets",
+      ctaLabel: "Open Rental Lane",
+    },
+    {
+      title: "Commercial service requests",
+      body: "Grease trap and lift pump requests include facility context to reduce triage back-and-forth.",
+      href: "/services/commercial",
+      ctaLabel: "Open Commercial Lane",
+    },
+  ],
   lanes: [
     {
       title: "Emergency septic service",

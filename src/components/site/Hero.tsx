@@ -17,7 +17,7 @@ export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondar
   return (
     <section className="section-pad pb-5 sm:pb-6">
       <div className="container rounded-3xl border border-[#cdb3b3] bg-[var(--surface)] p-6 shadow-sm sm:p-8 md:p-10">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)] sm:text-sm">{eyebrow ?? "Robinson Septic Cleaning"}</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)] sm:text-sm">{eyebrow ?? company.publicBrand}</p>
         <h1 className="font-display text-[2.15rem] leading-[1.02] text-[var(--brand)] sm:text-4xl md:text-5xl">{heading}</h1>
         <p className="mt-4 max-w-3xl text-base text-slate-800 sm:text-lg">{subheading}</p>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">

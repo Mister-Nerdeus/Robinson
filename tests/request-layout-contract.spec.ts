@@ -7,23 +7,52 @@ function read(relativePath: string) {
 }
 
 function run() {
-  const routeFiles: Array<{ file: string; routeId: string }> = [
-    { file: "src/app/services/septic-cleaning/page.tsx", routeId: "/services/septic-cleaning" },
-    { file: "src/app/services/well-septic-evaluations/page.tsx", routeId: "/services/well-septic-evaluations" },
-    { file: "src/app/services/portable-toilets/page.tsx", routeId: "/services/portable-toilets" },
-    { file: "src/app/services/commercial/page.tsx", routeId: "/services/commercial" },
-    { file: "src/app/contact/page.tsx", routeId: "/contact" },
+  const serviceRouteFiles = [
+    "src/app/services/septic-cleaning/page.tsx",
+    "src/app/services/well-septic-evaluations/page.tsx",
+    "src/app/services/portable-toilets/page.tsx",
+    "src/app/services/commercial/page.tsx",
   ];
 
-  for (const route of routeFiles) {
-    const source = read(route.file);
+  for (const file of serviceRouteFiles) {
+    const source = read(file);
     assert.ok(
-      source.includes("RequestPageLayout"),
-      `${route.file} must use RequestPageLayout`,
+      source.includes("ServiceRequestPageTemplate"),
+      `${file} must use shared ServiceRequestPageTemplate`,
     );
+  }
+
+  const contactSource = read("src/app/contact/page.tsx");
+  assert.ok(
+    contactSource.includes("RequestPageLayout"),
+    "Contact page must use RequestPageLayout",
+  );
+  assert.ok(
+    contactSource.includes('routeId="/contact"'),
+    "Contact page must declare routeId /contact",
+  );
+
+  const templateSource = read("src/components/site/ServiceRequestPageTemplate.tsx");
+  assert.ok(
+    templateSource.includes("RequestPageLayout"),
+    "ServiceRequestPageTemplate must compose RequestPageLayout",
+  );
+  assert.ok(
+    templateSource.includes("routeId={entry.route}"),
+    "ServiceRequestPageTemplate must bind routeId from template entry",
+  );
+
+  const templateContentSource = read("src/content/serviceTemplates.ts");
+  const expectedRoutes = [
+    "/services/septic-cleaning",
+    "/services/well-septic-evaluations",
+    "/services/portable-toilets",
+    "/services/commercial",
+  ];
+  for (const routeId of expectedRoutes) {
     assert.ok(
-      source.includes(`routeId="${route.routeId}"`),
-      `${route.file} must declare routeId ${route.routeId}`,
+      templateContentSource.includes(`route: "${routeId}"`),
+      `service template content must include route ${routeId}`,
     );
   }
 

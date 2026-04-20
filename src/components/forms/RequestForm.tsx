@@ -610,6 +610,7 @@ export function RequestForm({ type, title }: Props) {
   const [started, setStarted] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [multiValues, setMultiValues] = useState<Record<string, string[]>>({});
+  const [currentStep, setCurrentStep] = useState(0);
 
   const locationFields = type === "general" ? locationFieldsOptional : locationFieldsRequired;
 
@@ -652,6 +653,10 @@ export function RequestForm({ type, title }: Props) {
     type !== "general" ||
     serviceLocationInvolved === "yes" ||
     serviceLocationInvolved === "unsure";
+  const notesStepIndex = sections.length;
+  const reviewStepIndex = sections.length + 1;
+  const totalSteps = sections.length + 2;
+  const isReviewStep = currentStep === reviewStepIndex;
 
   function setFieldValue(name: string, value: string) {
     setFormValues((current) => ({ ...current, [name]: value }));
@@ -739,8 +744,11 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-7 rounded-xl border border-[#c8c1b1] bg-[var(--surface)] p-5 shadow-sm sm:p-7"
+      className="surface-section grid gap-7 rounded-[var(--radius-section)] border border-[#c8c1b1] bg-[var(--surface)] p-[var(--space-card-pad)] sm:p-7"
     >
+      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--brand)]">
+        Step {Math.min(currentStep + 1, totalSteps)} of {totalSteps}
+      </p>
       <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
       <p className="text-sm text-slate-700">{helperByType[type]}</p>
       {type === "general" ? (
@@ -757,91 +765,170 @@ export function RequestForm({ type, title }: Props) {
       {type === "general" ? <input type="hidden" name="urgency" value="normal" /> : null}
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
 
-      {sections.map((section) => (
-        <section key={section.id} className="grid gap-6 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-5 sm:p-6">
-          <div>
-            <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
-            {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
-          </div>
+      {sections.map((section, index) => {
+        if (index !== currentStep) return null;
 
-          {type === "general" && section.id === "location" && !showGeneralLocationFields ? (
-            <p className="rounded-md border border-[#eadfce] bg-[#fff7f1] px-3 py-2 text-xs text-slate-700">
-              Location fields appear when on-site service is marked <strong>Yes</strong> or <strong>Unsure</strong>.
-            </p>
-          ) : (
-            <>
-              {section.fieldOrder === "checks-first"
-                ? section.checkboxGroups?.map((group) => (
-                    <CheckboxGroup
-                      key={group.name}
-                      config={group}
-                      selectedValues={multiValues[group.name] ?? []}
-                      onToggle={setMultiValue}
-                    />
-                  ))
-                : null}
+        return (
+          <section key={section.id} className="surface-card grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+            <div>
+              <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
+              {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
+            </div>
 
-              {section.fields ? (
-                <div className="grid gap-5 2xl:grid-cols-2">
-                  {section.fields.map((field) => (
-                    <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
-                      <FormField
-                        name={field.name}
-                        label={field.label}
-                        type={field.type}
-                        required={field.required}
-                        placeholder={field.placeholder}
-                        helpText={field.helpText}
-                        options={field.options}
-                        min={field.min}
-                        inputMode={field.inputMode}
-                        rows={field.rows}
-                        value={formValues[field.name] ?? ""}
-                        onValueChange={setFieldValue}
+            {type === "general" && section.id === "location" && !showGeneralLocationFields ? (
+              <p className="rounded-md border border-[#eadfce] bg-[#fff7f1] px-3 py-2 text-xs text-slate-700">
+                Location fields appear when on-site service is marked <strong>Yes</strong> or <strong>Unsure</strong>.
+              </p>
+            ) : (
+              <>
+                {section.fieldOrder === "checks-first"
+                  ? section.checkboxGroups?.map((group) => (
+                      <CheckboxGroup
+                        key={group.name}
+                        config={group}
+                        selectedValues={multiValues[group.name] ?? []}
+                        onToggle={setMultiValue}
                       />
-                    </div>
-                  ))}
-                </div>
-              ) : null}
+                    ))
+                  : null}
 
-              {(section.fieldOrder === undefined || section.fieldOrder === "fields-first")
-                ? section.checkboxGroups?.map((group) => (
-                    <CheckboxGroup
-                      key={group.name}
-                      config={group}
-                      selectedValues={multiValues[group.name] ?? []}
-                      onToggle={setMultiValue}
-                    />
-                  ))
-                : null}
-            </>
-          )}
+                {section.fields ? (
+                  <div className="grid gap-5 2xl:grid-cols-2">
+                    {section.fields.map((field) => (
+                      <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
+                        <FormField
+                          name={field.name}
+                          label={field.label}
+                          type={field.type}
+                          required={field.required}
+                          placeholder={field.placeholder}
+                          helpText={field.helpText}
+                          options={field.options}
+                          min={field.min}
+                          inputMode={field.inputMode}
+                          rows={field.rows}
+                          value={formValues[field.name] ?? ""}
+                          onValueChange={setFieldValue}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {(section.fieldOrder === undefined || section.fieldOrder === "fields-first")
+                  ? section.checkboxGroups?.map((group) => (
+                      <CheckboxGroup
+                        key={group.name}
+                        config={group}
+                        selectedValues={multiValues[group.name] ?? []}
+                        onToggle={setMultiValue}
+                      />
+                    ))
+                  : null}
+              </>
+            )}
+          </section>
+        );
+      })}
+
+      {currentStep === notesStepIndex ? (
+        <section className="surface-card grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+          <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
+          <FormField
+            name="message"
+            label="Dispatch Notes / Request Details"
+            required
+            type="textarea"
+            rows={5}
+            placeholder="Share anything that will help dispatch or scheduling."
+            helpText="Freeform details remain important for unusual site conditions or nuanced requests."
+            value={formValues.message ?? ""}
+            onValueChange={setFieldValue}
+          />
         </section>
-      ))}
+      ) : null}
 
-      <section className="grid gap-6 rounded-lg border border-[#ddd4c5] bg-[#fffdf9] p-5 sm:p-6">
-        <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
-        <FormField
-          name="message"
-          label="Dispatch Notes / Request Details"
-          required
-          type="textarea"
-          rows={5}
-          placeholder="Share anything that will help dispatch or scheduling."
-          helpText="Freeform details remain important for unusual site conditions or nuanced requests."
-          value={formValues.message ?? ""}
-          onValueChange={setFieldValue}
-        />
-      </section>
+      {isReviewStep ? (
+        <section className="surface-card grid gap-4 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+          <h4 className="font-display text-xl text-[var(--brand)]">Review Request</h4>
+          <p className="text-sm text-slate-700">
+            Use Edit to jump back to any step. Entered values stay in place while you review.
+          </p>
+          <div className="grid gap-2">
+            {sections.map((section, index) => (
+              <div key={section.id} className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
+                <p className="text-sm font-semibold text-slate-900">{section.title}</p>
+                <button
+                  type="button"
+                  className="text-sm font-semibold text-[var(--brand)] underline"
+                  onClick={() => setCurrentStep(index)}
+                >
+                  Edit
+                </button>
+              </div>
+            ))}
+            <div className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
+              <p className="text-sm font-semibold text-slate-900">Notes</p>
+              <button
+                type="button"
+                className="text-sm font-semibold text-[var(--brand)] underline"
+                onClick={() => setCurrentStep(notesStepIndex)}
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
-      <button
-        disabled={status === "submitting"}
-        className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
-        type="submit"
-      >
-        {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
-      </button>
-      {message ? <p className="text-sm">{message}</p> : null}
+      {isReviewStep ? (
+        <>
+          {Object.entries(formValues).map(([name, value]) => (
+            <input key={`review-${name}`} type="hidden" name={name} value={value} />
+          ))}
+          {Object.entries(multiValues).map(([name, values]) =>
+            values.map((value) => (
+              <input key={`review-${name}-${value}`} type="hidden" name={name} value={value} />
+            )),
+          )}
+        </>
+      ) : null}
+
+      <div className="flex flex-wrap gap-3">
+        {currentStep > 0 ? (
+          <button
+            type="button"
+            className="rounded-md border border-[var(--brand)] px-4 py-3 font-semibold text-[var(--brand)]"
+            onClick={() => setCurrentStep((step) => Math.max(0, step - 1))}
+          >
+            Back
+          </button>
+        ) : null}
+
+        {!isReviewStep ? (
+          <button
+            type="button"
+            className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white"
+            onClick={() => setCurrentStep((step) => Math.min(reviewStepIndex, step + 1))}
+          >
+            {currentStep === notesStepIndex ? "Review Request" : "Next Step"}
+          </button>
+        ) : (
+          <button
+            disabled={status === "submitting"}
+            className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
+            type="submit"
+          >
+            {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
+          </button>
+        )}
+      </div>
+
+      {message ? (
+        <p className="text-sm" aria-live="polite" aria-atomic="true">
+          {message}
+        </p>
+      ) : null}
     </form>
   );
 }

@@ -4,16 +4,9 @@ import { useState } from "react";
 import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
+import { primaryNavLinks } from "@/content/navigation";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/realtors", label: "Realtors" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,7 +21,7 @@ export function Header() {
             onClick={() => {
               void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "header-topbar" } });
             }}
-            className="underline underline-offset-2"
+            className="inline-flex min-h-11 items-center rounded-md px-3 underline underline-offset-2"
           >
             Call {company.primaryPhone}
           </a>
@@ -38,7 +31,7 @@ export function Header() {
       <div className="container py-2.5">
         <div className="hidden items-center justify-between gap-6 md:flex">
           <Link href="/" className="flex items-center gap-4">
-            <Image src="/branding/logo-legacy-clean.png" alt="Robinson Septic Cleaning logo" width={220} height={88} className="h-auto w-[170px]" priority />
+            <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[170px]" priority />
             <div>
               <p className="font-display text-[1.6rem] leading-none text-[var(--brand)]">{company.publicBrand}</p>
               <p className="mt-1 text-sm text-slate-700">Family owned and operated since 1979</p>
@@ -64,10 +57,10 @@ export function Header() {
         <div className="md:hidden">
           <div className="flex items-center justify-between gap-2">
             <Link href="/" className="flex min-w-0 items-center gap-2.5" onClick={() => setMobileMenuOpen(false)}>
-              <Image src="/branding/logo-legacy-clean.png" alt="Robinson Septic Cleaning logo" width={220} height={88} className="h-auto w-[96px] shrink-0" priority />
+              <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[96px] shrink-0" priority />
               <div className="min-w-0">
-                <p className="truncate font-display text-[1.02rem] leading-tight text-[var(--brand)]">Robinson Septic Cleaning</p>
-                <p className="text-[0.74rem] text-slate-700">24/7 Emergency Service</p>
+                <p className="truncate font-display text-[1.02rem] leading-tight text-[var(--brand)]">{company.publicBrand}</p>
+                <p className="text-[0.74rem] text-slate-700">{company.emergencyService.claim}</p>
               </div>
             </Link>
 
@@ -76,7 +69,7 @@ export function Header() {
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-site-nav"
               onClick={() => setMobileMenuOpen((open) => !open)}
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d6c9c9] bg-[#fff7f7] text-[var(--brand)]"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d6c9c9] bg-[#fff7f7] text-[var(--brand)]"
             >
               <span className="sr-only">Toggle navigation</span>
               <div className="flex flex-col gap-1">
@@ -89,7 +82,7 @@ export function Header() {
 
           <div id="mobile-site-nav" className={`${mobileMenuOpen ? "mt-2 grid" : "hidden"} gap-2 rounded-xl border border-[#d6c9c9] bg-[#fffaf9] p-2.5 shadow-lg`}>
             <nav className="grid grid-cols-2 gap-2">
-              {navLinks.map((link) => (
+              {primaryNavLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -104,7 +97,7 @@ export function Header() {
         </div>
 
         <nav className="mt-3 hidden flex-wrap gap-2 text-sm md:flex">
-          {navLinks.map((link) => (
+          {primaryNavLinks.map((link) => (
             <Link key={link.href} href={link.href} className="rounded-full border border-[#d6c9c9] bg-[#fff7f7] px-3 py-1.5 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--brand)] hover:text-[var(--brand)]">
               {link.label}
             </Link>

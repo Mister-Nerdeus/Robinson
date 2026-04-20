@@ -1,5 +1,8 @@
+export type ContentStatus = "verified" | "marketing" | "pending_verification";
+
 export const servicesContent = {
   septicCleaning: {
+    status: "verified" as const,
     title: "Septic Tank Cleaning",
     intro:
       "Robinson provides septic pumping for residential and commercial properties, including urgent calls when a backup or system warning cannot wait.",
@@ -37,6 +40,7 @@ export const servicesContent = {
     cta: "/services/septic-cleaning",
   },
   evaluations: {
+    status: "verified" as const,
     title: "Well & Septic Evaluations",
     intro:
       "Robinson works with buyers, sellers, and Realtors who need well and septic evaluations scheduled during a home sale.",
@@ -73,6 +77,7 @@ export const servicesContent = {
     cta: "/services/well-septic-evaluations",
   },
   portableToilets: {
+    status: "verified" as const,
     title: "Portable Toilet Rentals",
     intro:
       "Robinson delivers portable toilet rentals for events, schools, businesses, and job sites with flexible service schedules.",
@@ -109,6 +114,7 @@ export const servicesContent = {
     cta: "/services/portable-toilets",
   },
   commercial: {
+    status: "verified" as const,
     title: "Commercial Services",
     intro:
       "Commercial support includes grease trap cleaning and lift pump service for businesses and facilities that cannot afford delays.",

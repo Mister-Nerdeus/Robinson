@@ -4,6 +4,7 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { serviceAreaContent } from "@/content/serviceArea";
 import { DeploymentStamp } from "@/components/site/DeploymentStamp";
+import { footerFastPathLinks } from "@/content/navigation";
 import {
   getRuntimeEnv,
   isAdminReviewEnabled,
@@ -23,7 +24,7 @@ export async function Footer() {
         <div>
           <Image
             src="/branding/logo-legacy-clean.png"
-            alt="Robinson Septic Cleaning logo"
+            alt={`${company.publicBrand} logo`}
             width={220}
             height={88}
             className="h-auto w-[180px]"
@@ -56,21 +57,11 @@ export async function Footer() {
           <h2 className="font-display text-lg text-[var(--brand)]">Service Area and Fast Request Paths</h2>
           <p className="mt-2 text-sm">{serviceAreaContent.summary}</p>
           <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
-            <Link className="underline" href="/services/septic-cleaning">
-              Emergency Septic Service
-            </Link>
-            <Link className="underline" href="/services/well-septic-evaluations">
-              Evaluations
-            </Link>
-            <Link className="underline" href="/services/portable-toilets">
-              Rentals
-            </Link>
-            <Link className="underline" href="/services/commercial">
-              Commercial Support
-            </Link>
-            <Link className="underline" href="/realtors">
-              Realtor Resources
-            </Link>
+            {footerFastPathLinks.map((link) => (
+              <Link key={link.href} className="underline" href={link.href}>
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

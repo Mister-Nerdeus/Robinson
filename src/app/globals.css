@@ -12,6 +12,14 @@
   --brand-accent: #262626;
   --surface: #fffdfc;
   --surface-strong: #fdf7f5;
+  --font-display: "Archivo Black", sans-serif;
+  --font-body: "Source Sans 3", sans-serif;
+  --space-section-y: 3.35rem;
+  --space-card-pad: 1.25rem;
+  --space-block-gap: 1.25rem;
+  --radius-section: 1.5rem;
+  --radius-card: 1rem;
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.07);
 }
 
 * {
@@ -25,7 +33,7 @@ body {
     radial-gradient(circle at 88% 9%, #f3ecea 0%, transparent 42%),
     var(--background);
   color: var(--foreground);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--font-body);
 }
 
 a {
@@ -44,17 +52,27 @@ img {
 }
 
 .section-pad {
-  padding-block: 3.35rem;
+  padding-block: var(--space-section-y);
 }
 
 .request-page-shell {
   display: grid;
-  gap: 1.25rem;
+  gap: var(--space-block-gap);
 }
 
 .request-page-top {
   display: grid;
-  gap: 1rem;
+  gap: calc(var(--space-block-gap) * 0.8);
+}
+
+.surface-card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.surface-section {
+  border-radius: var(--radius-section);
+  box-shadow: var(--shadow-card);
 }
 
 .request-page-top-primary,

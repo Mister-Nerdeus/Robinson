@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost:3011",
+  "target": {
+    "minWidth": 44,
+    "minHeight": 44
+  },
+  "checkedAtUtc": "2026-04-20T01:00:10.352Z",
+  "totalMeasured": 62,
+  "failingCount": 0,
+  "failing": []
+}

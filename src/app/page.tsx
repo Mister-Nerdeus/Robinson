@@ -15,7 +15,7 @@ import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(
   "24/7 Emergency Septic Service, Home-Sale Evaluations, and Portable Rentals",
-  "Family owned and operated since 1979, Robinson Septic Cleaning provides emergency septic service, routine pumping, home-sale evaluations, portable toilet rentals, and commercial support.",
+  `${company.publicBrand} provides emergency septic service, routine pumping, home-sale evaluations, portable toilet rentals, and commercial support across West Michigan.`,
   "/",
 );
 
@@ -24,7 +24,7 @@ export default function HomePage() {
     <div
       data-homepage-contract="home-hero-lanes-trust-v1"
       data-homepage-route="/"
-      data-homepage-structure="hero-lanes-trust-specialty-faq-cta"
+      data-homepage-structure="hero-primary-task-ctas-service-lanes-trust-realtor-faq-final-cta"
     >
       <JsonLd data={localBusinessSchema()} />
 
@@ -36,13 +36,13 @@ export default function HomePage() {
             <p className="mt-3 max-w-3xl text-slate-700">{homeContent.hero.subheading}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a href={`tel:${company.primaryPhone}`} className="rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
-                Call Now
+                Call Emergency Service
               </a>
               <Link href={homeContent.hero.ctaHref} className="rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
                 {homeContent.hero.ctaLabel}
               </Link>
               <Link href="/realtors" className="rounded-md border border-[#d8c1c1] bg-[#fff7f6] px-5 py-3 font-semibold text-slate-900">
-                Realtor Evaluation Request
+                Open Realtor Evaluation Lane
               </Link>
             </div>
           </div>
@@ -55,6 +55,20 @@ export default function HomePage() {
               className="h-[280px] w-full object-cover sm:h-[330px]"
             />
           </div>
+        </div>
+      </Section>
+
+      <Section title="Primary task CTAs">
+        <div className="grid gap-4 md:grid-cols-3">
+          {homeContent.primaryTaskCtas.map((item) => (
+            <article key={item.title} className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
+              <h3 className="font-display text-2xl text-[var(--brand)]">{item.title}</h3>
+              <p className="mt-2 text-slate-800">{item.body}</p>
+              <Link href={item.href} className="mt-4 inline-flex font-semibold underline">
+                {item.ctaLabel}
+              </Link>
+            </article>
+          ))}
         </div>
       </Section>
 
@@ -80,23 +94,6 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Specialty lanes">
-        <div className="grid gap-5 md:grid-cols-[1fr,1fr]">
-          {homeContent.specialtyLanes.map((lane) => (
-            <div key={lane.title} className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-              <Image src={lane.image} alt={lane.alt} width={1200} height={760} className="h-[260px] w-full object-cover" />
-              <div className="p-5">
-                <h3 className="font-display text-2xl text-[var(--brand)]">{lane.title}</h3>
-                <p className="mt-2 text-slate-800">{lane.body}</p>
-                <Link href={lane.href} className="mt-4 inline-flex font-semibold underline">
-                  {lane.ctaLabel}
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
       <Section title={homeContent.realtorLane.title}>
         <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
           <p className="text-slate-800">{homeContent.realtorLane.body}</p>
@@ -111,7 +108,7 @@ export default function HomePage() {
       </Section>
 
       <Section>
-        <CtaBand heading="Need help right now? Call Robinson for 24/7 Emergency Service or submit a request online." href="/contact" label="Open Contact and Request Forms" />
+        <CtaBand heading="Need help right now? Call Robinson for 24/7 Emergency Service or open the structured request lanes." href="/contact" label="Open Contact Intake Lanes" />
       </Section>
     </div>
   );

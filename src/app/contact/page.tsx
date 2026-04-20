@@ -12,7 +12,7 @@ import type { SubmissionType } from "@/lib/forms/types";
 
 export const metadata: Metadata = buildMetadata(
   "Contact",
-  "Contact Robinson Septic Cleaning for 24/7 emergency septic service, evaluations, rentals, and commercial support.",
+  `Contact ${company.publicBrand} for 24/7 emergency septic service, evaluations, rentals, and commercial support.`,
   "/contact",
 );
 
@@ -86,7 +86,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
             </p>
             <h3 className="font-display text-2xl text-[var(--brand)]">Need immediate septic help?</h3>
             <p className="text-sm text-slate-700">Call now for emergency dispatch. Use form lanes below for full details and non-emergency coordination.</p>
-            <a className="inline-flex w-fit rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white" href={callHref}>
+            <a className="inline-flex min-h-11 w-fit items-center rounded-md bg-[var(--brand)] px-4 py-3 text-sm font-semibold text-white" href={callHref}>
               Call {company.primaryPhone}
             </a>
             <p className="text-xs text-slate-600">General lane keeps location optional until on-site service is relevant.</p>

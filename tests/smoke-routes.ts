@@ -9,7 +9,13 @@ async function run() {
   const requiredRoutes = [
     "src/app/page.tsx",
     "src/app/services/page.tsx",
+    "src/app/services/well-septic-evaluations/page.tsx",
+    "src/app/services/portable-toilets/page.tsx",
+    "src/app/services/commercial/page.tsx",
+    "src/app/faq/page.tsx",
+    "src/app/realtors/page.tsx",
     "src/app/contact/page.tsx",
+    "src/app/privacy/page.tsx",
     "src/app/services/septic-cleaning/page.tsx",
     "src/app/admin/submissions/page.tsx",
   ];

@@ -10,7 +10,7 @@ export function ServiceCard({ title, description, href }: { title: string; descr
       <h3 className="font-display text-[1.65rem] leading-tight text-[var(--brand)] lg:text-[1.5rem]">{title}</h3>
       <p className="mt-2.5 flex-1 text-base leading-7 text-slate-800">{description}</p>
       <Link
-        className="mt-4 inline-flex w-fit items-center rounded-md border border-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-[var(--brand)] transition hover:bg-[#fff3f2]"
+        className="mt-4 inline-flex min-h-11 w-fit items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)] transition hover:bg-[#fff3f2]"
         href={href}
         onClick={() => {
           void trackEvent({ event: analyticsEvents.laneClick, lane: title });
