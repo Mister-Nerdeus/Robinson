@@ -18,4 +18,6 @@ export const footerFastPathLinks: NavItem[] = [
   { href: "/services/commercial", label: "Commercial Support" },
   { href: "/realtors", label: "Realtor Resources" },
   { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/accessibility", label: "Accessibility" },
 ];

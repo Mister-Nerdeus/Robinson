@@ -1,0 +1,26 @@
+name: public-gates
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+jobs:
+  verify-public-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:smoke
+      - run: npm run test:submission-contract
+      - run: npm run test:form-lane-contract
+      - run: npm run test:schema-source-contract
+      - run: npm run test:routes-public-contract
+      - run: npm run test:content-trust-policy
+      - run: npm run test:content-copy-rules
+      - run: npm run test:visual-public-evidence

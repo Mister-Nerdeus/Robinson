@@ -1,13 +1,30 @@
 import { company } from "@/config/company";
 import { faqContent } from "@/content/faq";
+import { businessContent } from "@/content/business";
+import { serviceAreaContract } from "@/content/serviceAreas";
+
+function areaServedList() {
+  return serviceAreaContract.areas.map((entry) => ({
+    "@type": "AdministrativeArea",
+    name: entry.county,
+  }));
+}
 
 export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: company.publicBrand,
+    name: businessContent.name,
+    legalName: businessContent.legalName,
     alternateName: company.brandVariants,
-    telephone: company.primaryPhone,
+    telephone: businessContent.primaryPhone,
+    contactPoint: businessContent.contactPoints.map((point) => ({
+      "@type": "ContactPoint",
+      contactType: point.type,
+      telephone: point.telephone,
+      areaServed: point.areaServed,
+      availableLanguage: point.availableLanguage,
+    })),
     address: {
       "@type": "PostalAddress",
       streetAddress: company.address.line1,
@@ -17,7 +34,7 @@ export function localBusinessSchema() {
       addressCountry: "US",
     },
     openingHours: ["Mo-Fr 08:00-17:00"],
-    areaServed: "West Michigan / greater Grand Rapids area",
+    areaServed: areaServedList(),
     description:
       "Family owned and operated since 1979. Residential and commercial septic cleaning, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
   };
@@ -29,8 +46,8 @@ export function serviceSchema(name: string, description: string, path: string) {
     "@type": "Service",
     name,
     description,
-    provider: { "@type": "LocalBusiness", name: company.publicBrand },
-    areaServed: "West Michigan / greater Grand Rapids area",
+    provider: { "@type": "LocalBusiness", name: businessContent.name },
+    areaServed: areaServedList(),
     url: path,
   };
 }

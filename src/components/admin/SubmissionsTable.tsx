@@ -36,13 +36,65 @@ function toExportText(rows: SubmissionRecord[]) {
     .join("\n");
 }
 
+function csvEscape(value: string) {
+  const escaped = value.replace(/"/g, '""');
+  return `"${escaped}"`;
+}
+
+function toCsv(rows: SubmissionRecord[]) {
+  const header = [
+    "id",
+    "createdAt",
+    "triageUpdatedAt",
+    "type",
+    "lifecycleState",
+    "fullName",
+    "phone",
+    "email",
+    "address",
+    "urgency",
+    "message",
+  ];
+
+  const lines = rows.map((row) =>
+    [
+      row.id,
+      row.createdAt,
+      row.triageUpdatedAt,
+      row.type,
+      row.lifecycleState,
+      row.fullName,
+      row.phone,
+      row.email,
+      row.address,
+      row.urgency,
+      row.message,
+    ]
+      .map((value) => csvEscape(String(value ?? "")))
+      .join(","),
+  );
+
+  return [header.join(","), ...lines].join("\n");
+}
+
 export function SubmissionsTable({ rows }: Props) {
   if (rows.length === 0) {
     return <p>No submissions yet.</p>;
   }
 
+  const csv = toCsv(rows);
+  const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`;
+
   return (
     <div className="grid gap-4">
+      <a
+        href={csvHref}
+        download={`submissions-export-${new Date().toISOString().slice(0, 10)}.csv`}
+        className="inline-flex w-fit rounded-md border border-[var(--brand)] bg-white px-3 py-2 text-xs font-semibold text-[var(--brand)]"
+      >
+        Export CSV
+      </a>
+
       <label className="grid gap-1 text-sm">
         <span className="font-semibold">Copy/Export (filtered rows)</span>
         <textarea

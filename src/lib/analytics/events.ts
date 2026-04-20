@@ -1,8 +1,10 @@
 export const analyticsEvents = {
   pageView: "page_view",
   callCtaClick: "call_cta_click",
+  routerLaneSelect: "contact_router_lane_select",
   laneClick: "conversion_lane_click",
   formStart: "form_start",
+  formStepView: "form_step_view",
   formSubmit: "form_submit",
   formSubmitSuccess: "form_submit_success",
   formSubmitError: "form_submit_error",

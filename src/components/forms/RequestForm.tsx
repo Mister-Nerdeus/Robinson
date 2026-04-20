@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
+import { FormConfirmation } from "./FormConfirmation";
+import { FormErrorState } from "./FormErrorState";
 
 type FormFieldConfig = {
   name: string;
@@ -658,6 +660,14 @@ export function RequestForm({ type, title }: Props) {
   const totalSteps = sections.length + 2;
   const isReviewStep = currentStep === reviewStepIndex;
 
+  useEffect(() => {
+    void trackEvent({
+      event: analyticsEvents.formStepView,
+      submissionType: type,
+      metadata: { step: currentStep + 1, totalSteps },
+    });
+  }, [currentStep, totalSteps, type]);
+
   function setFieldValue(name: string, value: string) {
     setFormValues((current) => ({ ...current, [name]: value }));
   }
@@ -700,7 +710,7 @@ export function RequestForm({ type, title }: Props) {
     }
 
     try {
-      const res = await fetch("/api/submissions", {
+      const res = await fetch("/api/forms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -924,11 +934,11 @@ export function RequestForm({ type, title }: Props) {
         )}
       </div>
 
-      {message ? (
-        <p className="text-sm" aria-live="polite" aria-atomic="true">
-          {message}
-        </p>
-      ) : null}
+      {message && status === "success" ? <FormConfirmation message={message} /> : null}
+      {message && status === "error" ? <FormErrorState message={message} /> : null}
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {message}
+      </p>
     </form>
   );
 }

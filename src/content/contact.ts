@@ -1,30 +1,31 @@
 export const contactContent = {
-  title: "Contact Robinson Septic Cleaning",
+  title: "Contact Command Center",
   intro:
-    "Call Robinson immediately for septic emergencies. For routine scheduling, evaluations, rentals, or commercial service, choose the lane that matches your request.",
+    "Emergency septic service is call-first. For routine pumping, evaluations, rentals, and commercial work, choose the lane that matches your request.",
   serviceAreaSummary:
     "Robinson serves West Michigan including Pierson, Sparta, Cedar Springs, Sand Lake, Trufant, Coral, Howard City, and greater Grand Rapids.",
   responseNote:
-    "24/7 Emergency Service is available for urgent septic problems. Structured lane forms are available online any time.",
+    "24/7 emergency service is available by phone. Routine requests are scheduled based on queue and field capacity.",
   callout:
-    "Emergency service remains call-first. Use form routing when you want to include access notes, scheduling details, and lane-specific intake fields up front.",
+    "Use call-now for active septic emergencies. Use submit-request when you need structured details reviewed for scheduled follow-up.",
   commonReasonsToRequest: [
     "Urgent septic warning signs or active backup",
-    "Home-sale evaluation coordination",
+    "Routine pumping scheduling",
+    "Home-sale / Realtor evaluation coordination",
     "Portable rental setup and service planning",
-    "Commercial facility service support",
+    "Commercial facility support",
   ],
   whatToHaveReady: [
     "Best callback number and preferred contact method",
     "Service location address when on-site work applies",
-    "Any access restrictions (gate, pets, hours, lockbox)",
+    "Any access restrictions (gate, pets, lockbox, onsite hours)",
     "Deadline or timeline constraints",
   ],
   whatHappensNext: [
-    "Emergency and urgent septic requests are triaged first, and a dispatcher reaches out quickly.",
-    "Routine, evaluation, rental, and commercial requests are reviewed for scope and scheduling details.",
-    "If key details are missing, Robinson follows up by phone or email before final scheduling.",
+    "Emergency calls are triaged first for dispatch response.",
+    "Routine, evaluation, rental, and commercial requests are reviewed for scope and scheduling.",
+    "If details are missing, Robinson follows up before final scheduling.",
   ],
   responseExpectation:
-    "Response time depends on urgency and current field volume. Submitting complete details helps reduce callback delay.",
+    "Emergency response and routine scheduling follow different operating paths. Complete lane details help reduce callback delay.",
 };

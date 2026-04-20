@@ -10,7 +10,7 @@ import {
   listSubmissions,
   updateSubmissionTriageById,
 } from "@/lib/storage/submissions";
-import { sendSubmissionNotification } from "@/lib/notifications/send";
+import { deliverSubmissionEmail } from "@/lib/email/provider";
 
 export async function createSubmission(input: SubmissionInput) {
   const parsed = submissionSchema.parse(input);
@@ -46,7 +46,7 @@ export async function createSubmission(input: SubmissionInput) {
     urgency: normalizedUrgency,
   };
   await saveSubmission(record);
-  const delivery = await sendSubmissionNotification(record);
+  const delivery = await deliverSubmissionEmail(record);
   return { record, delivery };
 }
 

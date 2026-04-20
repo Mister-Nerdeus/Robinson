@@ -11,6 +11,8 @@
 - `/realtors` - first-class realtor resources route.
 - `/faq` - structured FAQ.
 - `/contact` - general contact form route.
+- `/terms` - public policy route.
+- `/accessibility` - accessibility policy route.
 - `/admin/submissions` - local-gated review route.
 
 ## Excluded in Initial Scope

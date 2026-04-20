@@ -73,7 +73,7 @@ export const servicesContent = {
       "A follow-up confirms next scheduling steps for the transaction team.",
     ],
     responseExpectation:
-      "Timeline-sensitive requests are prioritized based on closing pressure and current schedule availability.",
+      "Timeline-sensitive requests are prioritized based on closing pressure and current schedule availability. Routine Realtor lane follow-up target is 1-3 business days when non-emergency.",
     cta: "/services/well-septic-evaluations",
   },
   portableToilets: {
@@ -111,6 +111,13 @@ export const servicesContent = {
     ],
     responseExpectation:
       "Most rental requests receive a follow-up after availability and route planning are checked.",
+    intakeFields: [
+      "unitCount",
+      "rentalDuration",
+      "eventType",
+      "serviceFrequency",
+      "siteAccessNotes",
+    ],
     cta: "/services/portable-toilets",
   },
   commercial: {
@@ -148,6 +155,11 @@ export const servicesContent = {
     ],
     responseExpectation:
       "Urgent operational issues are prioritized first, with routine commercial requests scheduled by capacity and route.",
+    subLanes: [
+      { id: "grease-trap", label: "Grease trap cleaning", href: "/contact?lane=commercial-service" },
+      { id: "lift-pump", label: "Lift pump service", href: "/contact?lane=commercial-service" },
+      { id: "commercial-septic", label: "Commercial septic service", href: "/contact?lane=commercial-service" },
+    ],
     cta: "/services/commercial",
   },
 };

@@ -1,46 +1,65 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { RequestForm } from "@/components/forms/RequestForm";
+import { contactRoutes } from "@/content/contactRoutes";
+import { trackEvent } from "@/lib/analytics/client";
+import { analyticsEvents } from "@/lib/analytics/events";
 
-type ContactLane = {
-  type: SubmissionType;
-  title: string;
-  summary: string;
-  rationale: string;
+type ContactIntakeRouterProps = {
+  initialLane?: SubmissionType | null;
 };
 
-const lanes: ContactLane[] = [
+type FormLane = {
+  id: string;
+  title: string;
+  taskLabel: string;
+  summary: string;
+  eventName: string;
+  type: SubmissionType;
+};
+
+const lanes: FormLane[] = [
   {
+    id: "emergency-septic",
+    title: "Emergency septic help",
+    taskLabel: "I need emergency septic help now",
+    summary: "Urgent warning signs and dispatch-ready septic details.",
+    eventName: "contact_form_lane_emergency_septic",
     type: "septic-service",
-    title: "Septic service",
-    summary: "Backups, odors, or pumping needs with tank and access details.",
-    rationale: "Dispatch-ready lane with structured septic system and symptom capture.",
   },
   {
+    id: "routine-pumping",
+    title: "Routine septic pumping",
+    taskLabel: "I need routine septic pumping",
+    summary: "Scheduled septic pumping and maintenance details.",
+    eventName: "contact_form_lane_routine_pumping",
+    type: "septic-service",
+  },
+  {
+    id: "realtor-evaluation",
+    title: "Home-sale / Realtor evaluation",
+    taskLabel: "I need a home-sale or Realtor evaluation",
+    summary: "Deadline and transaction-specific evaluation intake.",
+    eventName: "contact_form_lane_realtor_evaluation",
     type: "evaluation",
-    title: "Evaluation",
-    summary: "Buyer/seller/Realtor requests with timeline and occupancy context.",
-    rationale: "Structured property-sale lane for occupancy, utility, and access details.",
   },
   {
+    id: "portable-toilet-rental",
+    title: "Portable toilet rental",
+    taskLabel: "I need portable toilet rental",
+    summary: "Quote-ready rental intake with unit and duration details.",
+    eventName: "contact_form_lane_portable_rental",
     type: "rental",
-    title: "Portable rental",
-    summary: "Event or jobsite rentals with unit count and service cadence.",
-    rationale: "Structured rental lane for quantity, duration, and placement planning.",
   },
   {
+    id: "commercial-support",
+    title: "Commercial support",
+    taskLabel: "I need commercial support",
+    summary: "Commercial service intake for facility and operation context.",
+    eventName: "contact_form_lane_commercial",
     type: "commercial-service",
-    title: "Commercial",
-    summary: "Facility and grease-trap/lift-pump service requests.",
-    rationale: "Operational lane for facility context and commercial service scope.",
-  },
-  {
-    type: "general",
-    title: "General contact",
-    summary: "Fallback for questions that do not match a service lane yet.",
-    rationale: "Lightweight fallback lane with optional location unless on-site service applies.",
   },
 ];
 
@@ -52,49 +71,46 @@ const formTitleByType: Record<SubmissionType, string> = {
   "commercial-service": "Commercial Service Request",
 };
 
-type ContactIntakeRouterProps = {
-  initialLane?: SubmissionType | null;
-};
-
 export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterProps) {
-  const [selectedType, setSelectedType] = useState<SubmissionType | null>(initialLane);
-
-  useEffect(() => {
-    if (initialLane) {
-      return;
+  const [selectedLane, setSelectedLane] = useState<FormLane | null>(() => {
+    if (!initialLane) {
+      return lanes[0];
     }
 
-    const laneParam = new URLSearchParams(window.location.search).get("lane");
-    if (!laneParam) {
-      return;
-    }
+    return lanes.find((lane) => lane.type === initialLane) ?? lanes[0];
+  });
 
-    const lane = lanes.find((candidate) => candidate.type === laneParam);
-    if (lane) {
-      setSelectedType(lane.type);
-    }
-  }, [initialLane]);
+  const selectedType = selectedLane?.type ?? "septic-service";
 
-  const selectedLane = useMemo(
-    () => lanes.find((lane) => lane.type === selectedType),
+  const selectedRouteContract = useMemo(
+    () =>
+      contactRoutes.find((route) => route.submissionType === selectedType) ??
+      contactRoutes[0],
     [selectedType],
   );
-  const isGeneralLane = selectedType === "general";
 
   return (
     <div className="grid gap-5">
       <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">
-          Choose your intake lane
+          Form lane router
         </p>
         <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2">
           {lanes.map((lane) => {
-            const active = lane.type === selectedType;
+            const active = lane.id === selectedLane?.id;
             return (
               <button
-                key={lane.type}
+                key={lane.id}
                 type="button"
-                onClick={() => setSelectedType(lane.type)}
+                onClick={() => {
+                  setSelectedLane(lane);
+                  void trackEvent({
+                    event: analyticsEvents.routerLaneSelect,
+                    lane: lane.id,
+                    submissionType: lane.type,
+                    metadata: { eventName: lane.eventName },
+                  });
+                }}
                 className={`rounded-lg border px-3.5 py-3.5 text-left transition ${
                   active
                     ? "border-[var(--brand)] bg-[#fff1ef]"
@@ -102,39 +118,22 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
                 }`}
               >
                 <p className="text-sm font-semibold text-slate-900">{lane.title}</p>
-                <p className="mt-1 text-xs text-slate-700">{lane.summary}</p>
+                <p className="mt-1 text-xs text-slate-700">{lane.taskLabel}</p>
+                <p className="mt-1 text-xs text-slate-600">{lane.summary}</p>
               </button>
             );
           })}
         </div>
       </div>
 
-      {selectedLane ? (
-        <div
-          className={`rounded-lg border px-3.5 py-2.5 text-sm text-slate-700 ${
-            isGeneralLane
-              ? "border-[#d9d0c0] bg-[#fffaf2]"
-              : "border-[#ead9d9] bg-[#fffdfc]"
-          }`}
-        >
-          Active lane: <strong>{selectedLane.title}</strong>. {selectedLane.summary}
-          <p className="mt-1 text-xs text-slate-600">{selectedLane.rationale}</p>
-        </div>
-      ) : (
-        <div className="rounded-lg border border-[#ead9d9] bg-[#fffdfc] px-3.5 py-2.5 text-sm text-slate-700">
-          Select a lane to start the structured intake form. If unsure, choose <strong>General contact</strong>.
-        </div>
-      )}
+      <div className="rounded-lg border border-[#ead9d9] bg-[#fffdfc] px-3.5 py-2.5 text-sm text-slate-700">
+        Active route contract: <strong>{selectedRouteContract.title}</strong>.
+        <span className="ml-1">Primary action label: {selectedRouteContract.ctaLabel}.</span>
+      </div>
 
-      {selectedType ? (
-        <div className={isGeneralLane ? "rounded-xl border border-[#e4dbc9] bg-[#fffdf7] p-3 sm:p-4" : ""}>
-          <RequestForm key={selectedType} type={selectedType} title={formTitleByType[selectedType]} />
-        </div>
-      ) : (
-        <div className="rounded-xl border border-dashed border-[#ccb8b8] bg-white px-4 py-6 text-sm text-slate-700">
-          Form will appear after a lane is selected.
-        </div>
-      )}
+      <div className="rounded-xl border border-[#e4dbc9] bg-[#fffdf7] p-3 sm:p-4">
+        <RequestForm key={selectedLane?.id ?? selectedType} type={selectedType} title={formTitleByType[selectedType]} />
+      </div>
     </div>
   );
 }

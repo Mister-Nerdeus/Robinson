@@ -56,9 +56,22 @@ function unauthorized(message: string, status = 401) {
 }
 
 export function middleware(request: NextRequest) {
+  const canonicalHost = (process.env.CANONICAL_HOST || "").trim().toLowerCase();
+  if (canonicalHost) {
+    const host = request.nextUrl.host.toLowerCase();
+    if (host !== canonicalHost) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.host = canonicalHost;
+      redirectUrl.protocol = "https";
+      return NextResponse.redirect(redirectUrl, 308);
+    }
+  }
+
   const { pathname, searchParams } = request.nextUrl;
   const isAdminPage = pathname.startsWith("/admin/submissions");
-  const isAdminApiRead = pathname === "/api/submissions" && request.method === "GET";
+  const isAdminApiRead =
+    (pathname === "/api/submissions" || pathname === "/api/forms") &&
+    request.method === "GET";
 
   if (!isAdminPage && !isAdminApiRead) {
     return NextResponse.next();
@@ -103,5 +116,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/submissions/:path*", "/api/submissions"],
+  matcher: ["/admin/submissions/:path*", "/api/submissions", "/api/forms"],
 };

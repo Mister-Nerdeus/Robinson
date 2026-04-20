@@ -1,6 +1,6 @@
 import { Section } from "@/components/site/Section";
 import { getSubmissions } from "@/lib/forms/actions";
-import { SubmissionsFilters } from "@/components/admin/SubmissionsFilters";
+import { SubmissionFilters } from "@/components/admin/SubmissionFilters";
 import { SubmissionsTable } from "@/components/admin/SubmissionsTable";
 import { getRuntimeEnv, isAdminReviewEnabled } from "@/lib/runtime/env";
 import type { SubmissionRecord } from "@/lib/forms/types";
@@ -73,7 +73,7 @@ export default async function AdminSubmissionsPage({
         Internal triage only. This workspace is guarded by runtime policy and explicit review-access control.
       </p>
 
-      <SubmissionsFilters
+      <SubmissionFilters
         selectedType={params.type}
         selectedStatus={params.status}
         dateFrom={params.dateFrom}

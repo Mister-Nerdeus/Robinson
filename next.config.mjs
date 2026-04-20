@@ -1,6 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      { source: "/default.aspx", destination: "/", permanent: true },
+      { source: "/home.aspx", destination: "/", permanent: true },
+      { source: "/services.aspx", destination: "/services", permanent: true },
+      { source: "/faq.aspx", destination: "/faq", permanent: true },
+      { source: "/contact.aspx", destination: "/contact", permanent: true },
+      { source: "/realtors.aspx", destination: "/realtors", permanent: true },
+      { source: "/rental.aspx", destination: "/services/portable-toilets", permanent: true },
+    ];
+  },
   async headers() {
     const requestPageHeaders = [
       {
