@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { RequestForm } from "@/components/forms/RequestForm";
 import { contactRoutes } from "@/content/contactRoutes";
@@ -72,6 +72,7 @@ const formTitleByType: Record<SubmissionType, string> = {
 };
 
 export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterProps) {
+  const wizardHostRef = useRef<HTMLDivElement | null>(null);
   const [selectedLane, setSelectedLane] = useState<FormLane | null>(() => {
     if (!initialLane) {
       return lanes[0];
@@ -89,6 +90,16 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
     [selectedType],
   );
 
+  function focusWizardHeading() {
+    const heading = wizardHostRef.current?.querySelector<HTMLElement>("[data-wizard-step-heading]");
+    heading?.focus();
+  }
+
+  function anchorToWizard() {
+    wizardHostRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(focusWizardHeading, 220);
+  }
+
   return (
     <div className="grid gap-5">
       <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4 sm:p-5">
@@ -104,6 +115,9 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
                 type="button"
                 onClick={() => {
                   setSelectedLane(lane);
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(anchorToWizard);
+                  });
                   void trackEvent({
                     event: analyticsEvents.routerLaneSelect,
                     lane: lane.id,
@@ -131,7 +145,7 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
         <span className="ml-1">Primary action label: {selectedRouteContract.ctaLabel}.</span>
       </div>
 
-      <div className="rounded-xl border border-[#e4dbc9] bg-[#fffdf7] p-3 sm:p-4">
+      <div ref={wizardHostRef} id="request-wizard" className="wizard-scroll-anchor rounded-xl border border-[#e4dbc9] bg-[#fffdf7] p-3 sm:p-4">
         <RequestForm key={selectedLane?.id ?? selectedType} type={selectedType} title={formTitleByType[selectedType]} />
       </div>
     </div>

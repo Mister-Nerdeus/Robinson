@@ -32,6 +32,7 @@ export type SubmissionBase = {
   state: string;
   address: string;
   preferredDate: string;
+  preferredTime: string;
   urgency: "normal" | "urgent" | "emergency";
   message: string;
 };
@@ -122,6 +123,7 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
   const shared = [
     { label: "Urgency", value: record.urgency },
     { label: "Preferred Date", value: record.preferredDate || "-" },
+    { label: "Preferred Time", value: record.preferredTime || "-" },
     { label: "Street", value: record.streetAddress || "-" },
     { label: "City", value: record.city || "-" },
     { label: "ZIP", value: record.zip || "-" },

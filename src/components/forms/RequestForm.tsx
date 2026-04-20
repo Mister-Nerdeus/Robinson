@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 import { FormConfirmation } from "./FormConfirmation";
 import { FormErrorState } from "./FormErrorState";
+import { useWizard } from "@/hooks/useWizard";
+import { WizardActions } from "./WizardActions";
+import { WizardContainer, WizardMobileActions } from "./WizardContainer";
+import { FormFieldGroup } from "./FormFieldGroup";
 
 type FormFieldConfig = {
   name: string;
@@ -78,6 +82,7 @@ const locationFieldsRequired: FormFieldConfig[] = [
     required: true,
     placeholder: "Street address",
     helpText: "Use the address where service should arrive.",
+    span: "full",
   },
   {
     name: "city",
@@ -102,6 +107,7 @@ const locationFieldsOptional: FormFieldConfig[] = [
     label: "Service Street Address",
     placeholder: "Street address",
     helpText: "Use the address where service should arrive if this request needs on-site service.",
+    span: "full",
   },
   {
     name: "city",
@@ -121,11 +127,22 @@ const locationFieldsOptional: FormFieldConfig[] = [
 const sharedContactFields: FormFieldConfig[] = [
   { name: "fullName", label: "Full Name", required: true },
   { name: "phone", label: "Best Phone", type: "tel", required: true },
-  { name: "email", label: "Email", type: "email", required: true, span: "full" },
+  { name: "email", label: "Email", type: "email", required: true },
 ];
 
 const sharedSchedulingFields: FormFieldConfig[] = [
   { name: "preferredDate", label: "Preferred Date", type: "date" },
+  {
+    name: "preferredTime",
+    label: "Preferred Time Window",
+    options: [
+      { value: "morning", label: "Morning" },
+      { value: "midday", label: "Midday" },
+      { value: "afternoon", label: "Afternoon" },
+      { value: "evening", label: "Evening" },
+      { value: "flexible", label: "Flexible" },
+    ],
+  },
   {
     name: "urgency",
     label: "Urgency",
@@ -612,7 +629,9 @@ export function RequestForm({ type, title }: Props) {
   const [started, setStarted] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [multiValues, setMultiValues] = useState<Record<string, string[]>>({});
-  const [currentStep, setCurrentStep] = useState(0);
+  const wizardRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const hasRenderedStepRef = useRef(false);
 
   const locationFields = type === "general" ? locationFieldsOptional : locationFieldsRequired;
 
@@ -658,6 +677,7 @@ export function RequestForm({ type, title }: Props) {
   const notesStepIndex = sections.length;
   const reviewStepIndex = sections.length + 1;
   const totalSteps = sections.length + 2;
+  const { currentStep, setCurrentStep, goBack, goNext } = useWizard({ totalSteps });
   const isReviewStep = currentStep === reviewStepIndex;
 
   useEffect(() => {
@@ -667,6 +687,16 @@ export function RequestForm({ type, title }: Props) {
       metadata: { step: currentStep + 1, totalSteps },
     });
   }, [currentStep, totalSteps, type]);
+
+  useEffect(() => {
+    if (!hasRenderedStepRef.current) {
+      hasRenderedStepRef.current = true;
+      return;
+    }
+
+    wizardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(() => headingRef.current?.focus(), 120);
+  }, [currentStep]);
 
   function setFieldValue(name: string, value: string) {
     setFormValues((current) => ({ ...current, [name]: value }));
@@ -736,6 +766,154 @@ export function RequestForm({ type, title }: Props) {
     }
   }
 
+  const activeSection = sections[currentStep];
+
+  const wizardStep = (() => {
+    if (activeSection) {
+      return (
+        <section className="surface-card animate-[wizard-step-enter_240ms_ease-out] grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+          <div>
+            <h4 className="font-display text-xl text-[var(--brand)]">{activeSection.title}</h4>
+            {activeSection.description ? <p className="mt-1 text-xs text-slate-600">{activeSection.description}</p> : null}
+          </div>
+
+          {type === "general" && activeSection.id === "location" && !showGeneralLocationFields ? (
+            <p className="rounded-md border border-[#eadfce] bg-[#fff7f1] px-3 py-2 text-xs text-slate-700">
+              Location fields appear when on-site service is marked <strong>Yes</strong> or <strong>Unsure</strong>.
+            </p>
+          ) : (
+            <>
+              {activeSection.fieldOrder === "checks-first"
+                ? activeSection.checkboxGroups?.map((group) => (
+                    <CheckboxGroup
+                      key={group.name}
+                      config={group}
+                      selectedValues={multiValues[group.name] ?? []}
+                      onToggle={setMultiValue}
+                    />
+                  ))
+                : null}
+
+              {activeSection.fields ? (
+                <FormFieldGroup>
+                  {activeSection.fields.map((field) => (
+                    <div key={field.name} className={field.span === "full" ? "lg:col-span-2" : "lg:col-span-1"}>
+                      <FormField
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        required={field.required}
+                        placeholder={field.placeholder}
+                        helpText={field.helpText}
+                        options={field.options}
+                        min={field.min}
+                        inputMode={field.inputMode}
+                        rows={field.rows}
+                        value={formValues[field.name] ?? ""}
+                        onValueChange={setFieldValue}
+                      />
+                    </div>
+                  ))}
+                </FormFieldGroup>
+              ) : null}
+
+              {(activeSection.fieldOrder === undefined || activeSection.fieldOrder === "fields-first")
+                ? activeSection.checkboxGroups?.map((group) => (
+                    <CheckboxGroup
+                      key={group.name}
+                      config={group}
+                      selectedValues={multiValues[group.name] ?? []}
+                      onToggle={setMultiValue}
+                    />
+                  ))
+                : null}
+            </>
+          )}
+        </section>
+      );
+    }
+
+    if (currentStep === notesStepIndex) {
+      return (
+        <section className="surface-card animate-[wizard-step-enter_240ms_ease-out] grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+          <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
+          <FormField
+            name="message"
+            label="Dispatch Notes / Request Details"
+            required
+            type="textarea"
+            rows={5}
+            placeholder="Share anything that will help dispatch or scheduling."
+            helpText="Freeform details remain important for unusual site conditions or nuanced requests."
+            value={formValues.message ?? ""}
+            onValueChange={setFieldValue}
+          />
+        </section>
+      );
+    }
+
+    return (
+      <section className="surface-card animate-[wizard-step-enter_240ms_ease-out] grid gap-4 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
+        <h4 className="font-display text-xl text-[var(--brand)]">Review Request</h4>
+        <p className="text-sm text-slate-700">
+          Use Edit to jump back to any step. Entered values stay in place while you review.
+        </p>
+        <div className="grid gap-2">
+          {sections.map((section, index) => (
+            <div key={section.id} className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
+              <p className="text-sm font-semibold text-slate-900">{section.title}</p>
+              <button
+                type="button"
+                className="text-sm font-semibold text-[var(--brand)] underline"
+                onClick={() => setCurrentStep(index)}
+              >
+                Edit
+              </button>
+            </div>
+          ))}
+          <div className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
+            <p className="text-sm font-semibold text-slate-900">Notes</p>
+            <button
+              type="button"
+              className="text-sm font-semibold text-[var(--brand)] underline"
+              onClick={() => setCurrentStep(notesStepIndex)}
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  })();
+
+  const backAction = currentStep > 0 ? (
+    <button
+      type="button"
+      className="min-h-11 w-full rounded-md border border-[var(--brand)] px-4 py-3 font-semibold text-[var(--brand)] md:w-auto"
+      onClick={goBack}
+    >
+      Back
+    </button>
+  ) : undefined;
+
+  const nextAction = !isReviewStep ? (
+    <button
+      type="button"
+      className="min-h-11 w-full rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white md:w-auto"
+      onClick={goNext}
+    >
+      {currentStep === notesStepIndex ? "Review Request" : "Next Step"}
+    </button>
+  ) : (
+    <button
+      disabled={status === "submitting"}
+      className="min-h-11 w-full rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60 md:w-auto"
+      type="submit"
+    >
+      {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
+    </button>
+  );
+
   return (
     <form
       action={async (fd) => {
@@ -754,142 +932,38 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="surface-section grid gap-7 rounded-[var(--radius-section)] border border-[#c8c1b1] bg-[var(--surface)] p-[var(--space-card-pad)] sm:p-7"
+      className="grid gap-7"
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--brand)]">
-        Step {Math.min(currentStep + 1, totalSteps)} of {totalSteps}
-      </p>
-      <h3 className="font-display text-2xl text-[var(--brand)]">{title}</h3>
-      <p className="text-sm text-slate-700">{helperByType[type]}</p>
-      {type === "general" ? (
-        <p className="rounded-md border border-[#e6ded0] bg-[#fffaf3] px-3 py-2 text-xs text-slate-700">
-          Lightweight contact lane for questions and follow-up requests. If this becomes urgent, call anytime.
-        </p>
-      ) : (
-        <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
-          Fastest for emergencies: call now, then submit details to speed dispatch prep.
-        </p>
-      )}
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="state" value="MI" />
       {type === "general" ? <input type="hidden" name="urgency" value="normal" /> : null}
       <input type="text" name="companyWebsite" className="hidden" tabIndex={-1} autoComplete="off" />
-
-      {sections.map((section, index) => {
-        if (index !== currentStep) return null;
-
-        return (
-          <section key={section.id} className="surface-card grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
-            <div>
-              <h4 className="font-display text-xl text-[var(--brand)]">{section.title}</h4>
-              {section.description ? <p className="mt-1 text-xs text-slate-600">{section.description}</p> : null}
-            </div>
-
-            {type === "general" && section.id === "location" && !showGeneralLocationFields ? (
-              <p className="rounded-md border border-[#eadfce] bg-[#fff7f1] px-3 py-2 text-xs text-slate-700">
-                Location fields appear when on-site service is marked <strong>Yes</strong> or <strong>Unsure</strong>.
-              </p>
-            ) : (
-              <>
-                {section.fieldOrder === "checks-first"
-                  ? section.checkboxGroups?.map((group) => (
-                      <CheckboxGroup
-                        key={group.name}
-                        config={group}
-                        selectedValues={multiValues[group.name] ?? []}
-                        onToggle={setMultiValue}
-                      />
-                    ))
-                  : null}
-
-                {section.fields ? (
-                  <div className="grid gap-5 2xl:grid-cols-2">
-                    {section.fields.map((field) => (
-                      <div key={field.name} className={field.span === "full" ? "2xl:col-span-2" : "2xl:col-span-1"}>
-                        <FormField
-                          name={field.name}
-                          label={field.label}
-                          type={field.type}
-                          required={field.required}
-                          placeholder={field.placeholder}
-                          helpText={field.helpText}
-                          options={field.options}
-                          min={field.min}
-                          inputMode={field.inputMode}
-                          rows={field.rows}
-                          value={formValues[field.name] ?? ""}
-                          onValueChange={setFieldValue}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-
-                {(section.fieldOrder === undefined || section.fieldOrder === "fields-first")
-                  ? section.checkboxGroups?.map((group) => (
-                      <CheckboxGroup
-                        key={group.name}
-                        config={group}
-                        selectedValues={multiValues[group.name] ?? []}
-                        onToggle={setMultiValue}
-                      />
-                    ))
-                  : null}
-              </>
-            )}
-          </section>
-        );
-      })}
-
-      {currentStep === notesStepIndex ? (
-        <section className="surface-card grid gap-6 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
-          <h4 className="font-display text-xl text-[var(--brand)]">Notes</h4>
-          <FormField
-            name="message"
-            label="Dispatch Notes / Request Details"
-            required
-            type="textarea"
-            rows={5}
-            placeholder="Share anything that will help dispatch or scheduling."
-            helpText="Freeform details remain important for unusual site conditions or nuanced requests."
-            value={formValues.message ?? ""}
-            onValueChange={setFieldValue}
-          />
-        </section>
-      ) : null}
-
-      {isReviewStep ? (
-        <section className="surface-card grid gap-4 rounded-[var(--radius-card)] border border-[#ddd4c5] bg-[#fffdf9] p-[var(--space-card-pad)] sm:p-6">
-          <h4 className="font-display text-xl text-[var(--brand)]">Review Request</h4>
-          <p className="text-sm text-slate-700">
-            Use Edit to jump back to any step. Entered values stay in place while you review.
-          </p>
-          <div className="grid gap-2">
-            {sections.map((section, index) => (
-              <div key={section.id} className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
-                <p className="text-sm font-semibold text-slate-900">{section.title}</p>
-                <button
-                  type="button"
-                  className="text-sm font-semibold text-[var(--brand)] underline"
-                  onClick={() => setCurrentStep(index)}
-                >
-                  Edit
-                </button>
-              </div>
-            ))}
-            <div className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">
-              <p className="text-sm font-semibold text-slate-900">Notes</p>
-              <button
-                type="button"
-                className="text-sm font-semibold text-[var(--brand)] underline"
-                onClick={() => setCurrentStep(notesStepIndex)}
-              >
-                Edit
-              </button>
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <WizardContainer
+        anchorId="request-form-wizard"
+        headingId={`wizard-heading-${type}`}
+        headingRef={headingRef}
+        title={title}
+        helperText={helperByType[type]}
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+        callout={
+          type === "general" ? (
+            <p className="rounded-md border border-[#e6ded0] bg-[#fffaf3] px-3 py-2 text-xs text-slate-700">
+              Lightweight contact lane for questions and follow-up requests. If this becomes urgent, call anytime.
+            </p>
+          ) : (
+            <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
+              Fastest for emergencies: call now, then submit details to speed dispatch prep.
+            </p>
+          )
+        }
+        desktopActions={<WizardActions backAction={backAction} nextAction={nextAction} />}
+        mobileActions={<WizardMobileActions backAction={backAction} nextAction={nextAction} />}
+      >
+        <div ref={wizardRef} className="grid gap-6">
+          {wizardStep}
+        </div>
+      </WizardContainer>
 
       {isReviewStep ? (
         <>
@@ -903,36 +977,6 @@ export function RequestForm({ type, title }: Props) {
           )}
         </>
       ) : null}
-
-      <div className="flex flex-wrap gap-3">
-        {currentStep > 0 ? (
-          <button
-            type="button"
-            className="rounded-md border border-[var(--brand)] px-4 py-3 font-semibold text-[var(--brand)]"
-            onClick={() => setCurrentStep((step) => Math.max(0, step - 1))}
-          >
-            Back
-          </button>
-        ) : null}
-
-        {!isReviewStep ? (
-          <button
-            type="button"
-            className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white"
-            onClick={() => setCurrentStep((step) => Math.min(reviewStepIndex, step + 1))}
-          >
-            {currentStep === notesStepIndex ? "Review Request" : "Next Step"}
-          </button>
-        ) : (
-          <button
-            disabled={status === "submitting"}
-            className="rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white disabled:opacity-60"
-            type="submit"
-          >
-            {status === "submitting" ? "Submitting..." : submitLabelByType[type]}
-          </button>
-        )}
-      </div>
 
       {message && status === "success" ? <FormConfirmation message={message} /> : null}
       {message && status === "error" ? <FormErrorState message={message} /> : null}

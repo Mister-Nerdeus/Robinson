@@ -44,6 +44,7 @@ const baseSchema = z.object({
   phone: trimmedRequired(7),
   email: z.string().trim().email(),
   preferredDate: trimmedOptional,
+  preferredTime: trimmedOptional,
   urgency: urgencySchema,
   message: trimmedRequired(8),
   ...locationOptionalSchema,

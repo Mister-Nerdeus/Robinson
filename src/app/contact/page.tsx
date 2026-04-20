@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import { Section } from "@/components/site/Section";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { company } from "@/config/company";
-import { ContactHero } from "@/components/contact/ContactHero";
 import { PrimaryCallBand } from "@/components/contact/PrimaryCallBand";
 import { ContactLaneGrid } from "@/components/contact/ContactLaneGrid";
 import { AvailabilityNotice } from "@/components/contact/AvailabilityNotice";
 import { LocationCard } from "@/components/contact/LocationCard";
 import { ContactIntakeRouter } from "@/components/forms/ContactIntakeRouter";
-import { ServiceAreaBlock } from "@/components/site/ServiceAreaBlock";
 import type { SubmissionType } from "@/lib/forms/types";
+import { TaskPageLayout } from "@/components/layout/TaskPageLayout";
 
 export const metadata: Metadata = buildMetadata(
   "Contact Command Center",
@@ -41,19 +40,27 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
       : null;
 
   return (
-    <Section title="Contact Command Center">
+    <Section title="Contact Command Center" layout="task">
       <div className="grid gap-5">
         <PrimaryCallBand />
-        <ContactHero />
-        <ContactLaneGrid />
-        <div className="grid gap-5 lg:grid-cols-[1.5fr,1fr]">
-          <ContactIntakeRouter initialLane={initialLane} />
-          <div className="grid gap-5">
-            <AvailabilityNotice />
-            <LocationCard />
-            <ServiceAreaBlock />
+        <TaskPageLayout
+          route="/contact"
+          primary={<ContactIntakeRouter initialLane={initialLane} />}
+          support={
+            <div className="grid gap-5">
+              <AvailabilityNotice />
+              <LocationCard />
+            </div>
+          }
+        />
+        <details className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
+          <summary className="cursor-pointer text-sm font-semibold text-[var(--brand)]">
+            Need a different lane?
+          </summary>
+          <div className="mt-3">
+            <ContactLaneGrid />
           </div>
-        </div>
+        </details>
       </div>
     </Section>
   );

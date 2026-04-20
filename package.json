@@ -46,7 +46,8 @@
     "proof:issue-83-94:screens": "node scripts/capture-regression-screens.mjs",
     "proof:issue-83-94:controls": "node scripts/audit-control-sizes.mjs",
     "check:issue-83-94:evidence": "node scripts/check-issue-83-94-evidence.mjs",
-    "verify:issue-83-94": "npm run test:smoke && npm run check:identity-contract && npm run check:content-driven-claims && npm run test:request-layout-contract && npm run proof:issue-83-94:controls && npm run check:issue-83-94:evidence"
+    "verify:issue-83-94": "npm run test:smoke && npm run check:identity-contract && npm run check:content-driven-claims && npm run test:request-layout-contract && npm run proof:issue-83-94:controls && npm run check:issue-83-94:evidence",
+    "proof:issue-120-130": "node scripts/capture-issue-120-130-evidence.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

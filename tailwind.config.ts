@@ -16,6 +16,10 @@ const config: Config = {
         display: ["Archivo Black", "sans-serif"],
         body: ["Source Sans 3", "sans-serif"],
       },
+      maxWidth: {
+        marketing: "var(--layout-marketing-max)",
+        task: "var(--layout-task-max)",
+      },
     },
   },
   plugins: [],

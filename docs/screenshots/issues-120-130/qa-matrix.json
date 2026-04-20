@@ -1,0 +1,63 @@
+{
+  "capturedAt": "2026-04-20T07:40:43.972Z",
+  "baseUrl": "http://127.0.0.1:4850",
+  "desktopMatrix": [
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "taskRoot": {
+        "width": 963,
+        "height": 1120,
+        "x": 31,
+        "y": 525
+      },
+      "main": {
+        "width": 620,
+        "height": 1120,
+        "x": 31,
+        "y": 525
+      },
+      "rail": {
+        "width": 318,
+        "height": 520,
+        "x": 675,
+        "y": 525
+      },
+      "wizardSingleStepCards": 1
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "taskRoot": {
+        "width": 1280,
+        "height": 1052,
+        "x": 80,
+        "y": 525
+      },
+      "main": {
+        "width": 830,
+        "height": 1052,
+        "x": 80,
+        "y": 525
+      },
+      "rail": {
+        "width": 426,
+        "height": 500,
+        "x": 934,
+        "y": 525
+      },
+      "wizardSingleStepCards": 1
+    }
+  ],
+  "mobileAudit": {
+    "activeTag": "H3",
+    "activeText": "Portable Rental Request",
+    "headingFocused": true,
+    "stickyActionsVisible": true,
+    "renderedStepCards": 1
+  }
+}

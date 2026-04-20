@@ -15,7 +15,7 @@ export function RequestRouter() {
             <h3 className="text-sm font-semibold text-slate-900">{route.title}</h3>
             <p className="mt-1 text-xs text-slate-700">{route.description}</p>
             <Link
-              href={route.href}
+              href={route.href.startsWith("/contact") ? `${route.href}#request-wizard` : route.href}
               onClick={() => {
                 void trackEvent({
                   event: analyticsEvents.routerLaneSelect,

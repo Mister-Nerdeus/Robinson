@@ -7,14 +7,12 @@ function read(relativePath: string) {
 }
 
 function run() {
-  const serviceRouteFiles = [
+  const templatedServiceRouteFiles = [
     "src/app/services/septic-cleaning/page.tsx",
     "src/app/services/well-septic-evaluations/page.tsx",
-    "src/app/services/portable-toilets/page.tsx",
-    "src/app/services/commercial/page.tsx",
   ];
 
-  for (const file of serviceRouteFiles) {
+  for (const file of templatedServiceRouteFiles) {
     const source = read(file);
     assert.ok(
       source.includes("ServiceRequestPageTemplate"),
@@ -22,14 +20,25 @@ function run() {
     );
   }
 
+  const taskLayoutRouteFiles = [
+    "src/app/contact/page.tsx",
+    "src/app/realtors/page.tsx",
+    "src/app/services/portable-toilets/page.tsx",
+  ];
+
+  for (const file of taskLayoutRouteFiles) {
+    const source = read(file);
+    assert.ok(source.includes("TaskPageLayout"), `${file} must use TaskPageLayout`);
+  }
+
   const contactSource = read("src/app/contact/page.tsx");
   assert.ok(
-    contactSource.includes("RequestPageLayout"),
-    "Contact page must use RequestPageLayout",
+    contactSource.includes('route="/contact"'),
+    "Contact page must declare task route /contact",
   );
   assert.ok(
-    contactSource.includes('routeId="/contact"'),
-    "Contact page must declare routeId /contact",
+    contactSource.includes('layout="task"'),
+    "Contact page must opt into task container width",
   );
 
   const templateSource = read("src/components/site/ServiceRequestPageTemplate.tsx");
@@ -46,8 +55,6 @@ function run() {
   const expectedRoutes = [
     "/services/septic-cleaning",
     "/services/well-septic-evaluations",
-    "/services/portable-toilets",
-    "/services/commercial",
   ];
   for (const routeId of expectedRoutes) {
     assert.ok(
@@ -62,11 +69,15 @@ function run() {
     "Global styles must include request-page-form styling",
   );
   assert.ok(
-    globalsCss.includes(".request-page-post-form"),
-    "Global styles must include request-page-post-form zone styling",
+    globalsCss.includes(".task-page-layout"),
+    "Global styles must include task-page-layout styling",
+  );
+  assert.ok(
+    globalsCss.includes("--layout-task-max"),
+    "Global styles must define task max-width token",
   );
 
-  console.log("[request-layout-contract] request-heavy routes use shared RequestPageLayout contract");
+  console.log("[request-layout-contract] task and templated request routes align to current layout contracts");
 }
 
 run();
