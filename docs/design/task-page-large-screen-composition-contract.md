@@ -26,9 +26,10 @@
 
 ## Spatial Rules
 1. Large-screen blank right-side bands are not allowed unless they are the intentional gutter of the active mode.
-2. Pre-form support content must be compressed or moved out of the form-priority section.
-3. Step actions must remain attached to the form shell, not the outer page band.
-4. Footer entry must be visually separated from the active form runway.
+2. In `support-rail` mode, right-rail content must not be materially shorter than the paired primary column such that obvious right-column voids appear.
+3. Pre-form support content must be compressed or moved out of the form-priority section.
+4. Step actions must remain attached to the form shell, not the outer page band.
+5. Footer entry must be visually separated from the active form runway.
 
 ## Evidence Contract
 1. Desktop screenshots required at `1280`, `1440`, and `1920` for:

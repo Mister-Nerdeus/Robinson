@@ -24,8 +24,8 @@
   - `data-task-page-layout-mode="support-rail|full-width"`
 
 ## Layout Mode Inventory
-- `/services/septic-cleaning`: `support-rail -> full-width -> support-rail`
-- `/services/well-septic-evaluations`: `support-rail -> full-width -> support-rail`
+- `/services/septic-cleaning`: `support-rail -> full-width -> full-width`
+- `/services/well-septic-evaluations`: `support-rail -> full-width -> full-width`
 - `/services/portable-toilets`: `support-rail -> full-width`
 - `/services/commercial`: `support-rail -> full-width`
 - `/contact`: `support-rail -> full-width`

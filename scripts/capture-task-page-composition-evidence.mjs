@@ -108,6 +108,12 @@ async function capture() {
                 `[${route.path} @ ${viewport.width}] right-side void too large (${gapFromPrimaryToViewportRight}px)`,
               );
             }
+            const rightRailHeightDelta = section.primary.height - section.support.height;
+            if (rightRailHeightDelta > 260) {
+              findings.push(
+                `[${route.path} @ ${viewport.width}] support-rail height mismatch leaves right void (${rightRailHeightDelta}px)`,
+              );
+            }
           }
         }
 

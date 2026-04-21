@@ -13,8 +13,8 @@ Contract marker source:
 ## Route compliance
 | Route | Intro mode | Form mode | Post-form mode |
 | --- | --- | --- | --- |
-| `/services/septic-cleaning` | support-rail | full-width | support-rail |
-| `/services/well-septic-evaluations` | support-rail | full-width | support-rail |
+| `/services/septic-cleaning` | support-rail | full-width | full-width |
+| `/services/well-septic-evaluations` | support-rail | full-width | full-width |
 | `/services/portable-toilets` | support-rail | full-width | none |
 | `/services/commercial` | support-rail | full-width | none |
 | `/contact` | support-rail | full-width | none |

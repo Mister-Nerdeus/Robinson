@@ -52,7 +52,7 @@ function run() {
     "ServiceRequestPageTemplate must bind routeId from template entry",
   );
   assert.ok(
-    templateSource.includes('postFormMode="support-rail"'),
+    templateSource.includes('postFormMode="full-width"'),
     "ServiceRequestPageTemplate must explicitly declare post-form layout mode",
   );
 
