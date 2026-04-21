@@ -21,6 +21,32 @@ jobs:
       - run: npm run test:form-lane-contract
       - run: npm run test:schema-source-contract
       - run: npm run test:routes-public-contract
+      - run: npm run test:deploy-traceability-contract
+      - run: npm run test:request-flow-behavior
+      - run: npm run test:security-headers-contract
       - run: npm run test:content-trust-policy
       - run: npm run test:content-copy-rules
       - run: npm run test:visual-public-evidence
+      - run: npm run build
+      - name: Start app for parity checks
+        run: |
+          npm run start > app.log 2>&1 &
+          for i in {1..40}; do
+            if curl -fsS http://127.0.0.1:4850 > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not become ready" >&2
+          exit 1
+      - run: npm run verify:deploy-manifest
+      - run: npm run verify:request-route-parity -- --target=http://127.0.0.1:4850
+      - name: Upload deploy traceability artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-traceability
+          path: |
+            artifacts/deploy-manifest.json
+            artifacts/request-route-parity.json
+            app.log
+          if-no-files-found: error

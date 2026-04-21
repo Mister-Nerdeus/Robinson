@@ -72,8 +72,9 @@ export function middleware(request: NextRequest) {
   const isAdminApiRead =
     (pathname === "/api/submissions" || pathname === "/api/forms") &&
     request.method === "GET";
+  const isRuntimeProofApi = pathname === "/api/runtime-proof" && request.method === "GET";
 
-  if (!isAdminPage && !isAdminApiRead) {
+  if (!isAdminPage && !isAdminApiRead && !isRuntimeProofApi) {
     return NextResponse.next();
   }
 
@@ -108,7 +109,7 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  if (isAdminApiRead) {
+  if (isAdminApiRead || isRuntimeProofApi) {
     return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
   }
 
@@ -116,5 +117,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/submissions/:path*", "/api/submissions", "/api/forms"],
+  matcher: ["/admin/submissions/:path*", "/api/submissions", "/api/forms", "/api/runtime-proof"],
 };

@@ -11,6 +11,7 @@ import { useWizard } from "@/hooks/useWizard";
 import { WizardActions } from "./WizardActions";
 import { WizardContainer, WizardMobileActions } from "./WizardContainer";
 import { FormFieldGroup } from "./FormFieldGroup";
+import { scrollAndFocus } from "@/lib/ui/scrollAndFocus";
 
 type FormFieldConfig = {
   name: string;
@@ -694,8 +695,7 @@ export function RequestForm({ type, title }: Props) {
       return;
     }
 
-    wizardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.setTimeout(() => headingRef.current?.focus(), 120);
+    scrollAndFocus(headingRef.current, { behavior: "smooth", delayMs: 120 });
   }, [currentStep]);
 
   function setFieldValue(name: string, value: string) {

@@ -4,15 +4,23 @@ import { useState } from "react";
 import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { primaryNavLinks } from "@/content/navigation";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isTaskRoute = Boolean(
+    pathname &&
+      (pathname === "/contact" ||
+        pathname === "/realtors" ||
+        pathname.startsWith("/services/")),
+  );
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#b8a8a8] bg-[var(--surface-strong)] shadow-[0_2px_10px_rgba(0,0,0,0.07)]">
+    <header data-site-header="true" className="sticky top-0 z-30 border-b border-[#b8a8a8] bg-[var(--surface-strong)] shadow-[0_2px_10px_rgba(0,0,0,0.07)]">
       <div className="bg-[var(--brand)] text-white">
         <div className="container flex items-center justify-between gap-3 py-1.5 text-xs font-semibold sm:text-sm">
           <p>{company.emergencyService.claim}</p>
@@ -28,17 +36,24 @@ export function Header() {
         </div>
       </div>
 
-      <div className="container py-2.5">
+      <div className={`container ${isTaskRoute ? "py-2" : "py-2.5"}`}>
         <div className="hidden items-center justify-between gap-6 md:flex">
           <Link href="/" className="flex items-center gap-4">
             <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[170px]" priority />
             <div>
-              <p className="font-display text-[1.6rem] leading-none text-[var(--brand)]">{company.publicBrand}</p>
-              <p className="mt-1 text-sm text-slate-700">Family owned and operated since 1979</p>
+              <p className={`font-display leading-none text-[var(--brand)] ${isTaskRoute ? "text-[1.35rem]" : "text-[1.6rem]"}`}>{company.publicBrand}</p>
+              <p className={`text-slate-700 ${isTaskRoute ? "mt-0.5 text-xs" : "mt-1 text-sm"}`}>Family owned and operated since 1979</p>
             </div>
           </Link>
 
           <div className="flex items-center gap-2">
+            <nav className="mr-2 flex flex-wrap items-center gap-2">
+              {primaryNavLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="rounded-full border border-[#d6c9c9] bg-[#fff7f7] px-3 py-1.5 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--brand)] hover:text-[var(--brand)]">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
             <a
               href={`tel:${company.primaryPhone}`}
               onClick={() => {
@@ -96,13 +111,6 @@ export function Header() {
           </div>
         </div>
 
-        <nav className="mt-3 hidden flex-wrap gap-2 text-sm md:flex">
-          {primaryNavLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="rounded-full border border-[#d6c9c9] bg-[#fff7f7] px-3 py-1.5 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--brand)] hover:text-[var(--brand)]">
-              {link.label}
-            </Link>
-          ))}
-        </nav>
       </div>
     </header>
   );

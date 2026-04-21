@@ -4,15 +4,17 @@ import { useMemo, useRef, useState } from "react";
 import type { SubmissionType } from "@/lib/forms/types";
 import { RequestForm } from "@/components/forms/RequestForm";
 import { contactRoutes } from "@/content/contactRoutes";
+import type { ContactLaneId } from "@/content/contactRoutes";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
+import { scrollAndFocus } from "@/lib/ui/scrollAndFocus";
 
 type ContactIntakeRouterProps = {
   initialLane?: SubmissionType | null;
 };
 
 type FormLane = {
-  id: string;
+  id: ContactLaneId;
   title: string;
   taskLabel: string;
   summary: string;
@@ -20,48 +22,14 @@ type FormLane = {
   type: SubmissionType;
 };
 
-const lanes: FormLane[] = [
-  {
-    id: "emergency-septic",
-    title: "Emergency septic help",
-    taskLabel: "I need emergency septic help now",
-    summary: "Urgent warning signs and dispatch-ready septic details.",
-    eventName: "contact_form_lane_emergency_septic",
-    type: "septic-service",
-  },
-  {
-    id: "routine-pumping",
-    title: "Routine septic pumping",
-    taskLabel: "I need routine septic pumping",
-    summary: "Scheduled septic pumping and maintenance details.",
-    eventName: "contact_form_lane_routine_pumping",
-    type: "septic-service",
-  },
-  {
-    id: "realtor-evaluation",
-    title: "Home-sale / Realtor evaluation",
-    taskLabel: "I need a home-sale or Realtor evaluation",
-    summary: "Deadline and transaction-specific evaluation intake.",
-    eventName: "contact_form_lane_realtor_evaluation",
-    type: "evaluation",
-  },
-  {
-    id: "portable-toilet-rental",
-    title: "Portable toilet rental",
-    taskLabel: "I need portable toilet rental",
-    summary: "Quote-ready rental intake with unit and duration details.",
-    eventName: "contact_form_lane_portable_rental",
-    type: "rental",
-  },
-  {
-    id: "commercial-support",
-    title: "Commercial support",
-    taskLabel: "I need commercial support",
-    summary: "Commercial service intake for facility and operation context.",
-    eventName: "contact_form_lane_commercial",
-    type: "commercial-service",
-  },
-];
+const lanes: FormLane[] = contactRoutes.map((route) => ({
+  id: route.id,
+  title: route.title,
+  taskLabel: route.userTaskLabel,
+  summary: route.description,
+  eventName: route.eventName,
+  type: route.submissionType,
+}));
 
 const formTitleByType: Record<SubmissionType, string> = {
   general: "General Contact Request",
@@ -92,12 +60,11 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
 
   function focusWizardHeading() {
     const heading = wizardHostRef.current?.querySelector<HTMLElement>("[data-wizard-step-heading]");
-    heading?.focus();
+    scrollAndFocus(heading, { behavior: "smooth", delayMs: 140 });
   }
 
   function anchorToWizard() {
-    wizardHostRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.setTimeout(focusWizardHeading, 220);
+    focusWizardHeading();
   }
 
   return (

@@ -17,6 +17,7 @@ services:
         DEPLOY_BUILD_TIME_UTC: ${DEPLOY_BUILD_TIME_UTC}
         SEO_ALLOW_INDEXING: ${SEO_ALLOW_INDEXING}
         REQUEST_LAYOUT_CONTRACT_VERSION: ${REQUEST_LAYOUT_CONTRACT_VERSION}
+        RATE_LIMIT_MODE: ${RATE_LIMIT_MODE}
     container_name: robinson-main-web
     env_file:
       - .env.main

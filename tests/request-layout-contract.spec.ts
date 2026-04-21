@@ -24,6 +24,7 @@ function run() {
     "src/app/contact/page.tsx",
     "src/app/realtors/page.tsx",
     "src/app/services/portable-toilets/page.tsx",
+    "src/app/services/commercial/page.tsx",
   ];
 
   for (const file of taskLayoutRouteFiles) {

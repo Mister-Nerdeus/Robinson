@@ -8,9 +8,20 @@ import {
 
 export async function GET() {
   const env = getRuntimeEnv();
+  if (env.mode === "production") {
+    return NextResponse.json({ error: "not-found" }, { status: 404 });
+  }
+
+  if (!isAdminReviewEnabled()) {
+    return NextResponse.json({ error: "admin-review-blocked" }, { status: 403 });
+  }
+
   const requestHeaders = await headers();
   const host = requestHeaders.get("host") || "unknown-host";
   const cookieHeader = requestHeaders.get("cookie") || undefined;
+  if (!hasValidReviewAccessCookie(cookieHeader)) {
+    return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
+  }
 
   const baseProof = {
     proofVersion: "v1",
@@ -24,15 +35,6 @@ export async function GET() {
     requestLayoutContractVersionExpected: REQUEST_LAYOUT_CONTRACT_VERSION,
     requestLayoutRoutes: REQUEST_LAYOUT_ROUTE_IDS,
   };
-
-  if (env.mode === "production") {
-    return NextResponse.json({
-      ...baseProof,
-      proofLevel: "public",
-      adminReviewEnabled: false,
-      deploymentStampVisible: false,
-    });
-  }
 
   return NextResponse.json({
     ...baseProof,

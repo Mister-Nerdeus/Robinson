@@ -70,6 +70,7 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
         },
       ],
       primaryCta: { label: "Call Emergency Dispatch" },
+      secondaryCta: { href: "/contact?lane=septic-service", label: "Open Septic Service Lane" },
     },
     media: [
       {
@@ -124,7 +125,7 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
         },
       ],
       primaryCta: { label: "Call Evaluation Coordination" },
-      secondaryCta: { href: "/realtors", label: "Open Realtor Resources" },
+      secondaryCta: { href: "/contact?lane=evaluation", label: "Open Evaluation Lane" },
     },
     media: [
       {
@@ -170,6 +171,7 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
         },
       ],
       primaryCta: { label: "Call Rental Availability" },
+      secondaryCta: { href: "/contact?lane=rental", label: "Open Rental Lane" },
     },
     media: [
       {
@@ -219,7 +221,7 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
         },
       ],
       primaryCta: { label: "Call Commercial Dispatch" },
-      secondaryCta: { href: "/contact", label: "Open Contact Lanes" },
+      secondaryCta: { href: "/contact?lane=commercial-service", label: "Open Commercial Lane" },
     },
     media: [
       {

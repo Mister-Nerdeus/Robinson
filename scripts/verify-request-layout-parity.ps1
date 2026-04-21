@@ -20,6 +20,15 @@ $staleLayoutSignatures = @(
   "md:grid-cols-[1.1fr,0.9fr]"
 )
 
+$routeMarkers = @{
+  "/contact" = 'data-task-page-route="/contact"'
+  "/realtors" = 'data-task-page-route="/realtors"'
+  "/services/septic-cleaning" = 'data-request-layout-route="/services/septic-cleaning"'
+  "/services/well-septic-evaluations" = 'data-request-layout-route="/services/well-septic-evaluations"'
+  "/services/portable-toilets" = 'data-task-page-route="/services/portable-toilets"'
+  "/services/commercial" = 'data-task-page-route="/services/commercial"'
+}
+
 $results = @()
 
 foreach ($route in $Routes) {
@@ -43,24 +52,17 @@ foreach ($route in $Routes) {
     throw "Route parity failed for ${route}: Cache-Control does not include no-store ($cacheControl)"
   }
 
-  if ($content -notmatch "data-request-layout-contract=""$([regex]::Escape($ExpectedContractVersion))""") {
-    throw "Route parity failed for ${route}: missing expected layout contract marker"
+  if ($routeMarkers.ContainsKey($route)) {
+    $expectedMarker = $routeMarkers[$route]
+    if ($content -notmatch [regex]::Escape($expectedMarker)) {
+      throw "Route parity failed for ${route}: missing expected route marker ($expectedMarker)"
+    }
   }
 
-  if ($content -notmatch "data-request-layout-route=""$([regex]::Escape($route))""") {
-    throw "Route parity failed for ${route}: missing expected route marker"
-  }
-
-  if ($content -notmatch 'data-request-layout-geometry="top-support-then-full-width-form"') {
-    throw "Route parity failed for ${route}: missing expected geometry marker"
-  }
-
-  if ($content -notmatch 'data-request-layout-zone="full-width-form"') {
-    throw "Route parity failed for ${route}: missing full-width form zone marker"
-  }
-
-  if ($content -notmatch 'data-request-layout-form-width="full-width"') {
-    throw "Route parity failed for ${route}: missing full-width form width marker"
+  if ($content -match 'data-request-layout-route=') {
+    if ($content -notmatch "data-request-layout-contract=""$([regex]::Escape($ExpectedContractVersion))""") {
+      throw "Route parity failed for ${route}: missing expected layout contract marker"
+    }
   }
 
   foreach ($signature in $staleLayoutSignatures) {

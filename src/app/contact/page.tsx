@@ -3,7 +3,6 @@ import { Section } from "@/components/site/Section";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { company } from "@/config/company";
 import { PrimaryCallBand } from "@/components/contact/PrimaryCallBand";
-import { ContactLaneGrid } from "@/components/contact/ContactLaneGrid";
 import { AvailabilityNotice } from "@/components/contact/AvailabilityNotice";
 import { LocationCard } from "@/components/contact/LocationCard";
 import { ContactIntakeRouter } from "@/components/forms/ContactIntakeRouter";
@@ -53,14 +52,6 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
             </div>
           }
         />
-        <details className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
-          <summary className="cursor-pointer text-sm font-semibold text-[var(--brand)]">
-            Need a different lane?
-          </summary>
-          <div className="mt-3">
-            <ContactLaneGrid />
-          </div>
-        </details>
       </div>
     </Section>
   );
