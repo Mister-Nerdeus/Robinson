@@ -21,7 +21,9 @@
   --radius-card: 1rem;
   --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.07);
   --layout-marketing-max: 1200px;
-  --layout-task-max: 1380px;
+  --layout-request-max: 1480px;
+  --layout-task-max: var(--layout-request-max);
+  --layout-form-shell-max: 1120px;
   --sticky-header-offset: 5.8rem;
 }
 
@@ -68,17 +70,23 @@ img {
 
 .request-page-shell {
   display: grid;
-  gap: var(--space-block-gap);
+  gap: clamp(1rem, 2.4vw, 1.6rem);
 }
 
 .task-page-layout {
   display: grid;
-  gap: var(--space-block-gap);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.9rem, 2vw, 1.25rem);
 }
 
 .task-page-primary,
 .task-page-support {
   min-width: 0;
+}
+
+.task-page-form-shell,
+.request-page-form-primary {
+  width: min(100%, var(--layout-form-shell-max));
 }
 
 .wizard-scroll-anchor {
@@ -103,11 +111,6 @@ img {
   pointer-events: auto;
 }
 
-.request-page-top {
-  display: grid;
-  gap: calc(var(--space-block-gap) * 0.8);
-}
-
 .surface-card {
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -129,37 +132,56 @@ img {
   }
 }
 
+.request-page-section,
 .request-page-top-primary,
 .request-page-top-secondary,
 .request-page-form,
-.request-page-post-form {
+.request-page-post-form,
+.request-page-post-form-primary,
+.request-page-post-form-secondary {
   min-width: 0;
 }
 
 .request-page-form {
   border-top: 1px solid #e4d4cf;
-  padding-top: 1rem;
+  padding-top: 1.2rem;
 }
 
 .request-page-top-secondary > * {
   height: fit-content;
 }
 
+.request-form-shell {
+  padding-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+.wizard-shell {
+  position: relative;
+}
+
+.wizard-actions-row {
+  border-top: 1px solid #e7ddcf;
+  padding-top: 1rem;
+}
+
 @media (min-width: 1024px) {
-  .task-page-layout {
+  .task-page-layout[data-task-page-layout-mode="support-rail"] {
     grid-template-columns: minmax(0, 1.95fr) minmax(0, 1fr);
     gap: 1.5rem;
     align-items: start;
   }
 
-  .request-page-top {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    gap: 1.5rem;
+  .task-page-layout[data-task-page-layout-mode="full-width"] {
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
   }
 
+  .task-page-layout[data-task-page-layout-mode="full-width"] > .task-page-primary {
+    width: min(100%, var(--layout-form-shell-max));
+  }
+
   .request-page-form {
-    padding-top: 1.35rem;
+    padding-top: 1.5rem;
   }
 }
 

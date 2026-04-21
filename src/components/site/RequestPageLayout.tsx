@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import {
   REQUEST_LAYOUT_CONTRACT_VERSION,
+  type RequestLayoutMode,
   type RequestLayoutRouteId,
 } from "@/config/requestLayoutContract";
+import { TaskPageLayout } from "@/components/layout/TaskPageLayout";
 
 type RequestPageLayoutProps = {
   routeId: RequestLayoutRouteId;
@@ -10,6 +12,8 @@ type RequestPageLayoutProps = {
   topSecondary: ReactNode;
   form: ReactNode;
   postForm?: ReactNode;
+  postFormSecondary?: ReactNode;
+  postFormMode?: RequestLayoutMode;
 };
 
 export function RequestPageLayout({
@@ -18,24 +22,51 @@ export function RequestPageLayout({
   topSecondary,
   form,
   postForm,
+  postFormSecondary,
+  postFormMode = "full-width",
 }: RequestPageLayoutProps) {
+  const sectionModes: RequestLayoutMode[] = ["support-rail", "full-width"];
+  if (postForm) {
+    sectionModes.push(postFormMode);
+  }
+
   return (
     <div
       className="request-page-shell"
       data-request-layout-contract={REQUEST_LAYOUT_CONTRACT_VERSION}
       data-request-layout-route={routeId}
-      data-request-layout-geometry="top-support-then-full-width-form"
+      data-request-layout-geometry="explicit-section-modes"
+      data-request-layout-modes={sectionModes.join("|")}
     >
-      <div className="request-page-top" data-request-layout-zone="top-support">
-        <div className="request-page-top-primary">{topPrimary}</div>
-        <aside className="request-page-top-secondary">{topSecondary}</aside>
-      </div>
+      <TaskPageLayout
+        route={routeId}
+        mode="support-rail"
+        className="request-page-section request-page-top"
+        primaryClassName="request-page-top-primary"
+        supportClassName="request-page-top-secondary"
+        primary={topPrimary}
+        support={topSecondary}
+      />
 
-      <div className="request-page-form" data-request-layout-zone="full-width-form" data-request-layout-form-width="full-width">
-        {form}
-      </div>
+      <TaskPageLayout
+        route={routeId}
+        mode="full-width"
+        className="request-page-section request-page-form"
+        primaryClassName="request-page-form-primary"
+        primary={form}
+      />
 
-      {postForm ? <div className="request-page-post-form">{postForm}</div> : null}
+      {postForm ? (
+        <TaskPageLayout
+          route={routeId}
+          mode={postFormMode}
+          className="request-page-section request-page-post-form"
+          primaryClassName="request-page-post-form-primary"
+          supportClassName="request-page-post-form-secondary"
+          primary={postForm}
+          support={postFormSecondary}
+        />
+      ) : null}
     </div>
   );
 }

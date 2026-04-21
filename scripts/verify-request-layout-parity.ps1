@@ -1,6 +1,6 @@
 param(
   [string]$TargetHost = "https://robinson-demo.hearthcore.app",
-  [string]$ExpectedContractVersion = "form-first-full-width-v2",
+  [string]$ExpectedContractVersion = "request-desktop-modes-v3",
   [string]$OutputPath = "",
   [string[]]$Routes = @(
     "/services/septic-cleaning",
@@ -62,6 +62,9 @@ foreach ($route in $Routes) {
   if ($content -match 'data-request-layout-route=') {
     if ($content -notmatch "data-request-layout-contract=""$([regex]::Escape($ExpectedContractVersion))""") {
       throw "Route parity failed for ${route}: missing expected layout contract marker"
+    }
+    if ($content -notmatch 'data-request-layout-geometry="explicit-section-modes"') {
+      throw "Route parity failed for ${route}: missing explicit section mode geometry marker"
     }
   }
 

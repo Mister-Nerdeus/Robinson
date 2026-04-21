@@ -1,6 +1,6 @@
 # Issue Closeouts (1-14)
 
-Latest tranche closeout: `docs/issue-closeouts-95-119.md`
+Latest tranche closeout: `docs/ISSUE-143-152-CLOSEOUT.md`
 
 ## Closeout: Issue 1 - Repo authority and closure standard
 ### Definition of Done Status

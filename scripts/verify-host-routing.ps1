@@ -1,7 +1,7 @@
 param(
   [string]$MainHost = "https://robinson.hearthcore.app",
   [string]$DevelopHost = "https://robinson-demo.hearthcore.app",
-  [string]$RequestLayoutContractVersion = "form-first-full-width-v2",
+  [string]$RequestLayoutContractVersion = "request-desktop-modes-v3",
   [string]$MainProject = "robinson-main",
   [string]$DevelopProject = "robinson-develop",
   [int]$MainPort = 3010,

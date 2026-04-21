@@ -28,7 +28,7 @@ export function WizardContainer({
   mobileActions,
 }: WizardContainerProps) {
   return (
-    <div id={anchorId} className="wizard-scroll-anchor surface-section grid gap-7 rounded-[var(--radius-section)] border border-[#c8c1b1] bg-[var(--surface)] p-[var(--space-card-pad)] pb-28 sm:p-7 md:pb-7">
+    <div id={anchorId} className="wizard-shell wizard-scroll-anchor surface-section grid gap-7 rounded-[var(--radius-section)] border border-[#c8c1b1] bg-[var(--surface)] p-[var(--space-card-pad)] pb-28 sm:p-7 md:pb-7">
       <div className="grid gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--brand)]">
           Step {Math.min(currentStep + 1, totalSteps)} of {totalSteps}

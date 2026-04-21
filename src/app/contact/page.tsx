@@ -44,13 +44,28 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         <PrimaryCallBand />
         <TaskPageLayout
           route="/contact"
-          primary={<ContactIntakeRouter initialLane={initialLane} />}
+          mode="support-rail"
+          primary={
+            <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Request routing</p>
+              <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Choose a lane, then complete the active step flow.</h3>
+              <p className="mt-2 text-sm text-slate-700">
+                Emergency needs should still call first. Lane selection keeps form steps focused and route-ready.
+              </p>
+            </div>
+          }
           support={
             <div className="grid gap-5">
               <AvailabilityNotice />
               <LocationCard />
             </div>
           }
+        />
+        <TaskPageLayout
+          route="/contact"
+          mode="full-width"
+          primary={<ContactIntakeRouter initialLane={initialLane} />}
+          primaryClassName="task-page-form-shell"
         />
       </div>
     </Section>

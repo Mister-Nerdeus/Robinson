@@ -11,14 +11,14 @@ Each hostname must deterministically prove branch/runtime identity.
 - `requestLayoutContractVersion`
 - `requestLayoutContractVersionExpected`
 - `requestLayoutRoutes`
-- Current expected value: `form-first-full-width-v2`
+- Current expected value: `request-desktop-modes-v3`
 
 ## Production proof (`robinson.hearthcore.app`)
 - Must return:
 - `mode=production`
 - `branchIntent=main`
 - `seoAllowIndexing=true`
-- `requestLayoutContractVersion=form-first-full-width-v2`
+- `requestLayoutContractVersion=request-desktop-modes-v3`
 - Must not expose debug provenance fields beyond safe runtime identity payload.
 
 ## Develop proof (`robinson-demo.hearthcore.app`)
@@ -26,7 +26,7 @@ Each hostname must deterministically prove branch/runtime identity.
 - `mode=demo`
 - `branchIntent=develop`
 - `seoAllowIndexing=false`
-- `requestLayoutContractVersion=form-first-full-width-v2`
+- `requestLayoutContractVersion=request-desktop-modes-v3`
 - Nonblank deployment provenance:
 - `deploymentProvenance.commitSha`
 - `deploymentProvenance.ref`
@@ -41,10 +41,10 @@ Each hostname must deterministically prove branch/runtime identity.
 - `/contact`
 - `/realtors`
 - Required markers per route:
-- `data-request-layout-contract=form-first-full-width-v2`
+- `data-request-layout-contract=request-desktop-modes-v3`
 - `data-request-layout-route=<route>`
-- `data-request-layout-geometry=top-support-then-full-width-form`
-- `data-request-layout-zone=full-width-form`
+- `data-request-layout-geometry=explicit-section-modes`
+- `data-request-layout-modes=<ordered modes>`
 - Legacy right-rail signatures must not be present in route HTML.
 
 ## Verification

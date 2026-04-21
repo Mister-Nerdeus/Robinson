@@ -21,8 +21,8 @@ export async function Footer() {
   const primaryLocation = publishedLocations[0];
 
   return (
-    <footer className="mt-12 border-t border-[#cdb7b7] bg-[#f4eeee]">
-      <div className="container grid gap-6 py-8 md:grid-cols-[1.1fr,1fr]">
+    <footer className="mt-20 border-t border-[#d9cbcb] bg-[#f4eeee]">
+      <div className="container grid gap-6 py-10 md:grid-cols-[1.2fr,0.8fr]">
         <div>
           <Image
             src="/branding/logo-legacy-clean.png"
@@ -63,9 +63,10 @@ export async function Footer() {
             </div>
           ) : null}
         </div>
-        <div>
-          <h2 className="font-display text-lg text-[var(--brand)]">Fast Request Paths</h2>
-          <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
+        <div className="rounded-xl border border-[#dccfcf] bg-[#f8f2f2] p-4">
+          <h2 className="font-display text-base text-[var(--brand)]">Fast Request Paths</h2>
+          <p className="mt-1 text-xs text-slate-600">Use these after your active request flow if you need a different lane.</p>
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm">
             {footerFastPathLinks.map((link) => (
               <Link key={link.href} className="underline" href={link.href}>
                 {link.label}

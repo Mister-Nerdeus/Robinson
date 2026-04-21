@@ -932,7 +932,7 @@ export function RequestForm({ type, title }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="grid gap-7"
+      className="request-form-shell grid gap-7"
     >
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="state" value="MI" />

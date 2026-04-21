@@ -28,12 +28,12 @@ export default function RealtorsPage() {
       </div>
       <TaskPageLayout
         route="/realtors"
+        mode="support-rail"
         primary={
           <div className="grid gap-5">
             <p className="text-slate-800">
               Realtor lane follow-up expectations differ from routine pumping requests: deadline pressure and transaction coordination are prioritized.
             </p>
-            <RealtorEvaluationFlow />
           </div>
         }
         support={
@@ -50,14 +50,31 @@ export default function RealtorsPage() {
             <div className="overflow-hidden rounded-xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
               <Image src="/images/enhanced/tech_evaluation_ai_enhanced.jpg" alt="Robinson team member on site during a property-service visit" width={1000} height={780} className="h-[220px] w-full object-cover" />
             </div>
-            <RequestSupportBlocks
-              reasons={servicesContent.evaluations.reasonsToCall}
-              whatToHaveReady={servicesContent.evaluations.whatToHaveReady}
-              nextSteps={servicesContent.evaluations.nextSteps}
-              responseExpectation={servicesContent.evaluations.responseExpectation}
-              noteTitle="Realtor coordination note"
-              noteBody="Include transaction participants and callback order so updates reach the right people quickly."
-            />
+          </div>
+        }
+      />
+      <TaskPageLayout
+        route="/realtors"
+        mode="full-width"
+        primary={<RealtorEvaluationFlow />}
+        primaryClassName="task-page-form-shell"
+      />
+      <TaskPageLayout
+        route="/realtors"
+        mode="support-rail"
+        primary={
+          <RequestSupportBlocks
+            reasons={servicesContent.evaluations.reasonsToCall}
+            whatToHaveReady={servicesContent.evaluations.whatToHaveReady}
+            nextSteps={servicesContent.evaluations.nextSteps}
+            responseExpectation={servicesContent.evaluations.responseExpectation}
+            noteTitle="Realtor coordination note"
+            noteBody="Include transaction participants and callback order so updates reach the right people quickly."
+            variant="compact"
+          />
+        }
+        support={
+          <div className="grid gap-5">
             <div className="grid gap-2 rounded-md bg-[#f5eded] p-3 text-sm">
               <p className="font-semibold text-[var(--brand)]">Realtor FAQ quick hits</p>
               {realtorFaqSubset.map((item) => (

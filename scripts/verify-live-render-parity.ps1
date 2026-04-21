@@ -1,6 +1,6 @@
 param(
   [string]$TargetHost = "http://localhost:3001",
-  [string]$ExpectedRequestLayoutContractVersion = "form-first-full-width-v2",
+  [string]$ExpectedRequestLayoutContractVersion = "request-desktop-modes-v3",
   [string]$ExpectedHomeMarkerVersion = "home-hero-lanes-trust-v1",
   [string]$OutputPath = "",
   [string]$Mode = "strict"
@@ -23,16 +23,15 @@ $checksByRoute = @{
     "Open Contact and Request Forms"
   )
   "/contact" = @(
-    "data-request-layout-contract=""$ExpectedRequestLayoutContractVersion""",
-    'data-request-layout-route="/contact"',
-    'data-request-layout-geometry="top-support-then-full-width-form"',
-    'data-request-layout-form-width="full-width"'
+    'data-task-page-route="/contact"',
+    'data-task-page-layout-mode="support-rail"',
+    'data-task-page-layout-mode="full-width"'
   )
   "/services/septic-cleaning" = @(
     "data-request-layout-contract=""$ExpectedRequestLayoutContractVersion""",
     'data-request-layout-route="/services/septic-cleaning"',
-    'data-request-layout-geometry="top-support-then-full-width-form"',
-    'data-request-layout-form-width="full-width"'
+    'data-request-layout-geometry="explicit-section-modes"',
+    'data-request-layout-modes="support-rail|full-width|support-rail"'
   )
 }
 

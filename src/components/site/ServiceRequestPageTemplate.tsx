@@ -49,21 +49,6 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
                 <li key={point}>• {point}</li>
               ))}
             </ul>
-            <RequestSupportBlocks
-              reasons={content.reasonsToCall}
-              whatToHaveReady={content.whatToHaveReady}
-              nextSteps={content.nextSteps}
-              responseExpectation={content.responseExpectation}
-            />
-            <div className="grid gap-3 rounded-2xl border border-[#ddd4c5] bg-[#fffdf9] p-4">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Related questions</h3>
-              {entry.slots.faqSubset.map((item) => (
-                <article key={item.question} className="rounded-lg border border-[#e6ddd0] bg-white p-3">
-                  <h4 className="text-sm font-semibold text-slate-900">{item.question}</h4>
-                  <p className="mt-1 text-sm text-slate-700">{item.answer}</p>
-                </article>
-              ))}
-            </div>
           </div>
           }
           topSecondary={
@@ -82,6 +67,27 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
           </div>
           }
           form={<RequestForm type={entry.formType} title={entry.formTitle} />}
+          postForm={
+            <RequestSupportBlocks
+              reasons={content.reasonsToCall}
+              whatToHaveReady={content.whatToHaveReady}
+              nextSteps={content.nextSteps}
+              responseExpectation={content.responseExpectation}
+              variant="compact"
+            />
+          }
+          postFormSecondary={
+            <div className="grid gap-3 rounded-2xl border border-[#ddd4c5] bg-[#fffdf9] p-4">
+              <h3 className="font-display text-2xl text-[var(--brand)]">Related questions</h3>
+              {entry.slots.faqSubset.map((item) => (
+                <article key={item.question} className="rounded-lg border border-[#e6ddd0] bg-white p-3">
+                  <h4 className="text-sm font-semibold text-slate-900">{item.question}</h4>
+                  <p className="mt-1 text-sm text-slate-700">{item.answer}</p>
+                </article>
+              ))}
+            </div>
+          }
+          postFormMode="support-rail"
         />
       </div>
     </Section>

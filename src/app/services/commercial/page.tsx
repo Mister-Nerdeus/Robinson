@@ -22,8 +22,21 @@ export default function CommercialPage() {
         </div>
         <TaskPageLayout
           route="/services/commercial"
-          primary={<RequestForm type="commercial-service" title="Request Commercial Service" />}
+          mode="support-rail"
+          primary={
+            <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
+              <p className="text-sm text-slate-700">
+                Use the commercial lane for structured facility, access-window, and urgency details before dispatch follow-up.
+              </p>
+            </div>
+          }
           support={<CommercialSupportGrid />}
+        />
+        <TaskPageLayout
+          route="/services/commercial"
+          mode="full-width"
+          primary={<RequestForm type="commercial-service" title="Request Commercial Service" />}
+          primaryClassName="task-page-form-shell"
         />
       </div>
     </Section>

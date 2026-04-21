@@ -1,38 +1,36 @@
-# Request-Heavy Route Compliance Audit (58-64)
+# Request/Task Route Layout Compliance Audit
 
 ## Contract
-All request-heavy routes must use one composition model:
-- top support zone
-- full-width form zone
-- optional post-form zone below form
+All request-heavy routes must use explicit section mode composition:
+- support-rail sections for contextual/support content
+- full-width sections for active form shell progression
+- optional post-form support-rail sections
 
 Contract marker source:
-- `data-request-layout-geometry="top-support-then-full-width-form"`
-- `data-request-layout-form-width="full-width"`
+- `data-request-layout-geometry="explicit-section-modes"`
+- `data-request-layout-modes="<ordered modes>"`
 
 ## Route compliance
-| Route | Layout primitive | Top support | Full-width form | Post-form |
-| --- | --- | --- | --- | --- |
-| `/services/septic-cleaning` | `RequestPageLayout` | yes | yes | none |
-| `/services/well-septic-evaluations` | `RequestPageLayout` | yes | yes | none |
-| `/services/portable-toilets` | `RequestPageLayout` | yes | yes | none |
-| `/services/commercial` | `RequestPageLayout` | yes | yes | none |
-| `/contact` | `RequestPageLayout` | yes | yes | `ServiceAreaBlock` |
-| `/realtors` | `RequestPageLayout` | yes | yes | none |
+| Route | Intro mode | Form mode | Post-form mode |
+| --- | --- | --- | --- |
+| `/services/septic-cleaning` | support-rail | full-width | support-rail |
+| `/services/well-septic-evaluations` | support-rail | full-width | support-rail |
+| `/services/portable-toilets` | support-rail | full-width | none |
+| `/services/commercial` | support-rail | full-width | none |
+| `/contact` | support-rail | full-width | none |
+| `/realtors` | support-rail | full-width | support-rail |
 
 ## Route-level verification mechanism
 - Script: `scripts/verify-request-layout-parity.ps1`
 - Verifies per route:
-- contract markers are present
+- expected route marker is present
+- request-layout routes include explicit mode geometry marker
 - stale right-rail signatures are absent
 - `Cache-Control` includes `no-store`
 - accepts `-OutputPath` to write JSON proof artifacts
-- Local proof artifact:
-- `docs/verification/local-request-geometry-full-2026-04-16T20-09-02Z.json`
 
-## Cache/parity root cause and fix
-- Root cause observed on previously deployed routes: stale HTML served with legacy cache policy (`s-maxage=31536000`) caused mismatch against current source geometry.
-- Fix:
-- request-heavy routes now serve `Cache-Control: no-store, max-age=0, must-revalidate` via `next.config.mjs`
-- deploy verification now fails when route markers or cache headers are wrong
-- parity checks now run at route-level, not just environment-level
+## Large-screen evidence gate
+- Desktop composition baseline/evidence:
+- `docs/screenshots/issues-143-152/`
+- JSON audit output:
+- `docs/screenshots/issues-143-152/composition-audit.json`

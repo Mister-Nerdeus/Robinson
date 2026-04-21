@@ -51,6 +51,10 @@ function run() {
     templateSource.includes("routeId={entry.route}"),
     "ServiceRequestPageTemplate must bind routeId from template entry",
   );
+  assert.ok(
+    templateSource.includes('postFormMode="support-rail"'),
+    "ServiceRequestPageTemplate must explicitly declare post-form layout mode",
+  );
 
   const templateContentSource = read("src/content/serviceTemplates.ts");
   const expectedRoutes = [
@@ -66,19 +70,31 @@ function run() {
 
   const globalsCss = read("src/app/globals.css");
   assert.ok(
-    globalsCss.includes(".request-page-form"),
-    "Global styles must include request-page-form styling",
-  );
-  assert.ok(
     globalsCss.includes(".task-page-layout"),
     "Global styles must include task-page-layout styling",
+  );
+  assert.ok(
+    globalsCss.includes("--layout-request-max"),
+    "Global styles must define request max-width token",
+  );
+  assert.ok(
+    globalsCss.includes("--layout-form-shell-max"),
+    "Global styles must define form-shell max-width token",
   );
   assert.ok(
     globalsCss.includes("--layout-task-max"),
     "Global styles must define task max-width token",
   );
+  assert.ok(
+    globalsCss.includes('data-task-page-layout-mode="support-rail"'),
+    "Global styles must define support-rail mode behavior",
+  );
+  assert.ok(
+    globalsCss.includes('data-task-page-layout-mode="full-width"'),
+    "Global styles must define full-width mode behavior",
+  );
 
-  console.log("[request-layout-contract] task and templated request routes align to current layout contracts");
+  console.log("[request-layout-contract] explicit desktop layout modes and request-form width contracts pass");
 }
 
 run();

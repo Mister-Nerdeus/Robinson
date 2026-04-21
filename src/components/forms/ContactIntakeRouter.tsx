@@ -112,7 +112,7 @@ export function ContactIntakeRouter({ initialLane = null }: ContactIntakeRouterP
         <span className="ml-1">Primary action label: {selectedRouteContract.ctaLabel}.</span>
       </div>
 
-      <div ref={wizardHostRef} id="request-wizard" className="wizard-scroll-anchor rounded-xl border border-[#e4dbc9] bg-[#fffdf7] p-3 sm:p-4">
+      <div ref={wizardHostRef} id="request-wizard" className="wizard-scroll-anchor">
         <RequestForm key={selectedLane?.id ?? selectedType} type={selectedType} title={formTitleByType[selectedType]} />
       </div>
     </div>

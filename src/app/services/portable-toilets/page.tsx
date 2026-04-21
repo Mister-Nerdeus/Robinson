@@ -24,7 +24,14 @@ export default function PortableToiletsPage() {
         </div>
         <TaskPageLayout
           route="/services/portable-toilets"
-          primary={<PortableToiletFlow />}
+          mode="support-rail"
+          primary={
+            <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
+              <p className="text-sm text-slate-700">
+                Share delivery window, unit count, duration, and access notes before entering the quote step flow.
+              </p>
+            </div>
+          }
           support={
             <div className="grid gap-4">
               <div className="rounded-xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
@@ -35,6 +42,12 @@ export default function PortableToiletsPage() {
               </div>
             </div>
           }
+        />
+        <TaskPageLayout
+          route="/services/portable-toilets"
+          mode="full-width"
+          primary={<PortableToiletFlow />}
+          primaryClassName="task-page-form-shell"
         />
       </div>
     </Section>
