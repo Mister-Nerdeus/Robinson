@@ -80,9 +80,10 @@ export const servicesContent = {
     status: "verified" as const,
     title: "Portable Toilet Rentals",
     intro:
-      "Robinson delivers portable toilet rentals for events, schools, businesses, and job sites with flexible service schedules.",
+      "Robinson delivers portable toilet rentals for homes, events, schools, businesses, and job sites with flexible service schedules.",
     bullets: [
       "Delivery and pickup planning",
+      "Scenario support for homes, events, schools, businesses, and jobsites",
       "Daily, weekend, weekly, and monthly options",
       "Routine pumping and cleaning for longer rentals",
       "Service cadence matched to event and route constraints",

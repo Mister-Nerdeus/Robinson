@@ -7,50 +7,41 @@ export const homeContent = {
     ctaHref: "/contact",
     ctaLabel: "Open Request Lanes",
   },
-  primaryTaskCtas: [
-    {
-      title: "Emergency septic dispatch",
-      body: "Active backups or warning signs should be call-first, then documented in the septic service lane.",
-      href: "/services/septic-cleaning",
-      ctaLabel: "Open Septic Service Lane",
-    },
-    {
-      title: "Portable rentals and event support",
-      body: "Capture quantity, duration, and placement details for faster rental quoting and route planning.",
-      href: "/services/portable-toilets",
-      ctaLabel: "Open Rental Lane",
-    },
-    {
-      title: "Commercial service requests",
-      body: "Grease trap and lift pump requests include facility context to reduce triage back-and-forth.",
-      href: "/services/commercial",
-      ctaLabel: "Open Commercial Lane",
-    },
-  ],
   lanes: [
     {
       title: "Emergency septic service",
       description:
         "Active backups, sewage odors, or drain failure should be call-first. Submit details after the call to speed dispatch prep.",
-      href: "/services/septic-cleaning",
+      href: "/contact?lane=septic-service",
+      ctaLabel: "Emergency Septic Help",
     },
     {
       title: "Routine pumping and maintenance",
       description:
         "Schedule preventative septic pumping before system stress becomes an emergency repair.",
-      href: "/services/septic-cleaning",
+      href: "/contact?lane=septic-service",
+      ctaLabel: "Start Routine Pumping Request",
     },
     {
       title: "Well and septic evaluations",
       description:
         "Buyer, seller, and Realtor requests capture timeline and occupancy context for deadline-aware scheduling.",
-      href: "/services/well-septic-evaluations",
+      href: "/contact?lane=evaluation",
+      ctaLabel: "Start Realtor Evaluation",
     },
     {
-      title: "Portable rentals and commercial service",
+      title: "Portable toilet rentals",
       description:
-        "Portable units, grease trap cleaning, and facility support run through dedicated intake lanes.",
-      href: "/services/commercial",
+        "Event, school, home, business, and jobsite rentals capture quantity, duration, cadence, and site-access details up front.",
+      href: "/contact?lane=rental",
+      ctaLabel: "Start Rental Quote",
+    },
+    {
+      title: "Commercial septic support",
+      description:
+        "Commercial septic, grease trap, and lift pump requests are split so facilities can self-route without ambiguity.",
+      href: "/contact?lane=commercial-service",
+      ctaLabel: "Open Commercial Paths",
     },
   ],
   trustPanel: {
@@ -60,7 +51,8 @@ export const homeContent = {
     highlights: [
       "Family owned and operated since 1979.",
       "24/7 emergency septic response remains call-first.",
-      "Residential, rental, and commercial lanes are all first-class service paths.",
+      "Broad service mix across septic, evaluations, rentals, and commercial support.",
+      "Realtor/evaluation workflow supports closing-date coordination.",
     ],
   },
   specialtyLanes: [
@@ -81,13 +73,6 @@ export const homeContent = {
       alt: "Robinson truck supporting commercial septic work",
     },
   ],
-  realtorLane: {
-    title: "Realtor support and transaction timelines",
-    body:
-      "When timelines are tight, the Realtor lane captures role, closing date, occupancy status, and access notes before callback.",
-    href: "/realtors",
-    ctaLabel: "Open Realtor Resources",
-  },
   faqPreview: [
     {
       question: "How often should a septic tank be pumped?",

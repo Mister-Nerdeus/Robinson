@@ -1,6 +1,11 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { getRuntimeEnv, hasValidReviewAccessCookie, isAdminReviewEnabled } from "@/lib/runtime/env";
+import {
+  getRuntimeEnv,
+  hasValidReviewAccessCookie,
+  isAdminReviewEnabled,
+  isRuntimeProofHostAllowed,
+} from "@/lib/runtime/env";
 import {
   REQUEST_LAYOUT_ROUTE_IDS,
   REQUEST_LAYOUT_CONTRACT_VERSION,
@@ -18,6 +23,9 @@ export async function GET() {
 
   const requestHeaders = await headers();
   const host = requestHeaders.get("host") || "unknown-host";
+  if (!isRuntimeProofHostAllowed(host)) {
+    return NextResponse.json({ error: "not-found" }, { status: 404 });
+  }
   const cookieHeader = requestHeaders.get("cookie") || undefined;
   if (!hasValidReviewAccessCookie(cookieHeader)) {
     return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });

@@ -60,10 +60,15 @@ export type SepticServiceSubmissionRecord = SubmissionBase & {
 export type EvaluationSubmissionRecord = SubmissionBase & {
   type: "evaluation";
   roleInSale: "buyer" | "seller" | "realtor" | "other";
+  deadlineType: "closing-date" | "inspection-contingency" | "financing-window" | "other";
   brokerageOrCompany: string;
   closingDate: string;
+  timelineFlexibility: "firm-date" | "plus-minus-2-days" | "week-window";
   occupancyStatus: string;
+  accessContactName: string;
+  accessContactPhone: string;
   accessInstructions: string;
+  transactionNotes: string;
   utilityOnStatus: "yes" | "no" | "unknown";
   occupantPresent: "yes" | "no" | "unknown";
   propertyType: "single-family" | "multi-family" | "vacant-land" | "other";
@@ -154,13 +159,18 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
     case "evaluation":
       return [
         { label: "Sale Role", value: record.roleInSale },
+        { label: "Primary Deadline", value: record.deadlineType },
         { label: "Closing Date", value: record.closingDate || "-" },
+        { label: "Timeline Flexibility", value: record.timelineFlexibility || "-" },
         { label: "Brokerage", value: record.brokerageOrCompany || "-" },
         { label: "Occupancy", value: record.occupancyStatus },
         { label: "Utility On", value: record.utilityOnStatus },
         { label: "Occupant Present", value: record.occupantPresent },
         { label: "Property Type", value: record.propertyType },
+        { label: "Access Contact", value: record.accessContactName || "-" },
+        { label: "Access Contact Phone", value: record.accessContactPhone || "-" },
         { label: "Access Instructions", value: record.accessInstructions || "-" },
+        { label: "Transaction Notes", value: record.transactionNotes || "-" },
         ...shared,
       ];
     case "rental":

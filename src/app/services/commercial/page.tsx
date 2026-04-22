@@ -11,14 +11,31 @@ export const metadata: Metadata = buildMetadata(
   "/services/commercial",
 );
 
-export default function CommercialPage() {
+const workTypeMap: Record<string, "grease-trap" | "lift-pump" | "septic-pumping" | "inspection"> = {
+  "grease-trap": "grease-trap",
+  "lift-pump": "lift-pump",
+  "septic-pumping": "septic-pumping",
+  "catch-all": "inspection",
+};
+
+type CommercialPageProps = {
+  searchParams?: Promise<{ work?: string | string[] }>;
+};
+
+export default async function CommercialPage({ searchParams }: CommercialPageProps) {
+  const params = (await searchParams) ?? {};
+  const requestedWork = Array.isArray(params.work) ? params.work[0] : params.work;
+  const initialServiceNeeded = requestedWork ? workTypeMap[requestedWork] : undefined;
+
   return (
     <Section title="Commercial Services" layout="task">
       <div className="grid gap-5">
         <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Commercial Operations</p>
           <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Choose the exact commercial service lane.</h2>
-          <p className="mt-3 text-sm text-slate-700">Grease trap, lift pump, and commercial septic paths are intentionally split so requests route without ambiguity.</p>
+          <p className="mt-3 text-sm text-slate-700">
+            Grease trap, lift pump, and commercial septic paths are intentionally split so requests route without ambiguity. A catch-all troubleshooting path is still available when work type is uncertain.
+          </p>
         </div>
         <TaskPageLayout
           route="/services/commercial"
@@ -35,7 +52,13 @@ export default function CommercialPage() {
         <TaskPageLayout
           route="/services/commercial"
           mode="formDominant"
-          primary={<RequestForm type="commercial-service" title="Request Commercial Service" />}
+          primary={
+            <RequestForm
+              type="commercial-service"
+              title="Request Commercial Service"
+              initialValues={initialServiceNeeded ? { serviceNeeded: initialServiceNeeded } : undefined}
+            />
+          }
           primaryClassName="task-page-form-shell"
         />
       </div>

@@ -18,6 +18,7 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
   const callHref = `tel:+1${company.primaryPhone.replace(/\D/g, "")}`;
   const content = servicesContent[entry.serviceContentKey];
   const isSepticRoute = entry.id === "septic-cleaning";
+  const isEvaluationRoute = entry.id === "well-septic-evaluations";
   const preFormReadyItems = isSepticRoute ? content.whatToHaveReady.slice(0, 2) : content.whatToHaveReady.slice(0, 3);
   const sectionModes = REQUEST_ROUTE_SECTION_MODES[entry.route];
 
@@ -44,6 +45,26 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
                 </div>
               ))}
             </div>
+            {isSepticRoute ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
+                  <h3 className="font-display text-xl text-[var(--brand)]">What service includes</h3>
+                  <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                    {entry.slots.includedItems.map((item) => (
+                      <li key={item}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-[#e6ddd0] bg-[#fffaf3] p-4">
+                  <h3 className="font-display text-xl text-[var(--brand)]">Pricing factors</h3>
+                  <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                    {entry.slots.pricingFactors?.map((item) => (
+                      <li key={item}>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : null}
           </div>
           }
           topSecondary={
@@ -51,7 +72,11 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
             <div className="grid gap-4 rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Fastest first step</p>
               <h3 className="font-display text-2xl text-[var(--brand)]">{entry.slots.primaryCta.label}</h3>
-              <p className="text-sm text-slate-700">Call for immediate dispatch triage when symptoms are active, then complete the first editable step below.</p>
+              <p className="text-sm text-slate-700">
+                {isEvaluationRoute
+                  ? "When closing windows are tight, call first for deadline triage, then submit transaction details in the evaluation workflow."
+                  : "Call for immediate dispatch triage when symptoms are active, then complete the first editable step below."}
+              </p>
               <a className="inline-flex min-h-11 w-fit items-center rounded-md bg-[var(--brand)] px-4 py-3 text-sm font-semibold text-white" href={callHref}>
                 Call {company.primaryPhone}
               </a>
@@ -73,37 +98,25 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
           form={<RequestForm type={entry.formType} title={entry.formTitle} />}
           postForm={
             <div className="grid gap-4">
-              <div className="grid gap-3 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
-                <h3 className="font-display text-2xl text-[var(--brand)]">Service at a glance</h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <ul className="grid gap-2 text-sm text-slate-700">
-                    {entry.slots.includedItems.slice(0, 3).map((bullet) => (
-                      <li key={bullet}>• {bullet}</li>
+              {isSepticRoute ? (
+                <div className="rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+                  <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
+                  <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                    {content.nextSteps.map((step) => (
+                      <li key={step}>• {step}</li>
                     ))}
                   </ul>
-                  <ul className="grid gap-2 text-sm text-slate-700">
-                    {entry.slots.proofPoints.slice(0, 3).map((point) => (
-                      <li key={point}>• {point}</li>
-                    ))}
-                  </ul>
+                  <p className="mt-3 text-sm text-slate-700">{content.responseExpectation}</p>
                 </div>
-              </div>
-              <RequestSupportBlocks
-                reasons={content.reasonsToCall}
-                whatToHaveReady={content.whatToHaveReady}
-                nextSteps={content.nextSteps}
-                responseExpectation={content.responseExpectation}
-                variant="compact"
-              />
-              <div className="grid gap-3 rounded-2xl border border-[#ddd4c5] bg-[#fffdf9] p-4">
-                <h3 className="font-display text-2xl text-[var(--brand)]">Related questions</h3>
-                {entry.slots.faqSubset.map((item) => (
-                  <article key={item.question} className="rounded-lg border border-[#e6ddd0] bg-white p-3">
-                    <h4 className="text-sm font-semibold text-slate-900">{item.question}</h4>
-                    <p className="mt-1 text-sm text-slate-700">{item.answer}</p>
-                  </article>
-                ))}
-              </div>
+              ) : (
+                <RequestSupportBlocks
+                  reasons={content.reasonsToCall}
+                  whatToHaveReady={content.whatToHaveReady}
+                  nextSteps={content.nextSteps}
+                  responseExpectation={content.responseExpectation}
+                  variant="compact"
+                />
+              )}
             </div>
           }
           postFormMode={sectionModes.postForm ?? "fullWidthSupport"}

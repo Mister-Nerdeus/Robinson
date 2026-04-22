@@ -5,7 +5,6 @@ import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { RealtorEvaluationFlow } from "@/components/forms/RealtorEvaluationFlow";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { servicesContent } from "@/content/services";
-import { realtorFaqSubset } from "@/content/faqs";
 import { company } from "@/config/company";
 import { TaskPageLayout } from "@/components/layout/TaskPageLayout";
 
@@ -22,8 +21,10 @@ export default function RealtorsPage() {
     <Section title="Realtor Resources" layout="task">
       <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5 text-slate-900">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Transaction workflow lane</p>
-        <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Closing-date first evaluation intake.</h2>
-        <p className="mt-3 text-sm sm:text-base">Built for buyer/seller/Realtor coordination with explicit deadline and access fields.</p>
+        <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Deadline-first evaluation intake for active transactions.</h2>
+        <p className="mt-3 text-sm sm:text-base">
+          Built for buyer, seller, and Realtor coordination with explicit deadline type, access contact, and property-occupancy context.
+        </p>
       </div>
       <TaskPageLayout
         route="/realtors"
@@ -31,7 +32,7 @@ export default function RealtorsPage() {
         primary={
           <div className="grid gap-5">
             <p className="text-slate-800">
-              Realtor lane follow-up expectations differ from routine pumping requests: deadline pressure and transaction coordination are prioritized.
+              Realtor workflow is intentionally different from routine pumping. This lane prioritizes transaction deadlines, showing windows, and access readiness before scheduling.
             </p>
           </div>
         }
@@ -72,12 +73,6 @@ export default function RealtorsPage() {
               noteBody="Include transaction participants and callback order so updates reach the right people quickly."
               variant="compact"
             />
-            <div className="grid gap-2 rounded-md bg-[#f5eded] p-3 text-sm">
-              <p className="font-semibold text-[var(--brand)]">Realtor FAQ quick hits</p>
-              {realtorFaqSubset.map((item) => (
-                <p key={item.question}><strong>{item.question}</strong> {item.answer}</p>
-              ))}
-            </div>
           </div>
         }
       />

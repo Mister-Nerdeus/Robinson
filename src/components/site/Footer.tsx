@@ -5,6 +5,7 @@ import { footerFastPathLinks } from "@/content/navigation";
 import { TrackedPhoneLink } from "@/components/site/TrackedPhoneLink";
 import { publishedLocations } from "@/content/locations";
 import { serviceAreaContent } from "@/content/serviceArea";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export function Footer() {
   const primaryLocation = publishedLocations[0];
@@ -25,19 +26,18 @@ export function Footer() {
             <p className="font-semibold">
               Call for service:{" "}
               <TrackedPhoneLink
-                href={`tel:${company.primaryPhone}`}
-                label={company.primaryPhone}
+                href={`tel:${publicBusinessFacts.primaryServiceLine}`}
+                label={publicBusinessFacts.primaryServiceLine}
                 location="footer-primary"
                 className="underline"
               />
             </p>
-            <p>Additional office line: {company.secondaryPhone}</p>
+            <p>Additional office line: {publicBusinessFacts.additionalOfficeLine}</p>
             <p>{primaryLocation.streetAddress}</p>
             <p>
               {primaryLocation.city}, {primaryLocation.state} {primaryLocation.postalCode}
             </p>
-            <p className="text-xs text-slate-600">Location status: {primaryLocation.status}</p>
-            <p>{company.serviceHours}</p>
+            <p>{publicBusinessFacts.serviceHours}</p>
           </div>
           <div className="mt-4 rounded-lg border border-[#e7dddd] bg-[#fcf8f7] px-3 py-2 text-xs text-slate-700">
             <p className="font-semibold text-slate-900">Coverage snapshot</p>

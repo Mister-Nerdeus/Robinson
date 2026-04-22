@@ -8,22 +8,32 @@ function read(relativePath: string) {
 
 function run() {
   const source = read("src/lib/seo/schema.ts");
+  const faqRouteSource = read("src/app/faq/page.tsx");
 
   assert.ok(
     source.includes('import { company } from "@/config/company";'),
     "Schema source must map local business fields from canonical company profile",
   );
   assert.ok(
+    source.includes('import { publicBusinessFacts } from "@/content/businessFacts";'),
+    "Schema source must resolve customer-facing contact facts from canonical public business facts",
+  );
+  assert.ok(
     source.includes('import { faqContent } from "@/content/faq";'),
     "FAQ schema must map from canonical FAQ content module",
   );
   assert.ok(
-    source.includes("name: company.publicBrand"),
-    "Schema business name must come from company profile",
+    faqRouteSource.includes('import { faqContent } from "@/content/faq";') &&
+      faqRouteSource.includes("{faqContent.map((item) => ("),
+    "Visible FAQ route content must map directly from the same canonical FAQ content module",
   );
   assert.ok(
-    source.includes("streetAddress: company.address.line1"),
-    "Schema address must come from canonical company profile",
+    source.includes("name: publicBusinessFacts.businessName"),
+    "Schema business name must come from canonical public business facts",
+  );
+  assert.ok(
+    source.includes("streetAddress: publicBusinessFacts.primaryAddress.line1"),
+    "Schema address must come from canonical public business facts",
   );
 
   const disallowed = ["aggregateRating", "ratingValue", "reviewCount", '"@type": "Review"'];

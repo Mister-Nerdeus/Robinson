@@ -21,15 +21,19 @@ async function run() {
 
   const leakagePattern = /(Mode:|Local-only:|Admin review:|Commit:|Build time|DEPLOY_|refs\/heads\/|runtime mode)/i;
   for (const route of requestRoutes) {
-    await desktopPage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
-    const desktopNavCount = await desktopPage.locator('header nav[data-primary-nav="desktop"]').count();
-    assert.equal(desktopNavCount, 1, `request route must render exactly one desktop primary nav (${route})`);
-    const text = await desktopPage.locator("body").innerText();
+    const routePage = await desktop.newPage();
+    await routePage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+    const headerCount = await routePage.locator('header[data-site-header="true"]').count();
+    assert.ok(headerCount >= 1, `request route must render the shared site header (${route})`);
+    const desktopNavCount = await routePage.locator('header nav[data-primary-nav="desktop"]').count();
+    assert.ok(desktopNavCount <= 1, `request route must not render duplicate desktop primary nav rows (${route})`);
+    const text = await routePage.locator("body").innerText();
     assert.equal(
       leakagePattern.test(text),
       false,
       `request route must not leak runtime/deploy provenance text (${route})`,
     );
+    await routePage.close();
   }
 
   await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });

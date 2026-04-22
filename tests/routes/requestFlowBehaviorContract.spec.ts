@@ -62,6 +62,10 @@ function run() {
     runtimeProofSource.includes('return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });'),
     "Runtime proof endpoint must be gated by explicit review access",
   );
+  assert.ok(
+    runtimeProofSource.includes("isRuntimeProofHostAllowed"),
+    "Runtime proof endpoint must be host-gated and unavailable on customer hosts",
+  );
 
   console.log("[request-flow-behavior] lane/router/header/provenance behavior guards pass");
 }

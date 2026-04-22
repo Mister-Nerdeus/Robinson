@@ -4,6 +4,7 @@ export type ServiceTemplateSlots = {
   headline: string;
   summary: string;
   includedItems: string[];
+  pricingFactors?: string[];
   proofPoints: string[];
   faqSubset: Array<{ question: string; answer: string }>;
   primaryCta: { label: string };
@@ -51,6 +52,12 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
         "24/7 emergency septic response",
         "Routine residential and commercial pumping",
         "Tank location and access-note review",
+      ],
+      pricingFactors: [
+        "Tank count and tank size",
+        "How easy lids and tank locations are to access",
+        "Whether locating or prep work is needed before pumping",
+        "Emergency timing versus routine scheduled service",
       ],
       proofPoints: [
         "Built for call-first dispatch during active backups.",

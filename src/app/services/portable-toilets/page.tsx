@@ -19,8 +19,10 @@ export default function PortableToiletsPage() {
       <div className="grid gap-5">
         <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff1ef] p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">Rental Workflow</p>
-          <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Quote-ready intake for delivery and servicing.</h2>
-          <p className="mt-3 text-sm text-slate-700">Capture unit count, duration, jobsite/event type, servicing expectations, and access notes in one request.</p>
+          <h2 className="mt-2 font-display text-3xl text-[var(--brand)]">Scenario-first quote intake for delivery and servicing.</h2>
+          <p className="mt-3 text-sm text-slate-700">
+            Built for homes, events, schools, businesses, and jobsites. Capture unit count, duration, cadence, and access notes in one request.
+          </p>
         </div>
         <TaskPageLayout
           route="/services/portable-toilets"
@@ -34,6 +36,12 @@ export default function PortableToiletsPage() {
           }
           support={
             <div className="grid gap-4">
+              <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f2] p-4">
+                <h3 className="font-display text-xl text-[var(--brand)]">Coverage and cadence</h3>
+                <p className="mt-2 text-sm text-slate-700">
+                  Portable toilet rentals are serviced within a qualified 60-mile radius of the greater Grand Rapids area, with cadence confirmed during route planning.
+                </p>
+              </div>
               <div className="rounded-xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
                 <h3 className="font-display text-xl text-[var(--brand)]">What happens next</h3>
                 <ul className="mt-2 grid gap-2 text-sm text-slate-700">

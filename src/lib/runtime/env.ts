@@ -43,6 +43,14 @@ function parseCookieValue(cookieHeader: string | undefined, name: string): strin
   return "";
 }
 
+function parseCsv(value: string | undefined): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 export function getRuntimeEnv() {
   const mode = readRuntimeMode();
   const localOnlyMode = parseBool(process.env.LOCAL_ONLY_MODE, mode !== "production");
@@ -51,6 +59,8 @@ export function getRuntimeEnv() {
   const reviewSurfacesVisible = parseBool(process.env.REVIEW_SURFACES_VISIBLE, mode !== "production");
   const reviewAccessKey = (process.env.REVIEW_ACCESS_KEY || "").trim();
   const reviewAccessCookieName = (process.env.REVIEW_ACCESS_COOKIE_NAME || "robinson_review_access").trim();
+  const configuredReviewHosts = parseCsv(process.env.REVIEW_ALLOWED_HOSTS);
+  const reviewAllowedHosts = configuredReviewHosts.length ? configuredReviewHosts : ["localhost", "127.0.0.1"];
   const siteUrl = normalizeUrl(process.env.SITE_URL || "http://localhost:4850");
   const deploymentStampVisible = parseBool(process.env.DEPLOYMENT_STAMP_VISIBLE, mode === "demo");
   const seoAllowIndexing = parseBool(process.env.SEO_ALLOW_INDEXING, mode === "production");
@@ -76,6 +86,7 @@ export function getRuntimeEnv() {
     reviewSurfacesVisible,
     reviewAccessKey,
     reviewAccessCookieName,
+    reviewAllowedHosts,
     siteUrl,
     deploymentStampVisible,
     seoAllowIndexing,
@@ -115,6 +126,13 @@ export function hasValidReviewAccessCookie(cookieHeader: string | undefined): bo
 
   const cookieValue = parseCookieValue(cookieHeader, env.reviewAccessCookieName);
   return cookieValue.length > 0 && cookieValue === env.reviewAccessKey;
+}
+
+export function isRuntimeProofHostAllowed(host: string | undefined): boolean {
+  const env = getRuntimeEnv();
+  const normalizedHost = (host || "").trim().toLowerCase().replace(/:\d+$/, "");
+  if (!normalizedHost) return false;
+  return env.reviewAllowedHosts.includes(normalizedHost);
 }
 
 export function hasValidReviewAccessValue(cookieValue: string | undefined): boolean {

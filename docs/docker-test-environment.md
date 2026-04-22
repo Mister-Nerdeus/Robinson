@@ -24,3 +24,7 @@ Isolated pre-launch testing stack for routing, submissions, notifications, persi
 - `web`: HTTP check on internal port `4850`
 - `api`: Mailpit command check
 - `db`: `pg_isready`
+
+## Runtime-Proof Host Gate
+- `REVIEW_ALLOWED_HOSTS` is passed through Docker build/runtime args and defaults to `localhost,127.0.0.1` in local/test env files.
+- This keeps `/api/runtime-proof` unavailable on customer hosts even outside production mode.

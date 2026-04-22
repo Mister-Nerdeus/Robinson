@@ -30,6 +30,7 @@ jobs:
       - run: npm run test:request-route-release-gate
       - run: npm run test:content-trust-policy
       - run: npm run test:content-copy-rules
+      - run: npm run test:business-facts-contract
       - run: npm run test:visual-public-evidence
       - run: npm run build
       - name: Start app for parity checks

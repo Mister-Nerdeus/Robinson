@@ -11,6 +11,9 @@
 - [ ] No duplicate nav rows on request routes.
 - [ ] No public provenance/runtime leakage (`mode`, `commit`, `ref`, `build`).
 - [ ] Business-truth service content preserved on touched request routes.
+- [ ] Canonical public business-facts table updated when contact facts change.
+- [ ] Pending-verification facts are excluded from customer UI.
+- [ ] Release proof bundle includes screenshots, FAQ/schema alignment, and lane CTA inventory.
 
 ## Large-Screen Task Composition Gate
 

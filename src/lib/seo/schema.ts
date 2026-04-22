@@ -2,6 +2,7 @@ import { company } from "@/config/company";
 import { faqContent } from "@/content/faq";
 import { businessContent } from "@/content/business";
 import { serviceAreaContract } from "@/content/serviceAreas";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 function areaServedList() {
   return serviceAreaContract.areas.map((entry) => ({
@@ -14,7 +15,7 @@ export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: company.publicBrand,
+    name: publicBusinessFacts.businessName,
     legalName: businessContent.legalName,
     alternateName: company.brandVariants,
     telephone: businessContent.primaryPhone,
@@ -27,10 +28,10 @@ export function localBusinessSchema() {
     })),
     address: {
       "@type": "PostalAddress",
-      streetAddress: company.address.line1,
-      addressLocality: company.address.city,
-      addressRegion: company.address.state,
-      postalCode: company.address.postalCode,
+      streetAddress: publicBusinessFacts.primaryAddress.line1,
+      addressLocality: publicBusinessFacts.primaryAddress.city,
+      addressRegion: publicBusinessFacts.primaryAddress.state,
+      postalCode: publicBusinessFacts.primaryAddress.postalCode,
       addressCountry: "US",
     },
     openingHours: ["Mo-Fr 08:00-17:00"],

@@ -4,7 +4,17 @@ import Link from "next/link";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
-export function ServiceCard({ title, description, href }: { title: string; description: string; href: string }) {
+export function ServiceCard({
+  title,
+  description,
+  href,
+  ctaLabel,
+}: {
+  title: string;
+  description: string;
+  href: string;
+  ctaLabel: string;
+}) {
   return (
     <article className="flex h-full flex-col rounded-xl border border-[#c7beaa] bg-[var(--surface)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <h3 className="font-display text-[1.65rem] leading-tight text-[var(--brand)] lg:text-[1.5rem]">{title}</h3>
@@ -16,7 +26,7 @@ export function ServiceCard({ title, description, href }: { title: string; descr
           void trackEvent({ event: analyticsEvents.laneClick, lane: title });
         }}
       >
-        Learn more
+        {ctaLabel}
       </Link>
     </article>
   );

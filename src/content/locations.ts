@@ -1,3 +1,5 @@
+import { businessFactRegistry, publicBusinessFacts } from "@/content/businessFacts";
+
 export type PublicLocation = {
   id: "pierson-office" | "sparta-legacy";
   label: string;
@@ -16,15 +18,15 @@ export const publicLocations: PublicLocation[] = [
   {
     id: "pierson-office",
     label: "Pierson Office",
-    streetAddress: "1565 N Dagget Rd",
-    city: "Pierson",
-    state: "MI",
-    postalCode: "49339",
+    streetAddress: publicBusinessFacts.primaryAddress.line1,
+    city: publicBusinessFacts.primaryAddress.city,
+    state: publicBusinessFacts.primaryAddress.state,
+    postalCode: publicBusinessFacts.primaryAddress.postalCode,
     status: "published",
     publicFacing: true,
     mapEligible: true,
-    notes: "Primary public-facing office location.",
-    phone: "(616) 636-5565",
+    notes: "Primary public-facing office location from canonical business facts.",
+    phone: publicBusinessFacts.primaryServiceLine,
   },
   {
     id: "sparta-legacy",
@@ -36,7 +38,9 @@ export const publicLocations: PublicLocation[] = [
     status: "legacy-reference",
     publicFacing: false,
     mapEligible: false,
-    notes: "Referenced in legacy material; not published as an active office location.",
+    notes:
+      businessFactRegistry.find((fact) => fact.key === "sparta_legacy_address")?.notes ??
+      "Referenced in legacy material; not published as an active office location.",
   },
 ];
 

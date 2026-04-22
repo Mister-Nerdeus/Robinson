@@ -42,13 +42,18 @@ function renderTypeSpecificLines(record: SubmissionRecord): string[] {
     case "evaluation":
       return [
         `Role In Sale: ${record.roleInSale}`,
+        `Primary Deadline: ${record.deadlineType}`,
         `Brokerage/Company: ${record.brokerageOrCompany}`,
         `Closing Date: ${record.closingDate}`,
+        `Timeline Flexibility: ${record.timelineFlexibility}`,
         `Occupancy Status: ${record.occupancyStatus}`,
+        `Access Contact Name: ${record.accessContactName}`,
+        `Access Contact Phone: ${record.accessContactPhone}`,
         `Utility On: ${record.utilityOnStatus}`,
         `Occupant Present: ${record.occupantPresent}`,
         `Property Type: ${record.propertyType}`,
         `Access Instructions: ${record.accessInstructions || "-"}`,
+        `Transaction Notes: ${record.transactionNotes || "-"}`,
       ];
     case "rental":
       return [

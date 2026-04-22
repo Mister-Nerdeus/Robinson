@@ -19,7 +19,6 @@ export function LocationCard() {
                 <p>
                   {location.city}, {location.state} {location.postalCode}
                 </p>
-                <p className="mt-1 text-xs text-slate-600">Publication status: {location.status}</p>
                 {location.mapEligible ? (
                   <a
                     className="mt-2 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-3 py-2 text-xs font-semibold text-[var(--brand)]"

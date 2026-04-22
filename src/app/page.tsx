@@ -24,7 +24,7 @@ export default function HomePage() {
     <div
       data-homepage-contract="home-hero-lanes-trust-v1"
       data-homepage-route="/"
-      data-homepage-structure="hero-primary-task-ctas-service-lanes-trust-realtor-faq-final-cta"
+      data-homepage-structure="hero-service-lanes-trust-faq-final-cta"
     >
       <JsonLd data={localBusinessSchema()} />
 
@@ -58,20 +58,6 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Primary task CTAs" layout="marketing">
-        <div className="grid gap-4 md:grid-cols-3">
-          {homeContent.primaryTaskCtas.map((item) => (
-            <article key={item.title} className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
-              <h3 className="font-display text-2xl text-[var(--brand)]">{item.title}</h3>
-              <p className="mt-2 text-slate-800">{item.body}</p>
-              <Link href={item.href} className="mt-4 inline-flex font-semibold underline">
-                {item.ctaLabel}
-              </Link>
-            </article>
-          ))}
-        </div>
-      </Section>
-
       <Section title="Service lanes" layout="marketing">
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
@@ -91,15 +77,6 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-        </div>
-      </Section>
-
-      <Section title={homeContent.realtorLane.title} layout="marketing">
-        <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
-          <p className="text-slate-800">{homeContent.realtorLane.body}</p>
-          <Link href={homeContent.realtorLane.href} className="mt-4 inline-flex font-semibold underline">
-            {homeContent.realtorLane.ctaLabel}
-          </Link>
         </div>
       </Section>
 

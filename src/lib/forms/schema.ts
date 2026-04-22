@@ -102,10 +102,15 @@ export const wellSepticEvaluationSchema = baseSchema.extend({
   type: z.literal("evaluation"),
   ...locationRequiredSchema,
   roleInSale: z.enum(["buyer", "seller", "realtor", "other"]),
+  deadlineType: z.enum(["closing-date", "inspection-contingency", "financing-window", "other"]),
   brokerageOrCompany: trimmedOptional,
-  closingDate: trimmedOptional,
+  closingDate: trimmedRequired(4),
+  timelineFlexibility: z.enum(["firm-date", "plus-minus-2-days", "week-window"]),
   occupancyStatus: trimmedRequired(2),
+  accessContactName: trimmedRequired(2),
+  accessContactPhone: trimmedRequired(7),
   accessInstructions: trimmedOptional,
+  transactionNotes: trimmedOptional,
   utilityOnStatus: yesNoUnknownSchema,
   occupantPresent: yesNoUnknownSchema,
   propertyType: z.enum(["single-family", "multi-family", "vacant-land", "other"]),
@@ -156,6 +161,8 @@ export const fieldAutocompleteMap: Record<string, string> = {
   state: "address-level1",
   zip: "postal-code",
   onSiteContact: "name",
+  accessContactName: "name",
+  accessContactPhone: "tel",
 };
 
 export type SubmissionInput = z.infer<typeof submissionSchema>;

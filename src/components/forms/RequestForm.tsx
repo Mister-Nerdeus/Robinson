@@ -49,6 +49,7 @@ type FormSection = {
 type Props = {
   type: SubmissionType;
   title: string;
+  initialValues?: Record<string, string>;
 };
 
 const helperByType: Record<SubmissionType, string> = {
@@ -57,7 +58,7 @@ const helperByType: Record<SubmissionType, string> = {
   "septic-service":
     "For active backups or overflows, call immediately. This form captures dispatch details that reduce callback delays.",
   evaluation:
-    "Share sale role, timeline, and property access context so evaluation scheduling can match deadline pressure.",
+    "Share sale role, hard deadlines, and access contacts so evaluation scheduling can match transaction pressure.",
   rental:
     "Include unit count, duration, and site setup details so rental staging and service cadence can be quoted correctly.",
   "commercial-service":
@@ -337,7 +338,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
   evaluation: [
     {
       id: "evaluation-details",
-      title: "Evaluation Details",
+      title: "Deadline and Property Details",
       fields: [
         {
           name: "roleInSale",
@@ -350,8 +351,29 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
             { value: "other", label: "Other" },
           ],
         },
+        {
+          name: "deadlineType",
+          label: "Primary Deadline",
+          required: true,
+          options: [
+            { value: "closing-date", label: "Closing date" },
+            { value: "inspection-contingency", label: "Inspection contingency" },
+            { value: "financing-window", label: "Financing / underwriting window" },
+            { value: "other", label: "Other transaction deadline" },
+          ],
+        },
         { name: "brokerageOrCompany", label: "Brokerage / Company" },
-        { name: "closingDate", label: "Closing Date", type: "date" },
+        { name: "closingDate", label: "Closing Date", type: "date", required: true },
+        {
+          name: "timelineFlexibility",
+          label: "Schedule Flexibility",
+          required: true,
+          options: [
+            { value: "firm-date", label: "Firm date (limited flexibility)" },
+            { value: "plus-minus-2-days", label: "Flexible +/- 2 days" },
+            { value: "week-window", label: "Flexible within one week" },
+          ],
+        },
         {
           name: "occupancyStatus",
           label: "Property Occupancy Status",
@@ -395,11 +417,33 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           ],
         },
         {
+          name: "accessContactName",
+          label: "Access Contact Name",
+          required: true,
+          helpText: "Person who can approve entry or answer property-access questions.",
+          autoComplete: "name",
+        },
+        {
+          name: "accessContactPhone",
+          label: "Access Contact Phone",
+          type: "tel",
+          required: true,
+          autoComplete: "tel",
+        },
+        {
           name: "accessInstructions",
           label: "Access instructions",
           type: "textarea",
           rows: 3,
-          placeholder: "Gate code, lockbox notes, or access constraints.",
+          placeholder: "Gate code, lockbox notes, dogs, detached structures, or access constraints.",
+          span: "full",
+        },
+        {
+          name: "transactionNotes",
+          label: "Sale timeline notes",
+          type: "textarea",
+          rows: 3,
+          placeholder: "Share contingency deadlines, showing windows, or coordination notes.",
           span: "full",
         },
       ],
@@ -412,13 +456,15 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
       fields: [
         {
           name: "eventType",
-          label: "Event / Jobsite Type",
+          label: "Rental Scenario",
           required: true,
           options: [
-            { value: "construction", label: "Construction site" },
-            { value: "residential-project", label: "Residential project" },
-            { value: "public-event", label: "Public event" },
-            { value: "private-event", label: "Private event" },
+            { value: "home-project", label: "Home project / remodel" },
+            { value: "event", label: "Event (private or public)" },
+            { value: "school", label: "School or campus activity" },
+            { value: "business", label: "Business or retail location" },
+            { value: "jobsite", label: "Construction or industrial jobsite" },
+            { value: "other", label: "Other rental scenario" },
           ],
         },
         { name: "unitCount", label: "Unit Count", required: true, type: "number", min: "1" },
@@ -430,12 +476,15 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
         },
         {
           name: "serviceFrequency",
-          label: "Service Frequency",
+          label: "Service Cadence",
           required: true,
           options: [
-            { value: "weekly", label: "Weekly" },
-            { value: "twice-weekly", label: "Twice weekly" },
-            { value: "event-only", label: "One-time event" },
+            { value: "event-only", label: "One-time event service" },
+            { value: "weekly", label: "Weekly service" },
+            { value: "twice-weekly", label: "Twice-weekly service" },
+            { value: "every-other-week", label: "Every other week" },
+            { value: "monthly", label: "Monthly service" },
+            { value: "custom", label: "Custom cadence by route plan" },
           ],
         },
         {
@@ -644,11 +693,11 @@ function CheckboxGroup({
   );
 }
 
-export function RequestForm({ type, title }: Props) {
+export function RequestForm({ type, title, initialValues = {} }: Props) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [started, setStarted] = useState(false);
-  const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<Record<string, string>>(initialValues);
   const [multiValues, setMultiValues] = useState<Record<string, string[]>>({});
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const wizardRef = useRef<HTMLDivElement | null>(null);

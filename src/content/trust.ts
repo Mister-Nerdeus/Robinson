@@ -36,15 +36,54 @@ export const trustSignals: TrustSignal[] = [
     },
   },
   {
-    id: "msta-membership",
-    label: "Member of the Michigan Septic Tank Association",
+    id: "broad-service-mix",
+    label: "Residential, evaluation, rental, and commercial lanes in one dispatch operation",
     status: "verified",
     source: {
-      id: "msta-logo-asset",
-      sourceType: "association",
+      id: "service-lane-contract",
+      sourceType: "first-party",
       freshness: "needs-review",
       lastReviewed: "2026-04-19",
     },
+  },
+  {
+    id: "realtor-support",
+    label: "Realtor and home-sale evaluation workflow support",
+    status: "verified",
+    source: {
+      id: "legacy-realtor-materials",
+      sourceType: "legacy-pdf",
+      freshness: "current",
+      lastReviewed: "2026-04-19",
+    },
+  },
+];
+
+export const trustGovernance = [
+  {
+    block: "Family-owned and founded messaging",
+    decision: "keep",
+    reason: "Source-backed and central to the current trust narrative.",
+  },
+  {
+    block: "Emergency responsiveness proof",
+    decision: "keep",
+    reason: "Core customer decision signal and aligns to call-first routing.",
+  },
+  {
+    block: "Association logo/membership promotion",
+    decision: "update",
+    reason: "Association facts may remain in verification docs but are no longer required as homepage primary trust copy.",
+  },
+  {
+    block: "Facebook trust prompt",
+    decision: "remove",
+    reason: "Legacy social prompt does not strengthen current lane decisions.",
+  },
+  {
+    block: "Coupon graphic trust/offer block",
+    decision: "remove",
+    reason: "Legacy offer terms are unverified and should not appear on customer routes.",
   },
 ];
 
