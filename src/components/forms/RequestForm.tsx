@@ -630,6 +630,14 @@ const requiredCheckboxGroupsByType: Record<SubmissionType, string[]> = {
   "commercial-service": [],
 };
 
+const emergencySepticHiddenFields = new Set([
+  "tankSizeGallons",
+  "tankCount",
+  "lidsExposed",
+  "dispatchContactPhone",
+  "occupancyAtService",
+]);
+
 function normalizePayload(formData: FormData) {
   const payload: Record<string, string | string[]> = {};
 
@@ -749,6 +757,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
   }, [locationFields, type]);
 
   const serviceLocationInvolved = formValues.serviceLocationInvolved ?? "";
+  const emergencySepticMode = type === "septic-service" && (formValues.urgency ?? "") === "emergency";
   const showGeneralLocationFields =
     type !== "general" ||
     serviceLocationInvolved === "yes" ||
@@ -815,6 +824,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
 
     const nextErrors: Record<string, string> = {};
     for (const field of active.fields ?? []) {
+      if (emergencySepticMode && emergencySepticHiddenFields.has(field.name)) continue;
       if (!field.required) continue;
       const value = formValues[field.name] ?? "";
       if (!value.trim()) {
@@ -856,6 +866,14 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
       formData.set("streetAddress", "");
       formData.set("city", "");
       formData.set("zip", "");
+    }
+
+    if (type === "septic-service" && formData.get("urgency") === "emergency") {
+      if (!String(formData.get("tankSizeGallons") ?? "").trim()) formData.set("tankSizeGallons", "unknown");
+      if (!String(formData.get("tankCount") ?? "").trim()) formData.set("tankCount", "unknown");
+      if (!String(formData.get("lidsExposed") ?? "").trim()) formData.set("lidsExposed", "unknown");
+      if (!String(formData.get("dispatchContactPhone") ?? "").trim()) formData.set("dispatchContactPhone", "");
+      if (!String(formData.get("occupancyAtService") ?? "").trim()) formData.set("occupancyAtService", "unknown");
     }
 
     const payload = normalizePayload(formData);
@@ -922,7 +940,9 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
 
               {activeSection.fields ? (
                 <FormFieldGroup>
-                  {activeSection.fields.map((field) => (
+                  {activeSection.fields
+                    .filter((field) => !(emergencySepticMode && emergencySepticHiddenFields.has(field.name)))
+                    .map((field) => (
                     <div key={field.name} className={field.span === "full" ? "lg:col-span-2" : "lg:col-span-1"}>
                       <FormField
                         name={field.name}
@@ -1095,7 +1115,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
             </p>
           ) : (
             <p className="rounded-md border border-[#efd6d6] bg-[#fff7f6] px-3 py-2 text-xs text-slate-700">
-              Fastest for emergencies: call now, then submit details to speed dispatch prep.
+              Fastest for emergencies: call now, then submit details to speed dispatch prep. Emergency mode keeps only dispatch-critical inputs.
             </p>
           )
         }
