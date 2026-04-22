@@ -4,6 +4,7 @@
 - Route smoke pass
 - Contact truth/content contract pass
 - Visual screenshot matrix complete
+- Request-route release gate complete (`docs/release/request-route-release-gate.md`)
 - Redirect verification complete
 - Analytics smoke check complete
 - Deploy manifest generated (`npm run verify:deploy-manifest`)

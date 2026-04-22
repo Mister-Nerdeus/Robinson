@@ -52,7 +52,7 @@ export default async function AdminSubmissionsPage({
 
   if (!isAdminReviewEnabled()) {
     return (
-      <Section title="Admin Submissions">
+      <Section title="Admin Submissions" layout="marketing">
         <p>Admin review is blocked by runtime security policy.</p>
         <p className="mt-2 text-sm text-slate-700">
           Non-production review requires explicit enablement and a configured review access secret.
@@ -65,7 +65,7 @@ export default async function AdminSubmissionsPage({
   const filtered = filterRows(rows, params);
 
   return (
-    <Section title="Admin Submissions Workspace">
+    <Section title="Admin Submissions Workspace" layout="marketing">
       <p className="mb-3 text-sm">
         Protected review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>.
       </p>

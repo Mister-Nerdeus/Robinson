@@ -12,6 +12,8 @@ type RequestPageLayoutProps = {
   topPrimary: ReactNode;
   topSecondary: ReactNode;
   form: ReactNode;
+  topMode: RequestLayoutMode;
+  formMode: RequestLayoutMode;
   postForm?: ReactNode;
   postFormSecondary?: ReactNode;
   postFormMode?: RequestLayoutMode;
@@ -22,11 +24,13 @@ export function RequestPageLayout({
   topPrimary,
   topSecondary,
   form,
+  topMode,
+  formMode,
   postForm,
   postFormSecondary,
-  postFormMode = "full-width",
+  postFormMode = "fullWidthSupport",
 }: RequestPageLayoutProps) {
-  const sectionModes: RequestLayoutMode[] = ["support-rail", "full-width"];
+  const sectionModes: RequestLayoutMode[] = [topMode, formMode];
   if (postForm) {
     sectionModes.push(postFormMode);
   }
@@ -40,11 +44,12 @@ export function RequestPageLayout({
       data-request-layout-modes={sectionModes.join("|")}
       data-request-layout-desktop-gutter={REQUEST_LAYOUT_DESKTOP_TOKENS.desktopGutter}
       data-request-layout-desktop-rail={REQUEST_LAYOUT_DESKTOP_TOKENS.supportRailMaxWidth}
-      data-request-layout-desktop-form-shell={REQUEST_LAYOUT_DESKTOP_TOKENS.formShellMaxWidth}
+      data-request-layout-desktop-support-band={REQUEST_LAYOUT_DESKTOP_TOKENS.supportBandPrimaryMaxWidth}
+      data-request-layout-desktop-wizard-shell={REQUEST_LAYOUT_DESKTOP_TOKENS.wizardShellMaxWidth}
     >
       <TaskPageLayout
         route={routeId}
-        mode="support-rail"
+        mode={topMode}
         className="request-page-section request-page-top"
         primaryClassName="request-page-top-primary"
         supportClassName="request-page-top-secondary"
@@ -54,7 +59,7 @@ export function RequestPageLayout({
 
       <TaskPageLayout
         route={routeId}
-        mode="full-width"
+        mode={formMode}
         className="request-page-section request-page-form"
         primaryClassName="request-page-form-primary"
         primary={form}

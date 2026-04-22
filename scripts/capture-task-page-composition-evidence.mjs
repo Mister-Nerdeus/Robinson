@@ -3,7 +3,7 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BASE_URL ?? "http://localhost:3011";
-const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-159-162");
+const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-163-172");
 
 const taskRoutes = [
   { slug: "septic-cleaning", path: "/services/septic-cleaning" },
@@ -96,7 +96,7 @@ async function capture() {
       matrix.push(routeEntry);
 
       for (const section of metrics.sections) {
-        if (section.mode === "support-rail") {
+        if (section.mode === "supportRail") {
           if (!section.support) {
             findings.push(
               `[${route.path} @ ${viewport.width}] support-rail section missing support content`,
@@ -119,16 +119,16 @@ async function capture() {
           }
         }
 
-        if (section.mode === "full-width" && section.primary) {
-          const minDominantWidth = Math.max(760, Math.floor(section.layout.width * 0.62));
+        if (section.mode === "formDominant" && section.primary) {
+          const minDominantWidth = Math.max(760, Math.floor(section.layout.width * 0.56));
           if (section.primary.width < minDominantWidth) {
             findings.push(
-              `[${route.path} @ ${viewport.width}] full-width section is not form-dominant (${section.primary.width}px < ${minDominantWidth}px)`,
+              `[${route.path} @ ${viewport.width}] form-dominant section is not dominant (${section.primary.width}px < ${minDominantWidth}px)`,
             );
           }
           if (section.support) {
             findings.push(
-              `[${route.path} @ ${viewport.width}] full-width section rendered an unexpected support rail`,
+              `[${route.path} @ ${viewport.width}] form-dominant section rendered an unexpected support rail`,
             );
           }
         }

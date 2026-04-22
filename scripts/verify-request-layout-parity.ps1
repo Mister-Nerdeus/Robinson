@@ -1,6 +1,6 @@
 param(
   [string]$TargetHost = "https://robinson-demo.hearthcore.app",
-  [string]$ExpectedContractVersion = "request-desktop-modes-v3",
+  [string]$ExpectedContractVersion = "request-desktop-modes-v5",
   [string]$OutputPath = "",
   [string[]]$Routes = @(
     "/services/septic-cleaning",

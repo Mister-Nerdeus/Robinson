@@ -31,6 +31,8 @@
     "test:routes-public-contract": "tsx tests/routes/publicRouteContract.spec.ts",
     "test:deploy-traceability-contract": "tsx tests/routes/deployTraceabilityContract.spec.ts",
     "test:request-flow-behavior": "tsx tests/routes/requestFlowBehaviorContract.spec.ts",
+    "test:request-flow-behavior-e2e": "tsx tests/routes/requestFlowBehavior.e2e.ts",
+    "test:request-route-release-gate": "tsx tests/routes/requestRouteReleaseGate.spec.ts",
     "test:security-headers-contract": "tsx tests/security/securityHeadersContract.spec.ts",
     "test:visual-public-evidence": "tsx tests/visual/publicEvidence.spec.ts",
     "test:a11y-followthrough": "tsx tests/accessibility/followthrough.spec.ts",
@@ -55,7 +57,8 @@
     "verify:issue-83-94": "npm run test:smoke && npm run check:identity-contract && npm run check:content-driven-claims && npm run test:request-layout-contract && npm run proof:issue-83-94:controls && npm run check:issue-83-94:evidence",
     "proof:issue-120-130": "node scripts/capture-issue-120-130-evidence.mjs",
     "proof:issue-143-152": "node scripts/capture-task-page-composition-evidence.mjs",
-    "proof:issue-159-162": "node scripts/capture-task-page-composition-evidence.mjs"
+    "proof:issue-159-162": "node scripts/capture-task-page-composition-evidence.mjs",
+    "proof:issue-163-172": "node scripts/capture-task-page-composition-evidence.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

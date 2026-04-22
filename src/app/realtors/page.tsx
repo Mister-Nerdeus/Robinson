@@ -27,7 +27,7 @@ export default function RealtorsPage() {
       </div>
       <TaskPageLayout
         route="/realtors"
-        mode="support-rail"
+        mode="supportRail"
         primary={
           <div className="grid gap-5">
             <p className="text-slate-800">
@@ -54,13 +54,13 @@ export default function RealtorsPage() {
       />
       <TaskPageLayout
         route="/realtors"
-        mode="full-width"
+        mode="formDominant"
         primary={<RealtorEvaluationFlow />}
         primaryClassName="task-page-form-shell"
       />
       <TaskPageLayout
         route="/realtors"
-        mode="full-width"
+        mode="fullWidthSupport"
         primary={
           <div className="grid gap-4">
             <RequestSupportBlocks

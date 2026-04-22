@@ -13,10 +13,19 @@ function run() {
     headerSource.includes('from "@/content/navigation"'),
     "Header must import shared navigation content contract",
   );
-  const navMapUses = headerSource.match(/primaryNavLinks\.map/g)?.length ?? 0;
+  const navMapUses = headerSource.match(/navLinks\.map/g)?.length ?? 0;
   assert.ok(
-    navMapUses >= 2,
-    "Header must use shared primaryNavLinks for both mobile and desktop nav",
+    navMapUses >= 1,
+    "Header desktop nav must render shared nav links",
+  );
+  assert.ok(
+    headerSource.includes("compactTaskHeaderLinks"),
+    "Header must use compact task header nav set on request routes",
+  );
+  const mobileNavSource = read("src/components/site/MobileNav.tsx");
+  assert.ok(
+    mobileNavSource.includes("links.map"),
+    "MobileNav must render the shared nav links set",
   );
 
   const footerSource = read("src/components/site/Footer.tsx");

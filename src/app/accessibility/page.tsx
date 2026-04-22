@@ -6,7 +6,7 @@ export const metadata: Metadata = buildMetadata("Accessibility", "Accessibility 
 
 export default function AccessibilityPage() {
   return (
-    <Section title="Accessibility">
+    <Section title="Accessibility" layout="marketing">
       <div className="grid gap-3 text-sm text-slate-700">
         <p>Robinson aims to keep routing, forms, and recovery states keyboard-usable and readable on mobile and desktop.</p>
         <p>If you encounter an accessibility issue, call the office so support can route your request directly.</p>

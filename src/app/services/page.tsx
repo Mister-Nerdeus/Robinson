@@ -20,7 +20,7 @@ const links = [
 
 export default function ServicesIndexPage() {
   return (
-    <Section title="Services">
+    <Section title="Services" layout="marketing">
       <div className="mb-5 rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5 text-slate-800">
         Robinson provides four core service categories: emergency and routine septic service, home-sale evaluations, portable toilet rentals, and commercial support for grease trap and lift pump work.
       </div>

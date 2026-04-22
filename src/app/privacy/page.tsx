@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata(
 
 export default function PrivacyPage() {
   return (
-    <Section title={privacyContent.title}>
+    <Section title={privacyContent.title} layout="marketing">
       <div className="grid gap-5">
         <p className="text-slate-800">{privacyContent.intro}</p>
         <div className="grid gap-4">

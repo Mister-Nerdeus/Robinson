@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { REQUEST_LAYOUT_DESKTOP_TOKENS } from "@/config/requestLayoutContract";
 
-export type TaskPageLayoutMode = "support-rail" | "full-width";
+export type TaskPageLayoutMode = "supportRail" | "formDominant" | "fullWidthSupport";
 
 type TaskPageLayoutProps = {
   route: string;
@@ -23,7 +23,7 @@ export function TaskPageLayout({
   primaryClassName,
   supportClassName,
 }: TaskPageLayoutProps) {
-  const shouldRenderSupport = mode === "support-rail" && Boolean(support);
+  const shouldRenderSupport = mode === "supportRail" && Boolean(support);
 
   return (
     <div
@@ -34,12 +34,15 @@ export function TaskPageLayout({
       data-task-page-columns={shouldRenderSupport ? "primary-with-support-rail" : "primary-only"}
       data-task-page-desktop-gutter={REQUEST_LAYOUT_DESKTOP_TOKENS.desktopGutter}
       data-task-page-desktop-rail={REQUEST_LAYOUT_DESKTOP_TOKENS.supportRailMaxWidth}
-      data-task-page-desktop-form-shell={REQUEST_LAYOUT_DESKTOP_TOKENS.formShellMaxWidth}
+      data-task-page-desktop-support-band={REQUEST_LAYOUT_DESKTOP_TOKENS.supportBandPrimaryMaxWidth}
+      data-task-page-desktop-wizard-shell={REQUEST_LAYOUT_DESKTOP_TOKENS.wizardShellMaxWidth}
       style={
         {
           "--task-page-desktop-gutter": REQUEST_LAYOUT_DESKTOP_TOKENS.desktopGutter,
           "--task-page-support-rail-max": REQUEST_LAYOUT_DESKTOP_TOKENS.supportRailMaxWidth,
-          "--task-page-form-shell-max": REQUEST_LAYOUT_DESKTOP_TOKENS.formShellMaxWidth,
+          "--task-page-support-band-primary-max":
+            REQUEST_LAYOUT_DESKTOP_TOKENS.supportBandPrimaryMaxWidth,
+          "--task-page-wizard-shell-max": REQUEST_LAYOUT_DESKTOP_TOKENS.wizardShellMaxWidth,
         } as CSSProperties
       }
     >

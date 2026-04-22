@@ -1,14 +1,14 @@
 # Task Page Composition QA Checklist
 
 ## Required Evidence
-- [ ] `docs/screenshots/issues-159-162/composition-audit.json` updated.
+- [ ] `docs/screenshots/issues-163-172/composition-audit.json` updated.
 - [ ] Desktop screenshots captured for `1280` and `1440` on required routes.
 - [ ] Mobile screenshots captured for `390` on required routes.
 - [ ] Before/after screenshot pairs attached for touched task routes.
 
 ## Desktop Review Checks
 - [ ] No major right-column blank zone larger than intended gutter.
-- [ ] Mode switching is explicit and intentional (`support-rail` vs `full-width`).
+- [ ] Mode switching is explicit and intentional (`supportRail`, `formDominant`, `fullWidthSupport`).
 - [ ] Active form shell is the dominant desktop object after intro/support band.
 - [ ] Step action row is visually attached to the active form shell.
 - [ ] Card pairings do not create obvious height-mismatch voids.

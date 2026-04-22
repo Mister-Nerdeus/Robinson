@@ -11,6 +11,12 @@ export const primaryNavLinks: NavItem[] = [
   { href: "/contact", label: "Contact" },
 ];
 
+export const compactTaskHeaderLinks: NavItem[] = [
+  { href: "/services", label: "Services" },
+  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
+];
+
 export const footerFastPathLinks: NavItem[] = [
   { href: "/services/septic-cleaning", label: "Emergency Septic Service" },
   { href: "/services/well-septic-evaluations", label: "Evaluations" },

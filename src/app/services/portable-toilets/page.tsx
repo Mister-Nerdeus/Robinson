@@ -24,7 +24,7 @@ export default function PortableToiletsPage() {
         </div>
         <TaskPageLayout
           route="/services/portable-toilets"
-          mode="support-rail"
+          mode="supportRail"
           primary={
             <div className="rounded-xl border border-[#d8c1c1] bg-[#fff8f7] p-4">
               <p className="text-sm text-slate-700">
@@ -45,7 +45,7 @@ export default function PortableToiletsPage() {
         />
         <TaskPageLayout
           route="/services/portable-toilets"
-          mode="full-width"
+          mode="formDominant"
           primary={<PortableToiletFlow />}
           primaryClassName="task-page-form-shell"
         />

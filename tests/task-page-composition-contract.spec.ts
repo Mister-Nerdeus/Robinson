@@ -17,12 +17,12 @@ function run() {
   for (const file of modeRoutes) {
     const source = read(file);
     assert.ok(
-      source.includes('mode="support-rail"'),
+      source.includes('mode="supportRail"'),
       `${file} must declare support-rail mode explicitly`,
     );
     assert.ok(
-      source.includes('mode="full-width"'),
-      `${file} must declare full-width mode explicitly`,
+      source.includes('mode="formDominant"'),
+      `${file} must declare form-dominant mode explicitly`,
     );
     assert.ok(
       source.includes('primaryClassName="task-page-form-shell"'),
@@ -48,8 +48,12 @@ function run() {
     "RequestPageLayout must publish support-rail token marker",
   );
   assert.ok(
-    requestLayoutSource.includes("data-request-layout-desktop-form-shell"),
-    "RequestPageLayout must publish form-shell token marker",
+    requestLayoutSource.includes("data-request-layout-desktop-support-band"),
+    "RequestPageLayout must publish support-band token marker",
+  );
+  assert.ok(
+    requestLayoutSource.includes("data-request-layout-desktop-wizard-shell"),
+    "RequestPageLayout must publish wizard-shell token marker",
   );
 
   console.log("[task-page-composition-contract] route mode declarations and request geometry markers pass");

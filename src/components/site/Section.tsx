@@ -5,10 +5,10 @@ type SectionProps = {
   children: React.ReactNode;
   className?: string;
   containerClassName?: string;
-  layout?: "marketing" | "task";
+  layout: "marketing" | "task";
 };
 
-export function Section({ title, children, className, containerClassName, layout = "marketing" }: SectionProps) {
+export function Section({ title, children, className, containerClassName, layout }: SectionProps) {
   return (
     <section className={cn("section-pad", layout === "task" ? "task-page-section-shell" : null, className)}>
       <div className={cn("container", layout === "task" ? "container-task" : "container-marketing", containerClassName)}>

@@ -1,24 +1,12 @@
 import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
-import { cookies } from "next/headers";
-import { DeploymentStamp } from "@/components/site/DeploymentStamp";
 import { footerFastPathLinks } from "@/content/navigation";
 import { TrackedPhoneLink } from "@/components/site/TrackedPhoneLink";
 import { publishedLocations } from "@/content/locations";
 import { serviceAreaContent } from "@/content/serviceArea";
-import {
-  getRuntimeEnv,
-  isAdminReviewEnabled,
-  shouldRenderOperatorProofChrome,
-} from "@/lib/runtime/env";
 
-export async function Footer() {
-  const runtime = getRuntimeEnv();
-  const adminOpen = isAdminReviewEnabled();
-  const cookieStore = await cookies();
-  const reviewCookieValue = cookieStore.get(runtime.reviewAccessCookieName)?.value;
-  const showReview = shouldRenderOperatorProofChrome(undefined, reviewCookieValue);
+export function Footer() {
   const primaryLocation = publishedLocations[0];
 
   return (
@@ -56,18 +44,6 @@ export async function Footer() {
             <p className="mt-1">{serviceAreaContent.summary}</p>
             <p className="mt-1">{serviceAreaContent.expansionNote}</p>
           </div>
-          {showReview ? (
-            <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-700">
-              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Mode: {runtime.mode}</span>
-              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Local-only: {runtime.localOnlyMode ? "on" : "off"}</span>
-              <span className="rounded-full border border-[#d3c0c0] bg-white px-2 py-1">Admin review: {adminOpen ? "enabled" : "blocked"}</span>
-            </div>
-          ) : null}
-          {showReview ? (
-            <div className="mt-3">
-              <DeploymentStamp />
-            </div>
-          ) : null}
         </div>
         <div className="rounded-xl border border-[#e3d8d8] bg-[#faf6f5] p-4">
           <h2 className="font-display text-base text-[var(--brand)]">Fast Request Paths</h2>

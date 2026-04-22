@@ -144,9 +144,9 @@ After baselines:
 ## DOM/Text Proof
 - Visual evidence contract now checks `issues-159-162` artifact inventory:
   - `tests/visual/publicEvidence.spec.ts`
-- Layout contract upgraded to `request-desktop-modes-v4` and tokenized:
+- Layout contract upgraded to `request-desktop-modes-v5` and tokenized:
   - `src/config/requestLayoutContract.ts`
-  - `.env*` `REQUEST_LAYOUT_CONTRACT_VERSION=request-desktop-modes-v4`
+  - `.env*` `REQUEST_LAYOUT_CONTRACT_VERSION=request-desktop-modes-v5`
 - Composition audit result:
   - `docs/screenshots/issues-159-162/composition-audit.json` => `"passed": true`
 

@@ -1,0 +1,83 @@
+import assert from "node:assert/strict";
+import { chromium } from "playwright";
+
+const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:4850").replace(/\/$/, "");
+
+const requestRoutes = [
+  "/services/septic-cleaning",
+  "/services/well-septic-evaluations",
+  "/services/portable-toilets",
+  "/services/commercial",
+  "/contact",
+  "/realtors",
+];
+
+async function run() {
+  const browser = await chromium.launch({ headless: true });
+  const desktop = await browser.newContext({ viewport: { width: 1440, height: 1800 } });
+  const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const desktopPage = await desktop.newPage();
+  const mobilePage = await mobile.newPage();
+
+  await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
+
+  const desktopNavCount = await desktopPage.locator('header nav[data-primary-nav="desktop"]').count();
+  assert.equal(desktopNavCount, 1, "septic route must render exactly one desktop primary nav");
+
+  const leakagePattern = /(Mode:|Local-only:|Admin review:|Commit:|Build time|DEPLOY_|refs\/heads\/|runtime mode)/i;
+  for (const route of requestRoutes) {
+    await desktopPage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+    const text = await desktopPage.locator("body").innerText();
+    assert.equal(
+      leakagePattern.test(text),
+      false,
+      `request route must not leak runtime/deploy provenance text (${route})`,
+    );
+  }
+
+  await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
+  const firstEditableDesktopTop = await desktopPage.evaluate(() => {
+    const el = document.querySelector("form input:not([type='hidden']), form select, form textarea");
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return Math.round(rect.top + window.scrollY);
+  });
+  assert.ok(
+    firstEditableDesktopTop !== null && firstEditableDesktopTop < 1550,
+    `septic first editable control must appear in early desktop scroll band (got ${firstEditableDesktopTop})`,
+  );
+
+  await desktopPage.locator('input[name="fullName"]').fill("Behavior Test");
+  await desktopPage.locator('input[name="phone"]').fill("5550100");
+  await desktopPage.locator('input[name="email"]').fill("behavior@example.com");
+  await desktopPage.getByRole("button", { name: "Next Step" }).first().click();
+  await desktopPage.waitForTimeout(350);
+  const activeHeadingFocused = await desktopPage.evaluate(() => {
+    const active = document.activeElement as HTMLElement | null;
+    return active?.hasAttribute("data-wizard-step-heading") ?? false;
+  });
+  assert.equal(activeHeadingFocused, true, "step transition must restore focus to wizard heading");
+
+  await mobilePage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
+  const firstEditableMobileTop = await mobilePage.evaluate(() => {
+    const el = document.querySelector("form input:not([type='hidden']), form select, form textarea");
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return Math.round(rect.top + window.scrollY);
+  });
+  assert.ok(
+    firstEditableMobileTop !== null && firstEditableMobileTop < 1850,
+    `septic first editable control must appear in early mobile scroll band (got ${firstEditableMobileTop})`,
+  );
+
+  await desktop.close();
+  await mobile.close();
+  await browser.close();
+
+  console.log("[request-flow-behavior-e2e] nav singularity, provenance guard, early first-step, and focus continuity pass");
+}
+
+run().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function RealtorNestedPage() {
   return (
-    <Section title="Realtor Evaluation Support">
+    <Section title="Realtor Evaluation Support" layout="marketing">
       <div className="grid gap-4">
         <p className="text-slate-800">Robinson supports Realtors, buyers, and sellers who need well and septic evaluations scheduled during active transactions.</p>
         <p className="text-slate-700">Submit property location, access details, contact roles, and timeline priorities so the team can coordinate scheduling quickly.</p>

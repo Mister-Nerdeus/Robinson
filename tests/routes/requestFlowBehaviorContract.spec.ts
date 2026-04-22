@@ -35,8 +35,22 @@ function run() {
     "Header must expose measured sticky header marker",
   );
   assert.ok(
-    !headerSource.includes('<nav className="mt-3 hidden flex-wrap gap-2 text-sm md:flex">'),
-    "Desktop header must not render duplicate nav rows",
+    headerSource.includes('data-site-header-mode={isTaskRoute ? "compact-task" : "marketing"}'),
+    "Header must expose compact task header mode on request routes",
+  );
+  assert.ok(
+    headerSource.includes('data-primary-nav="desktop"'),
+    "Desktop header must expose a single primary nav marker",
+  );
+
+  const footerSource = read("src/components/site/Footer.tsx");
+  assert.ok(
+    !footerSource.includes("Mode:"),
+    "Public footer must not show runtime mode badges",
+  );
+  assert.ok(
+    !footerSource.includes("DeploymentStamp"),
+    "Public footer must not show deployment provenance stamp",
   );
 
   const runtimeProofSource = read("src/app/api/runtime-proof/route.ts");

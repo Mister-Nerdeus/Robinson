@@ -147,4 +147,15 @@ export const submissionSchema = z.discriminatedUnion("type", [
   commercialServiceSchema,
 ]);
 
+export const fieldAutocompleteMap: Record<string, string> = {
+  fullName: "name",
+  phone: "tel",
+  email: "email",
+  streetAddress: "address-line1",
+  city: "address-level2",
+  state: "address-level1",
+  zip: "postal-code",
+  onSiteContact: "name",
+};
+
 export type SubmissionInput = z.infer<typeof submissionSchema>;

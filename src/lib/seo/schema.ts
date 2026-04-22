@@ -14,7 +14,7 @@ export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: businessContent.name,
+    name: company.publicBrand,
     legalName: businessContent.legalName,
     alternateName: company.brandVariants,
     telephone: businessContent.primaryPhone,
@@ -46,7 +46,7 @@ export function serviceSchema(name: string, description: string, path: string) {
     "@type": "Service",
     name,
     description,
-    provider: { "@type": "LocalBusiness", name: businessContent.name },
+    provider: { "@type": "LocalBusiness", name: company.publicBrand },
     areaServed: areaServedList(),
     url: path,
   };

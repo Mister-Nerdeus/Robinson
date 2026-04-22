@@ -12,6 +12,7 @@ import { WizardActions } from "./WizardActions";
 import { WizardContainer, WizardMobileActions } from "./WizardContainer";
 import { FormFieldGroup } from "./FormFieldGroup";
 import { scrollAndFocus } from "@/lib/ui/scrollAndFocus";
+import { fieldAutocompleteMap } from "@/lib/forms/schema";
 
 type FormFieldConfig = {
   name: string;
@@ -25,6 +26,7 @@ type FormFieldConfig = {
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
   rows?: number;
   span?: "full" | "half";
+  autoComplete?: string;
 };
 
 type CheckboxGroupConfig = {
@@ -84,6 +86,7 @@ const locationFieldsRequired: FormFieldConfig[] = [
     placeholder: "Street address",
     helpText: "Use the address where service should arrive.",
     span: "full",
+    autoComplete: "address-line1",
   },
   {
     name: "city",
@@ -91,6 +94,7 @@ const locationFieldsRequired: FormFieldConfig[] = [
     required: true,
     placeholder: "Pierson",
     helpText: "If mailing and service addresses differ, use the service location.",
+    autoComplete: "address-level2",
   },
   {
     name: "zip",
@@ -99,6 +103,7 @@ const locationFieldsRequired: FormFieldConfig[] = [
     placeholder: "49339",
     inputMode: "numeric",
     helpText: "If unsure whether you are in the service area, still submit and Robinson will confirm.",
+    autoComplete: "postal-code",
   },
 ];
 
@@ -109,12 +114,14 @@ const locationFieldsOptional: FormFieldConfig[] = [
     placeholder: "Street address",
     helpText: "Use the address where service should arrive if this request needs on-site service.",
     span: "full",
+    autoComplete: "address-line1",
   },
   {
     name: "city",
     label: "Service City",
     placeholder: "Pierson",
     helpText: "If mailing and service addresses differ, use the service location.",
+    autoComplete: "address-level2",
   },
   {
     name: "zip",
@@ -122,13 +129,14 @@ const locationFieldsOptional: FormFieldConfig[] = [
     placeholder: "49339",
     inputMode: "numeric",
     helpText: "If unsure whether you are in the service area, still submit and Robinson will confirm.",
+    autoComplete: "postal-code",
   },
 ];
 
 const sharedContactFields: FormFieldConfig[] = [
-  { name: "fullName", label: "Full Name", required: true },
-  { name: "phone", label: "Best Phone", type: "tel", required: true },
-  { name: "email", label: "Email", type: "email", required: true },
+  { name: "fullName", label: "Full Name", required: true, autoComplete: "name" },
+  { name: "phone", label: "Best Phone", type: "tel", required: true, autoComplete: "tel" },
+  { name: "email", label: "Email", type: "email", required: true, autoComplete: "email" },
 ];
 
 const sharedSchedulingFields: FormFieldConfig[] = [
@@ -517,7 +525,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
           type: "number",
           min: "1",
         },
-        { name: "onSiteContact", label: "On-site Contact Name + Role", required: true },
+        { name: "onSiteContact", label: "On-site Contact Name + Role", required: true, autoComplete: "name" },
         {
           name: "accessHours",
           label: "Access hours",
@@ -592,16 +600,28 @@ function normalizePayload(formData: FormData) {
 function CheckboxGroup({
   config,
   selectedValues,
+  errorText,
   onToggle,
 }: {
   config: CheckboxGroupConfig;
   selectedValues: string[];
+  errorText?: string;
   onToggle: (name: string, value: string, checked: boolean) => void;
 }) {
+  const groupId = `checkbox-group-${config.name}`;
+  const helpId = config.helpText ? `${groupId}-help` : undefined;
+  const errorId = errorText ? `${groupId}-error` : undefined;
+  const describedBy = [helpId, errorId].filter(Boolean).join(" ") || undefined;
+
   return (
-    <fieldset className="grid gap-3.5 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5">
+    <fieldset className="grid gap-3.5 rounded-md border border-[#d8cfc0] bg-[#fffdfa] p-4 sm:p-5" aria-describedby={describedBy}>
       <legend className="px-1 text-sm font-semibold text-slate-900">{config.label}</legend>
-      {config.helpText ? <p className="text-xs text-slate-600">{config.helpText}</p> : null}
+      {config.helpText ? <p id={helpId} className="text-xs text-slate-600">{config.helpText}</p> : null}
+      {errorText ? (
+        <p id={errorId} className="text-xs font-semibold text-[#8f0f1a]">
+          {errorText}
+        </p>
+      ) : null}
       <div className="grid gap-3.5 2xl:grid-cols-2">
         {config.options.map((option) => (
           <label
@@ -630,6 +650,7 @@ export function RequestForm({ type, title }: Props) {
   const [started, setStarted] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [multiValues, setMultiValues] = useState<Record<string, string[]>>({});
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const wizardRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const hasRenderedStepRef = useRef(false);
@@ -700,6 +721,12 @@ export function RequestForm({ type, title }: Props) {
 
   function setFieldValue(name: string, value: string) {
     setFormValues((current) => ({ ...current, [name]: value }));
+    setFieldErrors((current) => {
+      if (!current[name]) return current;
+      const next = { ...current };
+      delete next[name];
+      return next;
+    });
   }
 
   function setMultiValue(name: string, value: string, checked: boolean) {
@@ -711,6 +738,47 @@ export function RequestForm({ type, title }: Props) {
       }
       return { ...current, [name]: existing.filter((item) => item !== value) };
     });
+    setFieldErrors((current) => {
+      if (!current[name]) return current;
+      const next = { ...current };
+      delete next[name];
+      return next;
+    });
+  }
+
+  function validateStep(stepIndex: number): boolean {
+    const active = sections[stepIndex];
+    if (!active) {
+      if (stepIndex === notesStepIndex && !(formValues.message ?? "").trim()) {
+        setFieldErrors((current) => ({ ...current, message: "Dispatch notes are required before review." }));
+        return false;
+      }
+      return true;
+    }
+
+    const nextErrors: Record<string, string> = {};
+    for (const field of active.fields ?? []) {
+      if (!field.required) continue;
+      const value = formValues[field.name] ?? "";
+      if (!value.trim()) {
+        nextErrors[field.name] = `${field.label} is required.`;
+      }
+    }
+
+    for (const group of active.checkboxGroups ?? []) {
+      if (!group.required) continue;
+      const values = multiValues[group.name] ?? [];
+      if (values.length === 0) {
+        nextErrors[group.name] = `${group.label} is required.`;
+      }
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors((current) => ({ ...current, ...nextErrors }));
+      return false;
+    }
+
+    return true;
   }
 
   async function onSubmit(formData: FormData) {
@@ -789,6 +857,7 @@ export function RequestForm({ type, title }: Props) {
                       key={group.name}
                       config={group}
                       selectedValues={multiValues[group.name] ?? []}
+                      errorText={fieldErrors[group.name]}
                       onToggle={setMultiValue}
                     />
                   ))
@@ -809,6 +878,9 @@ export function RequestForm({ type, title }: Props) {
                         min={field.min}
                         inputMode={field.inputMode}
                         rows={field.rows}
+                        autoComplete={field.autoComplete ?? fieldAutocompleteMap[field.name]}
+                        errorText={fieldErrors[field.name]}
+                        ariaInvalid={Boolean(fieldErrors[field.name])}
                         value={formValues[field.name] ?? ""}
                         onValueChange={setFieldValue}
                       />
@@ -823,6 +895,7 @@ export function RequestForm({ type, title }: Props) {
                       key={group.name}
                       config={group}
                       selectedValues={multiValues[group.name] ?? []}
+                      errorText={fieldErrors[group.name]}
                       onToggle={setMultiValue}
                     />
                   ))
@@ -845,6 +918,8 @@ export function RequestForm({ type, title }: Props) {
             rows={5}
             placeholder="Share anything that will help dispatch or scheduling."
             helpText="Freeform details remain important for unusual site conditions or nuanced requests."
+            errorText={fieldErrors.message}
+            ariaInvalid={Boolean(fieldErrors.message)}
             value={formValues.message ?? ""}
             onValueChange={setFieldValue}
           />
@@ -900,7 +975,11 @@ export function RequestForm({ type, title }: Props) {
     <button
       type="button"
       className="min-h-11 w-full rounded-md bg-[var(--brand)] px-4 py-3 font-semibold text-white md:w-auto"
-      onClick={goNext}
+      onClick={() => {
+        if (validateStep(currentStep)) {
+          goNext();
+        }
+      }}
     >
       {currentStep === notesStepIndex ? "Review Request" : "Next Step"}
     </button>

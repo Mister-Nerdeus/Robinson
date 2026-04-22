@@ -6,47 +6,72 @@ type Option = {
 };
 
 type FormFieldProps = {
+  id?: string;
   name: string;
   label: string;
   type?: "text" | "email" | "date" | "tel" | "number" | "textarea";
   required?: boolean;
   placeholder?: string;
   helpText?: string;
+  errorText?: string;
+  autoComplete?: string;
   options?: Option[];
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
   min?: string;
   rows?: number;
   value?: string;
+  describedBy?: string;
+  ariaInvalid?: boolean;
   onValueChange?: (name: string, value: string) => void;
 };
 
 export function FormField({
+  id,
   name,
   label,
   type = "text",
   required = false,
   placeholder,
   helpText,
+  errorText,
+  autoComplete,
   options,
   inputMode,
   min,
   rows,
   value,
+  describedBy,
+  ariaInvalid,
   onValueChange,
 }: FormFieldProps) {
+  const fieldId = id ?? `field-${name}`;
+  const helpId = helpText ? `${fieldId}-help` : undefined;
+  const errorId = errorText ? `${fieldId}-error` : undefined;
+  const describedByIds = [helpId, errorId, describedBy].filter(Boolean).join(" ") || undefined;
   const baseClass =
     "min-h-11 w-full rounded-md border border-[#bdb4a2] bg-white px-3 py-2.5 text-base leading-snug text-slate-900 shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a1121f]/25 focus-visible:border-[#8f0f1a]";
 
   return (
-    <label className="grid gap-2 text-sm">
-      <span className="font-semibold text-slate-900">{label}</span>
-      {helpText ? <span className="text-xs leading-relaxed text-slate-600">{helpText}</span> : null}
+    <div className="grid gap-2 text-sm">
+      <label htmlFor={fieldId} className="font-semibold text-slate-900">
+        {label}
+      </label>
+      {helpText ? <p id={helpId} className="text-xs leading-relaxed text-slate-600">{helpText}</p> : null}
+      {errorText ? (
+        <p id={errorId} className="text-xs font-semibold text-[#8f0f1a]">
+          {errorText}
+        </p>
+      ) : null}
       {options ? (
         <select
           className={`${baseClass} pr-8`}
+          id={fieldId}
           name={name}
           required={required}
           value={value ?? ""}
+          autoComplete={autoComplete}
+          aria-describedby={describedByIds}
+          aria-invalid={ariaInvalid ? "true" : undefined}
           onChange={(event) => onValueChange?.(name, event.target.value)}
         >
           <option value="" disabled>
@@ -61,26 +86,34 @@ export function FormField({
       ) : type === "textarea" ? (
         <textarea
           className={`${baseClass} min-h-[8rem] py-2.5 leading-relaxed`}
+          id={fieldId}
           name={name}
           required={required}
           placeholder={placeholder}
           rows={rows ?? 4}
           value={value ?? ""}
+          autoComplete={autoComplete}
+          aria-describedby={describedByIds}
+          aria-invalid={ariaInvalid ? "true" : undefined}
           onChange={(event) => onValueChange?.(name, event.target.value)}
         />
       ) : (
         <input
           className={baseClass}
+          id={fieldId}
           name={name}
           type={type}
           required={required}
           placeholder={placeholder}
+          autoComplete={autoComplete}
           inputMode={inputMode}
           min={min}
           value={value ?? ""}
+          aria-describedby={describedByIds}
+          aria-invalid={ariaInvalid ? "true" : undefined}
           onChange={(event) => onValueChange?.(name, event.target.value)}
         />
       )}
-    </label>
+    </div>
   );
 }

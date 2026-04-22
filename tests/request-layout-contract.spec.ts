@@ -52,8 +52,24 @@ function run() {
     "ServiceRequestPageTemplate must bind routeId from template entry",
   );
   assert.ok(
-    templateSource.includes('postFormMode="full-width"'),
+    templateSource.includes("REQUEST_ROUTE_SECTION_MODES"),
+    "ServiceRequestPageTemplate must read explicit section modes from request layout contract",
+  );
+  assert.ok(
+    templateSource.includes("topMode={sectionModes.top}"),
+    "ServiceRequestPageTemplate must explicitly bind top support mode",
+  );
+  assert.ok(
+    templateSource.includes("formMode={sectionModes.form}"),
+    "ServiceRequestPageTemplate must explicitly bind form-dominant mode",
+  );
+  assert.ok(
+    templateSource.includes("postFormMode={sectionModes.postForm ?? \"fullWidthSupport\"}"),
     "ServiceRequestPageTemplate must explicitly declare post-form layout mode",
+  );
+  assert.ok(
+    templateSource.includes('layout="task"'),
+    "ServiceRequestPageTemplate must opt into task layout section wrapper",
   );
 
   const templateContentSource = read("src/content/serviceTemplates.ts");
@@ -70,12 +86,24 @@ function run() {
 
   const layoutContractSource = read("src/config/requestLayoutContract.ts");
   assert.ok(
-    layoutContractSource.includes('REQUEST_LAYOUT_CONTRACT_VERSION = "request-desktop-modes-v4"'),
-    "Request layout contract version must be request-desktop-modes-v4",
+    layoutContractSource.includes('REQUEST_LAYOUT_CONTRACT_VERSION = "request-desktop-modes-v5"'),
+    "Request layout contract version must be request-desktop-modes-v5",
   );
   assert.ok(
     layoutContractSource.includes("REQUEST_LAYOUT_DESKTOP_TOKENS"),
     "Request layout desktop tokens must be centralized in requestLayoutContract",
+  );
+  assert.ok(
+    layoutContractSource.includes("REQUEST_ROUTE_SECTION_MODES"),
+    "Request layout contract must define explicit per-route section modes",
+  );
+  assert.ok(
+    layoutContractSource.includes("supportBandPrimaryMaxWidth"),
+    "Request layout desktop tokens must include support-band width",
+  );
+  assert.ok(
+    layoutContractSource.includes("wizardShellMaxWidth"),
+    "Request layout desktop tokens must include wizard-shell width",
   );
   assert.ok(
     layoutContractSource.includes("supportRailMaxWidth"),
@@ -96,12 +124,16 @@ function run() {
     "Global styles must define request max-width token",
   );
   assert.ok(
-    globalsCss.includes("--layout-form-shell-max"),
-    "Global styles must define form-shell max-width token",
+    globalsCss.includes("--layout-wizard-shell-max"),
+    "Global styles must define wizard-shell max-width token",
   );
   assert.ok(
-    globalsCss.includes("--layout-task-max"),
-    "Global styles must define task max-width token",
+    globalsCss.includes("--layout-task-outer-max"),
+    "Global styles must define task outer max-width token",
+  );
+  assert.ok(
+    globalsCss.includes("--layout-support-band-primary-max"),
+    "Global styles must define support-band primary max-width token",
   );
   assert.ok(
     globalsCss.includes("--layout-support-rail-max"),
@@ -112,12 +144,16 @@ function run() {
     "Global styles must define task desktop gutter token",
   );
   assert.ok(
-    globalsCss.includes('data-task-page-layout-mode="support-rail"'),
+    globalsCss.includes('data-task-page-layout-mode="supportRail"'),
     "Global styles must define support-rail mode behavior",
   );
   assert.ok(
-    globalsCss.includes('data-task-page-layout-mode="full-width"'),
-    "Global styles must define full-width mode behavior",
+    globalsCss.includes('data-task-page-layout-mode="formDominant"'),
+    "Global styles must define form-dominant mode behavior",
+  );
+  assert.ok(
+    globalsCss.includes('data-task-page-layout-mode="fullWidthSupport"'),
+    "Global styles must define full-width support mode behavior",
   );
   assert.ok(
     globalsCss.includes(".task-page-section-shell"),

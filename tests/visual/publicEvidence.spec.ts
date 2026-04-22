@@ -7,10 +7,10 @@ assert.ok(fs.existsSync("docs/PUBLIC_ROUTE_QA_MATRIX.md"), "PUBLIC_ROUTE_QA_MATR
 const screenshotsDir = "docs/screenshots";
 assert.ok(fs.existsSync(screenshotsDir), "docs/screenshots directory is required");
 
-const compositionDir = path.join(screenshotsDir, "issues-159-162");
+const compositionDir = path.join(screenshotsDir, "issues-163-172");
 assert.ok(
   fs.existsSync(compositionDir),
-  "issues-159-162 composition evidence directory is required",
+  "issues-163-172 composition evidence directory is required",
 );
 
 const requiredCompositionScreens = [

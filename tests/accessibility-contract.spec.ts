@@ -36,6 +36,20 @@ function run() {
     requestFormSource.includes('aria-atomic="true"'),
     "Form status announcement must be atomic for assistive technologies",
   );
+  assert.ok(
+    requestFormSource.includes("fieldAutocompleteMap"),
+    "RequestForm must use shared autocomplete mapping",
+  );
+
+  const formFieldSource = read("src/components/forms/FormField.tsx");
+  assert.ok(
+    formFieldSource.includes("aria-describedby"),
+    "FormField controls must associate helper/error text with aria-describedby",
+  );
+  assert.ok(
+    formFieldSource.includes("htmlFor={fieldId}"),
+    "FormField labels must be explicitly associated with controls",
+  );
 
   console.log("[accessibility-contract] required routes and form/live-region accessibility baseline verified");
 }

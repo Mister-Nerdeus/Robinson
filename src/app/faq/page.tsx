@@ -14,7 +14,7 @@ export const metadata: Metadata = buildMetadata(
 
 export default function FaqPage() {
   return (
-    <Section title="FAQ">
+    <Section title="FAQ" layout="marketing">
       <JsonLd data={faqSchema()} />
       <div className="mb-6 grid gap-6 md:grid-cols-[1.1fr,0.9fr]">
         <div>

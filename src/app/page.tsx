@@ -28,7 +28,7 @@ export default function HomePage() {
     >
       <JsonLd data={localBusinessSchema()} />
 
-      <Section>
+      <Section layout="marketing">
         <div className="grid gap-6 lg:grid-cols-[1.08fr,0.92fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand)]">{homeContent.hero.eyebrow}</p>
@@ -58,7 +58,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Primary task CTAs">
+      <Section title="Primary task CTAs" layout="marketing">
         <div className="grid gap-4 md:grid-cols-3">
           {homeContent.primaryTaskCtas.map((item) => (
             <article key={item.title} className="rounded-2xl border border-[#d8c1c1] bg-[var(--surface)] p-5">
@@ -72,11 +72,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Service lanes">
+      <Section title="Service lanes" layout="marketing">
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
 
-      <Section title="Built on proven local trust">
+      <Section title="Built on proven local trust" layout="marketing">
         <div className="grid gap-5 md:grid-cols-[1.15fr,0.85fr] md:items-start">
           <div>
             <HomeTrust points={trustContent.points} />
@@ -94,7 +94,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title={homeContent.realtorLane.title}>
+      <Section title={homeContent.realtorLane.title} layout="marketing">
         <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
           <p className="text-slate-800">{homeContent.realtorLane.body}</p>
           <Link href={homeContent.realtorLane.href} className="mt-4 inline-flex font-semibold underline">
@@ -103,11 +103,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Helpful questions before service">
+      <Section title="Helpful questions before service" layout="marketing">
         <FaqPreview items={homeContent.faqPreview} />
       </Section>
 
-      <Section>
+      <Section layout="marketing">
         <CtaBand heading="Need help right now? Call Robinson for 24/7 Emergency Service or open the structured request lanes." href="/contact" label="Open Contact Intake Lanes" />
       </Section>
     </div>
