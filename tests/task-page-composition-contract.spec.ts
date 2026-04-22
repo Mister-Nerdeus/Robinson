@@ -39,6 +39,18 @@ function run() {
     requestLayoutSource.includes("data-request-layout-geometry=\"explicit-section-modes\""),
     "RequestPageLayout must expose explicit section mode geometry marker",
   );
+  assert.ok(
+    requestLayoutSource.includes("data-request-layout-desktop-gutter"),
+    "RequestPageLayout must publish desktop gutter token marker",
+  );
+  assert.ok(
+    requestLayoutSource.includes("data-request-layout-desktop-rail"),
+    "RequestPageLayout must publish support-rail token marker",
+  );
+  assert.ok(
+    requestLayoutSource.includes("data-request-layout-desktop-form-shell"),
+    "RequestPageLayout must publish form-shell token marker",
+  );
 
   console.log("[task-page-composition-contract] route mode declarations and request geometry markers pass");
 }

@@ -13,6 +13,13 @@
 
 - [ ] Reviewed against `docs/design/task-page-large-screen-composition-contract.md`.
 - [ ] Updated `docs/qa/task-page-composition-checklist.md`.
-- [ ] Attached before/after desktop screenshots at 1280/1440/1920 for touched task routes.
-- [ ] Updated `docs/screenshots/issues-143-152/composition-audit.json` and confirmed `passed: true`.
+- [ ] Attached before/after desktop screenshots at 1280/1440 for touched task routes.
+- [ ] Attached mobile screenshots at 390 for touched task routes.
+- [ ] Updated `docs/screenshots/issues-159-162/composition-audit.json` and confirmed `passed: true`.
 - [ ] Included layout mode inventory (`support-rail` and `full-width`) in PR notes.
+- [ ] Answered Apple-style spatial-intent checks in PR notes:
+  - blank-space intent
+  - rail stability
+  - form dominance
+  - footer separation
+  - action locality

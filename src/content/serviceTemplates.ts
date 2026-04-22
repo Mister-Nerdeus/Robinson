@@ -161,7 +161,7 @@ export const serviceTemplateEntries: ServiceTemplateEntry[] = [
       proofPoints: [
         "Built for event and project logistics.",
         "Structured intake captures unit and service cadence details.",
-        "West Michigan route planning is handled in one lane.",
+        "Coverage confirmation is tied to routing and schedule checks.",
       ],
       faqSubset: [
         {

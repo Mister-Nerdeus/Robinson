@@ -19,6 +19,8 @@ jobs:
       - run: npm run test:smoke
       - run: npm run test:submission-contract
       - run: npm run test:form-lane-contract
+      - run: npm run test:request-layout-contract
+      - run: npm run test:task-page-composition-contract
       - run: npm run test:schema-source-contract
       - run: npm run test:routes-public-contract
       - run: npm run test:deploy-traceability-contract

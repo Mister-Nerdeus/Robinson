@@ -68,6 +68,24 @@ function run() {
     );
   }
 
+  const layoutContractSource = read("src/config/requestLayoutContract.ts");
+  assert.ok(
+    layoutContractSource.includes('REQUEST_LAYOUT_CONTRACT_VERSION = "request-desktop-modes-v4"'),
+    "Request layout contract version must be request-desktop-modes-v4",
+  );
+  assert.ok(
+    layoutContractSource.includes("REQUEST_LAYOUT_DESKTOP_TOKENS"),
+    "Request layout desktop tokens must be centralized in requestLayoutContract",
+  );
+  assert.ok(
+    layoutContractSource.includes("supportRailMaxWidth"),
+    "Request layout desktop tokens must include support-rail width",
+  );
+  assert.ok(
+    layoutContractSource.includes("desktopGutter"),
+    "Request layout desktop tokens must include desktop gutter",
+  );
+
   const globalsCss = read("src/app/globals.css");
   assert.ok(
     globalsCss.includes(".task-page-layout"),
@@ -86,12 +104,24 @@ function run() {
     "Global styles must define task max-width token",
   );
   assert.ok(
+    globalsCss.includes("--layout-support-rail-max"),
+    "Global styles must define support-rail max-width token",
+  );
+  assert.ok(
+    globalsCss.includes("--layout-task-gutter-lg"),
+    "Global styles must define task desktop gutter token",
+  );
+  assert.ok(
     globalsCss.includes('data-task-page-layout-mode="support-rail"'),
     "Global styles must define support-rail mode behavior",
   );
   assert.ok(
     globalsCss.includes('data-task-page-layout-mode="full-width"'),
     "Global styles must define full-width mode behavior",
+  );
+  assert.ok(
+    globalsCss.includes(".task-page-section-shell"),
+    "Global styles must define a task-page to footer handoff shell",
   );
 
   console.log("[request-layout-contract] explicit desktop layout modes and request-form width contracts pass");

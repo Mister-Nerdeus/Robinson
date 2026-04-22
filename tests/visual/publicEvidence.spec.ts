@@ -7,10 +7,10 @@ assert.ok(fs.existsSync("docs/PUBLIC_ROUTE_QA_MATRIX.md"), "PUBLIC_ROUTE_QA_MATR
 const screenshotsDir = "docs/screenshots";
 assert.ok(fs.existsSync(screenshotsDir), "docs/screenshots directory is required");
 
-const compositionDir = path.join(screenshotsDir, "issues-143-152");
+const compositionDir = path.join(screenshotsDir, "issues-159-162");
 assert.ok(
   fs.existsSync(compositionDir),
-  "issues-143-152 desktop composition evidence directory is required",
+  "issues-159-162 composition evidence directory is required",
 );
 
 const requiredCompositionScreens = [
@@ -19,7 +19,19 @@ const requiredCompositionScreens = [
   "contact-desktop-1280.png",
   "contact-desktop-1440.png",
   "well-septic-evaluations-desktop-1280.png",
+  "well-septic-evaluations-desktop-1440.png",
   "portable-toilets-desktop-1280.png",
+  "portable-toilets-desktop-1440.png",
+  "commercial-desktop-1280.png",
+  "commercial-desktop-1440.png",
+  "realtors-desktop-1280.png",
+  "realtors-desktop-1440.png",
+  "septic-cleaning-mobile-390.png",
+  "contact-mobile-390.png",
+  "well-septic-evaluations-mobile-390.png",
+  "portable-toilets-mobile-390.png",
+  "commercial-mobile-390.png",
+  "realtors-mobile-390.png",
   "composition-audit.json",
 ];
 

@@ -10,7 +10,7 @@ type SectionProps = {
 
 export function Section({ title, children, className, containerClassName, layout = "marketing" }: SectionProps) {
   return (
-    <section className={cn("section-pad", className)}>
+    <section className={cn("section-pad", layout === "task" ? "task-page-section-shell" : null, className)}>
       <div className={cn("container", layout === "task" ? "container-task" : "container-marketing", containerClassName)}>
         {title ? <h2 className="mb-4 font-display text-3xl text-[var(--brand)]">{title}</h2> : null}
         {children}

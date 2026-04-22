@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { Section } from "@/components/site/Section";
 import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { RealtorEvaluationFlow } from "@/components/forms/RealtorEvaluationFlow";
@@ -61,28 +60,23 @@ export default function RealtorsPage() {
       />
       <TaskPageLayout
         route="/realtors"
-        mode="support-rail"
+        mode="full-width"
         primary={
-          <RequestSupportBlocks
-            reasons={servicesContent.evaluations.reasonsToCall}
-            whatToHaveReady={servicesContent.evaluations.whatToHaveReady}
-            nextSteps={servicesContent.evaluations.nextSteps}
-            responseExpectation={servicesContent.evaluations.responseExpectation}
-            noteTitle="Realtor coordination note"
-            noteBody="Include transaction participants and callback order so updates reach the right people quickly."
-            variant="compact"
-          />
-        }
-        support={
-          <div className="grid gap-5">
+          <div className="grid gap-4">
+            <RequestSupportBlocks
+              reasons={servicesContent.evaluations.reasonsToCall}
+              whatToHaveReady={servicesContent.evaluations.whatToHaveReady}
+              nextSteps={servicesContent.evaluations.nextSteps}
+              responseExpectation={servicesContent.evaluations.responseExpectation}
+              noteTitle="Realtor coordination note"
+              noteBody="Include transaction participants and callback order so updates reach the right people quickly."
+              variant="compact"
+            />
             <div className="grid gap-2 rounded-md bg-[#f5eded] p-3 text-sm">
               <p className="font-semibold text-[var(--brand)]">Realtor FAQ quick hits</p>
               {realtorFaqSubset.map((item) => (
                 <p key={item.question}><strong>{item.question}</strong> {item.answer}</p>
               ))}
-            </div>
-            <div className="rounded-md bg-[#f5eded] p-3 text-sm">
-              Looking for the main service page? <Link className="font-semibold underline" href="/services/well-septic-evaluations">Open Well &amp; Septic Evaluations</Link>
             </div>
           </div>
         }

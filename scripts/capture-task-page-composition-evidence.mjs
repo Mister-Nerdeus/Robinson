@@ -3,20 +3,22 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BASE_URL ?? "http://localhost:3011";
-const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-143-152");
+const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-159-162");
 
 const taskRoutes = [
   { slug: "septic-cleaning", path: "/services/septic-cleaning" },
   { slug: "contact", path: "/contact" },
   { slug: "well-septic-evaluations", path: "/services/well-septic-evaluations" },
   { slug: "portable-toilets", path: "/services/portable-toilets" },
+  { slug: "commercial", path: "/services/commercial" },
+  { slug: "realtors", path: "/realtors" },
 ];
 
 const desktopViewports = [
-  { width: 1280, height: 1700 },
+  { width: 1280, height: 1800 },
   { width: 1440, height: 1900 },
-  { width: 1920, height: 2100 },
 ];
+const mobileViewport = { width: 390, height: 2200 };
 
 function roundRect(rect) {
   return {
@@ -135,6 +137,17 @@ async function capture() {
 
     await context.close();
   }
+
+  const mobileContext = await browser.newContext({ viewport: mobileViewport });
+  const mobilePage = await mobileContext.newPage();
+  for (const route of taskRoutes) {
+    await mobilePage.goto(`${baseUrl}${route.path}`, { waitUntil: "networkidle" });
+    await mobilePage.screenshot({
+      path: path.join(outDir, `${route.slug}-mobile-${mobileViewport.width}.png`),
+      fullPage: true,
+    });
+  }
+  await mobileContext.close();
 
   await browser.close();
 

@@ -1,4 +1,4 @@
-# Task Page Large-Screen Composition Contract (Issue 152)
+# Task Page Large-Screen Composition Contract (Issues 152 + 162)
 
 ## Purpose
 - Prevent "technically responsive but spatially ambiguous" request/task pages on desktop.
@@ -32,11 +32,22 @@
 5. Footer entry must be visually separated from the active form runway.
 
 ## Evidence Contract
-1. Desktop screenshots required at `1280`, `1440`, and `1920` for:
+1. Desktop screenshots required at `1280` and `1440` for:
 - septic
 - contact
 - well/septic evaluations
 - portable rentals
-2. Composition audit JSON required:
-- `docs/screenshots/issues-143-152/composition-audit.json`
-3. PR must include layout mode inventory and pass/fail status for composition heuristics.
+- commercial
+- realtors
+2. Mobile screenshots required at `390` for the same route set.
+3. Composition audit JSON required:
+- `docs/screenshots/issues-159-162/composition-audit.json`
+4. PR must include:
+- layout mode inventory
+- pass/fail status for composition heuristics
+- explicit answers for Apple-style spatial-intent checks:
+  - blank-space intent
+  - rail stability
+  - form dominance
+  - footer separation
+  - action locality

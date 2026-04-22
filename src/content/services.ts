@@ -85,7 +85,7 @@ export const servicesContent = {
       "Delivery and pickup planning",
       "Daily, weekend, weekly, and monthly options",
       "Routine pumping and cleaning for longer rentals",
-      "West Michigan coverage including greater Grand Rapids",
+      "Service cadence matched to event and route constraints",
     ],
     sellingPoints: [
       "Ideal for events, projects, and seasonal site work.",

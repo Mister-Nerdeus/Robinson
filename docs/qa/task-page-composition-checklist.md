@@ -1,8 +1,9 @@
 # Task Page Composition QA Checklist
 
 ## Required Evidence
-- [ ] `docs/screenshots/issues-143-152/composition-audit.json` updated.
-- [ ] Desktop screenshots captured for 1280/1440/1920 on required routes.
+- [ ] `docs/screenshots/issues-159-162/composition-audit.json` updated.
+- [ ] Desktop screenshots captured for `1280` and `1440` on required routes.
+- [ ] Mobile screenshots captured for `390` on required routes.
 - [ ] Before/after screenshot pairs attached for touched task routes.
 
 ## Desktop Review Checks
@@ -12,6 +13,12 @@
 - [ ] Step action row is visually attached to the active form shell.
 - [ ] Card pairings do not create obvious height-mismatch voids.
 - [ ] Footer does not visually interrupt active step flow.
+- [ ] Apple-style composition checks pass:
+  - blank-space intent is explicit
+  - support rail remains stable across scroll depth
+  - form shell remains dominant
+  - footer handoff is delayed and softened
+  - primary action locality stays inside the active step shell
 
 ## Route Coverage
 - [ ] `/services/septic-cleaning`

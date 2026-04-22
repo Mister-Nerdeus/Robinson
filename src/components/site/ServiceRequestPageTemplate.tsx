@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Section } from "@/components/site/Section";
 import { RequestForm } from "@/components/forms/RequestForm";
@@ -39,21 +38,6 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
                 </div>
               ))}
             </div>
-            <div className="grid gap-3 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
-              <h3 className="font-display text-2xl text-[var(--brand)]">Service at a glance</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <ul className="grid gap-2 text-sm text-slate-700">
-                  {entry.slots.includedItems.slice(0, 3).map((bullet) => (
-                    <li key={bullet}>• {bullet}</li>
-                  ))}
-                </ul>
-                <ul className="grid gap-2 text-sm text-slate-700">
-                  {entry.slots.proofPoints.slice(0, 3).map((point) => (
-                    <li key={point}>• {point}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
           }
           topSecondary={
@@ -65,11 +49,6 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
               <a className="inline-flex min-h-11 w-fit items-center rounded-md bg-[var(--brand)] px-4 py-3 text-sm font-semibold text-white" href={callHref}>
                 Call {company.primaryPhone}
               </a>
-              {entry.slots.secondaryCta ? (
-                <Link className="inline-block text-sm font-semibold underline" href={entry.slots.secondaryCta.href}>
-                  {entry.slots.secondaryCta.label}
-                </Link>
-              ) : null}
             </div>
             <div className="rounded-2xl border border-[#e6ddd0] bg-[#fffaf3] p-4">
               <h4 className="font-display text-xl text-[var(--brand)]">Before You Start</h4>
@@ -85,6 +64,21 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
           form={<RequestForm type={entry.formType} title={entry.formTitle} />}
           postForm={
             <div className="grid gap-4">
+              <div className="grid gap-3 rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
+                <h3 className="font-display text-2xl text-[var(--brand)]">Service at a glance</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <ul className="grid gap-2 text-sm text-slate-700">
+                    {entry.slots.includedItems.slice(0, 3).map((bullet) => (
+                      <li key={bullet}>• {bullet}</li>
+                    ))}
+                  </ul>
+                  <ul className="grid gap-2 text-sm text-slate-700">
+                    {entry.slots.proofPoints.slice(0, 3).map((point) => (
+                      <li key={point}>• {point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <RequestSupportBlocks
                 reasons={content.reasonsToCall}
                 whatToHaveReady={content.whatToHaveReady}

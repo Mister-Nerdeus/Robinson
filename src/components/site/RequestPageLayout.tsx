@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import {
   REQUEST_LAYOUT_CONTRACT_VERSION,
+  REQUEST_LAYOUT_DESKTOP_TOKENS,
   type RequestLayoutMode,
   type RequestLayoutRouteId,
 } from "@/config/requestLayoutContract";
@@ -37,6 +38,9 @@ export function RequestPageLayout({
       data-request-layout-route={routeId}
       data-request-layout-geometry="explicit-section-modes"
       data-request-layout-modes={sectionModes.join("|")}
+      data-request-layout-desktop-gutter={REQUEST_LAYOUT_DESKTOP_TOKENS.desktopGutter}
+      data-request-layout-desktop-rail={REQUEST_LAYOUT_DESKTOP_TOKENS.supportRailMaxWidth}
+      data-request-layout-desktop-form-shell={REQUEST_LAYOUT_DESKTOP_TOKENS.formShellMaxWidth}
     >
       <TaskPageLayout
         route={routeId}

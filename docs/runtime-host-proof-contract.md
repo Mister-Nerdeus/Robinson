@@ -11,14 +11,14 @@ Each hostname must deterministically prove branch/runtime identity.
 - `requestLayoutContractVersion`
 - `requestLayoutContractVersionExpected`
 - `requestLayoutRoutes`
-- Current expected value: `request-desktop-modes-v3`
+- Current expected value: `request-desktop-modes-v4`
 
 ## Production proof (`robinson.hearthcore.app`)
 - Must return:
 - `mode=production`
 - `branchIntent=main`
 - `seoAllowIndexing=true`
-- `requestLayoutContractVersion=request-desktop-modes-v3`
+- `requestLayoutContractVersion=request-desktop-modes-v4`
 - Must not expose debug provenance fields beyond safe runtime identity payload.
 
 ## Develop proof (`robinson-demo.hearthcore.app`)
@@ -26,7 +26,7 @@ Each hostname must deterministically prove branch/runtime identity.
 - `mode=demo`
 - `branchIntent=develop`
 - `seoAllowIndexing=false`
-- `requestLayoutContractVersion=request-desktop-modes-v3`
+- `requestLayoutContractVersion=request-desktop-modes-v4`
 - Nonblank deployment provenance:
 - `deploymentProvenance.commitSha`
 - `deploymentProvenance.ref`
@@ -41,7 +41,7 @@ Each hostname must deterministically prove branch/runtime identity.
 - `/contact`
 - `/realtors`
 - Required markers per route:
-- `data-request-layout-contract=request-desktop-modes-v3`
+- `data-request-layout-contract=request-desktop-modes-v4`
 - `data-request-layout-route=<route>`
 - `data-request-layout-geometry=explicit-section-modes`
 - `data-request-layout-modes=<ordered modes>`
