@@ -8,7 +8,8 @@ export type TrustSource = {
 export type TrustSignal = {
   id: string;
   label: string;
-  status: "verified" | "pending";
+  owner: "content" | "operations" | "owner" | "marketing";
+  status: "verified" | "marketing" | "pending-verification";
   source: TrustSource;
 };
 
@@ -16,45 +17,85 @@ export const trustSignals: TrustSignal[] = [
   {
     id: "family-owned-1979",
     label: "Family owned and operated since 1979",
+    owner: "content",
     status: "verified",
     source: {
       id: "legacy-brand-pack",
       sourceType: "legacy-pdf",
       freshness: "current",
-      lastReviewed: "2026-04-19",
+      lastReviewed: "2026-04-22",
     },
   },
   {
     id: "emergency-24-7",
     label: "24/7 Emergency Service",
+    owner: "operations",
     status: "verified",
     source: {
       id: "legacy-homepage",
       sourceType: "legacy-pdf",
       freshness: "current",
-      lastReviewed: "2026-04-19",
+      lastReviewed: "2026-04-22",
     },
   },
   {
     id: "broad-service-mix",
     label: "Residential, evaluation, rental, and commercial lanes in one dispatch operation",
+    owner: "content",
     status: "verified",
     source: {
       id: "service-lane-contract",
       sourceType: "first-party",
       freshness: "needs-review",
-      lastReviewed: "2026-04-19",
+      lastReviewed: "2026-04-22",
     },
   },
   {
     id: "realtor-support",
     label: "Realtor and home-sale evaluation workflow support",
+    owner: "operations",
     status: "verified",
     source: {
       id: "legacy-realtor-materials",
       sourceType: "legacy-pdf",
       freshness: "current",
-      lastReviewed: "2026-04-19",
+      lastReviewed: "2026-04-22",
+    },
+  },
+  {
+    id: "association-promo-language",
+    label: "Association promotional language",
+    owner: "owner",
+    status: "pending-verification",
+    source: {
+      id: "legacy-association-assets",
+      sourceType: "association",
+      freshness: "needs-review",
+      lastReviewed: "2026-04-22",
+    },
+  },
+  {
+    id: "legacy-social-prompt",
+    label: "Legacy social trust prompt",
+    owner: "marketing",
+    status: "marketing",
+    source: {
+      id: "legacy-home-social",
+      sourceType: "legacy-pdf",
+      freshness: "needs-review",
+      lastReviewed: "2026-04-22",
+    },
+  },
+  {
+    id: "legacy-coupon-trust",
+    label: "Legacy coupon trust element",
+    owner: "owner",
+    status: "pending-verification",
+    source: {
+      id: "legacy-coupon-asset",
+      sourceType: "legacy-pdf",
+      freshness: "needs-review",
+      lastReviewed: "2026-04-22",
     },
   },
 ];

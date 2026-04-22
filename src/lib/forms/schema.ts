@@ -93,9 +93,10 @@ export const septicServiceSchema = baseSchema.extend({
       ]),
     )
     .min(1),
-  existingCustomer: yesNoUnsureSchema,
-  propertyUsage: z.enum(["residential", "commercial", "unsure"]),
-  systemPumpedBefore: yesNoUnsureSchema,
+  dispatchContactName: trimmedRequired(2),
+  dispatchContactPhone: trimmedOptional,
+  truckAccessLevel: z.enum(["direct", "limited", "blocked", "unknown"]),
+  occupancyAtService: z.enum(["occupied", "vacant", "tenant-occupied", "unknown"]),
 });
 
 export const wellSepticEvaluationSchema = baseSchema.extend({
@@ -163,6 +164,8 @@ export const fieldAutocompleteMap: Record<string, string> = {
   onSiteContact: "name",
   accessContactName: "name",
   accessContactPhone: "tel",
+  dispatchContactName: "name",
+  dispatchContactPhone: "tel",
 };
 
 export type SubmissionInput = z.infer<typeof submissionSchema>;

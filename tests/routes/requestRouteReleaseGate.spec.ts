@@ -40,8 +40,16 @@ function run() {
     "Owner verification checklist is required",
   );
   assert.ok(
+    fs.existsSync("docs/business-truth/owner-truth-dashboard.md"),
+    "Owner-facing truth dashboard is required",
+  );
+  assert.ok(
     fs.existsSync("docs/qa/request-route-screenshot-proof-standard.md"),
     "Screenshot proof standard is required",
+  );
+  assert.ok(
+    fs.existsSync("docs/release/final-service-route-release-gate.md"),
+    "Final service-route release gate doc is required",
   );
 
   const pendingPublicFacts = businessFactRegistry.filter(

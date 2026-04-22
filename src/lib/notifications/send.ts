@@ -35,9 +35,10 @@ function renderTypeSpecificLines(record: SubmissionRecord): string[] {
         `Problem Signs: ${record.problemSigns.join(", ") || "-"}`,
         `Additional Warning Details: ${record.additionalWarningDetails || "-"}`,
         `Access Issues: ${record.accessIssues.join(", ") || "-"}`,
-        `Existing Customer: ${record.existingCustomer}`,
-        `Property Usage: ${record.propertyUsage}`,
-        `System Pumped Before: ${record.systemPumpedBefore}`,
+        `Dispatch Contact Name: ${record.dispatchContactName}`,
+        `Dispatch Contact Phone: ${record.dispatchContactPhone || "-"}`,
+        `Truck Access Level: ${record.truckAccessLevel}`,
+        `Occupancy At Service: ${record.occupancyAtService}`,
       ];
     case "evaluation":
       return [

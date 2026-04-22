@@ -2,16 +2,16 @@
 
 ## Required Sequence
 1. Hero (emergency call-first dominance)
-2. Service lanes
-3. Trust block
-4. Specialty lanes (rental + commercial)
-5. Realtor support lane
-6. FAQ preview
-7. Final CTA
+2. Lane router cards (task-entry cards)
+3. Trust band
+4. Realtor/evaluation proof band
+5. FAQ preview
+6. Final CTA
 
 ## Anti-Repetition Rule
-- No duplicate emergency/trust narrative blocks.
-- Service lane cards can mention urgency, but detailed emergency framing appears only in hero + final CTA.
+- Lane storytelling appears once in the lane-router band.
+- Trust claims appear in trust band only.
+- Realtor/evaluation proof appears in dedicated proof band only.
 
 ## Source Files
 - `src/app/page.tsx`
@@ -19,4 +19,5 @@
 - `src/content/trust.ts`
 
 ## Review Check
-Emergency CTA must remain visible above the fold on desktop/mobile.
+- Emergency CTA remains visible above the fold on desktop/mobile.
+- Emergency lane card remains most prominent in the lane router.

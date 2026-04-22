@@ -60,7 +60,8 @@
     "proof:issue-120-130": "node scripts/capture-issue-120-130-evidence.mjs",
     "proof:issue-143-152": "node scripts/capture-task-page-composition-evidence.mjs",
     "proof:issue-159-162": "node scripts/capture-task-page-composition-evidence.mjs",
-    "proof:issue-163-172": "node scripts/capture-task-page-composition-evidence.mjs"
+    "proof:issue-163-172": "node scripts/capture-task-page-composition-evidence.mjs",
+    "proof:issue-185-196": "node scripts/capture-issue-185-196-evidence.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",

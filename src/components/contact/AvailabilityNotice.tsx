@@ -1,14 +1,18 @@
-import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export function AvailabilityNotice() {
+  const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
+  const primaryLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
+  const secondaryLine = publicBusinessFacts.phoneSemantics.secondaryOfficeLine.number;
+
   return (
     <section className="rounded-xl border border-[#dccfc2] bg-[#fffaf3] p-4 text-sm text-slate-800">
       <h3 className="font-display text-xl text-[var(--brand)]">Availability and Follow-up</h3>
       <ul className="mt-2 grid gap-1.5">
-        <li>Emergency septic: call {company.primaryPhone} any time for fastest dispatch triage.</li>
-        <li>Routine scheduling: submit lane requests online and Robinson follows up for scheduling confirmation.</li>
-        <li>Office line behavior: if field teams are active, leave full callback details and route context.</li>
-        <li>Form follow-up: lane submissions are reviewed with urgency-based callback priority.</li>
+        <li>Emergency septic: call {emergencyLine} first for fastest dispatch triage.</li>
+        <li>Primary service scheduling: use {primaryLine} or submit lane requests online for callback planning.</li>
+        <li>Secondary office line ({secondaryLine}) is for office follow-up and non-dispatch support.</li>
+        <li>Form submissions are reviewed with urgency-based callback priority.</li>
       </ul>
     </section>
   );

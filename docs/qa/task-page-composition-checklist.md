@@ -21,9 +21,9 @@
   - primary action locality stays inside the active step shell
 
 ## Route Coverage
+- [ ] `/`
 - [ ] `/services/septic-cleaning`
 - [ ] `/contact`
 - [ ] `/services/well-septic-evaluations`
 - [ ] `/services/portable-toilets`
 - [ ] `/services/commercial`
-- [ ] `/realtors`

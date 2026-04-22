@@ -44,9 +44,10 @@ async function run() {
     problemSigns: ["slow-drains"],
     additionalWarningDetails: "Kitchen line drains slowly first.",
     accessIssues: ["none"],
-    existingCustomer: "unsure",
-    propertyUsage: "residential",
-    systemPumpedBefore: "unsure",
+    dispatchContactName: "Smoke Contact",
+    dispatchContactPhone: "555-0999",
+    truckAccessLevel: "direct",
+    occupancyAtService: "occupied",
   };
 
   const parsed = submissionSchema.safeParse(payload);

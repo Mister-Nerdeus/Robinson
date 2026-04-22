@@ -1,5 +1,5 @@
 {
-  "capturedAtUtc": "2026-04-22T04:09:45.209Z",
+  "capturedAtUtc": "2026-04-22T06:48:09.756Z",
   "baseUrl": "http://127.0.0.1:4850",
   "routes": [
     "/services/septic-cleaning",
@@ -36,13 +36,13 @@
             "x": 36,
             "y": 375,
             "width": 1208,
-            "height": 384
+            "height": 476
           },
           "primary": {
             "x": 36,
             "y": 375,
             "width": 764,
-            "height": 286
+            "height": 476
           },
           "support": {
             "x": 836,
@@ -55,13 +55,13 @@
           "mode": "formDominant",
           "layout": {
             "x": 36,
-            "y": 800,
+            "y": 892,
             "width": 1208,
             "height": 682
           },
           "primary": {
             "x": 36,
-            "y": 830,
+            "y": 922,
             "width": 980,
             "height": 652
           },
@@ -71,15 +71,15 @@
           "mode": "fullWidthSupport",
           "layout": {
             "x": 36,
-            "y": 1508,
+            "y": 1600,
             "width": 1208,
-            "height": 976
+            "height": 182
           },
           "primary": {
             "x": 36,
-            "y": 1508,
+            "y": 1600,
             "width": 1208,
-            "height": 976
+            "height": 182
           },
           "support": null
         }
@@ -138,13 +138,13 @@
             "x": 36,
             "y": 1681,
             "width": 1208,
-            "height": 232
+            "height": 212
           },
           "primary": {
             "x": 36,
             "y": 1681,
             "width": 1208,
-            "height": 232
+            "height": 212
           },
           "support": null
         }
@@ -203,13 +203,13 @@
             "x": 36,
             "y": 1568,
             "width": 1208,
-            "height": 976
+            "height": 560
           },
           "primary": {
             "x": 36,
             "y": 1568,
             "width": 1208,
-            "height": 976
+            "height": 560
           },
           "support": null
         }
@@ -231,7 +231,7 @@
             "x": 36,
             "y": 371,
             "width": 1208,
-            "height": 174
+            "height": 368
           },
           "primary": {
             "x": 36,
@@ -243,20 +243,20 @@
             "x": 836,
             "y": 371,
             "width": 408,
-            "height": 174
+            "height": 368
           }
         },
         {
           "mode": "formDominant",
           "layout": {
             "x": 36,
-            "y": 565,
+            "y": 759,
             "width": 1208,
             "height": 652
           },
           "primary": {
             "x": 36,
-            "y": 565,
+            "y": 759,
             "width": 980,
             "height": 652
           },
@@ -280,7 +280,7 @@
             "x": 36,
             "y": 371,
             "width": 1208,
-            "height": 322
+            "height": 460
           },
           "primary": {
             "x": 36,
@@ -292,20 +292,20 @@
             "x": 836,
             "y": 371,
             "width": 408,
-            "height": 322
+            "height": 460
           }
         },
         {
           "mode": "formDominant",
           "layout": {
             "x": 36,
-            "y": 713,
+            "y": 851,
             "width": 1208,
             "height": 652
           },
           "primary": {
             "x": 36,
-            "y": 713,
+            "y": 851,
             "width": 980,
             "height": 652
           },
@@ -366,13 +366,13 @@
             "x": 36,
             "y": 1571,
             "width": 1208,
-            "height": 802
+            "height": 666
           },
           "primary": {
             "x": 36,
             "y": 1571,
             "width": 1208,
-            "height": 802
+            "height": 666
           },
           "support": null
         }
@@ -394,13 +394,13 @@
             "x": 80,
             "y": 375,
             "width": 1280,
-            "height": 384
+            "height": 476
           },
           "primary": {
             "x": 80,
             "y": 375,
             "width": 836,
-            "height": 286
+            "height": 476
           },
           "support": {
             "x": 952,
@@ -413,13 +413,13 @@
           "mode": "formDominant",
           "layout": {
             "x": 80,
-            "y": 800,
+            "y": 892,
             "width": 1280,
             "height": 690
           },
           "primary": {
             "x": 80,
-            "y": 830,
+            "y": 922,
             "width": 980,
             "height": 660
           },
@@ -429,15 +429,15 @@
           "mode": "fullWidthSupport",
           "layout": {
             "x": 80,
-            "y": 1516,
+            "y": 1608,
             "width": 1280,
-            "height": 976
+            "height": 182
           },
           "primary": {
             "x": 80,
-            "y": 1516,
+            "y": 1608,
             "width": 1280,
-            "height": 976
+            "height": 182
           },
           "support": null
         }
@@ -496,13 +496,13 @@
             "x": 80,
             "y": 1689,
             "width": 1280,
-            "height": 232
+            "height": 212
           },
           "primary": {
             "x": 80,
             "y": 1689,
             "width": 1280,
-            "height": 232
+            "height": 212
           },
           "support": null
         }
@@ -561,13 +561,13 @@
             "x": 80,
             "y": 1576,
             "width": 1280,
-            "height": 976
+            "height": 560
           },
           "primary": {
             "x": 80,
             "y": 1576,
             "width": 1280,
-            "height": 976
+            "height": 560
           },
           "support": null
         }
@@ -589,7 +589,7 @@
             "x": 80,
             "y": 371,
             "width": 1280,
-            "height": 174
+            "height": 368
           },
           "primary": {
             "x": 80,
@@ -601,20 +601,20 @@
             "x": 952,
             "y": 371,
             "width": 408,
-            "height": 174
+            "height": 368
           }
         },
         {
           "mode": "formDominant",
           "layout": {
             "x": 80,
-            "y": 565,
+            "y": 759,
             "width": 1280,
             "height": 660
           },
           "primary": {
             "x": 80,
-            "y": 565,
+            "y": 759,
             "width": 980,
             "height": 660
           },
@@ -638,7 +638,7 @@
             "x": 80,
             "y": 371,
             "width": 1280,
-            "height": 322
+            "height": 460
           },
           "primary": {
             "x": 80,
@@ -650,20 +650,20 @@
             "x": 952,
             "y": 371,
             "width": 408,
-            "height": 322
+            "height": 460
           }
         },
         {
           "mode": "formDominant",
           "layout": {
             "x": 80,
-            "y": 713,
+            "y": 851,
             "width": 1280,
             "height": 660
           },
           "primary": {
             "x": 80,
-            "y": 713,
+            "y": 851,
             "width": 980,
             "height": 660
           },
@@ -724,13 +724,13 @@
             "x": 80,
             "y": 1579,
             "width": 1280,
-            "height": 802
+            "height": 666
           },
           "primary": {
             "x": 80,
             "y": 1579,
             "width": 1280,
-            "height": 802
+            "height": 666
           },
           "support": null
         }

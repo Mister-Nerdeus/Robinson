@@ -9,6 +9,7 @@ import { compactTaskHeaderLinks, primaryNavLinks } from "@/content/navigation";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 import { MobileNav } from "@/components/site/MobileNav";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export function Header() {
   const pathname = usePathname();
@@ -20,6 +21,7 @@ export function Header() {
         pathname.startsWith("/services/")),
   );
   const navLinks = isTaskRoute ? compactTaskHeaderLinks : primaryNavLinks;
+  const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
 
   return (
     <header
@@ -32,13 +34,13 @@ export function Header() {
         <div className="container flex items-center justify-between gap-3 py-1.5 text-xs font-semibold sm:text-sm">
           <p>{company.emergencyService.claim}</p>
           <a
-            href={`tel:${company.primaryPhone}`}
+            href={`tel:${emergencyLine}`}
             onClick={() => {
               void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "header-topbar" } });
             }}
             className="inline-flex min-h-11 items-center rounded-md px-3 underline underline-offset-2"
           >
-            Call {company.primaryPhone}
+            Call {emergencyLine}
           </a>
         </div>
       </div>
@@ -63,7 +65,7 @@ export function Header() {
               ))}
             </nav>
             <a
-              href={`tel:${company.primaryPhone}`}
+              href={`tel:${emergencyLine}`}
               onClick={() => {
                 void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "header-primary" } });
               }}

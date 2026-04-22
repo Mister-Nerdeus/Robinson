@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 type HeroProps = {
   eyebrow?: string;
@@ -12,7 +13,8 @@ type HeroProps = {
 };
 
 export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondaryCtaHref, secondaryCtaLabel }: HeroProps) {
-  const callHref = `tel:${company.primaryPhone.replace(/[^\d+]/g, "")}`;
+  const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
+  const callHref = `tel:${emergencyLine.replace(/[^\\d+]/g, "")}`;
 
   return (
     <section className="section-pad pb-5 sm:pb-6">
@@ -30,9 +32,9 @@ export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondar
             <p className="mt-1 text-sm font-semibold text-slate-900">Residential, commercial, real-estate, and rentals</p>
           </div>
           <div className="rounded-2xl border border-[#ead6d6] bg-[#fff7f6] px-4 py-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Call now</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Emergency line</p>
             <a href={callHref} className="mt-1 inline-block text-sm font-semibold text-slate-900 underline decoration-[#c99] underline-offset-4">
-              {company.primaryPhone}
+              {emergencyLine}
             </a>
           </div>
         </div>
@@ -41,7 +43,7 @@ export function Hero({ eyebrow, heading, subheading, ctaHref, ctaLabel, secondar
             {ctaLabel}
           </Link>
           <a href={callHref} className="inline-block rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
-            Call {company.primaryPhone}
+            Call {emergencyLine}
           </a>
           {secondaryCtaHref && secondaryCtaLabel ? (
             <Link href={secondaryCtaHref} className="inline-block rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">

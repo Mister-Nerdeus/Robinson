@@ -5,7 +5,7 @@ import { RequestSupportBlocks } from "@/components/site/RequestSupportBlocks";
 import { RealtorEvaluationFlow } from "@/components/forms/RealtorEvaluationFlow";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { servicesContent } from "@/content/services";
-import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 import { TaskPageLayout } from "@/components/layout/TaskPageLayout";
 
 export const metadata: Metadata = buildMetadata(
@@ -15,7 +15,8 @@ export const metadata: Metadata = buildMetadata(
 );
 
 export default function RealtorsPage() {
-  const callHref = `tel:+1${company.primaryPhone.replace(/\\D/g, "")}`;
+  const primaryServiceLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
+  const callHref = `tel:+1${primaryServiceLine.replace(/\D/g, "")}`;
 
   return (
     <Section title="Realtor Resources" layout="task">
@@ -43,7 +44,7 @@ export default function RealtorsPage() {
               <h3 className="font-display text-2xl text-[var(--brand)]">Need immediate timeline clarity?</h3>
               <p className="text-sm text-slate-700">Call first when closing windows are tight, then submit structured intake to include all transaction context.</p>
               <a className="inline-flex min-h-11 w-fit items-center rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white" href={callHref}>
-                Call {company.primaryPhone}
+                Call {primaryServiceLine}
               </a>
               <p className="text-xs text-slate-600">Routine Realtor workflow target: 1-3 business day follow-up for non-emergency evaluation requests.</p>
             </div>
@@ -79,3 +80,5 @@ export default function RealtorsPage() {
     </Section>
   );
 }
+
+

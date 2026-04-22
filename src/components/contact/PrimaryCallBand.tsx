@@ -1,11 +1,12 @@
 "use client";
 
-import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 
 export function PrimaryCallBand() {
-  const href = `tel:+1${company.primaryPhone.replace(/\\D/g, "")}`;
+  const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
+  const href = `tel:+1${emergencyLine.replace(/\D/g, "")}`;
 
   return (
     <section className="rounded-2xl border border-[#d8c1c1] bg-[var(--brand)] p-5 text-white">
@@ -24,7 +25,7 @@ export function PrimaryCallBand() {
         }}
         className="mt-3 inline-flex min-h-11 items-center rounded-md bg-white px-4 py-3 text-sm font-semibold text-[var(--brand)]"
       >
-        Call {company.primaryPhone}
+        Call {emergencyLine}
       </a>
     </section>
   );

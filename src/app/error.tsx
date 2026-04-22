@@ -1,7 +1,7 @@
 "use client";
 
 import { EmptyState } from "@/components/ui/EmptyState";
-import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export default function GlobalError({
   reset,
@@ -9,12 +9,14 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
+
   return (
     <main className="container py-10">
       <div className="grid gap-4">
         <EmptyState
           title="Something went wrong"
-          description={`Retry this page. If the issue continues and your need is urgent, call ${company.primaryPhone}.`}
+          description={`Retry this page. If the issue continues and your need is urgent, call ${emergencyLine}.`}
           actionHref="/contact"
           actionLabel="Open Contact Router"
         />

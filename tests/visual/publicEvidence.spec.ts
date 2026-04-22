@@ -55,4 +55,36 @@ for (const pair of matrix.pairs) {
   assert.ok(fs.existsSync(afterAbsolute), `Missing after screenshot pair file: ${pair.after}`);
 }
 
+const batchDir = path.join(screenshotsDir, "issues-185-196");
+assert.ok(
+  fs.existsSync(batchDir),
+  "issues-185-196 screenshot proof directory is required",
+);
+
+const requiredBatchScreens = [
+  "home-desktop-1280.png",
+  "home-desktop-1440.png",
+  "home-mobile-390.png",
+  "contact-desktop-1280.png",
+  "contact-desktop-1440.png",
+  "contact-mobile-390.png",
+  "septic-cleaning-desktop-1280.png",
+  "septic-cleaning-desktop-1440.png",
+  "septic-cleaning-mobile-390.png",
+  "well-septic-evaluations-desktop-1280.png",
+  "well-septic-evaluations-desktop-1440.png",
+  "well-septic-evaluations-mobile-390.png",
+  "portable-toilets-desktop-1280.png",
+  "portable-toilets-desktop-1440.png",
+  "portable-toilets-mobile-390.png",
+  "commercial-desktop-1280.png",
+  "commercial-desktop-1440.png",
+  "commercial-mobile-390.png",
+];
+
+for (const filename of requiredBatchScreens) {
+  const absolute = path.join(batchDir, filename);
+  assert.ok(fs.existsSync(absolute), `Missing required batch screenshot artifact: ${filename}`);
+}
+
 console.log("visual evidence contract ok");

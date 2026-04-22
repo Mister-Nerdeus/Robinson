@@ -74,15 +74,18 @@ function normalizeRecord(record: SubmissionRecord): SubmissionRecord {
             "unsure",
           additionalWarningDetails:
             (record as { additionalWarningDetails?: string }).additionalWarningDetails || "",
-          existingCustomer:
-            (record as { existingCustomer?: "yes" | "no" | "unsure" }).existingCustomer ||
-            "unsure",
-          propertyUsage:
-            (record as { propertyUsage?: "residential" | "commercial" | "unsure" })
-              .propertyUsage || "unsure",
-          systemPumpedBefore:
-            (record as { systemPumpedBefore?: "yes" | "no" | "unsure" }).systemPumpedBefore ||
-            "unsure",
+          dispatchContactName:
+            (record as { dispatchContactName?: string }).dispatchContactName || "",
+          dispatchContactPhone:
+            (record as { dispatchContactPhone?: string }).dispatchContactPhone || "",
+          truckAccessLevel:
+            (record as {
+              truckAccessLevel?: "direct" | "limited" | "blocked" | "unknown";
+            }).truckAccessLevel || "unknown",
+          occupancyAtService:
+            (record as {
+              occupancyAtService?: "occupied" | "vacant" | "tenant-occupied" | "unknown";
+            }).occupancyAtService || "unknown",
         }
       : {}),
     ...(record.type === "evaluation"

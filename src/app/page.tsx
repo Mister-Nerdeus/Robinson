@@ -12,6 +12,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { JsonLd } from "@/lib/seo/JsonLd";
 import { localBusinessSchema } from "@/lib/seo/schema";
 import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export const metadata: Metadata = buildMetadata(
   "24/7 Emergency Septic Service, Home-Sale Evaluations, and Portable Rentals",
@@ -22,9 +23,9 @@ export const metadata: Metadata = buildMetadata(
 export default function HomePage() {
   return (
     <div
-      data-homepage-contract="home-hero-lanes-trust-v1"
+      data-homepage-contract="home-hero-router-trust-proof-faq-final-v2"
       data-homepage-route="/"
-      data-homepage-structure="hero-service-lanes-trust-faq-final-cta"
+      data-homepage-structure="hero-lane-router-trust-band-realtor-proof-faq-final-cta"
     >
       <JsonLd data={localBusinessSchema()} />
 
@@ -35,14 +36,11 @@ export default function HomePage() {
             <h1 className="mt-2 max-w-4xl font-display text-3xl text-[var(--brand)] sm:text-4xl md:text-5xl">{homeContent.hero.heading}</h1>
             <p className="mt-3 max-w-3xl text-slate-700">{homeContent.hero.subheading}</p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <a href={`tel:${company.primaryPhone}`} className="rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
-                Call Emergency Service
+              <a href={`tel:${publicBusinessFacts.phoneSemantics.emergencyLine.number}`} className="rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
+                Call Emergency Dispatch
               </a>
               <Link href={homeContent.hero.ctaHref} className="rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
                 {homeContent.hero.ctaLabel}
-              </Link>
-              <Link href="/realtors" className="rounded-md border border-[#d8c1c1] bg-[#fff7f6] px-5 py-3 font-semibold text-slate-900">
-                Open Realtor Evaluation Lane
               </Link>
             </div>
           </div>
@@ -58,11 +56,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section title="Service lanes" layout="marketing">
+      <Section title="Choose your task lane" layout="marketing">
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
 
-      <Section title="Built on proven local trust" layout="marketing">
+      <Section title={homeContent.trustBand.title} layout="marketing">
         <div className="grid gap-5 md:grid-cols-[1.15fr,0.85fr] md:items-start">
           <div>
             <HomeTrust points={trustContent.points} />
@@ -77,6 +75,23 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
+        </div>
+      </Section>
+
+      <Section title={homeContent.realtorProof.title} layout="marketing">
+        <div className="rounded-2xl border border-[#d9cbc1] bg-[#fffaf3] p-5">
+          <p className="text-sm text-slate-800">{homeContent.realtorProof.body}</p>
+          <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+            {homeContent.realtorProof.points.map((point) => (
+              <li key={point}>• {point}</li>
+            ))}
+          </ul>
+          <Link
+            href={homeContent.realtorProof.ctaHref}
+            className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)]"
+          >
+            {homeContent.realtorProof.ctaLabel}
+          </Link>
         </div>
       </Section>
 

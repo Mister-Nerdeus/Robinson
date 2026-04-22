@@ -18,10 +18,10 @@ export const compactTaskHeaderLinks: NavItem[] = [
 ];
 
 export const footerFastPathLinks: NavItem[] = [
-  { href: "/services/septic-cleaning", label: "Emergency Septic Service" },
-  { href: "/services/well-septic-evaluations", label: "Evaluations" },
-  { href: "/services/portable-toilets", label: "Rentals" },
-  { href: "/services/commercial", label: "Commercial Support" },
+  { href: "/services/septic-cleaning", label: "Septic Service Lane" },
+  { href: "/services/well-septic-evaluations", label: "Evaluation Lane" },
+  { href: "/services/portable-toilets", label: "Rental Lane" },
+  { href: "/services/commercial", label: "Commercial Lane" },
   { href: "/realtors", label: "Realtor Resources" },
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },

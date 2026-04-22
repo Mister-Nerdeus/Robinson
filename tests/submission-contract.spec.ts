@@ -39,9 +39,10 @@ const payloads = [
     problemSigns: ["slow-drains", "strong-odor"],
     additionalWarningDetails: "Back patio area smells strongest.",
     accessIssues: ["gate", "pets"],
-    existingCustomer: "yes",
-    propertyUsage: "residential",
-    systemPumpedBefore: "yes",
+    dispatchContactName: "Jamie Property Manager",
+    dispatchContactPhone: "555-1188",
+    truckAccessLevel: "limited",
+    occupancyAtService: "occupied",
     message: "Dispatch needed this week.",
   },
   {

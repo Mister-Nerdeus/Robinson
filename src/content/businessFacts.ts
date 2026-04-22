@@ -9,11 +9,47 @@ export type BusinessFact = {
   notes: string;
 };
 
+export type PublicPhoneSemanticRole = "emergency_line" | "primary_service_line" | "secondary_office_line";
+
+export type PublicPhoneSemantic = {
+  role: PublicPhoneSemanticRole;
+  label: string;
+  number: string;
+  dominant: boolean;
+  placementNote: string;
+};
+
+const emergencyAndPrimaryNumber = "(616) 636-5565";
+const secondaryOfficeNumber = "(616) 887-2060";
+
 export const publicBusinessFacts = {
   businessName: "Robinson Septic Cleaning",
   legalName: "Robinson Septic Tank Cleaning LLC",
-  primaryServiceLine: "(616) 636-5565",
-  additionalOfficeLine: "(616) 887-2060",
+  phoneSemantics: {
+    emergencyLine: {
+      role: "emergency_line",
+      label: "Emergency dispatch line (call first)",
+      number: emergencyAndPrimaryNumber,
+      dominant: true,
+      placementNote: "Always shown as the highest-priority action for active septic emergencies.",
+    } as PublicPhoneSemantic,
+    primaryServiceLine: {
+      role: "primary_service_line",
+      label: "Primary service scheduling line",
+      number: emergencyAndPrimaryNumber,
+      dominant: true,
+      placementNote: "Dominant public line for routine scheduling, requests, and callback routing.",
+    } as PublicPhoneSemantic,
+    secondaryOfficeLine: {
+      role: "secondary_office_line",
+      label: "Secondary office line",
+      number: secondaryOfficeNumber,
+      dominant: false,
+      placementNote: "Shown only as subordinate support contact when needed.",
+    } as PublicPhoneSemantic,
+  },
+  primaryServiceLine: emergencyAndPrimaryNumber,
+  additionalOfficeLine: secondaryOfficeNumber,
   primaryAddress: {
     line1: "1565 N Dagget Rd",
     city: "Pierson",
@@ -22,6 +58,12 @@ export const publicBusinessFacts = {
   },
   serviceHours: "24/7 Emergency Service • Routine scheduling available by phone or request form",
 };
+
+export const publicPhoneSemanticsMap: PublicPhoneSemantic[] = [
+  publicBusinessFacts.phoneSemantics.emergencyLine,
+  publicBusinessFacts.phoneSemantics.primaryServiceLine,
+  publicBusinessFacts.phoneSemantics.secondaryOfficeLine,
+];
 
 export const businessFactRegistry: BusinessFact[] = [
   {
@@ -33,20 +75,28 @@ export const businessFactRegistry: BusinessFact[] = [
     notes: "Canonical customer-facing business name.",
   },
   {
-    key: "primary_service_line",
-    label: "Primary service line",
-    value: publicBusinessFacts.primaryServiceLine,
+    key: "phone_semantic_emergency",
+    label: "Emergency line semantic",
+    value: `${publicBusinessFacts.phoneSemantics.emergencyLine.number} (${publicBusinessFacts.phoneSemantics.emergencyLine.label})`,
     status: "verified",
     public: true,
-    notes: "Dominant customer call-to-action line across public routes.",
+    notes: "Emergency lane remains call-first and dominant.",
   },
   {
-    key: "additional_office_line",
-    label: "Additional office line",
-    value: publicBusinessFacts.additionalOfficeLine,
+    key: "phone_semantic_primary",
+    label: "Primary service line semantic",
+    value: `${publicBusinessFacts.phoneSemantics.primaryServiceLine.number} (${publicBusinessFacts.phoneSemantics.primaryServiceLine.label})`,
     status: "verified",
     public: true,
-    notes: "Secondary office line shown as non-primary support contact.",
+    notes: "Primary public call path for routine and scheduled work.",
+  },
+  {
+    key: "phone_semantic_secondary",
+    label: "Secondary office line semantic",
+    value: `${publicBusinessFacts.phoneSemantics.secondaryOfficeLine.number} (${publicBusinessFacts.phoneSemantics.secondaryOfficeLine.label})`,
+    status: "verified",
+    public: true,
+    notes: "Secondary office line must remain clearly subordinate in placement.",
   },
   {
     key: "primary_address",

@@ -3,8 +3,9 @@ import { businessFactRegistry, publicBusinessFactTable } from "@/content/busines
 
 const requiredKeys = [
   "business_name",
-  "primary_service_line",
-  "additional_office_line",
+  "phone_semantic_emergency",
+  "phone_semantic_primary",
+  "phone_semantic_secondary",
   "primary_address",
 ];
 

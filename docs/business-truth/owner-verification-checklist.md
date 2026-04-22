@@ -1,10 +1,13 @@
 # Owner Verification Checklist
 
+Reference dashboard: `docs/business-truth/owner-truth-dashboard.md`
+
 ## Canonical Public Facts (Verified)
 - Business name: Robinson Septic Cleaning
 - Legal name: Robinson Septic Tank Cleaning LLC
+- Emergency dispatch line (call-first): (616) 636-5565
 - Primary service line (dominant CTA): (616) 636-5565
-- Additional office line: (616) 887-2060
+- Secondary office line (subordinate): (616) 887-2060
 - Primary address: 1565 N Dagget Rd, Pierson, MI 49339
 
 ## Pending Verification (Not Public)

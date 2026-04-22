@@ -39,9 +39,10 @@ export const fieldPurposeMap: Record<SubmissionType, Record<string, string>> = {
     problemSigns: "Structured symptom capture for dispatch triage.",
     additionalWarningDetails: "Optional symptom timing/location clarifier.",
     accessIssues: "Structured access blockers for arrival planning.",
-    existingCustomer: "Helps staff retrieve account/service history.",
-    propertyUsage: "Classifies residential vs commercial routing context.",
-    systemPumpedBefore: "Assists with service-history assumptions.",
+    dispatchContactName: "Ensures crews know who to coordinate with upon arrival.",
+    dispatchContactPhone: "Backup on-site callback path when different from requester.",
+    truckAccessLevel: "Flags maneuver constraints that can require alternate dispatch planning.",
+    occupancyAtService: "Improves arrival and communication expectations on-site.",
   },
   evaluation: {
     type: "Routes payload into the home-sale evaluation lane.",

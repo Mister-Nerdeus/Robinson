@@ -1,4 +1,4 @@
-import { company } from "@/config/company";
+import { publicBusinessFacts } from "@/content/businessFacts";
 
 export function ContactHero() {
   return (
@@ -14,8 +14,9 @@ export function ContactHero() {
         use the lane router below.
       </p>
       <p className="mt-2 text-sm text-slate-700">
-        Primary dispatch line: <strong>{company.primaryPhone}</strong>
+        Primary dispatch line: <strong>{publicBusinessFacts.phoneSemantics.primaryServiceLine.number}</strong>
       </p>
     </section>
   );
 }
+

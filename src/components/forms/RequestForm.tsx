@@ -13,6 +13,7 @@ import { WizardContainer, WizardMobileActions } from "./WizardContainer";
 import { FormFieldGroup } from "./FormFieldGroup";
 import { scrollAndFocus } from "@/lib/ui/scrollAndFocus";
 import { fieldAutocompleteMap } from "@/lib/forms/schema";
+import { afterSubmitByLane } from "@/content/afterSubmit";
 
 type FormFieldConfig = {
   name: string;
@@ -195,7 +196,7 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
   "septic-service": [
     {
       id: "septic-system",
-      title: "System Details",
+      title: "System Snapshot",
       fields: [
         {
           name: "tankSizeGallons",
@@ -273,17 +274,18 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
       fields: [
         {
           name: "additionalWarningDetails",
-          label: "Additional warning details (optional)",
+          label: "Symptom timing/details (optional)",
           type: "textarea",
           rows: 3,
-          placeholder: "If needed, add details about when/where symptoms appear.",
+          placeholder: "When symptoms started, where they appear, and what changed.",
+          helpText: "Only include details that help dispatch triage quickly.",
           span: "full",
         },
       ],
     },
     {
-      id: "septic-access",
-      title: "Access & Scheduling",
+      id: "septic-dispatch",
+      title: "Dispatch Detail",
       checkboxGroups: [
         {
           name: "accessIssues",
@@ -303,33 +305,39 @@ const laneSpecificSections: Record<SubmissionType, FormSection[]> = {
       ],
       fields: [
         {
-          name: "existingCustomer",
-          label: "Existing customer?",
+          name: "dispatchContactName",
+          label: "On-site contact name",
+          required: true,
+          helpText: "Person dispatch should ask for when coordinating arrival.",
+          autoComplete: "name",
+        },
+        {
+          name: "dispatchContactPhone",
+          label: "On-site contact phone (optional)",
+          type: "tel",
+          helpText: "Use if different from your primary callback phone.",
+          autoComplete: "tel",
+        },
+        {
+          name: "truckAccessLevel",
+          label: "Truck access level",
           required: true,
           options: [
-            { value: "yes", label: "Yes" },
-            { value: "no", label: "No" },
-            { value: "unsure", label: "Unsure (that is okay)" },
+            { value: "direct", label: "Direct access" },
+            { value: "limited", label: "Limited maneuver space" },
+            { value: "blocked", label: "Blocked unless coordinated" },
+            { value: "unknown", label: "Unknown" },
           ],
         },
         {
-          name: "propertyUsage",
-          label: "Residential or commercial?",
+          name: "occupancyAtService",
+          label: "Occupancy during service",
           required: true,
           options: [
-            { value: "residential", label: "Residential" },
-            { value: "commercial", label: "Commercial" },
-            { value: "unsure", label: "Unsure (that is okay)" },
-          ],
-        },
-        {
-          name: "systemPumpedBefore",
-          label: "System pumped before?",
-          required: true,
-          options: [
-            { value: "yes", label: "Yes" },
-            { value: "no", label: "No" },
-            { value: "unsure", label: "Unsure (that is okay)" },
+            { value: "occupied", label: "Occupied" },
+            { value: "vacant", label: "Vacant" },
+            { value: "tenant-occupied", label: "Tenant occupied" },
+            { value: "unknown", label: "Unknown" },
           ],
         },
       ],
@@ -873,7 +881,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
         await trackEvent({ event: analyticsEvents.formSubmitError, submissionType: type });
         return;
       }
-      setMessage("Request submitted successfully. Robinson can now review your details and follow up.");
+      setMessage(afterSubmitByLane[type].successMessage);
       setStatus("success");
       await trackEvent({ event: analyticsEvents.formSubmitSuccess, submissionType: type });
     } catch {
@@ -982,6 +990,12 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
         <p className="text-sm text-slate-700">
           Use Edit to jump back to any step. Entered values stay in place while you review.
         </p>
+        <div className="rounded-md border border-[#e7d7c9] bg-[#fff8f3] px-3 py-2 text-sm text-slate-700">
+          <p className="font-semibold text-slate-900">{afterSubmitByLane[type].heading}</p>
+          <p>{afterSubmitByLane[type].reviewOwner}</p>
+          <p>{afterSubmitByLane[type].priorityRule}</p>
+          <p>{afterSubmitByLane[type].followUpExpectation}</p>
+        </div>
         <div className="grid gap-2">
           {sections.map((section, index) => (
             <div key={section.id} className="flex items-center justify-between rounded-md border border-[#e4d9cb] bg-white px-3 py-2">

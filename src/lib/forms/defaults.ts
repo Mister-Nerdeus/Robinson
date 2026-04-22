@@ -35,9 +35,10 @@ export const formDefaults: Record<SubmissionType, Record<string, string>> = {
     lidsExposed: "",
     tankLocationKnown: "",
     additionalWarningDetails: "",
-    existingCustomer: "",
-    propertyUsage: "",
-    systemPumpedBefore: "",
+    dispatchContactName: "",
+    dispatchContactPhone: "",
+    truckAccessLevel: "",
+    occupancyAtService: "",
   },
   evaluation: {
     type: "evaluation",

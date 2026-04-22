@@ -52,9 +52,10 @@ export type SepticServiceSubmissionRecord = SubmissionBase & {
   problemSigns: string[];
   additionalWarningDetails: string;
   accessIssues: string[];
-  existingCustomer: "yes" | "no" | "unsure";
-  propertyUsage: "residential" | "commercial" | "unsure";
-  systemPumpedBefore: "yes" | "no" | "unsure";
+  dispatchContactName: string;
+  dispatchContactPhone: string;
+  truckAccessLevel: "direct" | "limited" | "blocked" | "unknown";
+  occupancyAtService: "occupied" | "vacant" | "tenant-occupied" | "unknown";
 };
 
 export type EvaluationSubmissionRecord = SubmissionBase & {
@@ -151,9 +152,10 @@ export function getSubmissionSummaryFields(record: SubmissionRecord): Submission
         { label: "Problem Signs", value: formatList(record.problemSigns) },
         { label: "Warning Details", value: record.additionalWarningDetails || "-" },
         { label: "Access Issues", value: formatList(record.accessIssues) },
-        { label: "Existing Customer", value: record.existingCustomer },
-        { label: "Property Usage", value: record.propertyUsage },
-        { label: "System Pumped Before", value: record.systemPumpedBefore },
+        { label: "Dispatch Contact", value: record.dispatchContactName || "-" },
+        { label: "Dispatch Contact Phone", value: record.dispatchContactPhone || "-" },
+        { label: "Truck Access", value: record.truckAccessLevel },
+        { label: "Occupancy At Service", value: record.occupancyAtService },
         ...shared,
       ];
     case "evaluation":

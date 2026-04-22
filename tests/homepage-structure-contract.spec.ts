@@ -11,15 +11,16 @@ function run() {
 
   assert.ok(
     source.includes(
-      'data-homepage-structure="hero-service-lanes-trust-faq-final-cta"',
+      'data-homepage-structure="hero-lane-router-trust-band-realtor-proof-faq-final-cta"',
     ),
     "Homepage must declare required section-order contract",
   );
 
   const orderMarkers = [
     '<Section layout="marketing">',
-    'title="Service lanes"',
-    'title="Built on proven local trust"',
+    'title="Choose your task lane"',
+    "title={homeContent.trustBand.title}",
+    "title={homeContent.realtorProof.title}",
     'title="Helpful questions before service"',
     "<CtaBand",
   ];

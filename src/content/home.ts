@@ -1,49 +1,87 @@
+export type HomeLaneCard = {
+  id: "emergency-septic" | "routine-pumping" | "evaluation" | "rental" | "commercial";
+  title: string;
+  userProblem: string;
+  laneValue: string;
+  href: string;
+  ctaLabel: string;
+  emphasis?: "high" | "standard";
+};
+
 export const homeContent = {
+  sectionContract: [
+    "hero",
+    "lane-router",
+    "trust-band",
+    "realtor-evaluation-proof",
+    "faq-preview",
+    "final-cta",
+  ] as const,
   hero: {
     eyebrow: "24/7 Emergency Service • Family owned and operated since 1979",
-    heading: "Septic emergency or overdue pumping? Call Robinson now.",
+    heading: "Need septic help now, or a scheduled service lane?",
     subheading:
-      "Emergency septic response stays call-first, with structured online intake for evaluations, rentals, and commercial dispatch details.",
+      "Emergency calls stay call-first. Routine pumping, evaluations, rentals, and commercial support all have direct task-entry lanes below.",
     ctaHref: "/contact",
-    ctaLabel: "Open Request Lanes",
+    ctaLabel: "Open All Request Lanes",
   },
   lanes: [
     {
+      id: "emergency-septic",
       title: "Emergency septic service",
-      description:
-        "Active backups, sewage odors, or drain failure should be call-first. Submit details after the call to speed dispatch prep.",
+      userProblem: "Backup, overflow, alarm, or strong sewage odor right now.",
+      laneValue: "Fast call-first dispatch triage, then structured details to speed arrival prep.",
       href: "/contact?lane=septic-service",
-      ctaLabel: "Emergency Septic Help",
+      ctaLabel: "Call + Open Emergency Lane",
+      emphasis: "high",
     },
     {
-      title: "Routine pumping and maintenance",
-      description:
-        "Schedule preventative septic pumping before system stress becomes an emergency repair.",
+      id: "routine-pumping",
+      title: "Routine pumping",
+      userProblem: "System is due for pumping before it turns into a failure call.",
+      laneValue: "Schedule preventive service with location and access context captured up front.",
       href: "/contact?lane=septic-service",
-      ctaLabel: "Start Routine Pumping Request",
+      ctaLabel: "Start Routine Pumping",
     },
     {
+      id: "evaluation",
       title: "Well and septic evaluations",
-      description:
-        "Buyer, seller, and Realtor requests capture timeline and occupancy context for deadline-aware scheduling.",
+      userProblem: "A buyer, seller, or Realtor deadline is approaching.",
+      laneValue: "Deadline-aware intake captures transaction role, access contacts, and timing pressure.",
       href: "/contact?lane=evaluation",
-      ctaLabel: "Start Realtor Evaluation",
+      ctaLabel: "Start Evaluation Request",
     },
     {
+      id: "rental",
       title: "Portable toilet rentals",
-      description:
-        "Event, school, home, business, and jobsite rentals capture quantity, duration, cadence, and site-access details up front.",
+      userProblem: "You need restroom units for an event, project, or jobsite.",
+      laneValue: "Quote-ready lane captures count, duration, cadence, and delivery access details.",
       href: "/contact?lane=rental",
-      ctaLabel: "Start Rental Quote",
+      ctaLabel: "Start Rental Request",
     },
     {
-      title: "Commercial septic support",
-      description:
-        "Commercial septic, grease trap, and lift pump requests are split so facilities can self-route without ambiguity.",
+      id: "commercial",
+      title: "Commercial support",
+      userProblem: "Facility operations need grease trap, lift pump, or septic support.",
+      laneValue: "Commercial intake routes service type, facility context, and on-site coordination details.",
       href: "/contact?lane=commercial-service",
-      ctaLabel: "Open Commercial Paths",
+      ctaLabel: "Start Commercial Request",
     },
-  ],
+  ] satisfies HomeLaneCard[],
+  trustBand: {
+    title: "Built on proven local trust",
+  },
+  realtorProof: {
+    title: "Realtor and evaluation confidence",
+    body: "Realtor workflows stay transaction-ready with deadline capture, occupancy context, and explicit access coordination before scheduling.",
+    points: [
+      "Home-sale lane is separated from routine pumping to reduce routing mistakes.",
+      "Evaluation requests capture role and deadline type in the first steps.",
+      "Follow-up expectations stay explicit: non-emergency Realtor lane target is 1-3 business days.",
+    ],
+    ctaHref: "/realtors",
+    ctaLabel: "Open Realtor Evaluation Lane",
+  },
   trustPanel: {
     title: "Trusted across West Michigan",
     body:
@@ -55,24 +93,6 @@ export const homeContent = {
       "Realtor/evaluation workflow supports closing-date coordination.",
     ],
   },
-  specialtyLanes: [
-    {
-      title: "Portable rentals for events and job sites",
-      body: "Capture unit counts, duration, and site-access conditions in one request.",
-      href: "/services/portable-toilets",
-      ctaLabel: "Open Rental Intake",
-      image: "/images/enhanced/portable_toilets_group_ai_enhanced.jpg",
-      alt: "Portable toilet rentals prepared for delivery",
-    },
-    {
-      title: "Commercial grease trap and lift pump service",
-      body: "Facility context, service type, and on-site contacts are included up front for faster triage.",
-      href: "/services/commercial",
-      ctaLabel: "Open Commercial Intake",
-      image: "/images/enhanced/truck_closeup_ai_enhanced.jpg",
-      alt: "Robinson truck supporting commercial septic work",
-    },
-  ],
   faqPreview: [
     {
       question: "How often should a septic tank be pumped?",
