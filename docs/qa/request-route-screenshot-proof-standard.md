@@ -13,6 +13,8 @@
 - Mobile full-page screenshots at `390` for each route.
 - Composition audit JSON:
   - `docs/screenshots/issues-163-172/composition-audit.json`
+- Before/after matrix JSON:
+  - `docs/screenshots/issues-163-172/before-after-matrix.json`
 - Before and after pairs for any touched request route.
 - Behavior proof snapshot requirements:
   - no duplicated request-route nav
@@ -32,6 +34,7 @@
 - `<route-slug>-desktop-1440.png`
 - `<route-slug>-mobile-390.png`
 - `composition-audit.json`
+- `before-after-matrix.json`
 
 ## Review Notes Required In PR
 - Intended blank-space strategy at desktop widths.

@@ -33,11 +33,26 @@ const requiredCompositionScreens = [
   "commercial-mobile-390.png",
   "realtors-mobile-390.png",
   "composition-audit.json",
+  "before-after-matrix.json",
 ];
 
 for (const filename of requiredCompositionScreens) {
   const absolute = path.join(compositionDir, filename);
   assert.ok(fs.existsSync(absolute), `Missing required composition artifact: ${filename}`);
+}
+
+const matrixPath = path.join(compositionDir, "before-after-matrix.json");
+const matrix = JSON.parse(fs.readFileSync(matrixPath, "utf8"));
+assert.ok(Array.isArray(matrix.pairs), "before-after matrix must include pairs");
+assert.ok(matrix.pairs.length >= 18, "before-after matrix must include desktop and mobile pairs for all task routes");
+
+for (const pair of matrix.pairs) {
+  assert.ok(typeof pair.route === "string" && pair.route.length > 0, "pair route must be present");
+  assert.ok(typeof pair.viewport === "string" && pair.viewport.length > 0, "pair viewport must be present");
+  const beforeAbsolute = path.join(process.cwd(), pair.before);
+  const afterAbsolute = path.join(process.cwd(), pair.after);
+  assert.ok(fs.existsSync(beforeAbsolute), `Missing before screenshot pair file: ${pair.before}`);
+  assert.ok(fs.existsSync(afterAbsolute), `Missing after screenshot pair file: ${pair.after}`);
 }
 
 console.log("visual evidence contract ok");

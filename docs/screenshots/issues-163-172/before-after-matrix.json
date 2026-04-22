@@ -1,0 +1,133 @@
+{
+  "generatedAtUtc": "2026-04-22T04:09:45.216Z",
+  "beforeDirectory": "docs/screenshots/issues-159-162",
+  "afterDirectory": "docs/screenshots/issues-163-172",
+  "pairs": [
+    {
+      "route": "/services/septic-cleaning",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/septic-cleaning-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/septic-cleaning-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/septic-cleaning",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/septic-cleaning-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/septic-cleaning-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/septic-cleaning",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/septic-cleaning-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/septic-cleaning-mobile-390.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/contact",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/contact-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/contact-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/contact",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/contact-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/contact-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/contact",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/contact-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/contact-mobile-390.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/well-septic-evaluations",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/well-septic-evaluations-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/well-septic-evaluations-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/well-septic-evaluations",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/well-septic-evaluations-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/well-septic-evaluations-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/well-septic-evaluations",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/well-septic-evaluations-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/well-septic-evaluations-mobile-390.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/portable-toilets",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/portable-toilets-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/portable-toilets-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/portable-toilets",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/portable-toilets-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/portable-toilets-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/portable-toilets",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/portable-toilets-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/portable-toilets-mobile-390.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/commercial",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/commercial-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/commercial-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/commercial",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/commercial-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/commercial-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/services/commercial",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/commercial-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/commercial-mobile-390.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/realtors",
+      "viewport": "1280w-desktop",
+      "before": "docs/screenshots/issues-159-162/realtors-desktop-1280.png",
+      "after": "docs/screenshots/issues-163-172/realtors-desktop-1280.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/realtors",
+      "viewport": "1440w-desktop",
+      "before": "docs/screenshots/issues-159-162/realtors-desktop-1440.png",
+      "after": "docs/screenshots/issues-163-172/realtors-desktop-1440.png",
+      "beforeExists": true
+    },
+    {
+      "route": "/realtors",
+      "viewport": "390w-mobile",
+      "before": "docs/screenshots/issues-159-162/realtors-mobile-390.png",
+      "after": "docs/screenshots/issues-163-172/realtors-mobile-390.png",
+      "beforeExists": true
+    }
+  ]
+}

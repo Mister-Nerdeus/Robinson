@@ -46,6 +46,7 @@ jobs:
       - run: npm run verify:deploy-manifest
       - run: npm run proof:issue-163-172
       - run: npm run test:request-flow-behavior-e2e
+      - run: npm run test:a11y-request-semantics-e2e
       - run: npm run verify:request-route-parity -- --target=http://127.0.0.1:4850
       - name: Upload deploy traceability artifacts
         uses: actions/upload-artifact@v4

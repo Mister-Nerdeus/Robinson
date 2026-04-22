@@ -1,9 +1,10 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BASE_URL ?? "http://localhost:3011";
 const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-163-172");
+const beforeDir = path.join(process.cwd(), "docs", "screenshots", "issues-159-162");
 
 const taskRoutes = [
   { slug: "septic-cleaning", path: "/services/septic-cleaning" },
@@ -167,11 +168,75 @@ async function capture() {
     "utf8",
   );
 
-  if (findings.length > 0) {
-    throw new Error(`Composition audit failed:\n- ${findings.join("\n- ")}`);
+  const beforeAfterMatrix = [];
+  const missingBeforePairs = [];
+  for (const route of taskRoutes) {
+    for (const viewport of desktopViewports) {
+      const filename = `${route.slug}-desktop-${viewport.width}.png`;
+      const beforePath = path.join(beforeDir, filename);
+      const afterPath = path.join(outDir, filename);
+      const beforeExists = await exists(beforePath);
+      if (!beforeExists) {
+        missingBeforePairs.push(filename);
+      }
+      beforeAfterMatrix.push({
+        route: route.path,
+        viewport: `${viewport.width}w-desktop`,
+        before: path.relative(process.cwd(), beforePath).replace(/\\/g, "/"),
+        after: path.relative(process.cwd(), afterPath).replace(/\\/g, "/"),
+        beforeExists,
+      });
+    }
+
+    const mobileFilename = `${route.slug}-mobile-${mobileViewport.width}.png`;
+    const beforeMobilePath = path.join(beforeDir, mobileFilename);
+    const afterMobilePath = path.join(outDir, mobileFilename);
+    const beforeMobileExists = await exists(beforeMobilePath);
+    if (!beforeMobileExists) {
+      missingBeforePairs.push(mobileFilename);
+    }
+    beforeAfterMatrix.push({
+      route: route.path,
+      viewport: `${mobileViewport.width}w-mobile`,
+      before: path.relative(process.cwd(), beforeMobilePath).replace(/\\/g, "/"),
+      after: path.relative(process.cwd(), afterMobilePath).replace(/\\/g, "/"),
+      beforeExists: beforeMobileExists,
+    });
+  }
+
+  await writeFile(
+    path.join(outDir, "before-after-matrix.json"),
+    `${JSON.stringify(
+      {
+        generatedAtUtc: new Date().toISOString(),
+        beforeDirectory: path.relative(process.cwd(), beforeDir).replace(/\\/g, "/"),
+        afterDirectory: path.relative(process.cwd(), outDir).replace(/\\/g, "/"),
+        pairs: beforeAfterMatrix,
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+
+  if (findings.length > 0 || missingBeforePairs.length > 0) {
+    const failures = [
+      ...findings,
+      ...missingBeforePairs.map((name) => `Missing before screenshot pair in issues-159-162: ${name}`),
+    ];
+    throw new Error(`Composition audit failed:\n- ${failures.join("\n- ")}`);
   }
 
   console.log(`Task-page composition evidence captured in ${outDir}`);
+}
+
+async function exists(filePath) {
+  try {
+    await access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 capture().catch((error) => {

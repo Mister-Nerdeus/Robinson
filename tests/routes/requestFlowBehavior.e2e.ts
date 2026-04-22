@@ -19,14 +19,11 @@ async function run() {
   const desktopPage = await desktop.newPage();
   const mobilePage = await mobile.newPage();
 
-  await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
-
-  const desktopNavCount = await desktopPage.locator('header nav[data-primary-nav="desktop"]').count();
-  assert.equal(desktopNavCount, 1, "septic route must render exactly one desktop primary nav");
-
   const leakagePattern = /(Mode:|Local-only:|Admin review:|Commit:|Build time|DEPLOY_|refs\/heads\/|runtime mode)/i;
   for (const route of requestRoutes) {
     await desktopPage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+    const desktopNavCount = await desktopPage.locator('header nav[data-primary-nav="desktop"]').count();
+    assert.equal(desktopNavCount, 1, `request route must render exactly one desktop primary nav (${route})`);
     const text = await desktopPage.locator("body").innerText();
     assert.equal(
       leakagePattern.test(text),
@@ -36,12 +33,7 @@ async function run() {
   }
 
   await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
-  const firstEditableDesktopTop = await desktopPage.evaluate(() => {
-    const el = document.querySelector("form input:not([type='hidden']), form select, form textarea");
-    if (!el) return null;
-    const rect = el.getBoundingClientRect();
-    return Math.round(rect.top + window.scrollY);
-  });
+  const firstEditableDesktopTop = await readFirstEditableTop(desktopPage);
   assert.ok(
     firstEditableDesktopTop !== null && firstEditableDesktopTop < 1550,
     `septic first editable control must appear in early desktop scroll band (got ${firstEditableDesktopTop})`,
@@ -58,16 +50,42 @@ async function run() {
   });
   assert.equal(activeHeadingFocused, true, "step transition must restore focus to wizard heading");
 
+  await desktopPage.goto(`${baseUrl}/contact`, { waitUntil: "networkidle" });
+  const firstEditableContactDesktopTop = await readFirstEditableTop(desktopPage);
+  assert.ok(
+    firstEditableContactDesktopTop !== null && firstEditableContactDesktopTop < 1550,
+    `contact first editable control must appear in early desktop scroll band (got ${firstEditableContactDesktopTop})`,
+  );
+
+  await desktopPage.getByRole("button", { name: /Septic Service/i }).first().click();
+  await desktopPage.locator('input[name="fullName"]').fill("Contact Behavior");
+  await desktopPage.locator('input[name="phone"]').fill("5550101");
+  await desktopPage.locator('input[name="email"]').fill("contact-behavior@example.com");
+  await desktopPage.getByRole("button", { name: "Next Step" }).first().click();
+  await desktopPage.waitForTimeout(350);
+  const contactHeadingFocused = await desktopPage.evaluate(() => {
+    const active = document.activeElement as HTMLElement | null;
+    return active?.hasAttribute("data-wizard-step-heading") ?? false;
+  });
+  assert.equal(contactHeadingFocused, true, "contact lane step transition must restore focus to wizard heading");
+
   await mobilePage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
-  const firstEditableMobileTop = await mobilePage.evaluate(() => {
+  const firstEditableMobileTop = await readFirstEditableTop(mobilePage);
+  assert.ok(
+    firstEditableMobileTop !== null && firstEditableMobileTop < 1850,
+    `septic first editable control must appear in early mobile scroll band (got ${firstEditableMobileTop})`,
+  );
+
+  await mobilePage.goto(`${baseUrl}/contact`, { waitUntil: "networkidle" });
+  const firstEditableContactMobileTop = await mobilePage.evaluate(() => {
     const el = document.querySelector("form input:not([type='hidden']), form select, form textarea");
     if (!el) return null;
     const rect = el.getBoundingClientRect();
     return Math.round(rect.top + window.scrollY);
   });
   assert.ok(
-    firstEditableMobileTop !== null && firstEditableMobileTop < 1850,
-    `septic first editable control must appear in early mobile scroll band (got ${firstEditableMobileTop})`,
+    firstEditableContactMobileTop !== null && firstEditableContactMobileTop < 1850,
+    `contact first editable control must appear in early mobile scroll band (got ${firstEditableContactMobileTop})`,
   );
 
   await desktop.close();
@@ -75,6 +93,15 @@ async function run() {
   await browser.close();
 
   console.log("[request-flow-behavior-e2e] nav singularity, provenance guard, early first-step, and focus continuity pass");
+}
+
+async function readFirstEditableTop(page: { evaluate: (fn: () => number | null) => Promise<number | null> }) {
+  return page.evaluate(() => {
+    const el = document.querySelector("form input:not([type='hidden']), form select, form textarea");
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return Math.round(rect.top + window.scrollY);
+  });
 }
 
 run().catch((error) => {
