@@ -28,3 +28,10 @@ Isolated pre-launch testing stack for routing, submissions, notifications, persi
 ## Runtime-Proof Host Gate
 - `REVIEW_ALLOWED_HOSTS` is passed through Docker build/runtime args and defaults to `localhost,127.0.0.1` in local/test env files.
 - This keeps `/api/runtime-proof` unavailable on customer hosts even outside production mode.
+
+## Public-Gate Proof Commands (Container or Local)
+- `npm run test:request-flow-behavior-e2e`
+- `npm run proof:issue-197-208`
+- `npm run test:visual-public-evidence`
+
+These commands produce and validate the screenshot/e2e proof bundle used by the service-route release gate.

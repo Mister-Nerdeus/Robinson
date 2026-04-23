@@ -12,8 +12,7 @@ export const homeContent = {
   sectionContract: [
     "hero",
     "lane-router",
-    "trust-band",
-    "realtor-evaluation-proof",
+    "conversion-proof",
     "faq-preview",
     "final-cta",
   ] as const,
@@ -68,30 +67,18 @@ export const homeContent = {
       ctaLabel: "Start Commercial Request",
     },
   ] satisfies HomeLaneCard[],
-  trustBand: {
-    title: "Built on proven local trust",
-  },
-  realtorProof: {
-    title: "Realtor and evaluation confidence",
-    body: "Realtor workflows stay transaction-ready with deadline capture, occupancy context, and explicit access coordination before scheduling.",
-    points: [
-      "Home-sale lane is separated from routine pumping to reduce routing mistakes.",
-      "Evaluation requests capture role and deadline type in the first steps.",
-      "Follow-up expectations stay explicit: non-emergency Realtor lane target is 1-3 business days.",
-    ],
-    ctaHref: "/realtors",
-    ctaLabel: "Open Realtor Evaluation Lane",
-  },
-  trustPanel: {
-    title: "Trusted across West Michigan",
+  conversionProof: {
+    title: "Why West Michigan teams choose Robinson",
     body:
-      "Families, Realtors, and local businesses call Robinson because the team shows up prepared, communicates clearly, and stands behind the work.",
+      "Trust signals and lane value are combined in one section so customers can validate fit quickly, then take a lane-specific action.",
     highlights: [
       "Family owned and operated since 1979.",
       "24/7 emergency septic response remains call-first.",
-      "Broad service mix across septic, evaluations, rentals, and commercial support.",
-      "Realtor/evaluation workflow supports closing-date coordination.",
+      "Five active lanes route emergency, routine, evaluation, rental, and commercial users without guesswork.",
+      "Realtor/evaluation workflow captures deadline and access context early.",
     ],
+    ctaHref: "/realtors",
+    ctaLabel: "Open Deadline-First Realtor Lane",
   },
   faqPreview: [
     {

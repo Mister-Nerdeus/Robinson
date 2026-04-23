@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.BASE_URL ?? "http://localhost:4850";
-const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-185-196");
+const outDir = path.join(process.cwd(), "docs", "screenshots", "issues-197-208");
 
 const routes = [
   { slug: "home", path: "/" },
@@ -12,6 +12,7 @@ const routes = [
   { slug: "well-septic-evaluations", path: "/services/well-septic-evaluations" },
   { slug: "portable-toilets", path: "/services/portable-toilets" },
   { slug: "commercial", path: "/services/commercial" },
+  { slug: "realtors", path: "/realtors" },
 ];
 
 const desktopWidths = [1280, 1440];
@@ -36,7 +37,7 @@ async function run() {
   const browser = await chromium.launch({ headless: true });
 
   for (const width of desktopWidths) {
-    const context = await browser.newContext({ viewport: { width, height: 2000 } });
+    const context = await browser.newContext({ viewport: { width, height: 2200 } });
     const page = await context.newPage();
     for (const route of routes) {
       await page.goto(`${baseUrl}${route.path}`, { waitUntil: "networkidle" });
@@ -49,7 +50,7 @@ async function run() {
   }
 
   const mobileContext = await browser.newContext({
-    viewport: { width: mobileWidth, height: 2200 },
+    viewport: { width: mobileWidth, height: 2400 },
     isMobile: true,
     hasTouch: true,
     deviceScaleFactor: 3,
@@ -65,7 +66,7 @@ async function run() {
 
   await mobileContext.close();
   await browser.close();
-  console.log(`Issue 185-196 screenshots captured in ${outDir}`);
+  console.log(`Issue 197-208 screenshots captured in ${outDir}`);
 }
 
 run().catch((error) => {

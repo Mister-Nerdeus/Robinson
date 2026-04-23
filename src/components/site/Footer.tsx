@@ -1,6 +1,9 @@
+"use client";
+
 import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { footerFastPathLinks } from "@/content/navigation";
 import { TrackedPhoneLink } from "@/components/site/TrackedPhoneLink";
 import { publishedLocations } from "@/content/locations";
@@ -8,6 +11,13 @@ import { serviceAreaContent } from "@/content/serviceArea";
 import { publicBusinessFacts } from "@/content/businessFacts";
 
 export function Footer() {
+  const pathname = usePathname();
+  const hideSecondaryRouteLinks = Boolean(
+    pathname &&
+      (pathname === "/contact" ||
+        pathname === "/realtors" ||
+        pathname.startsWith("/services/")),
+  );
   const primaryLocation = publishedLocations[0];
   const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
   const primaryLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
@@ -56,17 +66,22 @@ export function Footer() {
             <p className="mt-1">{serviceAreaContent.summary}</p>
           </div>
         </div>
-        <div className="rounded-xl border border-[#ece3e3] bg-[#fbf9f8] p-4">
-          <h2 className="font-display text-base text-[var(--brand)]">Route links (secondary)</h2>
-          <p className="mt-1 text-xs text-slate-600">Useful global navigation after active task completion.</p>
-          <div className="mt-3 grid gap-1.5 text-sm text-slate-700">
-            {footerFastPathLinks.map((link) => (
-              <Link key={link.href} className="inline-flex w-fit underline decoration-[#b8a0a0]/70 underline-offset-2" href={link.href}>
-                {link.label}
-              </Link>
-            ))}
+        {!hideSecondaryRouteLinks ? (
+          <div
+            className="rounded-xl border border-[#ece3e3] bg-[#fbf9f8] p-4"
+            data-secondary-route-links="true"
+          >
+            <h2 className="font-display text-base text-[var(--brand)]">Route links (secondary)</h2>
+            <p className="mt-1 text-xs text-slate-600">Useful global navigation after active task completion.</p>
+            <div className="mt-3 grid gap-1.5 text-sm text-slate-700">
+              {footerFastPathLinks.map((link) => (
+                <Link key={link.href} className="inline-flex w-fit underline decoration-[#b8a0a0]/70 underline-offset-2" href={link.href}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </footer>
   );

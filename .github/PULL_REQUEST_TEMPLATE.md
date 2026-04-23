@@ -16,6 +16,9 @@
 - [ ] Pending-verification facts are excluded from customer UI.
 - [ ] Trust-signal changes reviewed against `docs/trust/trust-governance-registry.md`.
 - [ ] FAQ/schema alignment checked where route copy changed.
+- [ ] Homepage lane CTAs verified as task-specific (no generic CTA copy on primary lanes).
+- [ ] Runtime-proof/diagnostic surfaces verified internal-only on customer hosts.
+- [ ] Proof bundle includes before/after screenshots and route text/DOM proof for changed routes.
 
 ## Screenshot Proof Matrix
 

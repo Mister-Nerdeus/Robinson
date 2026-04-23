@@ -14,51 +14,6 @@ type ServiceRequestPageTemplateProps = {
   entry: ServiceTemplateEntry;
 };
 
-function SepticPrepModule({
-  reasons,
-  ready,
-  nextSteps,
-}: {
-  reasons: string[];
-  ready: string[];
-  nextSteps: string[];
-}) {
-  return (
-    <div className="rounded-2xl border border-[#e4d3c7] bg-[#fffaf4] p-4" data-septic-prep-module="coherent-pre-form-v1">
-      <h4 className="font-display text-xl text-[var(--brand)]">Before You Submit (Dispatch Prep)</h4>
-      <p className="mt-2 text-sm text-slate-700">
-        One quick prep block so dispatch can route the right truck and callback plan without extra back-and-forth.
-      </p>
-      <div className="mt-3 grid gap-3 sm:grid-cols-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">Common reasons</p>
-          <ul className="mt-1 grid gap-1 text-sm text-slate-700">
-            {reasons.slice(0, 3).map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">Have ready</p>
-          <ul className="mt-1 grid gap-1 text-sm text-slate-700">
-            {ready.slice(0, 3).map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">What happens next</p>
-          <ul className="mt-1 grid gap-1 text-sm text-slate-700">
-            {nextSteps.slice(0, 2).map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplateProps) {
   const primaryServiceLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
   const callHref = `tel:+1${primaryServiceLine.replace(/\D/g, "")}`;
@@ -91,11 +46,31 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
                 ))}
               </div>
               {isSepticRoute ? (
-                <div className="rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
-                  <h3 className="font-display text-xl text-[var(--brand)]">Urgent guidance first</h3>
-                  <p className="mt-2 text-sm text-slate-700">
-                    If backup, overflow, alarm, or strong odor is active, call first. Then complete the first editable step below to reduce callback delays.
-                  </p>
+                <div className="grid gap-3 sm:grid-cols-3" data-septic-narrative-spec="includes-pricing-next-steps">
+                  <div className="rounded-2xl border border-[#ead6d6] bg-[#fff8f7] p-4">
+                    <h3 className="font-display text-xl text-[var(--brand)]">What service includes</h3>
+                    <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                      {entry.slots.includedItems.map((item) => (
+                        <li key={item}>• {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl border border-[#e6ddd0] bg-[#fffaf3] p-4">
+                    <h3 className="font-display text-xl text-[var(--brand)]">Pricing factors</h3>
+                    <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                      {entry.slots.pricingFactors?.map((item) => (
+                        <li key={item}>• {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
+                    <h3 className="font-display text-xl text-[var(--brand)]">What happens next</h3>
+                    <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                      {content.nextSteps.map((step) => (
+                        <li key={step}>• {step}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -129,18 +104,22 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
                 <p className="text-sm text-slate-700">
                   {isEvaluationRoute
                     ? "When closing windows are tight, call first for deadline triage, then submit transaction details in the evaluation workflow."
-                    : "Call for immediate dispatch triage when symptoms are active, then complete the first editable step below."}
+                    : "Call for immediate dispatch triage when symptoms are active, then use the first form step below for dispatch-ready details."}
                 </p>
                 <a className="inline-flex min-h-11 w-fit items-center rounded-md bg-[var(--brand)] px-4 py-3 text-sm font-semibold text-white" href={callHref}>
                   Call {primaryServiceLine}
                 </a>
               </div>
               {isSepticRoute ? (
-                <SepticPrepModule
-                  reasons={content.reasonsToCall}
-                  ready={content.whatToHaveReady}
-                  nextSteps={content.nextSteps}
-                />
+                <div className="rounded-2xl border border-[#e6ddd0] bg-[#fffaf3] p-4">
+                  <h4 className="font-display text-xl text-[var(--brand)]">Before You Start (Quick)</h4>
+                  <ul className="mt-2 grid gap-2 text-sm text-slate-700">
+                    {content.whatToHaveReady.slice(0, 2).map((item) => (
+                      <li key={item}>• {item}</li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-xs text-slate-600">{content.responseExpectation}</p>
+                </div>
               ) : (
                 <div className="rounded-2xl border border-[#e6ddd0] bg-[#fffaf3] p-4">
                   <h4 className="font-display text-xl text-[var(--brand)]">Before You Start (Quick)</h4>
@@ -162,13 +141,13 @@ export function ServiceRequestPageTemplate({ entry }: ServiceRequestPageTemplate
             <div className="grid gap-4">
               {isSepticRoute ? (
                 <div className="rounded-2xl border border-[#d8c1c1] bg-[#fffdfb] p-4">
-                  <h3 className="font-display text-2xl text-[var(--brand)]">What happens next</h3>
-                  <ul className="mt-2 grid gap-2 text-sm text-slate-700">
-                    {content.nextSteps.map((step) => (
-                      <li key={step}>• {step}</li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-sm text-slate-700">{content.responseExpectation}</p>
+                  <h3 className="font-display text-2xl text-[var(--brand)]">Need emergency help right now?</h3>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Active backup, overflow, or strong odor should stay call-first. The form still helps dispatch stage the right follow-up.
+                  </p>
+                  <a className="mt-3 inline-flex min-h-11 w-fit items-center rounded-md border border-[var(--brand)] px-4 py-2 text-sm font-semibold text-[var(--brand)]" href={callHref}>
+                    Call {primaryServiceLine}
+                  </a>
                 </div>
               ) : (
                 <RequestSupportBlocks

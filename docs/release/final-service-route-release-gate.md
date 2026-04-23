@@ -19,6 +19,7 @@ Single promotion gate for service-route releases combining UX, truth, trust, and
 - Lane CTA inventory diff.
 - Business-truth status table reference.
 - Trust-governance registry reference.
+- Completed bundle example: `docs/release/example-proof-bundle-197-208.md`.
 
 ## Workflow Note
 This checklist is referenced by PR template and CI public-gates workflow. Promotion cannot proceed until all blocking criteria are complete.

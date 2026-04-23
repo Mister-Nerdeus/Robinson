@@ -3,6 +3,8 @@ export type NavItem = {
   label: string;
 };
 
+export type HeaderNavContext = "marketing" | "task";
+
 export const primaryNavLinks: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
@@ -16,6 +18,15 @@ export const compactTaskHeaderLinks: NavItem[] = [
   { href: "/contact", label: "Contact" },
   { href: "/faq", label: "FAQ" },
 ];
+
+const headerNavByContext: Record<HeaderNavContext, NavItem[]> = {
+  marketing: primaryNavLinks,
+  task: compactTaskHeaderLinks,
+};
+
+export function getHeaderNavLinks(context: HeaderNavContext): NavItem[] {
+  return headerNavByContext[context];
+}
 
 export const footerFastPathLinks: NavItem[] = [
   { href: "/services/septic-cleaning", label: "Septic Service Lane" },

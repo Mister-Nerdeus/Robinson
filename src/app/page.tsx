@@ -5,7 +5,6 @@ import { Section } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { LaneGrid } from "@/components/home/LaneGrid";
 import { FaqPreview } from "@/components/home/FaqPreview";
-import { HomeTrust } from "@/components/home/HomeTrust";
 import { homeContent } from "@/content/home";
 import { trustContent } from "@/content/trust";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -25,7 +24,7 @@ export default function HomePage() {
     <div
       data-homepage-contract="home-hero-router-trust-proof-faq-final-v2"
       data-homepage-route="/"
-      data-homepage-structure="hero-lane-router-trust-band-realtor-proof-faq-final-cta"
+      data-homepage-structure="hero-lane-router-conversion-proof-faq-final-cta"
     >
       <JsonLd data={localBusinessSchema()} />
 
@@ -60,38 +59,33 @@ export default function HomePage() {
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
 
-      <Section title={homeContent.trustBand.title} layout="marketing">
+      <Section title={homeContent.conversionProof.title} layout="marketing">
         <div className="grid gap-5 md:grid-cols-[1.15fr,0.85fr] md:items-start">
-          <div>
-            <HomeTrust points={trustContent.points} />
-            <p className="mt-4 max-w-4xl text-sm text-slate-700">{trustContent.trustStatement}</p>
+          <div className="rounded-2xl border border-[#c5d3bd] bg-[linear-gradient(145deg,#edf4e7,#e2edd8)] p-5">
+            <h3 className="font-display text-[1.75rem] leading-tight text-[var(--brand)]">Local proof customers can trust</h3>
+            <ul className="mt-3 grid gap-1.5 pl-5 text-sm text-slate-800">
+              {trustContent.points.map((point) => (
+                <li key={point} className="list-disc">
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-slate-700">{trustContent.trustStatement}</p>
           </div>
-          <div className="rounded-2xl border border-[#d8c1c1] bg-[#fff7f6] p-5">
-            <h3 className="font-display text-2xl text-[var(--brand)]">{homeContent.trustPanel.title}</h3>
-            <p className="mt-3 text-slate-800">{homeContent.trustPanel.body}</p>
-            <ul className="mt-4 grid gap-2 text-sm text-slate-700">
-              {homeContent.trustPanel.highlights.map((item) => (
+          <div className="rounded-2xl border border-[#d9cbc1] bg-[#fffaf3] p-5">
+            <p className="text-sm text-slate-800">{homeContent.conversionProof.body}</p>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+              {homeContent.conversionProof.highlights.map((item) => (
                 <li key={item}>• {item}</li>
               ))}
             </ul>
+            <Link
+              href={homeContent.conversionProof.ctaHref}
+              className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)]"
+            >
+              {homeContent.conversionProof.ctaLabel}
+            </Link>
           </div>
-        </div>
-      </Section>
-
-      <Section title={homeContent.realtorProof.title} layout="marketing">
-        <div className="rounded-2xl border border-[#d9cbc1] bg-[#fffaf3] p-5">
-          <p className="text-sm text-slate-800">{homeContent.realtorProof.body}</p>
-          <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-            {homeContent.realtorProof.points.map((point) => (
-              <li key={point}>• {point}</li>
-            ))}
-          </ul>
-          <Link
-            href={homeContent.realtorProof.ctaHref}
-            className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)]"
-          >
-            {homeContent.realtorProof.ctaLabel}
-          </Link>
         </div>
       </Section>
 

@@ -59,8 +59,8 @@ function run() {
     "Runtime proof endpoint must not expose diagnostics on production hosts",
   );
   assert.ok(
-    runtimeProofSource.includes('return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });'),
-    "Runtime proof endpoint must be gated by explicit review access",
+    !runtimeProofSource.includes('return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });'),
+    "Runtime proof endpoint should return not-found instead of auth leakage on customer surfaces",
   );
   assert.ok(
     runtimeProofSource.includes("isRuntimeProofHostAllowed"),

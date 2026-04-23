@@ -87,4 +87,26 @@ for (const filename of requiredBatchScreens) {
   assert.ok(fs.existsSync(absolute), `Missing required batch screenshot artifact: ${filename}`);
 }
 
+const currentBatchDir = path.join(screenshotsDir, "issues-197-208");
+assert.ok(
+  fs.existsSync(currentBatchDir),
+  "issues-197-208 screenshot proof directory is required",
+);
+
+const requiredCurrentBatchScreens = [
+  "home-desktop-1280.png",
+  "home-mobile-390.png",
+  "contact-desktop-1280.png",
+  "contact-mobile-390.png",
+  "septic-cleaning-desktop-1280.png",
+  "septic-cleaning-mobile-390.png",
+  "realtors-desktop-1280.png",
+  "realtors-mobile-390.png",
+];
+
+for (const filename of requiredCurrentBatchScreens) {
+  const absolute = path.join(currentBatchDir, filename);
+  assert.ok(fs.existsSync(absolute), `Missing required current batch screenshot artifact: ${filename}`);
+}
+
 console.log("visual evidence contract ok");

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import fs from "node:fs";
 import path from "node:path";
-import { footerFastPathLinks, primaryNavLinks } from "../src/content/navigation";
+import { footerFastPathLinks, getHeaderNavLinks, primaryNavLinks } from "../src/content/navigation";
 
 function read(relativePath: string) {
   return fs.readFileSync(path.join(process.cwd(), relativePath), "utf8");
@@ -19,8 +19,8 @@ function run() {
     "Header desktop nav must render shared nav links",
   );
   assert.ok(
-    headerSource.includes("compactTaskHeaderLinks"),
-    "Header must use compact task header nav set on request routes",
+    headerSource.includes("getHeaderNavLinks"),
+    "Header must resolve nav links from canonical shared route source",
   );
   const mobileNavSource = read("src/components/site/MobileNav.tsx");
   assert.ok(
@@ -32,6 +32,10 @@ function run() {
   assert.ok(
     footerSource.includes("footerFastPathLinks.map"),
     "Footer must render fast paths from shared nav contract",
+  );
+  assert.ok(
+    footerSource.includes("data-secondary-route-links"),
+    "Footer must expose secondary route links marker for non-task routes",
   );
 
   const primaryRoutes = primaryNavLinks.map((item) => item.href);
@@ -46,6 +50,11 @@ function run() {
   assert.ok(
     footerRoutes.includes("/privacy"),
     "Footer fast path nav must include privacy route",
+  );
+  assert.deepStrictEqual(
+    getHeaderNavLinks("task").map((item) => item.href),
+    ["/services", "/contact", "/faq"],
+    "Task header nav route source must stay canonical",
   );
 
   console.log("[navigation-contract] shared nav contract is used across desktop/mobile/footer");

@@ -28,7 +28,7 @@ export async function GET() {
   }
   const cookieHeader = requestHeaders.get("cookie") || undefined;
   if (!hasValidReviewAccessCookie(cookieHeader)) {
-    return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
+    return NextResponse.json({ error: "not-found" }, { status: 404 });
   }
 
   const baseProof = {

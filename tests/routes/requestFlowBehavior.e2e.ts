@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
-const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:4850").replace(/\/$/, "");
+const baseUrl = (process.env.BASE_URL || "http://localhost:4850").replace(/\/$/, "");
 
 const requestRoutes = [
   "/services/septic-cleaning",
@@ -33,8 +33,21 @@ async function run() {
       false,
       `request route must not leak runtime/deploy provenance text (${route})`,
     );
+    const secondaryRouteLinks = await routePage.locator('[data-secondary-route-links="true"]').count();
+    assert.equal(
+      secondaryRouteLinks,
+      0,
+      `request route must not duplicate global route-list nav chrome (${route})`,
+    );
     await routePage.close();
   }
+
+  await desktopPage.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+  const marketingSecondaryRouteLinks = await desktopPage.locator('[data-secondary-route-links="true"]').count();
+  assert.ok(
+    marketingSecondaryRouteLinks >= 1,
+    "marketing routes should keep secondary route links available in footer",
+  );
 
   await desktopPage.goto(`${baseUrl}/services/septic-cleaning`, { waitUntil: "networkidle" });
   const firstEditableDesktopTop = await readFirstEditableTop(desktopPage);

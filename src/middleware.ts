@@ -110,6 +110,9 @@ export function middleware(request: NextRequest) {
   }
 
   if (isAdminApiRead || isRuntimeProofApi) {
+    if (isRuntimeProofApi) {
+      return NextResponse.json({ error: "not-found" }, { status: 404 });
+    }
     return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
   }
 

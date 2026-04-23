@@ -51,6 +51,10 @@ function run() {
     fs.existsSync("docs/release/final-service-route-release-gate.md"),
     "Final service-route release gate doc is required",
   );
+  assert.ok(
+    fs.existsSync("docs/release/example-proof-bundle-197-208.md"),
+    "Example completed proof bundle doc is required",
+  );
 
   const pendingPublicFacts = businessFactRegistry.filter(
     (fact) => fact.status === "pending-verification" && fact.public,
@@ -66,6 +70,7 @@ function run() {
   assert.ok(workflow.includes("proof:issue-163-172"), "CI must capture request-route composition screenshots");
   assert.ok(workflow.includes("test:visual-public-evidence"), "CI must enforce screenshot evidence contract");
   assert.ok(workflow.includes("test:business-facts-contract"), "CI must enforce canonical business fact contract");
+  assert.ok(workflow.includes("proof:issue-197-208"), "CI must capture current screenshot proof bundle");
 
   console.log("[request-route-release-gate] business truth, docs, and CI gates pass");
 }

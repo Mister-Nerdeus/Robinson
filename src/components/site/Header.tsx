@@ -5,7 +5,7 @@ import { company } from "@/config/company";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { compactTaskHeaderLinks, primaryNavLinks } from "@/content/navigation";
+import { getHeaderNavLinks } from "@/content/navigation";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 import { MobileNav } from "@/components/site/MobileNav";
@@ -20,7 +20,7 @@ export function Header() {
         pathname === "/realtors" ||
         pathname.startsWith("/services/")),
   );
-  const navLinks = isTaskRoute ? compactTaskHeaderLinks : primaryNavLinks;
+  const navLinks = getHeaderNavLinks(isTaskRoute ? "task" : "marketing");
   const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
 
   return (
