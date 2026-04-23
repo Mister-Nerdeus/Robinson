@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { footerFastPathLinks } from "@/content/navigation";
 import { TrackedPhoneLink } from "@/components/site/TrackedPhoneLink";
-import { publishedLocations } from "@/content/locations";
 import { serviceAreaContent } from "@/content/serviceArea";
 import { publicBusinessFacts } from "@/content/businessFacts";
 
@@ -18,7 +17,7 @@ export function Footer() {
         pathname === "/realtors" ||
         pathname.startsWith("/services/")),
   );
-  const primaryLocation = publishedLocations[0];
+  const primaryAddress = publicBusinessFacts.primaryAddress;
   const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
   const primaryLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
   const secondaryLine = publicBusinessFacts.phoneSemantics.secondaryOfficeLine.number;
@@ -55,9 +54,9 @@ export function Footer() {
               />
             </p>
             <p className="text-xs text-slate-600">Secondary office line (non-dispatch): {secondaryLine}</p>
-            <p>{primaryLocation.streetAddress}</p>
+            <p>{primaryAddress.line1}</p>
             <p>
-              {primaryLocation.city}, {primaryLocation.state} {primaryLocation.postalCode}
+              {primaryAddress.city}, {primaryAddress.state} {primaryAddress.postalCode}
             </p>
             <p>{publicBusinessFacts.serviceHours}</p>
           </div>
