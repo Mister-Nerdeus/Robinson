@@ -1,6 +1,5 @@
 import { company } from "@/config/company";
 import { faqContent } from "@/content/faq";
-import { businessContent } from "@/content/business";
 import { serviceAreaContract } from "@/content/serviceAreas";
 import { publicBusinessFacts } from "@/content/businessFacts";
 
@@ -16,16 +15,29 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: publicBusinessFacts.businessName,
-    legalName: businessContent.legalName,
+    legalName: company.legalName,
     alternateName: company.brandVariants,
-    telephone: businessContent.primaryPhone,
-    contactPoint: businessContent.contactPoints.map((point) => ({
-      "@type": "ContactPoint",
-      contactType: point.type,
-      telephone: point.telephone,
-      areaServed: point.areaServed,
-      availableLanguage: point.availableLanguage,
-    })),
+    telephone: publicBusinessFacts.primaryServiceLine,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        telephone: publicBusinessFacts.primaryServiceLine,
+        areaServed: "US-MI",
+        availableLanguage: "English",
+      },
+      ...(publicBusinessFacts.additionalOfficeLine
+        ? [
+            {
+              "@type": "ContactPoint",
+              contactType: "office",
+              telephone: publicBusinessFacts.additionalOfficeLine,
+              areaServed: "US-MI",
+              availableLanguage: "English",
+            },
+          ]
+        : []),
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: publicBusinessFacts.primaryAddress.line1,

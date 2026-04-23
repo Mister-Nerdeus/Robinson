@@ -5,7 +5,6 @@ import type { SubmissionType } from "@/lib/forms/types";
 import { FormField } from "./FormField";
 import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
-import { FormConfirmation } from "./FormConfirmation";
 import { FormErrorState } from "./FormErrorState";
 import { useWizard } from "@/hooks/useWizard";
 import { WizardActions } from "./WizardActions";
@@ -14,6 +13,7 @@ import { FormFieldGroup } from "./FormFieldGroup";
 import { scrollAndFocus } from "@/lib/ui/scrollAndFocus";
 import { fieldAutocompleteMap } from "@/lib/forms/schema";
 import { afterSubmitByLane } from "@/content/afterSubmit";
+import { SubmissionSuccessPanel } from "./SubmissionSuccessPanel";
 
 type FormFieldConfig = {
   name: string;
@@ -1094,7 +1094,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
           void trackEvent({ event: analyticsEvents.formStart, submissionType: type });
         }
       }}
-      className="request-form-shell grid gap-7"
+      className="request-form-shell grid gap-7 rounded-[var(--radius-section)]"
     >
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="state" value="MI" />
@@ -1140,7 +1140,7 @@ export function RequestForm({ type, title, initialValues = {} }: Props) {
         </>
       ) : null}
 
-      {message && status === "success" ? <FormConfirmation message={message} /> : null}
+      {message && status === "success" ? <SubmissionSuccessPanel lane={type} message={message} /> : null}
       {message && status === "error" ? <FormErrorState message={message} /> : null}
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         {message}

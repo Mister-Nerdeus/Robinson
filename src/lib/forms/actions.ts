@@ -9,10 +9,17 @@ import {
   saveSubmission,
   listSubmissions,
   updateSubmissionTriageById,
-} from "@/lib/storage/submissions";
+} from "@/lib/submissions/repository";
 import { deliverSubmissionEmail } from "@/lib/email/provider";
 
-export async function createSubmission(input: SubmissionInput) {
+export type SubmissionAttribution = {
+  source?: "direct" | "organic" | "referral" | "campaign" | "unknown";
+  path?: string;
+  referrer?: string;
+  correlationId?: string;
+};
+
+export async function createSubmission(input: SubmissionInput, attribution: SubmissionAttribution = {}) {
   const parsed = submissionSchema.parse(input);
 
   if (
@@ -38,8 +45,14 @@ export async function createSubmission(input: SubmissionInput) {
     id: randomUUID(),
     createdAt: now,
     triageUpdatedAt: now,
+    triageUpdatedBy: "system",
     lifecycleState: "new",
     internalNote: "",
+    serviceLane: parsed.type,
+    attributionSource: attribution.source || "unknown",
+    attributionPath: attribution.path || "",
+    attributionReferrer: attribution.referrer || "",
+    correlationId: attribution.correlationId || "",
     ...parsed,
     state,
     address,
@@ -73,5 +86,5 @@ export async function updateSubmissionTriage(formData: FormData) {
     throw new Error("Invalid lifecycle state.");
   }
 
-  await updateSubmissionTriageById(id, lifecycleState, internalNote);
+  await updateSubmissionTriageById(id, lifecycleState, internalNote, "owner");
 }

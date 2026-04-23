@@ -1,48 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  getAdminAuthConfig,
+  getAdminSessionCookieName,
+  roleFromAccessToken,
+  resolveAdminIdentityFromNextRequest,
+} from "@/lib/auth";
 
 function parseBool(value: string | undefined, fallback = false): boolean {
-  if (value === undefined) return fallback;
+  if (value === undefined) {
+    return fallback;
+  }
   const normalized = value.trim().toLowerCase();
   return normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on";
 }
 
-function readMode(): "local" | "demo" | "production" {
-  const mode = process.env.RUNTIME_MODE?.trim().toLowerCase();
-  if (mode === "production" || mode === "demo" || mode === "local") {
-    return mode;
-  }
-  if (parseBool(process.env.LOCAL_ONLY_MODE, true)) {
-    return "local";
-  }
-  return "production";
-}
-
 function isAdminPolicyEnabled(): boolean {
-  const mode = readMode();
-  if (mode === "production") {
-    return false;
-  }
-
-  const enabled = parseBool(process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW, false);
-  if (!enabled) {
-    return false;
-  }
-
-  const localOnly = parseBool(process.env.LOCAL_ONLY_MODE, true);
-  const allowOutside = parseBool(process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE, false);
-  if (!(localOnly || allowOutside)) {
-    return false;
-  }
-
-  const key = (process.env.REVIEW_ACCESS_KEY || "").trim();
-  return key.length >= 16;
-}
-
-function getAccessConfig() {
-  return {
-    key: (process.env.REVIEW_ACCESS_KEY || "").trim(),
-    cookieName: (process.env.REVIEW_ACCESS_COOKIE_NAME || "robinson_review_access").trim(),
-  };
+  return parseBool(process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW, false);
 }
 
 function unauthorized(message: string, status = 401) {
@@ -69,37 +42,31 @@ export function middleware(request: NextRequest) {
 
   const { pathname, searchParams } = request.nextUrl;
   const isAdminPage = pathname.startsWith("/admin/submissions");
-  const isAdminApiRead =
-    (pathname === "/api/submissions" || pathname === "/api/forms") &&
-    request.method === "GET";
+  const isAdminApi = (pathname === "/api/submissions" || pathname === "/api/forms") && request.method === "GET";
   const isRuntimeProofApi = pathname === "/api/runtime-proof" && request.method === "GET";
 
-  if (!isAdminPage && !isAdminApiRead && !isRuntimeProofApi) {
+  if (!isAdminPage && !isAdminApi && !isRuntimeProofApi) {
     return NextResponse.next();
-  }
-
-  if (readMode() === "production") {
-    return unauthorized("Not found", 404);
   }
 
   if (!isAdminPolicyEnabled()) {
     return unauthorized("Admin review disabled by runtime policy.", 403);
   }
 
-  const { key, cookieName } = getAccessConfig();
-  const cookieValue = request.cookies.get(cookieName)?.value ?? "";
-
-  if (cookieValue === key) {
+  const identity = resolveAdminIdentityFromNextRequest(request);
+  if (identity.authenticated) {
     return NextResponse.next();
   }
 
-  const accessParam = searchParams.get("review_access")?.trim() || "";
-  if (isAdminPage && accessParam && accessParam === key) {
+  const accessParam = searchParams.get("admin_access")?.trim() || "";
+  const paramRole = roleFromAccessToken(accessParam);
+
+  if (isAdminPage && paramRole) {
     const cleanUrl = request.nextUrl.clone();
-    cleanUrl.searchParams.delete("review_access");
+    cleanUrl.searchParams.delete("admin_access");
 
     const response = NextResponse.redirect(cleanUrl);
-    response.cookies.set(cookieName, key, {
+    response.cookies.set(getAdminSessionCookieName(), accessParam, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -109,14 +76,16 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  if (isAdminApiRead || isRuntimeProofApi) {
-    if (isRuntimeProofApi) {
-      return NextResponse.json({ error: "not-found" }, { status: 404 });
-    }
+  const config = getAdminAuthConfig();
+  if (!config.ownerToken && !config.opsToken) {
+    return NextResponse.json({ error: "admin-auth-not-configured" }, { status: 503 });
+  }
+
+  if (isAdminApi || isRuntimeProofApi) {
     return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
   }
 
-  return unauthorized("Admin access requires explicit review authorization.", 401);
+  return unauthorized("Admin access requires authenticated owner/ops identity.", 401);
 }
 
 export const config = {

@@ -55,8 +55,16 @@ function normalizeRecord(record: SubmissionRecord): SubmissionRecord {
 
   return {
     ...record,
+    triageUpdatedBy: (record as { triageUpdatedBy?: string }).triageUpdatedBy || "legacy-file",
     lifecycleState,
     internalNote: (record as { internalNote?: string }).internalNote?.trim() ?? "",
+    serviceLane: (record as { serviceLane?: SubmissionRecord["type"] }).serviceLane || record.type,
+    attributionSource:
+      (record as { attributionSource?: SubmissionRecord["attributionSource"] }).attributionSource ||
+      "unknown",
+    attributionPath: (record as { attributionPath?: string }).attributionPath || "",
+    attributionReferrer: (record as { attributionReferrer?: string }).attributionReferrer || "",
+    correlationId: (record as { correlationId?: string }).correlationId || `legacy-${record.id}`,
     triageUpdatedAt:
       (record as { triageUpdatedAt?: string }).triageUpdatedAt || record.createdAt,
     streetAddress: streetAddress || legacyAddress,

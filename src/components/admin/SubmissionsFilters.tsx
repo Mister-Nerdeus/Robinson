@@ -5,6 +5,7 @@ type Props = {
   selectedStatus?: string;
   dateFrom?: string;
   dateTo?: string;
+  selectedSource?: string;
 };
 
 const typeOptions: Array<{ value: SubmissionType; label: string }> = [
@@ -17,14 +18,31 @@ const typeOptions: Array<{ value: SubmissionType; label: string }> = [
 
 const statusOptions: Array<{ value: SubmissionLifecycleState; label: string }> = [
   { value: "new", label: "New" },
+  { value: "contacted", label: "Contacted" },
   { value: "in-progress", label: "In Progress" },
   { value: "scheduled", label: "Scheduled" },
+  { value: "completed", label: "Completed" },
+  { value: "lost", label: "Lost" },
   { value: "closed", label: "Closed" },
 ];
 
-export function SubmissionsFilters({ selectedType = "", selectedStatus = "", dateFrom = "", dateTo = "" }: Props) {
+const sourceOptions = [
+  { value: "direct", label: "Direct" },
+  { value: "organic", label: "Organic" },
+  { value: "referral", label: "Referral" },
+  { value: "campaign", label: "Campaign" },
+  { value: "unknown", label: "Unknown" },
+];
+
+export function SubmissionsFilters({
+  selectedType = "",
+  selectedStatus = "",
+  dateFrom = "",
+  dateTo = "",
+  selectedSource = "",
+}: Props) {
   return (
-    <form className="grid gap-3 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-4 md:grid-cols-[1fr,1fr,1fr,1fr,auto] md:items-end" method="get">
+    <form className="grid gap-3 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-4 md:grid-cols-[1fr,1fr,1fr,1fr,1fr,auto] md:items-end" method="get">
       <label className="grid gap-1 text-sm">
         <span className="font-semibold">Service Type</span>
         <select name="type" defaultValue={selectedType} className="rounded-md border border-[#bdb4a2] bg-white px-3 py-2">
@@ -57,6 +75,17 @@ export function SubmissionsFilters({ selectedType = "", selectedStatus = "", dat
       <label className="grid gap-1 text-sm">
         <span className="font-semibold">Date To</span>
         <input className="rounded-md border border-[#bdb4a2] bg-white px-3 py-2" type="date" name="dateTo" defaultValue={dateTo} />
+      </label>
+      <label className="grid gap-1 text-sm">
+        <span className="font-semibold">Attribution</span>
+        <select name="source" defaultValue={selectedSource} className="rounded-md border border-[#bdb4a2] bg-white px-3 py-2">
+          <option value="">All</option>
+          {sourceOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </label>
 
       <div className="flex gap-2">

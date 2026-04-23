@@ -1,3 +1,5 @@
+import { company } from "@/config/company";
+
 export type FactStatus = "verified" | "marketing" | "pending-verification";
 
 export type BusinessFact = {
@@ -19,12 +21,12 @@ export type PublicPhoneSemantic = {
   placementNote: string;
 };
 
-const emergencyAndPrimaryNumber = "(616) 636-5565";
-const secondaryOfficeNumber = "(616) 887-2060";
+const emergencyAndPrimaryNumber = company.primaryPhone;
+const secondaryOfficeNumber = company.secondaryPhone || "";
 
 export const publicBusinessFacts = {
-  businessName: "Robinson Septic Cleaning",
-  legalName: "Robinson Septic Tank Cleaning LLC",
+  businessName: company.publicBrand,
+  legalName: company.legalName,
   phoneSemantics: {
     emergencyLine: {
       role: "emergency_line",
@@ -51,12 +53,12 @@ export const publicBusinessFacts = {
   primaryServiceLine: emergencyAndPrimaryNumber,
   additionalOfficeLine: secondaryOfficeNumber,
   primaryAddress: {
-    line1: "1565 N Dagget Rd",
-    city: "Pierson",
-    state: "MI",
-    postalCode: "49339",
+    line1: company.address.line1,
+    city: company.address.city,
+    state: company.address.state,
+    postalCode: company.address.postalCode,
   },
-  serviceHours: "24/7 Emergency Service • Routine scheduling available by phone or request form",
+  serviceHours: company.serviceHours,
 };
 
 export const publicPhoneSemanticsMap: PublicPhoneSemantic[] = [

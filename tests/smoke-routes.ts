@@ -61,8 +61,8 @@ async function run() {
   process.env.LOCAL_ONLY_MODE = "false";
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
   process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "true";
-  process.env.REVIEW_ACCESS_COOKIE_NAME = "robinson_review_access";
-  process.env.REVIEW_ACCESS_KEY = "smoke-review-access-secret";
+  process.env.ADMIN_SESSION_COOKIE_NAME = "robinson_admin_session";
+  process.env.ADMIN_OWNER_TOKEN = "smoke-owner-access-token-012345";
 
   const blocked = await GET(new Request("http://localhost/api/submissions"));
   assert.equal(blocked.status, 401, "Admin GET must be blocked without review access cookie");
@@ -70,7 +70,7 @@ async function run() {
   const open = await GET(
     new Request("http://localhost/api/submissions", {
       headers: {
-        cookie: "robinson_review_access=smoke-review-access-secret",
+        cookie: "robinson_admin_session=smoke-owner-access-token-012345",
       },
     }),
   );

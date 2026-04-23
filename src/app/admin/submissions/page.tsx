@@ -1,46 +1,18 @@
 import { Section } from "@/components/site/Section";
-import { getSubmissions } from "@/lib/forms/actions";
 import { SubmissionFilters } from "@/components/admin/SubmissionFilters";
 import { SubmissionsTable } from "@/components/admin/SubmissionsTable";
-import { getRuntimeEnv, isAdminReviewEnabled } from "@/lib/runtime/env";
-import type { SubmissionRecord } from "@/lib/forms/types";
+import { getRuntimeEnv } from "@/lib/runtime/env";
+import { hasConfiguredAdminTokens, resolveAdminIdentity } from "@/lib/auth";
+import { listSubmissionReport, listSubmissions } from "@/lib/submissions/repository";
+import { headers } from "next/headers";
 
 type SearchParams = {
   type?: string;
   status?: string;
   dateFrom?: string;
   dateTo?: string;
+  source?: string;
 };
-
-function filterRows(rows: SubmissionRecord[], searchParams: SearchParams) {
-  const { type, status, dateFrom, dateTo } = searchParams;
-
-  return rows.filter((row) => {
-    if (type && row.type !== type) {
-      return false;
-    }
-
-    if (status && row.lifecycleState !== status) {
-      return false;
-    }
-
-    if (dateFrom) {
-      const start = `${dateFrom}T00:00:00.000Z`;
-      if (row.createdAt < start) {
-        return false;
-      }
-    }
-
-    if (dateTo) {
-      const end = `${dateTo}T23:59:59.999Z`;
-      if (row.createdAt > end) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-}
 
 export default async function AdminSubmissionsPage({
   searchParams,
@@ -49,28 +21,52 @@ export default async function AdminSubmissionsPage({
 }) {
   const params = await searchParams;
   const runtime = getRuntimeEnv();
+  const requestHeaders = await headers();
+  const identity = resolveAdminIdentity(
+    new Request("http://localhost/admin/submissions", { headers: requestHeaders }),
+  );
 
-  if (!isAdminReviewEnabled()) {
+  if (!runtime.enableAdminSubmissionsReview) {
     return (
       <Section title="Admin Submissions" layout="marketing">
         <p>Admin review is blocked by runtime security policy.</p>
-        <p className="mt-2 text-sm text-slate-700">
-          Non-production review requires explicit enablement and a configured review access secret.
-        </p>
+      </Section>
+    );
+  }
+  if (!hasConfiguredAdminTokens()) {
+    return (
+      <Section title="Admin Submissions" layout="marketing">
+        <p>Admin authentication is not configured.</p>
+        <p className="mt-2 text-sm text-slate-700">Set `ADMIN_OWNER_TOKEN` and/or `ADMIN_OPS_TOKEN`.</p>
+      </Section>
+    );
+  }
+  if (!identity.authenticated || (identity.role !== "owner" && identity.role !== "ops")) {
+    return (
+      <Section title="Admin Submissions" layout="marketing">
+        <p>Admin access requires authenticated owner/ops identity.</p>
       </Section>
     );
   }
 
-  const rows = await getSubmissions();
-  const filtered = filterRows(rows, params);
+  const filters = {
+    type: params.type,
+    status: params.status,
+    dateFrom: params.dateFrom,
+    dateTo: params.dateTo,
+    source: params.source,
+  };
+  const rows = await listSubmissions(filters);
+  const report = await listSubmissionReport(filters);
 
   return (
     <Section title="Admin Submissions Workspace" layout="marketing">
       <p className="mb-3 text-sm">
-        Protected review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>.
+        Protected review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>. Role:{" "}
+        <span className="font-semibold">{identity.role}</span>.
       </p>
       <p className="mb-4 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-3 text-sm">
-        Internal triage only. This workspace is guarded by runtime policy and explicit review-access control.
+        Internal triage only. This workspace is guarded by runtime policy and authenticated owner/ops access.
       </p>
 
       <SubmissionFilters
@@ -78,12 +74,22 @@ export default async function AdminSubmissionsPage({
         selectedStatus={params.status}
         dateFrom={params.dateFrom}
         dateTo={params.dateTo}
+        selectedSource={params.source}
       />
       <p className="mt-3 text-xs text-slate-600">
-        Showing {filtered.length} of {rows.length} submissions.
+        Showing {rows.length} filtered submissions.
       </p>
+      <div className="mt-2 rounded-md border border-[#e3d9cb] bg-[#fffdf9] p-3 text-xs text-slate-700">
+        <p className="font-semibold text-slate-900">Export grouping preview (lane/status/source)</p>
+        {report.length === 0 ? <p className="mt-1">No grouped rows for current filters.</p> : null}
+        {report.slice(0, 8).map((entry) => (
+          <p key={`${entry.lane}-${entry.lifecycleState}-${entry.attributionSource}`}>
+            {entry.lane} | {entry.lifecycleState} | {entry.attributionSource}: {entry.count}
+          </p>
+        ))}
+      </div>
       <div className="mt-3">
-        <SubmissionsTable rows={filtered} />
+        <SubmissionsTable rows={rows} />
       </div>
     </Section>
   );

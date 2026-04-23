@@ -12,15 +12,21 @@ type Props = {
 
 const statusLabel: Record<SubmissionLifecycleState, string> = {
   new: "New",
+  contacted: "Contacted",
   "in-progress": "In Progress",
   scheduled: "Scheduled",
+  completed: "Completed",
+  lost: "Lost",
   closed: "Closed",
 };
 
 const statusTone: Record<SubmissionLifecycleState, string> = {
   new: "bg-[#fff3c4] border-[#eedf9f]",
+  contacted: "bg-[#fff2da] border-[#efd3a2]",
   "in-progress": "bg-[#e6f2ff] border-[#bdd8f7]",
   scheduled: "bg-[#e9f5e5] border-[#c9e3bc]",
+  completed: "bg-[#ddf6ea] border-[#9dd8b8]",
+  lost: "bg-[#fee7e7] border-[#efb3b3]",
   closed: "bg-[#efeef5] border-[#d5d2e4]",
 };
 
@@ -31,7 +37,7 @@ function toExportText(rows: SubmissionRecord[]) {
         .map((field) => `${field.label}: ${field.value}`)
         .join(" | ");
       const note = row.internalNote ? ` | Internal Note: ${row.internalNote}` : "";
-      return `${row.createdAt} | ${row.type} | ${row.fullName} | ${row.phone} | Status: ${row.lifecycleState} | ${summary} | ${row.message}${note}`;
+      return `${row.createdAt} | ${row.type} | Lane: ${row.serviceLane} | Source: ${row.attributionSource} | ${row.fullName} | ${row.phone} | Status: ${row.lifecycleState} | ${summary} | ${row.message}${note}`;
     })
     .join("\n");
 }
@@ -47,6 +53,11 @@ function toCsv(rows: SubmissionRecord[]) {
     "createdAt",
     "triageUpdatedAt",
     "type",
+    "serviceLane",
+    "attributionSource",
+    "attributionPath",
+    "attributionReferrer",
+    "correlationId",
     "lifecycleState",
     "fullName",
     "phone",
@@ -62,6 +73,11 @@ function toCsv(rows: SubmissionRecord[]) {
       row.createdAt,
       row.triageUpdatedAt,
       row.type,
+      row.serviceLane,
+      row.attributionSource,
+      row.attributionPath,
+      row.attributionReferrer,
+      row.correlationId,
       row.lifecycleState,
       row.fullName,
       row.phone,
@@ -113,9 +129,12 @@ export function SubmissionsTable({ rows }: Props) {
             </span>
           </div>
           <p className="font-semibold text-[var(--brand)]">{row.type}</p>
+          <p className="text-xs text-slate-600">
+            Lane: {row.serviceLane} | Source: {row.attributionSource} | Correlation: {row.correlationId || "-"}
+          </p>
           <p className="text-sm">{row.fullName} | {row.phone} | {row.email}</p>
           <p className="mt-1 text-xs text-slate-600">
-            Internal note: {row.internalNote ? "present" : "none"} | Triage updated: {row.triageUpdatedAt}
+            Internal note: {row.internalNote ? "present" : "none"} | Triage updated: {row.triageUpdatedAt} by {row.triageUpdatedBy}
           </p>
           <div className="mt-2 grid gap-1 text-xs text-slate-700 sm:grid-cols-3">
             {getSubmissionSummaryFields(row).map((field) => (

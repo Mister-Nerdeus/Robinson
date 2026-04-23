@@ -1,5 +1,10 @@
 import { company } from "@/config/company";
 import { REQUEST_LAYOUT_CONTRACT_VERSION } from "@/config/requestLayoutContract";
+import {
+  getAdminSessionCookieName,
+  hasConfiguredAdminTokens,
+  resolveAdminIdentity,
+} from "@/lib/auth";
 
 export type RuntimeMode = "local" | "demo" | "production";
 export type BranchIntent = "main" | "develop" | "local";
@@ -101,31 +106,30 @@ export function isPublicRuntime(): boolean {
 }
 
 export function isReviewAccessConfigured(): boolean {
-  return getRuntimeEnv().reviewAccessKey.length >= 16;
+  return hasConfiguredAdminTokens();
 }
 
 export function isAdminReviewEnabled(): boolean {
   const env = getRuntimeEnv();
-  if (env.mode === "production") {
-    return false;
-  }
   if (!env.enableAdminSubmissionsReview) {
     return false;
   }
-  if (!(env.localOnlyMode || env.allowAdminOutsideLocalMode)) {
+  if (!hasConfiguredAdminTokens()) {
     return false;
   }
-  return isReviewAccessConfigured();
+  if (env.mode === "production" && env.localOnlyMode) {
+    return false;
+  }
+  return true;
 }
 
 export function hasValidReviewAccessCookie(cookieHeader: string | undefined): boolean {
-  const env = getRuntimeEnv();
-  if (!isAdminReviewEnabled()) {
+  if (!cookieHeader || !isAdminReviewEnabled()) {
     return false;
   }
-
-  const cookieValue = parseCookieValue(cookieHeader, env.reviewAccessCookieName);
-  return cookieValue.length > 0 && cookieValue === env.reviewAccessKey;
+  const request = new Request("http://localhost", { headers: { cookie: cookieHeader } });
+  const identity = resolveAdminIdentity(request);
+  return identity.authenticated;
 }
 
 export function isRuntimeProofHostAllowed(host: string | undefined): boolean {
@@ -136,12 +140,12 @@ export function isRuntimeProofHostAllowed(host: string | undefined): boolean {
 }
 
 export function hasValidReviewAccessValue(cookieValue: string | undefined): boolean {
-  const env = getRuntimeEnv();
-  if (!isAdminReviewEnabled()) {
+  if (!cookieValue || !isAdminReviewEnabled()) {
     return false;
   }
-
-  return Boolean(cookieValue && cookieValue === env.reviewAccessKey);
+  const cookieName = getAdminSessionCookieName();
+  const cookieHeader = `${cookieName}=${encodeURIComponent(cookieValue)}`;
+  return hasValidReviewAccessCookie(cookieHeader);
 }
 
 export function shouldRenderOperatorProofChrome(
@@ -202,9 +206,7 @@ export function validateRuntimeIdentityForRender() {
   }
 
   if (env.mode !== "production" && env.enableAdminSubmissionsReview && !isReviewAccessConfigured()) {
-    throw new Error(
-      "Non-production admin review requires REVIEW_ACCESS_KEY with at least 16 characters.",
-    );
+    throw new Error("Admin review requires configured owner/ops auth tokens.");
   }
 
   if (env.mode === "production" && !env.seoAllowIndexing) {

@@ -2,15 +2,24 @@ import { NextResponse } from "next/server";
 import { createSubmission, getSubmissions } from "@/lib/forms/actions";
 import { submissionSchema } from "@/lib/forms/schema";
 import { enforceAbuseProtection } from "@/lib/forms/abuseProtection";
-import { hasValidReviewAccessCookie, isAdminReviewEnabled } from "@/lib/runtime/env";
+import { getRuntimeEnv } from "@/lib/runtime/env";
+import { hasConfiguredAdminTokens, resolveAdminIdentity } from "@/lib/auth";
+import {
+  correlationIdFromRequest,
+  inferAttributionSource,
+  logStructuredEvent,
+} from "@/lib/observability";
 
 export async function GET(request: Request) {
-  if (!isAdminReviewEnabled()) {
+  const runtime = getRuntimeEnv();
+  if (!runtime.enableAdminSubmissionsReview) {
     return NextResponse.json({ error: "admin-review-blocked" }, { status: 403 });
   }
-
-  const cookieHeader = request.headers.get("cookie") || undefined;
-  if (!hasValidReviewAccessCookie(cookieHeader)) {
+  if (!hasConfiguredAdminTokens()) {
+    return NextResponse.json({ error: "admin-auth-not-configured" }, { status: 503 });
+  }
+  const identity = resolveAdminIdentity(request);
+  if (!identity.authenticated || (identity.role !== "owner" && identity.role !== "ops")) {
     return NextResponse.json({ error: "admin-auth-required" }, { status: 401 });
   }
 
@@ -19,10 +28,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const correlationId = correlationIdFromRequest(request);
   const body = await request.json();
   const forwarded = request.headers.get("x-forwarded-for") ?? "";
   const ip = forwarded.split(",")[0]?.trim() || "unknown";
   const userAgent = request.headers.get("user-agent") ?? "unknown";
+  const pathname = new URL(request.url).pathname;
 
   const abuse = await enforceAbuseProtection({
     ip,
@@ -33,14 +44,82 @@ export async function POST(request: Request) {
   });
 
   if (!abuse.allowed) {
-    return NextResponse.json({ error: abuse.error }, { status: abuse.status });
+    await logStructuredEvent({
+      eventType: "submission.abuse_blocked",
+      level: "warn",
+      correlationId,
+      requestPath: pathname,
+      status: abuse.status,
+      details: { ip, userAgent, reason: abuse.error, payload: body },
+    });
+    return NextResponse.json({ error: abuse.error, correlationId }, { status: abuse.status });
   }
 
   const parsed = submissionSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    await logStructuredEvent({
+      eventType: "submission.validation_failed",
+      level: "warn",
+      correlationId,
+      requestPath: pathname,
+      status: 400,
+      details: { issues: parsed.error.flatten(), payload: body },
+    });
+    return NextResponse.json({ error: parsed.error.flatten(), correlationId }, { status: 400 });
   }
 
-  const { record, delivery } = await createSubmission(parsed.data);
-  return NextResponse.json({ ok: true, id: record.id, delivery }, { status: 201 });
+  try {
+    const { record, delivery } = await createSubmission(parsed.data, {
+      source: inferAttributionSource(request),
+      path: new URL(request.url).pathname,
+      referrer: request.headers.get("referer") || "",
+      correlationId,
+    });
+
+    if (!delivery.internal.ok || !delivery.customer.ok) {
+      await logStructuredEvent({
+        eventType: "submission.notification_failed",
+        level: "error",
+        correlationId,
+        requestPath: pathname,
+        submissionId: record.id,
+        lane: record.type,
+        status: 502,
+        details: { delivery, payload: parsed.data },
+      });
+    }
+
+    await logStructuredEvent({
+      eventType: "submission.created",
+      level: "info",
+      correlationId,
+      requestPath: pathname,
+      submissionId: record.id,
+      lane: record.type,
+      status: 201,
+      details: {
+        attributionSource: record.attributionSource,
+        attributionReferrer: record.attributionReferrer,
+      },
+    });
+
+    return NextResponse.json(
+      { ok: true, id: record.id, delivery, correlationId },
+      { status: 201, headers: { "x-correlation-id": correlationId } },
+    );
+  } catch (error) {
+    await logStructuredEvent({
+      eventType: "submission.persistence_failed",
+      level: "error",
+      correlationId,
+      requestPath: pathname,
+      status: 500,
+      details: { error: error instanceof Error ? error.message : String(error), payload: parsed.data },
+    });
+
+    return NextResponse.json(
+      { error: "submission-unavailable", correlationId },
+      { status: 500, headers: { "x-correlation-id": correlationId } },
+    );
+  }
 }

@@ -8,8 +8,11 @@ export const submissionTypes = [
 
 export const submissionLifecycleStates = [
   "new",
+  "contacted",
   "in-progress",
   "scheduled",
+  "completed",
+  "lost",
   "closed",
 ] as const;
 
@@ -20,9 +23,15 @@ export type SubmissionBase = {
   id: string;
   createdAt: string;
   triageUpdatedAt: string;
+  triageUpdatedBy: string;
   lifecycleState: SubmissionLifecycleState;
   internalNote: string;
   type: SubmissionType;
+  serviceLane: SubmissionType;
+  attributionSource: "direct" | "organic" | "referral" | "campaign" | "unknown";
+  attributionPath: string;
+  attributionReferrer: string;
+  correlationId: string;
   fullName: string;
   phone: string;
   email: string;

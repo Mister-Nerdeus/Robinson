@@ -36,3 +36,4 @@ Every rendered field must be present in all three places:
 ## Drift Guard Tests
 - `tests/submission-contract.spec.ts`: verifies all lanes preserve fields end-to-end.
 - `tests/commercial-submission.spec.ts`: commercial regression for facility field persistence + notification rendering.
+- `tests/submission-persistence-contract.spec.ts`: canonical SQLite persistence and attribution/correlation durability.

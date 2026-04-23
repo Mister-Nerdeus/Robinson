@@ -14,26 +14,27 @@ function run() {
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
   process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE = "true";
   process.env.REVIEW_SURFACES_VISIBLE = "true";
-  process.env.REVIEW_ACCESS_COOKIE_NAME = "robinson_review_access";
-  process.env.REVIEW_ACCESS_KEY = "";
+  process.env.ADMIN_SESSION_COOKIE_NAME = "robinson_admin_session";
+  process.env.ADMIN_OWNER_TOKEN = "";
+  process.env.ADMIN_OPS_TOKEN = "";
 
   assert.equal(
     isAdminReviewEnabled(),
     false,
-    "admin review must remain blocked without explicit review access key",
+    "admin review must remain blocked without owner/ops tokens",
   );
 
-  process.env.REVIEW_ACCESS_KEY = "demo-review-access-secret";
-  assert.equal(isAdminReviewEnabled(), true, "admin review opens only with policy + review secret");
+  process.env.ADMIN_OWNER_TOKEN = "demo-owner-access-token-012345";
+  assert.equal(isAdminReviewEnabled(), true, "admin review opens only with policy + auth token");
   assert.equal(
-    hasValidReviewAccessCookie("robinson_review_access=demo-review-access-secret"),
+    hasValidReviewAccessCookie("robinson_admin_session=demo-owner-access-token-012345"),
     true,
-    "review cookie must validate when correct",
+    "session cookie must validate when correct",
   );
   assert.equal(
-    hasValidReviewAccessCookie("robinson_review_access=wrong"),
+    hasValidReviewAccessCookie("robinson_admin_session=wrong"),
     false,
-    "review cookie must fail when wrong",
+    "session cookie must fail when wrong",
   );
   assert.equal(
     shouldRenderOperatorProofChrome(undefined, ""),
@@ -41,7 +42,7 @@ function run() {
     "demo proof chrome stays hidden without explicit operator cookie",
   );
   assert.equal(
-    shouldRenderOperatorProofChrome(undefined, "demo-review-access-secret"),
+    shouldRenderOperatorProofChrome(undefined, "demo-owner-access-token-012345"),
     true,
     "demo proof chrome appears only with explicit operator cookie",
   );
