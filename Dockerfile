@@ -88,6 +88,7 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+RUN mkdir -p /app/data
 ARG RUNTIME_MODE
 ARG SITE_URL
 ARG LOCAL_ONLY_MODE
@@ -164,6 +165,7 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
+VOLUME ["/app/data"]
 EXPOSE 4850
 HEALTHCHECK --interval=20s --timeout=5s --start-period=25s --retries=6 \
   CMD node -e "require('http').get('http://localhost:4850',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"

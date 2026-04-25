@@ -19,6 +19,7 @@ Isolated pre-launch testing stack for routing, submissions, notifications, persi
 - Project name: `robinson-test`
 - Dedicated host ports avoid collisions with local dev defaults.
 - Named volumes keep test persistence isolated from local dev artifacts.
+- SQLite canonical storage stays inside `/app/data/submissions.sqlite` and is persisted by the `test_data` volume.
 
 ## Health Checks
 - `web`: HTTP check on internal port `4850`
