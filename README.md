@@ -9,6 +9,10 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Runtime host proof: [`docs/runtime-host-proof-contract.md`](docs/runtime-host-proof-contract.md)
 - Review/admin access protection: [`docs/review-surface-access-contract.md`](docs/review-surface-access-contract.md)
 - Admin auth contract: [`docs/admin-access-contract.md`](docs/admin-access-contract.md)
+- Mailbox contract: [`docs/mailbox-contract.md`](docs/mailbox-contract.md)
+- Resend runbook: [`docs/resend-setup-runbook.md`](docs/resend-setup-runbook.md)
+- Microsoft 365 SMTP runbook: [`docs/m365-smtp-runbook.md`](docs/m365-smtp-runbook.md)
+- Provider decision matrix: [`docs/provider-decision-matrix.md`](docs/provider-decision-matrix.md)
 - Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
 - Promotion runbook: [`docs/branch-promotion-runbook.md`](docs/branch-promotion-runbook.md)
 - Proof packs: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md), [`docs/v4-proof-pack.md`](docs/v4-proof-pack.md)
@@ -42,7 +46,17 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - SEO contract: `npm run test:seo-contract`
 - Admin auth contract: `npm run test:admin-auth-contract`
 - Submission persistence contract: `npm run test:submission-persistence-contract`
+- SQLite persistence contract: `npm run test:sqlite-persistence-contract`
+- Resend provider contract: `npm run test:resend-provider`
+- Mailbox contract: `npm run test:mailbox-contract`
+- SMTP config contract: `npm run test:smtp-config-contract`
 - Observability contract: `npm run test:observability-contract`
 - Lead lifecycle contract: `npm run test:lead-lifecycle`
 - Public facts consistency: `npm run test:public-facts-consistency`
 - Lane conversion contract: `npm run test:lane-conversion-contract`
+
+## Notification Modes
+- `NOTIFICATION_MODE=resend` (recommended primary for production web forms)
+- `NOTIFICATION_MODE=smtp` (optional fallback, including `SMTP_PROFILE=m365-exchange-online`)
+- `NOTIFICATION_MODE=ethereal` (test-only transport)
+- `NOTIFICATION_MODE=log` (local contract/smoke mode)

@@ -1,9 +1,10 @@
 # Durable Intake Seams
 
 ## Submission Storage
-- Active backend storage is file-backed at `data/submissions.json`.
+- Active backend storage is SQLite-backed at `data/submissions.sqlite` (or `SUBMISSIONS_DB_PATH`).
 - Docker Compose mounts `/app/data` to named volumes so records survive container restarts.
-- Storage seam remains in `src/lib/storage/submissions.ts` and can be replaced without changing the form API contract.
+- Canonical storage seam is `src/lib/submissions/repository.ts` with DB bootstrap in `src/lib/db/sqlite.ts`.
+- Legacy JSON import seam remains via `scripts/import-submissions-json.ts`.
 
 ## Rate Limiting
 - Default mode is durable file-backed (`RATE_LIMIT_MODE=file`).

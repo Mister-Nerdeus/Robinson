@@ -7,7 +7,7 @@ export type EmailDeliverySummary = {
   internal: Awaited<ReturnType<typeof sendSubmissionNotification>>;
   customer: {
     ok: boolean;
-    channel: "smtp" | "ethereal" | "log";
+    channel: "smtp" | "ethereal" | "log" | "resend";
     messageId?: string;
     error?: string;
   };

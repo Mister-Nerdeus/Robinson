@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-import { notificationConfig } from "@/config/notifications";
+import { Resend } from "resend";
+import { notificationConfig, resolveInternalRecipient } from "@/config/notifications";
 import type { SubmissionRecord } from "@/lib/forms/types";
 import { getSubmissionSummaryFields } from "@/lib/forms/types";
 import type { DeliveryResult } from "./types";
@@ -17,6 +18,12 @@ const submissionTypeLabels: Record<SubmissionRecord["type"], string> = {
 function renderSubject(record: SubmissionRecord) {
   const base = `[${submissionTypeLabels[record.type]}] New intake - ${record.fullName}`;
   return notificationConfig.subjectPrefix ? `${notificationConfig.subjectPrefix} ${base}` : base;
+}
+
+function renderFromValue() {
+  return notificationConfig.fromName
+    ? `${notificationConfig.fromName} <${notificationConfig.fromEmail}>`
+    : notificationConfig.fromEmail;
 }
 
 function renderTypeSpecificLines(record: SubmissionRecord): string[] {
@@ -102,6 +109,29 @@ function renderText(record: SubmissionRecord) {
 
 let etherealAccountPromise: Promise<nodemailer.TestAccount> | null = null;
 
+type ResendSendResult = {
+  data?: { id?: string | null } | null;
+  error?: { message?: string | null } | null;
+};
+
+type ResendClient = {
+  emails: {
+    send: (payload: {
+      from: string;
+      to: string;
+      replyTo?: string;
+      subject: string;
+      text: string;
+    }) => Promise<ResendSendResult>;
+  };
+};
+
+let resendClientFactory: (apiKey: string) => ResendClient = (apiKey: string) => new Resend(apiKey);
+
+export function setResendClientFactoryForTests(factory: ((apiKey: string) => ResendClient) | null) {
+  resendClientFactory = factory || ((apiKey: string) => new Resend(apiKey));
+}
+
 async function getEtherealAccount() {
   if (!etherealAccountPromise) {
     etherealAccountPromise = nodemailer.createTestAccount();
@@ -111,21 +141,53 @@ async function getEtherealAccount() {
 
 function validateDevelopSafeInbox() {
   const env = getRuntimeEnv();
-  if (env.mode !== "demo" || notificationConfig.mode !== "smtp") {
+  if (
+    env.mode !== "demo" ||
+    (notificationConfig.mode !== "smtp" && notificationConfig.mode !== "resend")
+  ) {
     return null;
   }
 
   const pattern = new RegExp(notificationConfig.developSafeInboxPattern, "i");
-  if (!pattern.test(notificationConfig.toEmail)) {
-    return `Develop SMTP delivery requires NOTIFICATION_TO_EMAIL to match pattern: ${notificationConfig.developSafeInboxPattern}`;
+  const recipients = [
+    notificationConfig.internalDefaultToEmail,
+    ...Object.values(notificationConfig.laneToRecipient),
+  ].filter(Boolean);
+  const hasUnsafeRecipient = recipients.some((entry) => !pattern.test(entry));
+  if (hasUnsafeRecipient) {
+    return `Develop delivery requires notification recipient emails to match pattern: ${notificationConfig.developSafeInboxPattern}`;
   }
 
+  return null;
+}
+
+function validateProviderContract(recipient: string): string | null {
+  if (!recipient) {
+    return "Notification recipient is missing. Configure NOTIFICATION_INTERNAL_TO_EMAIL or NOTIFICATION_TO_EMAIL.";
+  }
+  if (!notificationConfig.fromEmail) {
+    return "Notification sender is missing. Configure NOTIFICATION_FROM_EMAIL.";
+  }
+  if (notificationConfig.mode === "smtp") {
+    if (!notificationConfig.smtp.host) {
+      return "SMTP host is missing. Configure SMTP_HOST.";
+    }
+    if (!notificationConfig.smtp.user || !notificationConfig.smtp.pass) {
+      return "SMTP credentials are missing. Configure SMTP_USER and SMTP_PASS.";
+    }
+  }
+  if (notificationConfig.mode === "resend" && !notificationConfig.resend.apiKey) {
+    return "Resend mode requires RESEND_API_KEY.";
+  }
   return null;
 }
 
 export async function sendSubmissionNotification(record: SubmissionRecord): Promise<DeliveryResult> {
   const subject = renderSubject(record);
   const text = renderText(record);
+  const recipient = resolveInternalRecipient(record.type);
+  const from = renderFromValue();
+  const replyTo = notificationConfig.replyToEmail || undefined;
 
   try {
     const developSafetyError = validateDevelopSafeInbox();
@@ -134,6 +196,22 @@ export async function sendSubmissionNotification(record: SubmissionRecord): Prom
         ok: false,
         channel: notificationConfig.mode,
         error: developSafetyError,
+      };
+      await appendNotificationLog({
+        ts: new Date().toISOString(),
+        result,
+        submissionId: record.id,
+        type: record.type,
+      });
+      return result;
+    }
+
+    const providerContractError = validateProviderContract(recipient);
+    if (providerContractError) {
+      const result: DeliveryResult = {
+        ok: false,
+        channel: notificationConfig.mode,
+        error: providerContractError,
       };
       await appendNotificationLog({
         ts: new Date().toISOString(),
@@ -156,8 +234,9 @@ export async function sendSubmissionNotification(record: SubmissionRecord): Prom
       });
 
       const info = await transporter.sendMail({
-        from: notificationConfig.fromEmail,
-        to: notificationConfig.toEmail,
+        from,
+        to: recipient,
+        replyTo,
         subject,
         text,
       });
@@ -177,8 +256,9 @@ export async function sendSubmissionNotification(record: SubmissionRecord): Prom
       });
 
       const info = await transporter.sendMail({
-        from: notificationConfig.fromEmail,
-        to: notificationConfig.toEmail,
+        from,
+        to: recipient,
+        replyTo,
         subject,
         text,
       });
@@ -193,7 +273,44 @@ export async function sendSubmissionNotification(record: SubmissionRecord): Prom
       return result;
     }
 
-    await appendNotificationLog({ ts: new Date().toISOString(), channel: "log", submissionId: record.id, type: record.type, subject, text });
+    if (notificationConfig.mode === "resend") {
+      const resend = resendClientFactory(notificationConfig.resend.apiKey);
+      const resendFrom = notificationConfig.resend.fromEmail || from;
+      const response = await resend.emails.send({
+        from: resendFrom,
+        to: recipient,
+        replyTo,
+        subject,
+        text,
+      });
+
+      if (response.error) {
+        const result: DeliveryResult = {
+          ok: false,
+          channel: "resend",
+          error: response.error.message || "resend delivery failed",
+        };
+        await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
+        return result;
+      }
+
+      const messageId = response.data?.id || `resend-${record.id}`;
+      const result: DeliveryResult = { ok: true, channel: "resend", messageId };
+      await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
+      return result;
+    }
+
+    await appendNotificationLog({
+      ts: new Date().toISOString(),
+      channel: "log",
+      submissionId: record.id,
+      type: record.type,
+      subject,
+      text,
+      recipient,
+      from,
+      replyTo,
+    });
     return { ok: true, channel: "log", messageId: `log-${record.id}` };
   } catch (error) {
     const message = error instanceof Error ? error.message : "unknown notification error";

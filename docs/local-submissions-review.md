@@ -8,10 +8,9 @@ Provide local-only visibility into captured form submissions during v1.
 - Enabled only when `ENABLE_ADMIN_SUBMISSIONS_REVIEW=true`.
 
 ## Storage
-- Local JSON file: `data/submissions.json`.
-- Each record includes timestamp and submission type.
-- JSON-first rationale for initial phase: avoids native driver setup friction on local Windows environments while preserving deterministic local proof.
+- Canonical SQLite file: `data/submissions.sqlite` (configurable via `SUBMISSIONS_DB_PATH`).
+- Each record includes lane, lifecycle, attribution, and triage metadata.
+- Legacy JSON imports are still supported through `npm run import:submissions-json`.
 
 ## Notes
-- This is intentionally lightweight and local-only for initial phase.
-- No production auth stack is implemented in this phase.
+- Local runtime remains lightweight, but admin access is token-authenticated unless explicit local bypass is enabled.

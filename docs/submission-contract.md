@@ -22,8 +22,8 @@ Optional shared field: `preferredDate`.
 | type | lane-specific required fields |
 | --- | --- |
 | `general` | `topic` |
-| `septic-service` | `tankSizeGallons`, `tankCount`, `lidsExposed`, `backupSigns` |
-| `evaluation` | `roleInSale`, `occupancyStatus` (+ optional `brokerageOrCompany`, `closingDate`) |
+| `septic-service` | `tankSizeGallons`, `tankCount`, `lidsExposed`, `tankLocationKnown`, `problemSigns` |
+| `evaluation` | `roleInSale`, `occupancyStatus`, `accessContactName`, `accessContactPhone` |
 | `rental` | `eventType`, `unitCount`, `rentalDuration`, `serviceFrequency`, `siteType` |
 | `commercial-service` | `facilityName`, `facilityType`, `serviceNeeded`, `greaseTrapCount`, `onSiteContact` |
 
@@ -32,6 +32,10 @@ Every rendered field must be present in all three places:
 1. schema validation (`src/lib/forms/schema.ts`)
 2. persisted record (`src/lib/forms/types.ts` / storage)
 3. notification output (`src/lib/notifications/send.ts`)
+
+## Mailbox Contract Hook
+- Mail semantics stay provider-neutral and are defined in `src/config/notifications.ts`.
+- Sender identity, reply-to, and lane routing are documented in `docs/mailbox-contract.md`.
 
 ## Drift Guard Tests
 - `tests/submission-contract.spec.ts`: verifies all lanes preserve fields end-to-end.
