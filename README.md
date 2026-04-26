@@ -1,6 +1,7 @@
 # Robinson Rebuild (Main/Develop Topology)
 
 This repository is governed by [`docs/project-contract.md`](docs/project-contract.md).
+Canonical production domain and host: `robinsonseptic.net`.
 
 ## Branch and Deployment Contracts
 - Branch deploy mapping: [`docs/branch-deploy-contract.md`](docs/branch-deploy-contract.md)
@@ -9,17 +10,24 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Runtime host proof: [`docs/runtime-host-proof-contract.md`](docs/runtime-host-proof-contract.md)
 - Review/admin access protection: [`docs/review-surface-access-contract.md`](docs/review-surface-access-contract.md)
 - Admin auth contract: [`docs/admin-access-contract.md`](docs/admin-access-contract.md)
+- Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
+- Railway domain topology: [`docs/railway-domain-topology-contract.md`](docs/railway-domain-topology-contract.md)
 - Mailbox contract: [`docs/mailbox-contract.md`](docs/mailbox-contract.md)
 - Inbound mail ops contract: [`docs/inbound-mail-ops-contract.md`](docs/inbound-mail-ops-contract.md)
 - M365 mailbox decision record: [`docs/m365-mailbox-decision-record.md`](docs/m365-mailbox-decision-record.md)
-- Resend runbook: [`docs/resend-setup-runbook.md`](docs/resend-setup-runbook.md)
-- Microsoft 365 SMTP runbook: [`docs/m365-smtp-runbook.md`](docs/m365-smtp-runbook.md)
-- Provider decision matrix: [`docs/provider-decision-matrix.md`](docs/provider-decision-matrix.md)
+- M365 provisioning checklist: [`docs/m365-provisioning-checklist-net.md`](docs/m365-provisioning-checklist-net.md)
 - Sending-domain contract: [`docs/email-domain-contract.md`](docs/email-domain-contract.md)
 - Deliverability runbook: [`docs/deliverability-runbook.md`](docs/deliverability-runbook.md)
-- Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
-- Promotion runbook: [`docs/branch-promotion-runbook.md`](docs/branch-promotion-runbook.md)
-- Proof packs: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md), [`docs/v4-proof-pack.md`](docs/v4-proof-pack.md)
+- Cloudflare authoritative go-live contract: [`docs/cloudflare-go-live-contract.md`](docs/cloudflare-go-live-contract.md)
+- DNS inventory pre-cutover: [`docs/dns-inventory-precutover.md`](docs/dns-inventory-precutover.md)
+- Nameserver cutover runbook: [`docs/nameserver-cutover-runbook.md`](docs/nameserver-cutover-runbook.md)
+- DNS record matrix: [`docs/dns-record-matrix-net.md`](docs/dns-record-matrix-net.md)
+- DNS collision guard: [`docs/dns-collision-guard.md`](docs/dns-collision-guard.md)
+- Net deployment env matrix: [`docs/net-deployment-env-matrix.md`](docs/net-deployment-env-matrix.md)
+- Production cutover checklist: [`docs/production-cutover-checklist.md`](docs/production-cutover-checklist.md)
+- Net cutover rehearsal: [`docs/net-cutover-rehearsal.md`](docs/net-cutover-rehearsal.md)
+- Release readiness proof pack: [`docs/release-readiness-proof-pack.md`](docs/release-readiness-proof-pack.md)
+- Rollback runbook: [`docs/rollback-runbook.md`](docs/rollback-runbook.md)
 
 ## Feature Contracts
 - Contact form truth: [`docs/contact-form-truth-contract.md`](docs/contact-form-truth-contract.md)
@@ -35,9 +43,6 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Data retention/export: [`docs/data-retention-contract.md`](docs/data-retention-contract.md)
 - Submission export runbook: [`docs/submission-export-runbook.md`](docs/submission-export-runbook.md)
 - Form UX accessibility checklist: [`docs/form-ux-accessibility-checklist.md`](docs/form-ux-accessibility-checklist.md)
-- Production cutover checklist: [`docs/production-cutover-checklist.md`](docs/production-cutover-checklist.md)
-- Release readiness proof pack: [`docs/release-readiness-proof-pack.md`](docs/release-readiness-proof-pack.md)
-- Rollback runbook: [`docs/rollback-runbook.md`](docs/rollback-runbook.md)
 - Public facts alignment: [`docs/public-facts-contract.md`](docs/public-facts-contract.md)
 - Public hours/emergency contract: [`docs/public-hours-emergency-contract.md`](docs/public-hours-emergency-contract.md)
 - External listing alignment: [`docs/business-listing-alignment.md`](docs/business-listing-alignment.md)
@@ -68,33 +73,13 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 
 ## App Verification
 - Full gate: `npm run verify:v1`
-- Runtime contract: `npm run test:runtime-contract`
-- SEO contract: `npm run test:seo-contract`
-- Admin auth contract: `npm run test:admin-auth-contract`
-- Submission persistence contract: `npm run test:submission-persistence-contract`
-- SQLite persistence contract: `npm run test:sqlite-persistence-contract`
-- Resend provider contract: `npm run test:resend-provider`
-- Mailbox contract: `npm run test:mailbox-contract`
-- Email domain readiness: `npm run test:email-domain-readiness`
-- SMTP config contract: `npm run test:smtp-config-contract`
-- Observability contract: `npm run test:observability-contract`
-- Territory routing contract: `npm run test:territory-routing`
-- Notification delivery state contract: `npm run test:notification-delivery-state`
-- Data retention/auth contract: `npm run test:data-retention-auth`
-- Form UX accessibility gate: `npm run test:form-ux-accessibility`
-- Release readiness gate: `npm run test:release-readiness-gate`
-- Cutover rehearsal gate: `npm run test:cutover-rehearsal-gate`
-- Lead lifecycle contract: `npm run test:lead-lifecycle`
-- Public facts consistency: `npm run test:public-facts-consistency`
-- Public hours truth: `npm run test:public-hours-truth`
-- External listing truth: `npm run test:external-listing-truth`
-- Lane conversion contract: `npm run test:lane-conversion-contract`
-- Owner report pack: `npm run test:owner-report-pack`
-- Public mode hardening: `npm run test:public-mode-hardening`
-- Backup/restore gate: `npm run test:backup-restore-gate`
-- Maintenance gate: `npm run test:maintenance-gate`
-- Anti-spam contract: `npm run test:anti-spam-contract`
-- Claim registry guard: `npm run test:claim-registry-guard`
+- Net domain canonicality: `npm run test:net-domain-canonicality`
+- Cloudflare cutover contract: `npm run test:cloudflare-cutover-contract`
+- Canonical host topology: `npm run test:canonical-host-topology`
+- M365 .net mailbox contract: `npm run test:m365-net-mailbox-contract`
+- DNS matrix contract: `npm run test:dns-record-matrix-contract`
+- Net env topology: `npm run test:net-env-topology`
+- Net cutover rehearsal gate: `npm run test:net-cutover-rehearsal-gate`
 
 ## Notification Modes
 - `NOTIFICATION_MODE=resend` (recommended primary for production web forms)

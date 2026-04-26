@@ -6,7 +6,7 @@ async function run() {
   process.env.RUNTIME_MODE = "production";
   process.env.NOTIFICATION_MODE = "resend";
   process.env.NOTIFICATION_SENDING_DOMAIN_POLICY = "dedicated-subdomain";
-  process.env.NOTIFICATION_SENDING_ROOT_DOMAIN = "robinsonseptic.com";
+  process.env.NOTIFICATION_SENDING_ROOT_DOMAIN = "robinsonseptic.net";
   process.env.NOTIFICATION_SENDING_SUBDOMAIN = "notify";
   process.env.NOTIFICATION_PROVIDER_SENDING_DOMAIN = "";
   process.env.NOTIFICATION_DNS_VERIFIED = "true";
@@ -17,7 +17,7 @@ async function run() {
   const { notificationConfig, getSendingDomainReadiness } = await import("../src/config/notifications");
 
   assert.equal(notificationConfig.sendingDomain.policy, "dedicated-subdomain");
-  assert.equal(notificationConfig.sendingDomain.effectiveDomain, "notify.robinsonseptic.com");
+  assert.equal(notificationConfig.sendingDomain.effectiveDomain, "notify.robinsonseptic.net");
 
   const readiness = getSendingDomainReadiness("production");
   assert.equal(readiness.requiresVerifiedDns, true, "production provider sends must require verified DNS");
