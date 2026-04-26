@@ -58,7 +58,7 @@ async function run() {
     },
   }));
 
-  const success = await sendSubmissionNotification(buildGeneralRecord("resend-success"));
+  const success = await sendSubmissionNotification(buildGeneralRecord(`resend-success-${Date.now()}`));
   assert.equal(success.ok, true, "resend success result should be ok");
   assert.equal(success.channel, "resend", "resend mode should map channel to resend");
   assert.equal(success.messageId, "re_12345", "resend message id should map into delivery contract");
@@ -69,7 +69,7 @@ async function run() {
     },
   }));
 
-  const failure = await sendSubmissionNotification(buildGeneralRecord("resend-failure"));
+  const failure = await sendSubmissionNotification(buildGeneralRecord(`resend-failure-${Date.now()}`));
   assert.equal(failure.ok, false, "resend failures should return contract failure");
   assert.equal(failure.channel, "resend", "failure channel should remain resend");
   assert.ok(

@@ -56,12 +56,14 @@ async function run() {
     assert.ok(recipient.includes("@"), `lane ${lane} must resolve to a valid recipient rule`);
   }
 
-  const result = await sendSubmissionNotification(buildGeneralRecord("mailbox-contract"));
+  const submissionId = `mailbox-contract-${Date.now()}`;
+  const result = await sendSubmissionNotification(buildGeneralRecord(submissionId));
   assert.equal(result.ok, true, "log mode should still succeed under mailbox contract");
   assert.equal(result.channel, "log", "mailbox contract should remain provider-neutral in log mode");
 
   const lines = (await readFile(notificationLogPath, "utf8")).trim().split("\n").filter(Boolean);
-  const last = JSON.parse(lines[lines.length - 1] || "{}") as Record<string, unknown>;
+  const parsed = lines.map((line) => JSON.parse(line) as Record<string, unknown>);
+  const last = [...parsed].reverse().find((entry) => typeof entry.recipient === "string") || {};
 
   assert.equal(last.recipient, "general-lane@example.com", "lane-specific routing must override default recipient");
   assert.equal(last.replyTo, "service-desk@example.com", "reply-to must be independent from sender address");

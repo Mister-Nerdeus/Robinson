@@ -25,6 +25,14 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Submissions lifecycle workspace: [`docs/submissions-workspace-lifecycle-contract.md`](docs/submissions-workspace-lifecycle-contract.md)
 - Lead lifecycle + attribution: [`docs/lead-lifecycle-contract.md`](docs/lead-lifecycle-contract.md)
 - Observability: [`docs/observability-contract.md`](docs/observability-contract.md)
+- Submissions ops runbook: [`docs/ops-runbook-submissions.md`](docs/ops-runbook-submissions.md)
+- Territory routing: [`docs/territory-routing-contract.md`](docs/territory-routing-contract.md)
+- Notification delivery state: [`docs/notification-delivery-contract.md`](docs/notification-delivery-contract.md)
+- Data retention/export: [`docs/data-retention-contract.md`](docs/data-retention-contract.md)
+- Submission export runbook: [`docs/submission-export-runbook.md`](docs/submission-export-runbook.md)
+- Form UX accessibility checklist: [`docs/form-ux-accessibility-checklist.md`](docs/form-ux-accessibility-checklist.md)
+- Production cutover checklist: [`docs/production-cutover-checklist.md`](docs/production-cutover-checklist.md)
+- Release readiness proof pack: [`docs/release-readiness-proof-pack.md`](docs/release-readiness-proof-pack.md)
 - Public facts alignment: [`docs/public-facts-contract.md`](docs/public-facts-contract.md)
 - Lane conversion UX: [`docs/lane-conversion-contract.md`](docs/lane-conversion-contract.md)
 
@@ -51,6 +59,11 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Mailbox contract: `npm run test:mailbox-contract`
 - SMTP config contract: `npm run test:smtp-config-contract`
 - Observability contract: `npm run test:observability-contract`
+- Territory routing contract: `npm run test:territory-routing`
+- Notification delivery state contract: `npm run test:notification-delivery-state`
+- Data retention/auth contract: `npm run test:data-retention-auth`
+- Form UX accessibility gate: `npm run test:form-ux-accessibility`
+- Release readiness gate: `npm run test:release-readiness-gate`
 - Lead lifecycle contract: `npm run test:lead-lifecycle`
 - Public facts consistency: `npm run test:public-facts-consistency`
 - Lane conversion contract: `npm run test:lane-conversion-contract`

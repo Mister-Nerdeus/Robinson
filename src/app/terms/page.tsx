@@ -25,6 +25,9 @@ export default function TermsPage() {
           By submitting request details, you confirm you are authorized to provide contact and site-access
           information for service coordination.
         </p>
+        <p>
+          Submission export and suppression actions are restricted to authenticated owner/ops review workflows.
+        </p>
       </div>
     </Section>
   );

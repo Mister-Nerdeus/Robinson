@@ -6,6 +6,11 @@ import { getSubmissionSummaryFields } from "@/lib/forms/types";
 import type { DeliveryResult } from "./types";
 import { appendNotificationLog } from "./log";
 import { getRuntimeEnv } from "@/lib/runtime/env";
+import {
+  getNotificationDeliveryRecord,
+  upsertNotificationDeliveryRecord,
+} from "@/lib/notifications/deliveryState";
+import { logStructuredEvent } from "@/lib/observability";
 
 const submissionTypeLabels: Record<SubmissionRecord["type"], string> = {
   general: "General Contact",
@@ -182,140 +187,387 @@ function validateProviderContract(recipient: string): string | null {
   return null;
 }
 
+function maxNotificationAttempts(): number {
+  const parsed = Number(process.env.NOTIFICATION_MAX_ATTEMPTS || "3");
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return 3;
+  }
+  return Math.floor(parsed);
+}
+
+async function attemptDelivery(
+  record: SubmissionRecord,
+  recipient: string,
+  from: string,
+  replyTo: string | undefined,
+  subject: string,
+  text: string,
+): Promise<DeliveryResult> {
+  if (notificationConfig.mode === "smtp") {
+    const transporter = nodemailer.createTransport({
+      host: notificationConfig.smtp.host,
+      port: notificationConfig.smtp.port,
+      secure: notificationConfig.smtp.secure,
+      auth: {
+        user: notificationConfig.smtp.user,
+        pass: notificationConfig.smtp.pass,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from,
+      to: recipient,
+      replyTo,
+      subject,
+      text,
+    });
+
+    return { ok: true, channel: "smtp", messageId: info.messageId, state: "sent" };
+  }
+
+  if (notificationConfig.mode === "ethereal") {
+    const account = await getEtherealAccount();
+    const transporter = nodemailer.createTransport({
+      host: account.smtp.host,
+      port: account.smtp.port,
+      secure: account.smtp.secure,
+      auth: { user: account.user, pass: account.pass },
+    });
+
+    const info = await transporter.sendMail({
+      from,
+      to: recipient,
+      replyTo,
+      subject,
+      text,
+    });
+
+    return {
+      ok: true,
+      channel: "ethereal",
+      messageId: info.messageId,
+      previewUrl: nodemailer.getTestMessageUrl(info) || undefined,
+      state: "sent",
+    };
+  }
+
+  if (notificationConfig.mode === "resend") {
+    const resend = resendClientFactory(notificationConfig.resend.apiKey);
+    const resendFrom = notificationConfig.resend.fromEmail || from;
+    const response = await resend.emails.send({
+      from: resendFrom,
+      to: recipient,
+      replyTo,
+      subject,
+      text,
+    });
+
+    if (response.error) {
+      return {
+        ok: false,
+        channel: "resend",
+        error: response.error.message || "resend delivery failed",
+        state: "failed",
+      };
+    }
+
+    const messageId = response.data?.id || `resend-${record.id}`;
+    return { ok: true, channel: "resend", messageId, state: "sent" };
+  }
+
+  await appendNotificationLog({
+    ts: new Date().toISOString(),
+    channel: "log",
+    submissionId: record.id,
+    type: record.type,
+    subject,
+    text,
+    recipient,
+    from,
+    replyTo,
+  });
+  return { ok: true, channel: "log", messageId: `log-${record.id}`, state: "sent" };
+}
+
 export async function sendSubmissionNotification(record: SubmissionRecord): Promise<DeliveryResult> {
   const subject = renderSubject(record);
   const text = renderText(record);
   const recipient = resolveInternalRecipient(record.type);
   const from = renderFromValue();
   const replyTo = notificationConfig.replyToEmail || undefined;
+  const dedupeKey = `submission:${record.id}:internal-v1`;
+  const maxAttempts = maxNotificationAttempts();
+  const now = new Date().toISOString();
+
+  const existing = await getNotificationDeliveryRecord(record.id, dedupeKey);
+  if (existing?.state === "sent") {
+    return {
+      ok: true,
+      channel: existing.channel,
+      messageId: existing.messageId || undefined,
+      state: "sent",
+      attempts: existing.attemptCount,
+      dedupeKey,
+      deduped: true,
+    };
+  }
+
+  if (existing?.state === "abandoned") {
+    return {
+      ok: false,
+      channel: existing.channel,
+      error: existing.lastError || "notification abandoned",
+      state: "abandoned",
+      attempts: existing.attemptCount,
+      dedupeKey,
+      deduped: true,
+    };
+  }
+
+  const baseChannel = notificationConfig.mode;
+  await upsertNotificationDeliveryRecord({
+    submissionId: record.id,
+    dedupeKey,
+    channel: baseChannel,
+    state: "pending",
+    attemptCount: existing?.attemptCount || 0,
+    messageId: existing?.messageId || "",
+    lastError: existing?.lastError || "",
+    createdAt: existing?.createdAt || now,
+    updatedAt: now,
+  });
 
   try {
     const developSafetyError = validateDevelopSafeInbox();
     if (developSafetyError) {
-      const result: DeliveryResult = {
-        ok: false,
-        channel: notificationConfig.mode,
-        error: developSafetyError,
-      };
-      await appendNotificationLog({
-        ts: new Date().toISOString(),
-        result,
+      await upsertNotificationDeliveryRecord({
         submissionId: record.id,
-        type: record.type,
+        dedupeKey,
+        channel: baseChannel,
+        state: "abandoned",
+        attemptCount: existing?.attemptCount || 0,
+        messageId: "",
+        lastError: developSafetyError,
+        createdAt: existing?.createdAt || now,
+        updatedAt: new Date().toISOString(),
       });
-      return result;
+
+      await logStructuredEvent({
+        eventType: "notification.failure",
+        level: "error",
+        correlationId: record.correlationId || record.id,
+        requestPath: record.attributionPath || "/api/forms",
+        submissionId: record.id,
+        lane: record.type,
+        status: 502,
+        details: {
+          channel: baseChannel,
+          attempts: existing?.attemptCount || 0,
+          dedupeKey,
+          error: developSafetyError,
+        },
+      });
+
+      return {
+        ok: false,
+        channel: baseChannel,
+        error: developSafetyError,
+        state: "abandoned",
+        attempts: existing?.attemptCount || 0,
+        dedupeKey,
+      };
     }
 
     const providerContractError = validateProviderContract(recipient);
     if (providerContractError) {
-      const result: DeliveryResult = {
-        ok: false,
-        channel: notificationConfig.mode,
-        error: providerContractError,
-      };
-      await appendNotificationLog({
-        ts: new Date().toISOString(),
-        result,
+      await upsertNotificationDeliveryRecord({
         submissionId: record.id,
-        type: record.type,
+        dedupeKey,
+        channel: baseChannel,
+        state: "abandoned",
+        attemptCount: existing?.attemptCount || 0,
+        messageId: "",
+        lastError: providerContractError,
+        createdAt: existing?.createdAt || now,
+        updatedAt: new Date().toISOString(),
       });
-      return result;
-    }
 
-    if (notificationConfig.mode === "smtp") {
-      const transporter = nodemailer.createTransport({
-        host: notificationConfig.smtp.host,
-        port: notificationConfig.smtp.port,
-        secure: notificationConfig.smtp.secure,
-        auth: {
-          user: notificationConfig.smtp.user,
-          pass: notificationConfig.smtp.pass,
+      await logStructuredEvent({
+        eventType: "notification.failure",
+        level: "error",
+        correlationId: record.correlationId || record.id,
+        requestPath: record.attributionPath || "/api/forms",
+        submissionId: record.id,
+        lane: record.type,
+        status: 502,
+        details: {
+          channel: baseChannel,
+          attempts: existing?.attemptCount || 0,
+          dedupeKey,
+          error: providerContractError,
         },
       });
 
-      const info = await transporter.sendMail({
-        from,
-        to: recipient,
-        replyTo,
-        subject,
-        text,
-      });
-
-      const result: DeliveryResult = { ok: true, channel: "smtp", messageId: info.messageId };
-      await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
-      return result;
-    }
-
-    if (notificationConfig.mode === "ethereal") {
-      const account = await getEtherealAccount();
-      const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: { user: account.user, pass: account.pass },
-      });
-
-      const info = await transporter.sendMail({
-        from,
-        to: recipient,
-        replyTo,
-        subject,
-        text,
-      });
-
-      const result: DeliveryResult = {
-        ok: true,
-        channel: "ethereal",
-        messageId: info.messageId,
-        previewUrl: nodemailer.getTestMessageUrl(info) || undefined,
+      return {
+        ok: false,
+        channel: baseChannel,
+        error: providerContractError,
+        state: "abandoned",
+        attempts: existing?.attemptCount || 0,
+        dedupeKey,
       };
-      await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
-      return result;
     }
 
-    if (notificationConfig.mode === "resend") {
-      const resend = resendClientFactory(notificationConfig.resend.apiKey);
-      const resendFrom = notificationConfig.resend.fromEmail || from;
-      const response = await resend.emails.send({
-        from: resendFrom,
-        to: recipient,
-        replyTo,
-        subject,
-        text,
+    const startingAttempt = existing?.attemptCount || 0;
+
+    for (let attempt = startingAttempt + 1; attempt <= maxAttempts; attempt += 1) {
+      await upsertNotificationDeliveryRecord({
+        submissionId: record.id,
+        dedupeKey,
+        channel: baseChannel,
+        state: attempt === 1 ? "pending" : "retrying",
+        attemptCount: attempt,
+        messageId: "",
+        lastError: "",
+        createdAt: existing?.createdAt || now,
+        updatedAt: new Date().toISOString(),
       });
 
-      if (response.error) {
-        const result: DeliveryResult = {
-          ok: false,
-          channel: "resend",
-          error: response.error.message || "resend delivery failed",
+      const attemptResult = await attemptDelivery(record, recipient, from, replyTo, subject, text);
+
+      await appendNotificationLog({
+        ts: new Date().toISOString(),
+        result: attemptResult,
+        submissionId: record.id,
+        type: record.type,
+        attempt,
+        dedupeKey,
+      });
+
+      if (attemptResult.ok) {
+        await upsertNotificationDeliveryRecord({
+          submissionId: record.id,
+          dedupeKey,
+          channel: attemptResult.channel,
+          state: "sent",
+          attemptCount: attempt,
+          messageId: attemptResult.messageId || "",
+          lastError: "",
+          createdAt: existing?.createdAt || now,
+          updatedAt: new Date().toISOString(),
+        });
+
+        await logStructuredEvent({
+          eventType: "notification.success",
+          level: "info",
+          correlationId: record.correlationId || record.id,
+          requestPath: record.attributionPath || "/api/forms",
+          submissionId: record.id,
+          lane: record.type,
+          details: {
+            channel: attemptResult.channel,
+            attempts: attempt,
+            dedupeKey,
+          },
+        });
+
+        return {
+          ...attemptResult,
+          state: "sent",
+          attempts: attempt,
+          dedupeKey,
         };
-        await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
-        return result;
       }
 
-      const messageId = response.data?.id || `resend-${record.id}`;
-      const result: DeliveryResult = { ok: true, channel: "resend", messageId };
-      await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
-      return result;
+      const lastError = attemptResult.error || "notification delivery failed";
+      const terminal = attempt >= maxAttempts;
+
+      await upsertNotificationDeliveryRecord({
+        submissionId: record.id,
+        dedupeKey,
+        channel: attemptResult.channel,
+        state: terminal ? "abandoned" : "failed",
+        attemptCount: attempt,
+        messageId: attemptResult.messageId || "",
+        lastError,
+        createdAt: existing?.createdAt || now,
+        updatedAt: new Date().toISOString(),
+      });
+
+      if (terminal) {
+        await logStructuredEvent({
+          eventType: "notification.failure",
+          level: "error",
+          correlationId: record.correlationId || record.id,
+          requestPath: record.attributionPath || "/api/forms",
+          submissionId: record.id,
+          lane: record.type,
+          status: 502,
+          details: {
+            channel: attemptResult.channel,
+            attempts: attempt,
+            dedupeKey,
+            error: lastError,
+          },
+        });
+
+        return {
+          ok: false,
+          channel: attemptResult.channel,
+          error: lastError,
+          state: "abandoned",
+          attempts: attempt,
+          dedupeKey,
+        };
+      }
     }
 
-    await appendNotificationLog({
-      ts: new Date().toISOString(),
-      channel: "log",
-      submissionId: record.id,
-      type: record.type,
-      subject,
-      text,
-      recipient,
-      from,
-      replyTo,
-    });
-    return { ok: true, channel: "log", messageId: `log-${record.id}` };
+    return {
+      ok: false,
+      channel: baseChannel,
+      error: "notification retries exhausted",
+      state: "abandoned",
+      attempts: maxAttempts,
+      dedupeKey,
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : "unknown notification error";
-    const result: DeliveryResult = { ok: false, channel: notificationConfig.mode, error: message };
-    await appendNotificationLog({ ts: new Date().toISOString(), result, submissionId: record.id, type: record.type });
-    return result;
+
+    await upsertNotificationDeliveryRecord({
+      submissionId: record.id,
+      dedupeKey,
+      channel: baseChannel,
+      state: "abandoned",
+      attemptCount: maxAttempts,
+      messageId: "",
+      lastError: message,
+      createdAt: existing?.createdAt || now,
+      updatedAt: new Date().toISOString(),
+    });
+
+    await logStructuredEvent({
+      eventType: "notification.failure",
+      level: "error",
+      correlationId: record.correlationId || record.id,
+      requestPath: record.attributionPath || "/api/forms",
+      submissionId: record.id,
+      lane: record.type,
+      status: 502,
+      details: {
+        channel: baseChannel,
+        attempts: maxAttempts,
+        dedupeKey,
+        error: message,
+      },
+    });
+
+    return {
+      ok: false,
+      channel: baseChannel,
+      error: message,
+      state: "abandoned",
+      attempts: maxAttempts,
+      dedupeKey,
+    };
   }
 }

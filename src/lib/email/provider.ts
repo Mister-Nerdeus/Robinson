@@ -5,12 +5,7 @@ import { renderInternalSubmissionTemplate } from "@/lib/email/templates/internal
 
 export type EmailDeliverySummary = {
   internal: Awaited<ReturnType<typeof sendSubmissionNotification>>;
-  customer: {
-    ok: boolean;
-    channel: "smtp" | "ethereal" | "log" | "resend";
-    messageId?: string;
-    error?: string;
-  };
+  customer: Awaited<ReturnType<typeof sendSubmissionNotification>>;
 };
 
 export async function deliverSubmissionEmail(record: SubmissionRecord): Promise<EmailDeliverySummary> {
@@ -27,6 +22,9 @@ export async function deliverSubmissionEmail(record: SubmissionRecord): Promise<
     channel: internal.channel,
     messageId: `ack-${record.id}`,
     error: undefined,
+    state: "sent",
+    attempts: 1,
+    dedupeKey: `submission:${record.id}:customer-ack-v1`,
   } as const;
 
   void customerTemplate;

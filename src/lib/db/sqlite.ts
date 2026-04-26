@@ -44,6 +44,22 @@ function migrate(connection: DatabaseSync) {
     CREATE INDEX IF NOT EXISTS idx_submissions_lifecycle ON submissions(lifecycle_state);
     CREATE INDEX IF NOT EXISTS idx_submissions_lane ON submissions(lane);
     CREATE INDEX IF NOT EXISTS idx_submissions_attribution_source ON submissions(attribution_source);
+
+    CREATE TABLE IF NOT EXISTS notification_delivery (
+      submission_id TEXT NOT NULL,
+      dedupe_key TEXT NOT NULL,
+      channel TEXT NOT NULL,
+      state TEXT NOT NULL,
+      attempt_count INTEGER NOT NULL DEFAULT 0,
+      message_id TEXT NOT NULL DEFAULT '',
+      last_error TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      PRIMARY KEY(submission_id, dedupe_key)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_notification_delivery_submission ON notification_delivery(submission_id);
+    CREATE INDEX IF NOT EXISTS idx_notification_delivery_state ON notification_delivery(state);
   `);
 }
 

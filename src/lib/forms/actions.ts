@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { submissionSchema, type SubmissionInput } from "./schema";
+import { headers } from "next/headers";
 import {
   submissionLifecycleStates,
   type SubmissionLifecycleState,
@@ -8,9 +9,14 @@ import {
 import {
   saveSubmission,
   listSubmissions,
+  suppressSubmissionById,
   updateSubmissionTriageById,
+  updateSubmissionDeliverySnapshot,
 } from "@/lib/submissions/repository";
 import { deliverSubmissionEmail } from "@/lib/email/provider";
+import { assignTerritoryAndOffice } from "@/lib/forms/routing";
+import { buildDefaultRetention } from "@/lib/forms/retention";
+import { resolveAdminIdentity } from "@/lib/auth";
 
 export type SubmissionAttribution = {
   source?: "direct" | "organic" | "referral" | "campaign" | "unknown";
@@ -52,7 +58,9 @@ export async function createSubmission(input: SubmissionInput, attribution: Subm
     attributionSource: attribution.source || "unknown",
     attributionPath: attribution.path || "",
     attributionReferrer: attribution.referrer || "",
-    correlationId: attribution.correlationId || "",
+    correlationId: attribution.correlationId || randomUUID(),
+    routing: assignTerritoryAndOffice(parsed),
+    retention: buildDefaultRetention(now),
     ...parsed,
     state,
     address,
@@ -60,6 +68,15 @@ export async function createSubmission(input: SubmissionInput, attribution: Subm
   };
   await saveSubmission(record);
   const delivery = await deliverSubmissionEmail(record);
+  await updateSubmissionDeliverySnapshot(record.id, {
+    state: delivery.internal.state,
+    attempts: delivery.internal.attempts || 1,
+    dedupeKey: delivery.internal.dedupeKey || `submission:${record.id}:internal`,
+    channel: delivery.internal.channel,
+    messageId: delivery.internal.messageId,
+    lastError: delivery.internal.error,
+    updatedAt: new Date().toISOString(),
+  });
   return { record, delivery };
 }
 
@@ -69,6 +86,14 @@ export async function getSubmissions() {
 
 export async function updateSubmissionTriage(formData: FormData) {
   "use server";
+
+  const requestHeaders = await headers();
+  const identity = resolveAdminIdentity(
+    new Request("http://localhost/admin/submissions", { headers: requestHeaders }),
+  );
+  if (!identity.authenticated || (identity.role !== "owner" && identity.role !== "ops")) {
+    throw new Error("Admin authentication required.");
+  }
 
   const id = String(formData.get("id") || "").trim();
   const status = String(formData.get("lifecycleState") || "").trim();
@@ -86,5 +111,32 @@ export async function updateSubmissionTriage(formData: FormData) {
     throw new Error("Invalid lifecycle state.");
   }
 
-  await updateSubmissionTriageById(id, lifecycleState, internalNote, "owner");
+  await updateSubmissionTriageById(
+    id,
+    lifecycleState,
+    internalNote,
+    identity.principal || identity.role || "owner",
+  );
+}
+
+export async function suppressSubmission(formData: FormData) {
+  "use server";
+
+  const requestHeaders = await headers();
+  const identity = resolveAdminIdentity(
+    new Request("http://localhost/admin/submissions", { headers: requestHeaders }),
+  );
+  if (!identity.authenticated || (identity.role !== "owner" && identity.role !== "ops")) {
+    throw new Error("Admin authentication required.");
+  }
+
+  const id = String(formData.get("id") || "").trim();
+  if (!id) {
+    throw new Error("Missing submission id for suppression.");
+  }
+
+  const suppressed = await suppressSubmissionById(id);
+  if (!suppressed) {
+    throw new Error("Submission not found.");
+  }
 }

@@ -10,10 +10,13 @@ async function run() {
   process.env.RUNTIME_MODE = "demo";
   process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW = "true";
   process.env.ADMIN_OWNER_TOKEN = "observability-owner-token-012345";
+  process.env.ADMIN_OPS_TOKEN = "observability-ops-token-012345";
+  process.env.LOCAL_ONLY_MODE = "false";
 
   await rm(logPath, { force: true });
 
   const { POST } = await import("../src/app/api/forms/route");
+  const submissionsApi = await import("../src/app/api/submissions/route");
 
   const invalidResponse = await POST(
     new Request("http://localhost/api/forms", {
@@ -61,11 +64,12 @@ async function run() {
   );
   assert.equal(abuseResponse.status, 400, "honeypot abuse should be blocked");
 
-  const notificationFailureResponse = await POST(
+  const acceptedResponse = await POST(
     new Request("http://localhost/api/forms", {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        "x-correlation-id": "obs-accepted-correlation",
         referer: "https://google.com/search?q=septic",
         "x-forwarded-for": "203.0.113.12",
       },
@@ -87,7 +91,19 @@ async function run() {
       }),
     }),
   );
-  assert.equal(notificationFailureResponse.status, 201, "submission should still persist when notification fails");
+  assert.equal(acceptedResponse.status, 201, "submission should still persist when notification fails");
+
+  const deniedAdmin = await submissionsApi.GET(new Request("http://localhost/api/submissions"));
+  assert.equal(deniedAdmin.status, 401, "anonymous admin review access must be denied");
+
+  const allowedAdmin = await submissionsApi.GET(
+    new Request("http://localhost/api/submissions", {
+      headers: {
+        authorization: "Bearer observability-owner-token-012345",
+      },
+    }),
+  );
+  assert.equal(allowedAdmin.status, 200, "authenticated admin review access should be allowed");
 
   const raw = await readFile(logPath, "utf8");
   const entries = raw
@@ -96,24 +112,29 @@ async function run() {
     .filter(Boolean)
     .map((line) => JSON.parse(line) as Record<string, unknown>);
 
-  const hasValidation = entries.some((entry) => entry.eventType === "submission.validation_failed");
-  const hasAbuse = entries.some((entry) => entry.eventType === "submission.abuse_blocked");
-  const hasNotification = entries.some((entry) => entry.eventType === "submission.notification_failed");
+  const requiredEvents = [
+    "submission.rejected",
+    "abuse.blocked",
+    "submission.accepted",
+    "notification.failure",
+    "admin.review_access.denied",
+    "admin.review_access.allowed",
+  ];
 
-  assert.ok(hasValidation, "validation failures must emit structured event");
-  assert.ok(hasAbuse, "abuse blocks must emit structured event");
-  assert.ok(hasNotification, "notification failures must emit structured event");
+  for (const eventType of requiredEvents) {
+    assert.ok(entries.some((entry) => entry.eventType === eventType), `missing observability event: ${eventType}`);
+  }
 
-  const notificationEvent = entries.find((entry) => entry.eventType === "submission.notification_failed");
-  assert.ok(notificationEvent?.correlationId, "notification failure event must carry correlation id");
+  const acceptedEvent = entries.find((entry) => entry.eventType === "submission.accepted");
+  assert.equal(acceptedEvent?.correlationId, "obs-accepted-correlation", "accepted event must carry correlation id");
 
   const serialized = JSON.stringify(entries);
   assert.ok(
-    !serialized.includes("notify@example.com") && !serialized.includes("555-2200"),
+    !serialized.includes("notify@example.com") && !serialized.includes("555-2200") && !serialized.includes("44 Alert Rd"),
     "sensitive fields must be redacted in observability output",
   );
 
-  console.log("[observability] structured events, correlation ids, and redaction verified");
+  console.log("[observability] submission/admin event taxonomy, correlation ids, and redaction verified");
 }
 
 run().catch((error) => {

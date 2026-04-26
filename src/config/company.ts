@@ -24,6 +24,12 @@ export type CompanyProfile = {
     postalCode: string;
   };
   serviceHours: string;
+  internalOffices: Array<{
+    id: string;
+    label: string;
+    scope: "intake" | "dispatch" | "specialty";
+    visibility: "internal-only";
+  }>;
   emergencyService: {
     claim: string;
     status: ClaimStatus;
@@ -53,6 +59,38 @@ export const company: CompanyProfile = {
     postalCode: "49339",
   },
   serviceHours: "24/7 Emergency Service • Routine scheduling available by phone or request form",
+  internalOffices: [
+    {
+      id: "intake-desk",
+      label: "Intake Desk",
+      scope: "intake",
+      visibility: "internal-only",
+    },
+    {
+      id: "septic-dispatch",
+      label: "Septic Dispatch",
+      scope: "dispatch",
+      visibility: "internal-only",
+    },
+    {
+      id: "evaluation-desk",
+      label: "Evaluation Desk",
+      scope: "specialty",
+      visibility: "internal-only",
+    },
+    {
+      id: "rental-desk",
+      label: "Rental Desk",
+      scope: "specialty",
+      visibility: "internal-only",
+    },
+    {
+      id: "commercial-desk",
+      label: "Commercial Desk",
+      scope: "specialty",
+      visibility: "internal-only",
+    },
+  ],
   emergencyService: {
     claim: "24/7 Emergency Service",
     status: "confirmed",

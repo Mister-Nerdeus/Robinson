@@ -2,10 +2,12 @@ import { getSubmissionsDatabase } from "@/lib/db/sqlite";
 import {
   submissionLifecycleStates,
   submissionTypes,
+  type SubmissionDeliverySnapshot,
   type SubmissionLifecycleState,
   type SubmissionRecord,
   type SubmissionType,
 } from "@/lib/forms/types";
+import { buildSuppressedRetention } from "@/lib/forms/retention";
 
 type SubmissionRow = {
   id: string;
@@ -142,6 +144,11 @@ export async function listSubmissions(filters: SubmissionQuery = {}): Promise<Su
   return queryRows(filters).map((row) => fromRow(row));
 }
 
+export async function getSubmissionById(id: string): Promise<SubmissionRecord | null> {
+  const row = queryRows().find((entry) => entry.id === id);
+  return row ? fromRow(row) : null;
+}
+
 export async function saveSubmission(record: SubmissionRecord): Promise<void> {
   const db = getSubmissionsDatabase();
   const row = toRowRecord(record);
@@ -191,6 +198,51 @@ export async function saveSubmission(record: SubmissionRecord): Promise<void> {
       payload_json = excluded.payload_json,
       updated_at = excluded.updated_at
   `).run({ ...row, $updated_at: new Date().toISOString() });
+}
+
+export async function updateSubmissionDeliverySnapshot(
+  id: string,
+  snapshot: SubmissionDeliverySnapshot,
+): Promise<boolean> {
+  const existing = await getSubmissionById(id);
+  if (!existing) {
+    return false;
+  }
+
+  await saveSubmission({
+    ...existing,
+    delivery: snapshot,
+  });
+
+  return true;
+}
+
+function suppressRecordPayload(record: SubmissionRecord): SubmissionRecord {
+  const now = new Date().toISOString();
+  return {
+    ...record,
+    fullName: "[suppressed]",
+    phone: "",
+    email: "",
+    streetAddress: "",
+    city: "",
+    zip: "",
+    address: "",
+    message: "[suppressed]",
+    retention: buildSuppressedRetention(record.retention, "authenticated-owner-request"),
+    triageUpdatedAt: now,
+    triageUpdatedBy: "owner:suppression",
+  };
+}
+
+export async function suppressSubmissionById(id: string): Promise<boolean> {
+  const existing = await getSubmissionById(id);
+  if (!existing) {
+    return false;
+  }
+
+  await saveSubmission(suppressRecordPayload(existing));
+  return true;
 }
 
 export async function updateSubmissionTriageById(

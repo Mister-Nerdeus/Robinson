@@ -41,3 +41,7 @@ Every issue closeout must follow [`docs/issue-closeout-standard.md`](issue-close
 
 ## Change Control
 - Changes to this contract require explicit issue-level rationale and must preserve local-only and evidence-backed constraints unless intentionally superseded by a later approved phase.
+
+## Release Readiness Binding
+- Production cutover decisions must reference `docs/production-cutover-checklist.md`.
+- Proof artifacts for go/no-go must be captured in `docs/release-readiness-proof-pack.md`.

@@ -18,6 +18,34 @@ export const submissionLifecycleStates = [
 
 export type SubmissionType = (typeof submissionTypes)[number];
 export type SubmissionLifecycleState = (typeof submissionLifecycleStates)[number];
+export type SubmissionDeliveryState = "pending" | "sent" | "failed" | "retrying" | "abandoned";
+
+export type TerritoryAssignment = {
+  territoryId: string;
+  territoryLabel: string;
+  officeId: string;
+  officeLabel: string;
+  routingRule: string;
+};
+
+export type SubmissionDeliverySnapshot = {
+  state: SubmissionDeliveryState;
+  attempts: number;
+  dedupeKey: string;
+  channel: "smtp" | "ethereal" | "log" | "resend";
+  messageId?: string;
+  lastError?: string;
+  updatedAt: string;
+};
+
+export type SubmissionRetentionSnapshot = {
+  category: "service-intake";
+  retentionDays: number;
+  retainUntil: string;
+  dataState: "active" | "suppressed";
+  suppressedAt?: string;
+  suppressionReason?: string;
+};
 
 export type SubmissionBase = {
   id: string;
@@ -32,6 +60,9 @@ export type SubmissionBase = {
   attributionPath: string;
   attributionReferrer: string;
   correlationId: string;
+  routing?: TerritoryAssignment;
+  delivery?: SubmissionDeliverySnapshot;
+  retention?: SubmissionRetentionSnapshot;
   fullName: string;
   phone: string;
   email: string;

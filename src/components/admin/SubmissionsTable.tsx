@@ -1,4 +1,4 @@
-import { updateSubmissionTriage } from "@/lib/forms/actions";
+import { suppressSubmission, updateSubmissionTriage } from "@/lib/forms/actions";
 import {
   getSubmissionSummaryFields,
   submissionLifecycleStates,
@@ -65,6 +65,12 @@ function toCsv(rows: SubmissionRecord[]) {
     "address",
     "urgency",
     "message",
+    "routingTerritory",
+    "routingOffice",
+    "deliveryState",
+    "deliveryAttempts",
+    "retentionState",
+    "retainUntil",
   ];
 
   const lines = rows.map((row) =>
@@ -85,6 +91,12 @@ function toCsv(rows: SubmissionRecord[]) {
       row.address,
       row.urgency,
       row.message,
+      row.routing?.territoryLabel || "",
+      row.routing?.officeLabel || "",
+      row.delivery?.state || "",
+      row.delivery?.attempts || "",
+      row.retention?.dataState || "",
+      row.retention?.retainUntil || "",
     ]
       .map((value) => csvEscape(String(value ?? "")))
       .join(","),
@@ -136,6 +148,15 @@ export function SubmissionsTable({ rows }: Props) {
           <p className="mt-1 text-xs text-slate-600">
             Internal note: {row.internalNote ? "present" : "none"} | Triage updated: {row.triageUpdatedAt} by {row.triageUpdatedBy}
           </p>
+          <p className="mt-1 text-xs text-slate-600">
+            Routing: {row.routing?.territoryLabel || "-"} {"->"} {row.routing?.officeLabel || "-"} ({row.routing?.routingRule || "n/a"})
+          </p>
+          <p className="mt-1 text-xs text-slate-600">
+            Delivery: {row.delivery?.state || "unknown"} | Attempts: {row.delivery?.attempts ?? "-"} | Dedupe: {row.delivery?.dedupeKey || "-"}
+          </p>
+          <p className="mt-1 text-xs text-slate-600">
+            Retention: {row.retention?.dataState || "active"} | Retain until: {row.retention?.retainUntil || "-"}
+          </p>
           <div className="mt-2 grid gap-1 text-xs text-slate-700 sm:grid-cols-3">
             {getSubmissionSummaryFields(row).map((field) => (
               <p key={`${row.id}-${field.label}`}>
@@ -170,6 +191,12 @@ export function SubmissionsTable({ rows }: Props) {
 
             <button type="submit" className="rounded-md bg-[var(--brand)] px-3 py-2 text-xs font-semibold text-white">
               Save
+            </button>
+          </form>
+          <form action={suppressSubmission} className="mt-2">
+            <input type="hidden" name="id" value={row.id} />
+            <button type="submit" className="rounded-md border border-[#c44] px-3 py-2 text-xs font-semibold text-[#8a1111]">
+              Suppress PII
             </button>
           </form>
 

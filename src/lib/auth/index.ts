@@ -9,6 +9,10 @@ export type AdminIdentity = {
   tokenSource: "bearer" | "cookie" | "local-dev-bypass" | null;
 };
 
+export function isAdminReviewIdentity(identity: AdminIdentity): boolean {
+  return identity.authenticated && (identity.role === "owner" || identity.role === "ops");
+}
+
 function parseBool(value: string | undefined, fallback = false): boolean {
   if (value === undefined) {
     return fallback;

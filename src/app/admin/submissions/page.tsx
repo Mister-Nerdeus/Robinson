@@ -58,6 +58,14 @@ export default async function AdminSubmissionsPage({
   };
   const rows = await listSubmissions(filters);
   const report = await listSubmissionReport(filters);
+  const query = new URLSearchParams();
+  if (params.type) query.set("type", params.type);
+  if (params.status) query.set("status", params.status);
+  if (params.dateFrom) query.set("dateFrom", params.dateFrom);
+  if (params.dateTo) query.set("dateTo", params.dateTo);
+  if (params.source) query.set("source", params.source);
+  const exportCsvHref = `/api/submissions?${query.toString()}${query.toString() ? "&" : ""}export=csv`;
+  const exportJsonHref = `/api/submissions?${query.toString()}${query.toString() ? "&" : ""}export=json`;
 
   return (
     <Section title="Admin Submissions Workspace" layout="marketing">
@@ -79,6 +87,14 @@ export default async function AdminSubmissionsPage({
       <p className="mt-3 text-xs text-slate-600">
         Showing {rows.length} filtered submissions.
       </p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <a href={exportCsvHref} className="rounded-md border border-[var(--brand)] bg-white px-3 py-2 text-xs font-semibold text-[var(--brand)]">
+          Authenticated Export CSV
+        </a>
+        <a href={exportJsonHref} className="rounded-md border border-[var(--brand)] bg-white px-3 py-2 text-xs font-semibold text-[var(--brand)]">
+          Authenticated Export JSON
+        </a>
+      </div>
       <div className="mt-2 rounded-md border border-[#e3d9cb] bg-[#fffdf9] p-3 text-xs text-slate-700">
         <p className="font-semibold text-slate-900">Export grouping preview (lane/status/source)</p>
         {report.length === 0 ? <p className="mt-1">No grouped rows for current filters.</p> : null}

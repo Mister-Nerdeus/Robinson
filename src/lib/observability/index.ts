@@ -3,11 +3,13 @@ import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 
 export type ObservabilityEventType =
-  | "submission.validation_failed"
-  | "submission.abuse_blocked"
-  | "submission.persistence_failed"
-  | "submission.notification_failed"
-  | "submission.created"
+  | "submission.accepted"
+  | "submission.rejected"
+  | "abuse.blocked"
+  | "notification.success"
+  | "notification.failure"
+  | "admin.review_access.allowed"
+  | "admin.review_access.denied"
   | "submission.triage_updated";
 
 export type StructuredLogEvent = {

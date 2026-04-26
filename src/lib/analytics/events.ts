@@ -8,6 +8,8 @@ export const analyticsEvents = {
   formSubmit: "form_submit",
   formSubmitSuccess: "form_submit_success",
   formSubmitError: "form_submit_error",
+  formSubmissionAccepted: "form_submission_accepted",
+  formSubmissionRejected: "form_submission_rejected",
 } as const;
 
 export type AnalyticsEventName = (typeof analyticsEvents)[keyof typeof analyticsEvents];

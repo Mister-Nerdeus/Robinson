@@ -16,6 +16,10 @@ export const privacyContent = {
       body: "Information is used for service coordination and internal records. It is not collected for public marketing claims.",
     },
     {
+      heading: "Retention, Export, and Suppression",
+      body: "Submission records follow an internal retention contract, authenticated owner/ops export controls, and authenticated suppression workflow when required.",
+    },
+    {
       heading: "Need Immediate Help?",
       body: "For active septic warnings, call first and then submit the request form so dispatch has complete details.",
     },

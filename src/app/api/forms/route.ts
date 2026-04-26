@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
   if (!abuse.allowed) {
     await logStructuredEvent({
-      eventType: "submission.abuse_blocked",
+      eventType: "abuse.blocked",
       level: "warn",
       correlationId,
       requestPath: pathname,
@@ -58,12 +58,12 @@ export async function POST(request: Request) {
   const parsed = submissionSchema.safeParse(body);
   if (!parsed.success) {
     await logStructuredEvent({
-      eventType: "submission.validation_failed",
+      eventType: "submission.rejected",
       level: "warn",
       correlationId,
       requestPath: pathname,
       status: 400,
-      details: { issues: parsed.error.flatten(), payload: body },
+      details: { reason: "validation-failed", issues: parsed.error.flatten(), payload: body },
     });
     return NextResponse.json({ error: parsed.error.flatten(), correlationId }, { status: 400 });
   }
@@ -76,21 +76,8 @@ export async function POST(request: Request) {
       correlationId,
     });
 
-    if (!delivery.internal.ok || !delivery.customer.ok) {
-      await logStructuredEvent({
-        eventType: "submission.notification_failed",
-        level: "error",
-        correlationId,
-        requestPath: pathname,
-        submissionId: record.id,
-        lane: record.type,
-        status: 502,
-        details: { delivery, payload: parsed.data },
-      });
-    }
-
     await logStructuredEvent({
-      eventType: "submission.created",
+      eventType: "submission.accepted",
       level: "info",
       correlationId,
       requestPath: pathname,
@@ -100,6 +87,8 @@ export async function POST(request: Request) {
       details: {
         attributionSource: record.attributionSource,
         attributionReferrer: record.attributionReferrer,
+        routing: record.routing,
+        deliveryState: delivery.internal.state,
       },
     });
 
@@ -109,12 +98,16 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     await logStructuredEvent({
-      eventType: "submission.persistence_failed",
+      eventType: "submission.rejected",
       level: "error",
       correlationId,
       requestPath: pathname,
       status: 500,
-      details: { error: error instanceof Error ? error.message : String(error), payload: parsed.data },
+      details: {
+        reason: "persistence-failed",
+        error: error instanceof Error ? error.message : String(error),
+        payload: parsed.data,
+      },
     });
 
     return NextResponse.json(
