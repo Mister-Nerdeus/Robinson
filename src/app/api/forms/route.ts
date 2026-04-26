@@ -41,6 +41,9 @@ export async function POST(request: Request) {
     honeypot: body.companyWebsite,
     fullName: body.fullName,
     message: body.message,
+    email: body.email,
+    submissionType: body.type,
+    challengeToken: request.headers.get("x-abuse-challenge-token") || "",
   });
 
   if (!abuse.allowed) {
@@ -53,6 +56,23 @@ export async function POST(request: Request) {
       details: { ip, userAgent, reason: abuse.error, payload: body },
     });
     return NextResponse.json({ error: abuse.error, correlationId }, { status: abuse.status });
+  }
+
+  if (abuse.abuseOutcome) {
+    await logStructuredEvent({
+      eventType: "abuse.allowed",
+      level: "info",
+      correlationId,
+      requestPath: pathname,
+      status: 202,
+      details: {
+        ip,
+        userAgent,
+        lane: body.type,
+        abuseOutcome: abuse.abuseOutcome,
+        flags: abuse.flags || [],
+      },
+    });
   }
 
   const parsed = submissionSchema.safeParse(body);

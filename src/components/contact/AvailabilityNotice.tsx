@@ -10,6 +10,7 @@ export function AvailabilityNotice() {
       <h3 className="font-display text-xl text-[var(--brand)]">Availability and Follow-up</h3>
       <ul className="mt-2 grid gap-1.5">
         <li>Emergency septic: call {emergencyLine} first for fastest dispatch triage.</li>
+        <li>Routine scheduling hours: {publicBusinessFacts.normalBusinessHours}.</li>
         <li>Primary service scheduling: use {primaryLine} or submit lane requests online for callback planning.</li>
         <li>Secondary office line ({secondaryLine}) is for office follow-up and non-dispatch support.</li>
         <li>Form submissions are reviewed with urgency-based callback priority.</li>

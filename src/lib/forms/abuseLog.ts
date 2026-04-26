@@ -4,7 +4,9 @@ import path from "node:path";
 
 const filePath = path.join(process.cwd(), "data", "abuse-log.ndjson");
 
-export async function logAbuse(entry: Record<string, unknown>) {
+export type AbuseLogEntry = Record<string, unknown>;
+
+export async function logAbuse(entry: AbuseLogEntry) {
   const sanitized = {
     ...entry,
     ipHash:
@@ -17,6 +19,9 @@ export async function logAbuse(entry: Record<string, unknown>) {
         : undefined,
     ip: undefined,
     userAgent: undefined,
+    email: undefined,
+    fullName: undefined,
+    message: undefined,
   };
 
   await mkdir(path.dirname(filePath), { recursive: true });

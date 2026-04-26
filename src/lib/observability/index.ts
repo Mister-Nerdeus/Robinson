@@ -6,6 +6,7 @@ export type ObservabilityEventType =
   | "submission.accepted"
   | "submission.rejected"
   | "abuse.blocked"
+  | "abuse.allowed"
   | "notification.success"
   | "notification.failure"
   | "admin.review_access.allowed"

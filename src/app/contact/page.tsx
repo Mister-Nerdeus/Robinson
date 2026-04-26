@@ -50,7 +50,8 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand)]">Request routing</p>
               <h3 className="mt-2 font-display text-2xl text-[var(--brand)]">Choose a lane, then start the first step immediately.</h3>
               <p className="mt-2 text-sm text-slate-700">
-                Emergency needs should still call first. Lane selection keeps form steps focused and route-ready.
+                Emergency needs should still call first (24/7 response line). Routine scheduling runs{" "}
+                {company.serviceHoursContract.normalBusinessHoursLabel}.
               </p>
             </div>
           }

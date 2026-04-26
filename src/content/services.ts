@@ -36,7 +36,7 @@ export const servicesContent = {
       "Robinson follows up with scheduling, arrival window, and any prep instructions.",
     ],
     responseExpectation:
-      "Active emergency symptoms should be called in immediately. Routine requests are handled as quickly as current field load allows.",
+      "Active emergency symptoms should be called in immediately (24/7 response line). Routine scheduling runs Mon-Fri 8:00 AM-5:00 PM and is handled as quickly as field load allows.",
     cta: "/services/septic-cleaning",
   },
   evaluations: {

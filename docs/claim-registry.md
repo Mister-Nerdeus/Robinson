@@ -1,35 +1,21 @@
 # Claim Registry
 
-| key | value | status | note |
-| --- | --- | --- | --- |
-| public_brand | Robinson Septic Cleaning | confirmed | Canonical customer-facing brand name. |
-| legal_name | Robinson Septic Tank Cleaning LLC | confirmed | Legal entity reference for formal contexts. |
-| primary_phone | (616) 636-5565 | confirmed | Dominant public CTA phone across header, footer, and forms. |
-| secondary_phone | (616) 887-2060 | confirmed | Secondary office line shown in footer/header support text. |
-| fax_workflow | (231) 937-8383 | confirmed | Allowed for Realtor and form-workflow references. |
-| primary_address | 1565 N Dagget Rd, Pierson, MI 49339 | confirmed | Canonical address shown in contact/footer/schema. |
-| secondary_address | 113 South Union, Sparta, MI 49345 | confirmed | Additional approved public location reference. |
-| service_hours | 24/7 Emergency Service • Routine scheduling available by phone or request form | confirmed | Canonical hours wording from config. |
-| emergency_24_7 | 24/7 Emergency Service | confirmed | Publishable and approved for customer-facing CTA language. |
-| founded_1979 | Founded in 1979 | confirmed | Trust signal mapped to source evidence. |
-| family_owned | Family owned and operated | confirmed | Trust signal mapped to source evidence. |
-| residential_commercial | Residential and commercial septic service | confirmed | Core service coverage statement. |
-| home_sale_evaluations | Well and septic evaluations for home sales | confirmed | Priority conversion lane. |
-| portable_toilet_rentals | Portable toilet rentals | confirmed | Priority conversion lane. |
-| grease_trap_cleaning | Grease trap cleaning | confirmed | Commercial service line. |
-| lift_pump_service | Lift pump service | confirmed | Commercial/service support line. |
-| portable_toilet_radius | Within a 60-mile radius of the greater Grand Rapids area | confirmed | Allowed in rental/service-area messaging. |
-| msta_membership | Member of the Michigan Septic Tank Association | confirmed | Canonical association trust signal. |
-| facebook_presence | Facebook page maintained for local service visibility | confirmed | Canonicalized single trust mention. |
-| coupon_offer_legacy | Legacy coupon graphic exists in source assets | provisional | Asset exists; active terms are not verified for canonical CTA copy. |
-| bbb_accreditation | BBB accreditation claim | do-not-publish-yet | Remains blocked; no accreditation claim allowed. |
-| inflated_reviews | Inflated review-count claims | do-not-publish-yet | Blocked from all customer-facing surfaces. |
+| id | class | label | status | evidence_ref | owner_approval_ref | publish_policy |
+| --- | --- | --- | --- | --- | --- | --- |
+| family-owned-1979 | heritage | Family owned and operated since 1979 | approved | legacy-brand-pack | owner-truth-dashboard:heritage | public |
+| emergency-call-first-24-7 | emergency | 24/7 emergency septic response is call-first | approved | dispatch-policy-call-first | owner-truth-dashboard:emergency | public |
+| service-lane-coverage | service-area | Residential, evaluation, rental, and commercial lanes route to one dispatch operation | approved | service-lane-contract | owner-truth-dashboard:lane-coverage | public |
+| realtor-evaluation-support | service-area | Realtor and home-sale evaluation workflow support | approved | legacy-realtor-materials | owner-truth-dashboard:realtor | public |
+| msta-membership-wording | association | Member of the Michigan Septic Tank Association | owner-review-required | legacy-association-assets | pending-owner-approval | internal-until-approved |
+| bbb-accreditation-language | bbb | BBB accreditation claim | retired-internal-only | claim-registry:bbb-blocked | blocked | blocked |
+| inflated-review-footprint | reviews | Large review-count claims | retired-internal-only | claim-registry:review-footprint-blocked | blocked | blocked |
 
 ## Status meanings
-- `confirmed`: safe to use in customer-facing copy.
-- `provisional`: source-supported but owner-verification-sensitive.
-- `do-not-publish-yet`: keep out of customer-facing surfaces.
+- `approved`: evidence-linked and owner-approved for customer-facing copy.
+- `owner-review-required`: evidence exists but owner approval is not complete.
+- `retired-internal-only`: ambiguous or unsupported claim; blocked from public surfaces.
 
-## Voice policy note
-- Customer-facing pages should translate confirmed claims into plain, warm language.
-- Governance terms (registry/proof map wording) stay in internal documentation.
+## Governance Rules
+- Every public trust claim must include `evidence_ref` and `owner_approval_ref`.
+- `bbb`, `reviews`, and ambiguous emergency variants remain blocked unless explicitly approved.
+- Legacy claims may remain as internal notes but must not render on public pages.

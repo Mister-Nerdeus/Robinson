@@ -24,6 +24,11 @@ export type CompanyProfile = {
     postalCode: string;
   };
   serviceHours: string;
+  serviceHoursContract: {
+    normalBusinessHoursLabel: string;
+    openingHoursSchema: string[];
+    emergencyResponsePolicy: string;
+  };
   internalOffices: Array<{
     id: string;
     label: string;
@@ -59,6 +64,12 @@ export const company: CompanyProfile = {
     postalCode: "49339",
   },
   serviceHours: "24/7 Emergency Service • Routine scheduling available by phone or request form",
+  serviceHoursContract: {
+    normalBusinessHoursLabel: "Mon-Fri 8:00 AM-5:00 PM",
+    openingHoursSchema: ["Mo-Fr 08:00-17:00"],
+    emergencyResponsePolicy:
+      "Emergency septic response line is call-first and staffed 24/7. Routine scheduling, evaluation coordination, rental planning, and commercial dispatch follow normal office hours.",
+  },
   internalOffices: [
     {
       id: "intake-desk",

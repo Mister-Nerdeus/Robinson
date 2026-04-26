@@ -59,6 +59,9 @@ export const publicBusinessFacts = {
     postalCode: company.address.postalCode,
   },
   serviceHours: company.serviceHours,
+  hoursSummary: `${company.serviceHoursContract.normalBusinessHoursLabel} routine scheduling; 24/7 emergency call-first response.`,
+  normalBusinessHours: company.serviceHoursContract.normalBusinessHoursLabel,
+  emergencyResponsePolicy: company.serviceHoursContract.emergencyResponsePolicy,
 };
 
 export const publicPhoneSemanticsMap: PublicPhoneSemantic[] = [
@@ -107,6 +110,22 @@ export const businessFactRegistry: BusinessFact[] = [
     status: "verified",
     public: true,
     notes: "Canonical published office address.",
+  },
+  {
+    key: "normal_business_hours",
+    label: "Normal business hours",
+    value: publicBusinessFacts.normalBusinessHours,
+    status: "verified",
+    public: true,
+    notes: "Canonical normal office scheduling hours shown on public surfaces.",
+  },
+  {
+    key: "emergency_response_policy",
+    label: "Emergency response policy",
+    value: publicBusinessFacts.emergencyResponsePolicy,
+    status: "verified",
+    public: true,
+    notes: "Explicitly separates 24/7 emergency response from normal office scheduling hours.",
   },
   {
     key: "sparta_legacy_address",

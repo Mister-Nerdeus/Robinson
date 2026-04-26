@@ -45,6 +45,12 @@ async function run() {
   process.env.NOTIFICATION_REPLY_TO_EMAIL = "service@example.com";
   process.env.RESEND_API_KEY = "re_test_123";
   process.env.RESEND_FROM_EMAIL = "intake@example.com";
+  process.env.NOTIFICATION_SENDING_DOMAIN_POLICY = "dedicated-subdomain";
+  process.env.NOTIFICATION_SENDING_ROOT_DOMAIN = "example.com";
+  process.env.NOTIFICATION_SENDING_SUBDOMAIN = "notify";
+  process.env.NOTIFICATION_DNS_VERIFIED = "true";
+  process.env.NOTIFICATION_DNS_SPF_VERIFIED = "true";
+  process.env.NOTIFICATION_DNS_DKIM_VERIFIED = "true";
 
   await rm(notificationLogPath, { force: true });
 

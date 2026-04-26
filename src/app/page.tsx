@@ -94,7 +94,7 @@ export default function HomePage() {
       </Section>
 
       <Section layout="marketing">
-        <CtaBand heading="Need help right now? Call Robinson for 24/7 Emergency Service or open the structured request lanes." href="/contact" label="Open Contact Intake Lanes" />
+        <CtaBand heading="Need help right now? Emergency response is call-first 24/7. Routine scheduling is Mon-Fri 8:00 AM-5:00 PM." href="/contact" label="Open Contact Intake Lanes" />
       </Section>
     </div>
   );

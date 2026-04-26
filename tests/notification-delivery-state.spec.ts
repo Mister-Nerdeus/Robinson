@@ -43,6 +43,12 @@ async function run() {
   process.env.RESEND_API_KEY = "re_test_123";
   process.env.RESEND_FROM_EMAIL = "intake@example.com";
   process.env.NOTIFICATION_MAX_ATTEMPTS = "2";
+  process.env.NOTIFICATION_SENDING_DOMAIN_POLICY = "dedicated-subdomain";
+  process.env.NOTIFICATION_SENDING_ROOT_DOMAIN = "example.com";
+  process.env.NOTIFICATION_SENDING_SUBDOMAIN = "notify";
+  process.env.NOTIFICATION_DNS_VERIFIED = "true";
+  process.env.NOTIFICATION_DNS_SPF_VERIFIED = "true";
+  process.env.NOTIFICATION_DNS_DKIM_VERIFIED = "true";
 
   const { sendSubmissionNotification, setResendClientFactoryForTests } = await import(
     "../src/lib/notifications/send"

@@ -1,6 +1,10 @@
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
-import { notificationConfig, resolveInternalRecipient } from "@/config/notifications";
+import {
+  getSendingDomainReadiness,
+  notificationConfig,
+  resolveInternalRecipient,
+} from "@/config/notifications";
 import type { SubmissionRecord } from "@/lib/forms/types";
 import { getSubmissionSummaryFields } from "@/lib/forms/types";
 import type { DeliveryResult } from "./types";
@@ -184,6 +188,12 @@ function validateProviderContract(recipient: string): string | null {
   if (notificationConfig.mode === "resend" && !notificationConfig.resend.apiKey) {
     return "Resend mode requires RESEND_API_KEY.";
   }
+
+  const readiness = getSendingDomainReadiness(getRuntimeEnv().mode);
+  if (!readiness.ready) {
+    return `Sending-domain readiness failed: ${readiness.reasons.join(", ")}.`;
+  }
+
   return null;
 }
 

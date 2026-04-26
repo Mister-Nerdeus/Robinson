@@ -10,9 +10,13 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Review/admin access protection: [`docs/review-surface-access-contract.md`](docs/review-surface-access-contract.md)
 - Admin auth contract: [`docs/admin-access-contract.md`](docs/admin-access-contract.md)
 - Mailbox contract: [`docs/mailbox-contract.md`](docs/mailbox-contract.md)
+- Inbound mail ops contract: [`docs/inbound-mail-ops-contract.md`](docs/inbound-mail-ops-contract.md)
+- M365 mailbox decision record: [`docs/m365-mailbox-decision-record.md`](docs/m365-mailbox-decision-record.md)
 - Resend runbook: [`docs/resend-setup-runbook.md`](docs/resend-setup-runbook.md)
 - Microsoft 365 SMTP runbook: [`docs/m365-smtp-runbook.md`](docs/m365-smtp-runbook.md)
 - Provider decision matrix: [`docs/provider-decision-matrix.md`](docs/provider-decision-matrix.md)
+- Sending-domain contract: [`docs/email-domain-contract.md`](docs/email-domain-contract.md)
+- Deliverability runbook: [`docs/deliverability-runbook.md`](docs/deliverability-runbook.md)
 - Public vs develop presentation: [`docs/public-vs-develop-surface-contract.md`](docs/public-vs-develop-surface-contract.md)
 - Promotion runbook: [`docs/branch-promotion-runbook.md`](docs/branch-promotion-runbook.md)
 - Proof packs: [`docs/main-develop-deploy-proof-pack.md`](docs/main-develop-deploy-proof-pack.md), [`docs/v4-proof-pack.md`](docs/v4-proof-pack.md)
@@ -33,8 +37,11 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Form UX accessibility checklist: [`docs/form-ux-accessibility-checklist.md`](docs/form-ux-accessibility-checklist.md)
 - Production cutover checklist: [`docs/production-cutover-checklist.md`](docs/production-cutover-checklist.md)
 - Release readiness proof pack: [`docs/release-readiness-proof-pack.md`](docs/release-readiness-proof-pack.md)
+- Rollback runbook: [`docs/rollback-runbook.md`](docs/rollback-runbook.md)
 - Public facts alignment: [`docs/public-facts-contract.md`](docs/public-facts-contract.md)
+- Public hours/emergency contract: [`docs/public-hours-emergency-contract.md`](docs/public-hours-emergency-contract.md)
 - Lane conversion UX: [`docs/lane-conversion-contract.md`](docs/lane-conversion-contract.md)
+- Anti-spam contract: [`docs/anti-spam-contract.md`](docs/anti-spam-contract.md)
 
 ## Environment Templates
 - Local default: `.env.example`
@@ -57,6 +64,7 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - SQLite persistence contract: `npm run test:sqlite-persistence-contract`
 - Resend provider contract: `npm run test:resend-provider`
 - Mailbox contract: `npm run test:mailbox-contract`
+- Email domain readiness: `npm run test:email-domain-readiness`
 - SMTP config contract: `npm run test:smtp-config-contract`
 - Observability contract: `npm run test:observability-contract`
 - Territory routing contract: `npm run test:territory-routing`
@@ -64,9 +72,13 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Data retention/auth contract: `npm run test:data-retention-auth`
 - Form UX accessibility gate: `npm run test:form-ux-accessibility`
 - Release readiness gate: `npm run test:release-readiness-gate`
+- Cutover rehearsal gate: `npm run test:cutover-rehearsal-gate`
 - Lead lifecycle contract: `npm run test:lead-lifecycle`
 - Public facts consistency: `npm run test:public-facts-consistency`
+- Public hours truth: `npm run test:public-hours-truth`
 - Lane conversion contract: `npm run test:lane-conversion-contract`
+- Anti-spam contract: `npm run test:anti-spam-contract`
+- Claim registry guard: `npm run test:claim-registry-guard`
 
 ## Notification Modes
 - `NOTIFICATION_MODE=resend` (recommended primary for production web forms)

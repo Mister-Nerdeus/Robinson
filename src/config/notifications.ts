@@ -2,6 +2,8 @@ import type { SubmissionType } from "@/lib/forms/types";
 
 export type NotificationMode = "smtp" | "ethereal" | "log" | "resend";
 export type SmtpProfile = "generic" | "m365-exchange-online";
+export type SendingDomainPolicy = "root-domain" | "dedicated-subdomain" | "provider-subdomain";
+export type DmarcPosture = "not-set" | "monitor" | "quarantine" | "reject";
 
 function normalizeMode(value: string | undefined): NotificationMode {
   const mode = (value || "log").trim().toLowerCase();
@@ -17,6 +19,21 @@ function normalizeSmtpProfile(value: string | undefined): SmtpProfile {
     return "m365-exchange-online";
   }
   return "generic";
+}
+
+function normalizeSendingDomainPolicy(value: string | undefined): SendingDomainPolicy {
+  const policy = (value || "dedicated-subdomain").trim().toLowerCase();
+  if (policy === "root-domain") return "root-domain";
+  if (policy === "provider-subdomain") return "provider-subdomain";
+  return "dedicated-subdomain";
+}
+
+function normalizeDmarcPosture(value: string | undefined): DmarcPosture {
+  const posture = (value || "not-set").trim().toLowerCase();
+  if (posture === "monitor" || posture === "quarantine" || posture === "reject") {
+    return posture;
+  }
+  return "not-set";
 }
 
 function parseLaneRecipientMap(value: string | undefined): Partial<Record<SubmissionType, string>> {
@@ -67,6 +84,18 @@ const internalDefaultToEmail =
 const laneToRecipient = parseLaneRecipientMap(process.env.NOTIFICATION_LANE_TO_EMAIL_MAP);
 const smtpProfile = normalizeSmtpProfile(process.env.SMTP_PROFILE);
 const smtpHost = (process.env.SMTP_HOST || "").trim();
+const sendingDomainPolicy = normalizeSendingDomainPolicy(process.env.NOTIFICATION_SENDING_DOMAIN_POLICY);
+const rootDomain = (process.env.NOTIFICATION_SENDING_ROOT_DOMAIN || "").trim().toLowerCase();
+const sendingSubdomain = (process.env.NOTIFICATION_SENDING_SUBDOMAIN || "").trim().toLowerCase();
+const providerSubdomain = (process.env.NOTIFICATION_PROVIDER_SENDING_DOMAIN || "").trim().toLowerCase();
+const effectiveSendingDomain =
+  sendingDomainPolicy === "root-domain"
+    ? rootDomain
+    : sendingDomainPolicy === "provider-subdomain"
+      ? providerSubdomain || (sendingSubdomain && rootDomain ? `${sendingSubdomain}.${rootDomain}` : "")
+      : sendingSubdomain && rootDomain
+        ? `${sendingSubdomain}.${rootDomain}`
+        : "";
 
 export const notificationConfig = {
   mode: normalizeMode(process.env.NOTIFICATION_MODE),
@@ -91,8 +120,48 @@ export const notificationConfig = {
     apiKey: (process.env.RESEND_API_KEY || "").trim(),
     fromEmail: (process.env.RESEND_FROM_EMAIL || "").trim(),
   },
+  sendingDomain: {
+    policy: sendingDomainPolicy,
+    rootDomain,
+    subdomain: sendingSubdomain,
+    providerSubdomain,
+    effectiveDomain: effectiveSendingDomain,
+    dns: {
+      verified: parseBool(process.env.NOTIFICATION_DNS_VERIFIED, false),
+      spfVerified: parseBool(process.env.NOTIFICATION_DNS_SPF_VERIFIED, false),
+      dkimVerified: parseBool(process.env.NOTIFICATION_DNS_DKIM_VERIFIED, false),
+      dmarcPosture: normalizeDmarcPosture(process.env.NOTIFICATION_DNS_DMARC_POSTURE),
+    },
+  },
 };
 
 export function resolveInternalRecipient(lane: SubmissionType): string {
   return notificationConfig.laneToRecipient[lane] || notificationConfig.internalDefaultToEmail;
+}
+
+export function getSendingDomainReadiness(runtimeMode: "local" | "demo" | "production") {
+  const sendsThroughProvider =
+    notificationConfig.mode === "smtp" || notificationConfig.mode === "resend";
+  const requiresVerifiedDns =
+    runtimeMode === "production" && sendsThroughProvider;
+
+  const reasons: string[] = [];
+  if (sendsThroughProvider && !notificationConfig.sendingDomain.effectiveDomain) {
+    reasons.push("missing-effective-sending-domain");
+  }
+  if (requiresVerifiedDns && !notificationConfig.sendingDomain.dns.verified) {
+    reasons.push("sending-domain-not-verified");
+  }
+  if (requiresVerifiedDns && !notificationConfig.sendingDomain.dns.spfVerified) {
+    reasons.push("spf-not-verified");
+  }
+  if (requiresVerifiedDns && !notificationConfig.sendingDomain.dns.dkimVerified) {
+    reasons.push("dkim-not-verified");
+  }
+
+  return {
+    requiresVerifiedDns,
+    ready: reasons.length === 0,
+    reasons,
+  };
 }

@@ -58,7 +58,8 @@ export function Footer() {
             <p>
               {primaryAddress.city}, {primaryAddress.state} {primaryAddress.postalCode}
             </p>
-            <p>{publicBusinessFacts.serviceHours}</p>
+            <p>Routine scheduling hours: {publicBusinessFacts.normalBusinessHours}</p>
+            <p className="text-xs text-slate-600">{publicBusinessFacts.emergencyResponsePolicy}</p>
           </div>
           <div className="mt-4 rounded-lg border border-[#ece3e3] bg-[#fcfaf9] px-3 py-2 text-xs text-slate-700">
             <p className="font-semibold text-slate-900">Service-area snapshot</p>

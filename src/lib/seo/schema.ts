@@ -46,10 +46,24 @@ export function localBusinessSchema() {
       postalCode: publicBusinessFacts.primaryAddress.postalCode,
       addressCountry: "US",
     },
-    openingHours: ["Mo-Fr 08:00-17:00"],
+    openingHours: company.serviceHoursContract.openingHoursSchema,
     areaServed: areaServedList(),
     description:
       "Family owned and operated since 1979. Residential and commercial septic cleaning, home-sale evaluations, portable toilet rentals, grease trap cleaning, and lift pump service.",
+    hoursAvailable: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+        ],
+        opens: "08:00",
+        closes: "17:00",
+      },
+    ],
   };
 }
 
