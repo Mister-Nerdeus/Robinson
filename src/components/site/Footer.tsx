@@ -18,6 +18,7 @@ export function Footer() {
         pathname.startsWith("/services/")),
   );
   const primaryAddress = publicBusinessFacts.primaryAddress;
+  const canonicalBusinessName = publicBusinessFacts.businessName;
   const emergencyLine = publicBusinessFacts.phoneSemantics.emergencyLine.number;
   const primaryLine = publicBusinessFacts.phoneSemantics.primaryServiceLine.number;
   const secondaryLine = publicBusinessFacts.phoneSemantics.secondaryOfficeLine.number;
@@ -28,7 +29,7 @@ export function Footer() {
         <div>
           <Image
             src="/branding/logo-legacy-clean.png"
-            alt={`${company.publicBrand} logo`}
+            alt={`${canonicalBusinessName} logo`}
             width={220}
             height={88}
             className="h-auto w-[180px]"

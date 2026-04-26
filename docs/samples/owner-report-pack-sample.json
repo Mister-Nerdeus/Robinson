@@ -1,0 +1,26 @@
+{
+  "generatedAtUtc": "2026-04-26T00:00:00.000Z",
+  "totals": {
+    "submissions": 4
+  },
+  "submissionsByLane": [
+    { "lane": "septic-service", "count": 2 },
+    { "lane": "evaluation", "count": 1 },
+    { "lane": "rental", "count": 1 }
+  ],
+  "lifecycleByLane": [
+    { "lane": "septic-service", "lifecycleState": "scheduled", "count": 1 },
+    { "lane": "septic-service", "lifecycleState": "new", "count": 1 },
+    { "lane": "evaluation", "lifecycleState": "contacted", "count": 1 },
+    { "lane": "rental", "lifecycleState": "new", "count": 1 }
+  ],
+  "deliveryStateSummary": [
+    { "deliveryState": "sent", "count": 3 },
+    { "deliveryState": "pending", "count": 1 }
+  ],
+  "timeToFirstOwnerAction": {
+    "samples": 2,
+    "averageHours": 1.25,
+    "medianHours": 1.25
+  }
+}

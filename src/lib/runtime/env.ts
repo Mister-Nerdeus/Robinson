@@ -8,6 +8,7 @@ import {
 
 export type RuntimeMode = "local" | "demo" | "production";
 export type BranchIntent = "main" | "develop" | "local";
+export const RUNTIME_SECURITY_CONTRACT_VERSION = "runtime-security-2026-04-v1";
 
 export type DeploymentProvenance = {
   commitSha: string;
@@ -56,13 +57,23 @@ function parseCsv(value: string | undefined): string[] {
     .filter(Boolean);
 }
 
+function hasPlaceholderSecret(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return false;
+  return (
+    normalized.includes("replace-with") ||
+    normalized.includes("example") ||
+    normalized.startsWith("local-") ||
+    normalized.startsWith("test-")
+  );
+}
+
 export function getRuntimeEnv() {
   const mode = readRuntimeMode();
   const localOnlyMode = parseBool(process.env.LOCAL_ONLY_MODE, mode !== "production");
   const allowAdminOutsideLocalMode = parseBool(process.env.ALLOW_ADMIN_OUTSIDE_LOCAL_MODE, false);
   const enableAdminSubmissionsReview = parseBool(process.env.ENABLE_ADMIN_SUBMISSIONS_REVIEW, false);
   const reviewSurfacesVisible = parseBool(process.env.REVIEW_SURFACES_VISIBLE, mode !== "production");
-  const reviewAccessKey = (process.env.REVIEW_ACCESS_KEY || "").trim();
   const reviewAccessCookieName = (process.env.REVIEW_ACCESS_COOKIE_NAME || "robinson_review_access").trim();
   const configuredReviewHosts = parseCsv(process.env.REVIEW_ALLOWED_HOSTS);
   const reviewAllowedHosts = configuredReviewHosts.length ? configuredReviewHosts : ["localhost", "127.0.0.1"];
@@ -78,6 +89,9 @@ export function getRuntimeEnv() {
   const requestLayoutContractVersion =
     (process.env.REQUEST_LAYOUT_CONTRACT_VERSION || "").trim() ||
     REQUEST_LAYOUT_CONTRACT_VERSION;
+  const runtimeSecurityContractVersion =
+    (process.env.RUNTIME_SECURITY_CONTRACT_VERSION || "").trim() ||
+    RUNTIME_SECURITY_CONTRACT_VERSION;
 
   const branchIntent: BranchIntent =
     mode === "production" ? "main" : mode === "demo" ? "develop" : "local";
@@ -89,7 +103,6 @@ export function getRuntimeEnv() {
     allowAdminOutsideLocalMode,
     enableAdminSubmissionsReview,
     reviewSurfacesVisible,
-    reviewAccessKey,
     reviewAccessCookieName,
     reviewAllowedHosts,
     siteUrl,
@@ -97,6 +110,7 @@ export function getRuntimeEnv() {
     seoAllowIndexing,
     deploymentProvenance,
     requestLayoutContractVersion,
+    runtimeSecurityContractVersion,
     companyPublicBrand: company.publicBrand,
   };
 }
@@ -192,6 +206,10 @@ export function validateDeploymentProvenanceForRuntime() {
 
 export function validateRuntimeIdentityForRender() {
   const env = getRuntimeEnv();
+  const ownerToken = (process.env.ADMIN_OWNER_TOKEN || "").trim();
+  const opsToken = (process.env.ADMIN_OPS_TOKEN || "").trim();
+  const reviewAccessKey = (process.env.REVIEW_ACCESS_KEY || "").trim();
+  const localBypassEnabled = parseBool(process.env.ENABLE_LOCAL_DEV_ADMIN_BYPASS, false);
 
   if (env.mode === "production") {
     if (env.reviewSurfacesVisible) {
@@ -202,6 +220,18 @@ export function validateRuntimeIdentityForRender() {
     }
     if (env.enableAdminSubmissionsReview) {
       throw new Error("Production runtime must set ENABLE_ADMIN_SUBMISSIONS_REVIEW=false.");
+    }
+    if (localBypassEnabled) {
+      throw new Error("Production runtime must set ENABLE_LOCAL_DEV_ADMIN_BYPASS=false.");
+    }
+    if (reviewAccessKey) {
+      throw new Error("Production runtime must leave REVIEW_ACCESS_KEY unset.");
+    }
+    if (ownerToken && (ownerToken.length < 24 || hasPlaceholderSecret(ownerToken))) {
+      throw new Error("Production runtime owner token is too weak or placeholder-shaped.");
+    }
+    if (opsToken && (opsToken.length < 24 || hasPlaceholderSecret(opsToken))) {
+      throw new Error("Production runtime ops token is too weak or placeholder-shaped.");
     }
   }
 
@@ -222,6 +252,12 @@ export function validateRuntimeIdentityForRender() {
   if (env.requestLayoutContractVersion !== REQUEST_LAYOUT_CONTRACT_VERSION) {
     throw new Error(
       `REQUEST_LAYOUT_CONTRACT_VERSION mismatch. Expected ${REQUEST_LAYOUT_CONTRACT_VERSION}, received ${env.requestLayoutContractVersion}.`,
+    );
+  }
+
+  if (env.runtimeSecurityContractVersion !== RUNTIME_SECURITY_CONTRACT_VERSION) {
+    throw new Error(
+      `RUNTIME_SECURITY_CONTRACT_VERSION mismatch. Expected ${RUNTIME_SECURITY_CONTRACT_VERSION}, received ${env.runtimeSecurityContractVersion}.`,
     );
   }
 }

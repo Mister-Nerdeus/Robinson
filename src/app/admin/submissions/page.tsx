@@ -3,7 +3,7 @@ import { SubmissionFilters } from "@/components/admin/SubmissionFilters";
 import { SubmissionsTable } from "@/components/admin/SubmissionsTable";
 import { getRuntimeEnv } from "@/lib/runtime/env";
 import { hasConfiguredAdminTokens, resolveAdminIdentity } from "@/lib/auth";
-import { listSubmissionReport, listSubmissions } from "@/lib/submissions/repository";
+import { listOwnerReportPack, listSubmissionReport, listSubmissions } from "@/lib/submissions/repository";
 import { headers } from "next/headers";
 
 type SearchParams = {
@@ -58,6 +58,7 @@ export default async function AdminSubmissionsPage({
   };
   const rows = await listSubmissions(filters);
   const report = await listSubmissionReport(filters);
+  const ownerReportPack = await listOwnerReportPack(filters);
   const query = new URLSearchParams();
   if (params.type) query.set("type", params.type);
   if (params.status) query.set("status", params.status);
@@ -69,12 +70,9 @@ export default async function AdminSubmissionsPage({
 
   return (
     <Section title="Admin Submissions Workspace" layout="marketing">
-      <p className="mb-3 text-sm">
-        Protected review surface. Runtime mode: <span className="font-semibold">{runtime.mode}</span>. Role:{" "}
-        <span className="font-semibold">{identity.role}</span>.
-      </p>
+      <p className="mb-3 text-sm">Protected review surface for authenticated owner/ops operations.</p>
       <p className="mb-4 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-3 text-sm">
-        Internal triage only. This workspace is guarded by runtime policy and authenticated owner/ops access.
+        Internal triage and reporting only. This workspace is guarded by runtime policy and authenticated owner/ops access.
       </p>
 
       <SubmissionFilters
@@ -105,7 +103,7 @@ export default async function AdminSubmissionsPage({
         ))}
       </div>
       <div className="mt-3">
-        <SubmissionsTable rows={rows} />
+        <SubmissionsTable rows={rows} ownerReportPack={ownerReportPack} />
       </div>
     </Section>
   );

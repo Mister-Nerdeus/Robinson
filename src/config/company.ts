@@ -7,6 +7,15 @@ export type BusinessClaim = {
   note: string;
 };
 
+export type ExternalListingStatus = "aligned" | "needs-update" | "retired-suppress" | "unresolved";
+
+export type ExternalListingSurface = {
+  surface: string;
+  status: ExternalListingStatus;
+  ownerAction: string;
+  notes: string;
+};
+
 export type CompanyProfile = {
   legalName: string;
   publicBrand: string;
@@ -39,6 +48,22 @@ export type CompanyProfile = {
     claim: string;
     status: ClaimStatus;
     note: string;
+  };
+  externalListingContract: {
+    version: string;
+    canonicalFacts: {
+      publicName: string;
+      legalName: string;
+      primaryPhone: string;
+      secondaryPhone: string;
+      streetAddress: string;
+      cityStateZip: string;
+      normalBusinessHours: string;
+      emergencyPolicy: string;
+    };
+    publishGuard: string;
+    legacyFactsTracked: string[];
+    knownSurfaces: ExternalListingSurface[];
   };
   claims: BusinessClaim[];
 };
@@ -106,6 +131,58 @@ export const company: CompanyProfile = {
     claim: "24/7 Emergency Service",
     status: "confirmed",
     note: "Displayed across the provided legacy site PDFs and homepage artwork.",
+  },
+  externalListingContract: {
+    version: "external-footprint-v1",
+    canonicalFacts: {
+      publicName: "Robinson Septic Cleaning",
+      legalName: "Robinson Septic Tank Cleaning LLC",
+      primaryPhone: "(616) 636-5565",
+      secondaryPhone: "(616) 887-2060",
+      streetAddress: "1565 N Dagget Rd",
+      cityStateZip: "Pierson, MI 49339",
+      normalBusinessHours: "Mon-Fri 8:00 AM-5:00 PM",
+      emergencyPolicy: "24/7 emergency response is call-first; routine scheduling follows normal office hours.",
+    },
+    publishGuard:
+      "No external listing update may publish provisional or unresolved phone, address, hours, or emergency wording.",
+    legacyFactsTracked: [
+      "113 South Union, Sparta, MI 49345",
+      "(231) 937-8282",
+      "5757 Henkel Rd, Howard City, MI 49329",
+    ],
+    knownSurfaces: [
+      {
+        surface: "Google Business Profile",
+        status: "needs-update",
+        ownerAction: "update",
+        notes: "Align name, phone semantics, and scheduling-hours + emergency wording with canonical facts.",
+      },
+      {
+        surface: "Facebook Page",
+        status: "needs-update",
+        ownerAction: "update",
+        notes: "Normalize branding variants and contact profile to canonical contract.",
+      },
+      {
+        surface: "BBB-facing wording",
+        status: "unresolved",
+        ownerAction: "verify",
+        notes: "Accreditation-sensitive language remains blocked until owner verification.",
+      },
+      {
+        surface: "Major citation directories",
+        status: "needs-update",
+        ownerAction: "update",
+        notes: "Suppress legacy phone/address records and sync to canonical facts.",
+      },
+      {
+        surface: "Legacy website references",
+        status: "retired-suppress",
+        ownerAction: "suppress",
+        notes: "Retire stale mirrors and maintain redirect/retirement proof.",
+      },
+    ],
   },
   claims: [
     {

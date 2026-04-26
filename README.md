@@ -40,6 +40,17 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Rollback runbook: [`docs/rollback-runbook.md`](docs/rollback-runbook.md)
 - Public facts alignment: [`docs/public-facts-contract.md`](docs/public-facts-contract.md)
 - Public hours/emergency contract: [`docs/public-hours-emergency-contract.md`](docs/public-hours-emergency-contract.md)
+- External listing alignment: [`docs/business-listing-alignment.md`](docs/business-listing-alignment.md)
+- External footprint matrix: [`docs/external-footprint-matrix.md`](docs/external-footprint-matrix.md)
+- Runtime security contract: [`docs/runtime-security-contract.md`](docs/runtime-security-contract.md)
+- Secrets/environment policy: [`docs/secrets-and-env-policy.md`](docs/secrets-and-env-policy.md)
+- Backup/restore contract: [`docs/backup-restore-contract.md`](docs/backup-restore-contract.md)
+- Recovery rehearsal runbook: [`docs/recovery-rehearsal-runbook.md`](docs/recovery-rehearsal-runbook.md)
+- Owner report pack: [`docs/owner-report-pack.md`](docs/owner-report-pack.md)
+- Reporting regeneration runbook: [`docs/reporting-regeneration-runbook.md`](docs/reporting-regeneration-runbook.md)
+- Owner handoff pack: [`docs/owner-handoff-pack.md`](docs/owner-handoff-pack.md)
+- Incident response contract: [`docs/incident-response-contract.md`](docs/incident-response-contract.md)
+- Maintenance checklist: [`docs/maintenance-checklist.md`](docs/maintenance-checklist.md)
 - Lane conversion UX: [`docs/lane-conversion-contract.md`](docs/lane-conversion-contract.md)
 - Anti-spam contract: [`docs/anti-spam-contract.md`](docs/anti-spam-contract.md)
 
@@ -76,7 +87,12 @@ This repository is governed by [`docs/project-contract.md`](docs/project-contrac
 - Lead lifecycle contract: `npm run test:lead-lifecycle`
 - Public facts consistency: `npm run test:public-facts-consistency`
 - Public hours truth: `npm run test:public-hours-truth`
+- External listing truth: `npm run test:external-listing-truth`
 - Lane conversion contract: `npm run test:lane-conversion-contract`
+- Owner report pack: `npm run test:owner-report-pack`
+- Public mode hardening: `npm run test:public-mode-hardening`
+- Backup/restore gate: `npm run test:backup-restore-gate`
+- Maintenance gate: `npm run test:maintenance-gate`
 - Anti-spam contract: `npm run test:anti-spam-contract`
 - Claim registry guard: `npm run test:claim-registry-guard`
 

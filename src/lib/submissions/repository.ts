@@ -40,6 +40,39 @@ export type SubmissionReportRow = {
   count: number;
 };
 
+export type OwnerLaneCount = {
+  lane: SubmissionType;
+  count: number;
+};
+
+export type OwnerLifecycleLaneCount = {
+  lane: SubmissionType;
+  lifecycleState: SubmissionLifecycleState;
+  count: number;
+};
+
+export type OwnerDeliveryStateCount = {
+  deliveryState: SubmissionDeliverySnapshot["state"] | "unknown";
+  count: number;
+};
+
+export type OwnerActionTimingSummary = {
+  samples: number;
+  averageHours: number;
+  medianHours: number;
+};
+
+export type OwnerReportPack = {
+  generatedAtUtc: string;
+  totals: {
+    submissions: number;
+  };
+  submissionsByLane: OwnerLaneCount[];
+  lifecycleByLane: OwnerLifecycleLaneCount[];
+  deliveryStateSummary: OwnerDeliveryStateCount[];
+  timeToFirstOwnerAction: OwnerActionTimingSummary;
+};
+
 function normalizeType(value: string): SubmissionType {
   return submissionTypes.find((entry) => entry === value) ?? "general";
 }
@@ -290,4 +323,82 @@ export async function listSubmissionReport(filters: SubmissionQuery = {}): Promi
   }
 
   return Array.from(bucket.values()).sort((a, b) => b.count - a.count);
+}
+
+function toRoundedHours(valueMs: number): number {
+  return Number((valueMs / 3_600_000).toFixed(2));
+}
+
+function median(values: number[]): number {
+  if (values.length === 0) {
+    return 0;
+  }
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return Number(((sorted[middle - 1] + sorted[middle]) / 2).toFixed(2));
+  }
+  return Number(sorted[middle].toFixed(2));
+}
+
+export async function listOwnerReportPack(filters: SubmissionQuery = {}): Promise<OwnerReportPack> {
+  const rows = await listSubmissions(filters);
+
+  const laneCounts = new Map<SubmissionType, number>();
+  const lifecycleCounts = new Map<string, OwnerLifecycleLaneCount>();
+  const deliveryCounts = new Map<OwnerDeliveryStateCount["deliveryState"], number>();
+  const ownerActionHours: number[] = [];
+
+  for (const row of rows) {
+    laneCounts.set(row.serviceLane, (laneCounts.get(row.serviceLane) || 0) + 1);
+
+    const lifecycleKey = `${row.serviceLane}|${row.lifecycleState}`;
+    const lifecycleExisting = lifecycleCounts.get(lifecycleKey);
+    if (lifecycleExisting) {
+      lifecycleExisting.count += 1;
+    } else {
+      lifecycleCounts.set(lifecycleKey, {
+        lane: row.serviceLane,
+        lifecycleState: row.lifecycleState,
+        count: 1,
+      });
+    }
+
+    const deliveryState = row.delivery?.state || "unknown";
+    deliveryCounts.set(deliveryState, (deliveryCounts.get(deliveryState) || 0) + 1);
+
+    if (row.triageUpdatedBy !== "system") {
+      const createdAt = Date.parse(row.createdAt);
+      const triageUpdatedAt = Date.parse(row.triageUpdatedAt);
+      if (!Number.isNaN(createdAt) && !Number.isNaN(triageUpdatedAt) && triageUpdatedAt >= createdAt) {
+        ownerActionHours.push(toRoundedHours(triageUpdatedAt - createdAt));
+      }
+    }
+  }
+
+  const averageHours =
+    ownerActionHours.length > 0
+      ? Number((ownerActionHours.reduce((sum, current) => sum + current, 0) / ownerActionHours.length).toFixed(2))
+      : 0;
+
+  return {
+    generatedAtUtc: new Date().toISOString(),
+    totals: {
+      submissions: rows.length,
+    },
+    submissionsByLane: Array.from(laneCounts.entries())
+      .map(([lane, count]) => ({ lane, count }))
+      .sort((a, b) => b.count - a.count || a.lane.localeCompare(b.lane)),
+    lifecycleByLane: Array.from(lifecycleCounts.values()).sort(
+      (a, b) => b.count - a.count || a.lane.localeCompare(b.lane) || a.lifecycleState.localeCompare(b.lifecycleState),
+    ),
+    deliveryStateSummary: Array.from(deliveryCounts.entries())
+      .map(([deliveryState, count]) => ({ deliveryState, count }))
+      .sort((a, b) => b.count - a.count || a.deliveryState.localeCompare(b.deliveryState)),
+    timeToFirstOwnerAction: {
+      samples: ownerActionHours.length,
+      averageHours,
+      medianHours: median(ownerActionHours),
+    },
+  };
 }

@@ -5,9 +5,11 @@ import {
   type SubmissionLifecycleState,
   type SubmissionRecord,
 } from "@/lib/forms/types";
+import type { OwnerReportPack } from "@/lib/submissions/repository";
 
 type Props = {
   rows: SubmissionRecord[];
+  ownerReportPack: OwnerReportPack;
 };
 
 const statusLabel: Record<SubmissionLifecycleState, string> = {
@@ -105,22 +107,53 @@ function toCsv(rows: SubmissionRecord[]) {
   return [header.join(","), ...lines].join("\n");
 }
 
-export function SubmissionsTable({ rows }: Props) {
+export function SubmissionsTable({ rows, ownerReportPack }: Props) {
   if (rows.length === 0) {
     return <p>No submissions yet.</p>;
   }
 
   const csv = toCsv(rows);
   const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`;
+  const reportJsonHref = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(ownerReportPack, null, 2))}`;
 
   return (
     <div className="grid gap-4">
+      <div className="rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-3 text-xs text-slate-700">
+        <p className="font-semibold text-slate-900">Owner report pack summary</p>
+        <p className="mt-1">
+          Total submissions: {ownerReportPack.totals.submissions} | Time-to-first-owner-action samples:{" "}
+          {ownerReportPack.timeToFirstOwnerAction.samples}
+        </p>
+        <p className="mt-1">
+          Average first-owner-action: {ownerReportPack.timeToFirstOwnerAction.averageHours}h | Median:{" "}
+          {ownerReportPack.timeToFirstOwnerAction.medianHours}h
+        </p>
+        <p className="mt-2 font-semibold text-slate-900">Submissions by lane</p>
+        {ownerReportPack.submissionsByLane.map((entry) => (
+          <p key={`lane-${entry.lane}`}>
+            {entry.lane}: {entry.count}
+          </p>
+        ))}
+        <p className="mt-2 font-semibold text-slate-900">Delivery state summary</p>
+        {ownerReportPack.deliveryStateSummary.map((entry) => (
+          <p key={`delivery-${entry.deliveryState}`}>
+            {entry.deliveryState}: {entry.count}
+          </p>
+        ))}
+      </div>
       <a
         href={csvHref}
         download={`submissions-export-${new Date().toISOString().slice(0, 10)}.csv`}
         className="inline-flex w-fit rounded-md border border-[var(--brand)] bg-white px-3 py-2 text-xs font-semibold text-[var(--brand)]"
       >
         Export CSV
+      </a>
+      <a
+        href={reportJsonHref}
+        download={`owner-report-pack-${new Date().toISOString().slice(0, 10)}.json`}
+        className="inline-flex w-fit rounded-md border border-[var(--brand)] bg-white px-3 py-2 text-xs font-semibold text-[var(--brand)]"
+      >
+        Export Owner Report JSON
       </a>
 
       <label className="grid gap-1 text-sm">

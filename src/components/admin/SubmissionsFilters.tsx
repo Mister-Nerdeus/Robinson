@@ -42,7 +42,11 @@ export function SubmissionsFilters({
   selectedSource = "",
 }: Props) {
   return (
-    <form className="grid gap-3 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-4 md:grid-cols-[1fr,1fr,1fr,1fr,1fr,auto] md:items-end" method="get">
+    <form
+      className="grid gap-3 rounded-md border border-[#d8c1c1] bg-[#fff7f6] p-4 md:grid-cols-[1fr,1fr,1fr,1fr,1fr,auto] md:items-end"
+      method="get"
+      data-owner-report-filters="true"
+    >
       <label className="grid gap-1 text-sm">
         <span className="font-semibold">Service Type</span>
         <select name="type" defaultValue={selectedType} className="rounded-md border border-[#bdb4a2] bg-white px-3 py-2">
@@ -96,6 +100,9 @@ export function SubmissionsFilters({
           Reset
         </a>
       </div>
+      <p className="md:col-span-6 text-xs text-slate-600">
+        Filter set controls both table output and owner-report-pack aggregates.
+      </p>
     </form>
   );
 }

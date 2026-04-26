@@ -45,3 +45,9 @@ Every issue closeout must follow [`docs/issue-closeout-standard.md`](issue-close
 ## Release Readiness Binding
 - Production cutover decisions must reference `docs/production-cutover-checklist.md`.
 - Proof artifacts for go/no-go must be captured in `docs/release-readiness-proof-pack.md`.
+
+## Operations Durability Binding
+- External listings/citations must remain synchronized with canonical public facts and tracked in `docs/external-footprint-matrix.md`.
+- Runtime public-mode security requirements are governed by `docs/runtime-security-contract.md`.
+- Backup/restore operations are governed by `docs/backup-restore-contract.md` and rehearsed via `docs/recovery-rehearsal-runbook.md`.
+- Post-launch incident and maintenance discipline is governed by `docs/incident-response-contract.md` and `docs/maintenance-checklist.md`.
