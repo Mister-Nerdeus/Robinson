@@ -1,3 +1,5 @@
+import { publicCta } from "@/content/cta";
+
 export type HomeLaneCard = {
   id: "emergency-septic" | "routine-pumping" | "evaluation" | "rental" | "commercial";
   title: string;
@@ -23,7 +25,7 @@ export const homeContent = {
     subheading:
       "Emergency calls stay call-first. You can also request pumping, evaluations, portable toilets, and commercial service below.",
     ctaHref: "/contact",
-    ctaLabel: "Request Service",
+    ctaLabel: publicCta.global.request.label,
   },
   lanes: [
     {
@@ -32,7 +34,7 @@ export const homeContent = {
       userProblem: "Backup, overflow, alarm, or strong sewage odor right now.",
       laneValue: "Call first for 24/7 dispatch, then share details so the crew arrives prepared.",
       href: "/contact?lane=septic-service",
-      ctaLabel: "Call Emergency Service",
+      ctaLabel: publicCta.routeSpecific.emergencySeptic,
       emphasis: "high",
     },
     {
@@ -41,7 +43,7 @@ export const homeContent = {
       userProblem: "System is due for pumping before it turns into a failure call.",
       laneValue: "Schedule preventive pumping with property and access details captured up front.",
       href: "/contact?lane=septic-service",
-      ctaLabel: "Schedule Pumping",
+      ctaLabel: publicCta.routeSpecific.routinePumping,
     },
     {
       id: "evaluation",
@@ -49,7 +51,7 @@ export const homeContent = {
       userProblem: "A buyer, seller, or Realtor deadline is approaching.",
       laneValue: "Share deadline, role, and property access details for home-sale scheduling.",
       href: "/contact?lane=evaluation",
-      ctaLabel: "Request Evaluation",
+      ctaLabel: publicCta.routeSpecific.evaluation,
     },
     {
       id: "rental",
@@ -57,7 +59,7 @@ export const homeContent = {
       userProblem: "You need restroom units for an event, project, or jobsite.",
       laneValue: "Request units with quantity, duration, and delivery access details.",
       href: "/contact?lane=rental",
-      ctaLabel: "Request Rentals",
+      ctaLabel: publicCta.routeSpecific.rental,
     },
     {
       id: "commercial",
@@ -65,7 +67,7 @@ export const homeContent = {
       userProblem: "Facility operations need grease trap, lift pump, or septic support.",
       laneValue: "Request grease trap, lift pump, or septic support with site coordination details.",
       href: "/contact?lane=commercial-service",
-      ctaLabel: "Get Commercial Help",
+      ctaLabel: publicCta.routeSpecific.commercial,
     },
   ] satisfies HomeLaneCard[],
   trustBand: {
@@ -89,7 +91,7 @@ export const homeContent = {
       "Coordination support stays clear for buyers, sellers, and agents.",
     ],
     ctaHref: "/realtors",
-    ctaLabel: "View Realtor Services",
+    ctaLabel: publicCta.routeSpecific.realtorBand,
   },
   faqPreview: [
     {

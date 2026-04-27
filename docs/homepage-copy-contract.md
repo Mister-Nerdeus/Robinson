@@ -27,3 +27,7 @@ Homepage copy must read like local service communication, not internal workflow 
 - `src/components/home/LaneTaskCard.tsx`
 - `src/components/site/Footer.tsx`
 - `src/content/navigation.ts`
+
+## Executable Gates
+- `tests/homepage-content-contract.spec.ts` validates content-driven CTA/copy invariants directly from `src/content/home.ts`.
+- `tests/homepage-apple-ux-contract.spec.ts` validates homepage UX copy/jargon rules on contract surfaces.

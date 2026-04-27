@@ -39,21 +39,26 @@
 | Every primary route has fresh desktop screenshot | PASS | Captured 7/7 primary routes |
 | Every primary route has fresh mobile screenshot | PASS | Captured 7/7 primary routes |
 | Mobile header visible at 360/390/430 widths | PASS | Brand + menu + sticky actions visible |
-| Primary CTA visible in first viewport on home mobile | PASS | `Call Now` and request CTA present near top |
+| Primary CTA visible in first viewport on home mobile | PASS | `Call Emergency Dispatch` and request CTA present near top |
 | Realtor lane visibly prioritized | PASS | Present in hero CTA set and dedicated homepage section |
 | Service pages have route-specific first CTA | PASS | Each route contains explicit request action/form |
 | Obvious CTA hierarchy regressions detected | PASS | No blocked conversion flows observed |
 
 ## Homepage UX Gate
 - Gate document: `docs/homepage-apple-ux-gate.md`
+- Executable gate: `npm run test:homepage-apple-ux-contract`
 - Result: `PASS`
 - Evidence screenshots:
 - `docs/screenshots/home-desktop-1440.png`
 - `docs/screenshots/home-mobile-390.png`
 - `docs/screenshots/header-desktop-1440.png`
 - `docs/screenshots/home-footer-desktop-1440.png`
+- Evidence manifest: `docs/screenshots/homepage-ux-evidence-manifest.json`
+- Mobile rail proof artifact: `docs/verification/mobile-action-rail-contract.json`
 
 ## File Manifest
 - `scripts/capture-screenshots.mjs` (updated capture workflow)
+- `scripts/generate-homepage-ux-evidence-manifest.mjs` (screenshot freshness/provenance binding)
+- `scripts/capture-mobile-action-rail-proof.mjs` (mobile no-overlap + safe-area proof)
 - `docs/screenshots/*.png` (fresh artifacts)
 - `docs/issue-closeout-ux-conversion.md` (cross-issue closeout)

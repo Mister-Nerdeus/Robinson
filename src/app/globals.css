@@ -30,6 +30,7 @@
   --layout-task-gutter-sm: 1rem;
   --request-footer-handoff-space: clamp(2.8rem, 6vw, 5.5rem);
   --sticky-header-offset: 5.8rem;
+  --mobile-action-rail-height: 5.25rem;
 }
 
 * {
@@ -44,6 +45,10 @@ body {
     var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
+}
+
+body.site-shell {
+  padding-bottom: calc(var(--mobile-action-rail-height) + env(safe-area-inset-bottom));
 }
 
 a {
@@ -221,5 +226,16 @@ img {
 @media (max-width: 767px) {
   .section-pad {
     padding-block: 2.4rem;
+  }
+
+  .request-form-shell,
+  .task-page-form-shell {
+    padding-bottom: calc(var(--mobile-action-rail-height) + env(safe-area-inset-bottom) + 1rem);
+  }
+}
+
+@media (min-width: 768px) {
+  body.site-shell {
+    padding-bottom: 0;
   }
 }

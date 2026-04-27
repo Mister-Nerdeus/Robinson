@@ -36,12 +36,7 @@ function run() {
     }
   }
 
-  const genericCtas = ["Request Service", "Learn More", "Contact Us"];
-  for (const generic of genericCtas) {
-    assert.ok(!source.includes(`>${generic}<`), `Homepage CTA label must not be generic: ${generic}`);
-  }
-
-  console.log("[homepage-structure-contract] homepage order and CTA specificity verified");
+  console.log("[homepage-structure-contract] homepage order markers verified");
 }
 
 run();

@@ -12,6 +12,7 @@ import { JsonLd } from "@/lib/seo/JsonLd";
 import { localBusinessSchema } from "@/lib/seo/schema";
 import { company } from "@/config/company";
 import { publicBusinessFacts } from "@/content/businessFacts";
+import { publicCta } from "@/content/cta";
 
 export const metadata: Metadata = buildMetadata(
   "24/7 Emergency Septic Service, Home-Sale Evaluations, and Portable Rentals",
@@ -36,7 +37,7 @@ export default function HomePage() {
             <p className="mt-3 max-w-3xl text-slate-700">{homeContent.hero.subheading}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a href={`tel:${publicBusinessFacts.phoneSemantics.emergencyLine.number}`} className="rounded-md bg-[var(--brand)] px-5 py-3 font-semibold text-white">
-                Call Emergency Dispatch
+                {publicCta.global.call.label}
               </a>
               <Link href={homeContent.hero.ctaHref} className="rounded-md border border-[var(--brand)] px-5 py-3 font-semibold text-[var(--brand)]">
                 {homeContent.hero.ctaLabel}
@@ -87,7 +88,11 @@ export default function HomePage() {
       </Section>
 
       <Section layout="marketing">
-        <CtaBand heading="Need help right now? Emergency response is call-first 24/7. Routine scheduling is Mon-Fri 8:00 AM-5:00 PM." href="/contact" label="Request Service" />
+        <CtaBand
+          heading="Need help right now? Emergency response is call-first 24/7. Routine scheduling is Mon-Fri 8:00 AM-5:00 PM."
+          href="/contact"
+          label={publicCta.global.request.label}
+        />
       </Section>
     </div>
   );

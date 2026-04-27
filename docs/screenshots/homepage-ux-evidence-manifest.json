@@ -1,0 +1,72 @@
+{
+  "manifestVersion": "homepage-ux-evidence-v1",
+  "issueBatch": "254-259",
+  "generatedAtUtc": "2026-04-27T23:50:59.358Z",
+  "captureMethod": "playwright-local",
+  "provenance": {
+    "sourceCommit": "d8c7e620eb736a9bbb2441703fa935104cc132ba",
+    "sourceBranch": "develop",
+    "worktreeDirty": true
+  },
+  "contractReferences": [
+    "docs/homepage-apple-ux-gate.md",
+    "docs/public-cta-contract.md",
+    "docs/homepage-copy-contract.md",
+    "docs/homepage-grid-contract.md",
+    "docs/homepage-ia-contract.md",
+    "docs/header-action-hierarchy-contract.md",
+    "docs/footer-surface-contract.md",
+    "docs/mobile-action-rail-contract.md"
+  ],
+  "entries": [
+    {
+      "route": "/",
+      "viewport": "desktop-1440",
+      "artifactPath": "docs/screenshots/home-desktop-1440.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/",
+      "viewport": "mobile-390",
+      "artifactPath": "docs/screenshots/home-mobile-390.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/",
+      "viewport": "desktop-1440-header",
+      "artifactPath": "docs/screenshots/header-desktop-1440.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/",
+      "viewport": "desktop-1440-footer",
+      "artifactPath": "docs/screenshots/home-footer-desktop-1440.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/contact",
+      "viewport": "mobile-390",
+      "artifactPath": "docs/screenshots/contact-mobile-390.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/services/septic-cleaning",
+      "viewport": "mobile-390",
+      "artifactPath": "docs/screenshots/septic-cleaning-mobile-390.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    },
+    {
+      "route": "/faq",
+      "viewport": "mobile-390",
+      "artifactPath": "docs/screenshots/issue-83-94-faq-mobile-390.png",
+      "capturedAtUtc": "2026-04-27T23:50:59.358Z",
+      "captureScript": "scripts/capture-screenshots.mjs"
+    }
+  ]
+}

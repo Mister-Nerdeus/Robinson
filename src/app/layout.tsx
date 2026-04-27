@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className="pb-20 md:pb-0">
+      <body className="site-shell">
         <AnalyticsPageView />
         <Header />
         <main>{children}</main>

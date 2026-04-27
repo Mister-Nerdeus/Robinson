@@ -21,3 +21,8 @@
 ## Review Check
 - Emergency CTA remains visible above the fold on desktop/mobile.
 - Emergency service card remains most prominent in the service chooser.
+
+## Executable Gates
+- `tests/homepage-structure-contract.spec.ts` enforces section-order contract.
+- `tests/homepage-content-contract.spec.ts` enforces content-driven IA label separation.
+- `tests/homepage-apple-ux-contract.spec.ts` enforces trust/realtor separation and hero stability markers.

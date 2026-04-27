@@ -1,0 +1,70 @@
+{
+  "artifactVersion": "public-route-performance-v1",
+  "measuredAtUtc": "2026-04-27T23:49:13.385Z",
+  "measurementMode": "playwright-local",
+  "baseUrl": "http://127.0.0.1:4850",
+  "routeCount": 3,
+  "routes": [
+    {
+      "route": "/",
+      "budget": {
+        "lcpMs": 3200,
+        "fcpMs": 3200,
+        "ttfbMs": 1000
+      },
+      "measured": {
+        "lcpMs": 96,
+        "fcpMs": 96,
+        "ttfbMs": 8.2,
+        "lcpFallbackToFcp": false
+      },
+      "checks": {
+        "lcp": true,
+        "fcp": true,
+        "ttfb": true
+      },
+      "pass": true
+    },
+    {
+      "route": "/contact",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1700,
+        "ttfbMs": 900
+      },
+      "measured": {
+        "lcpMs": 36,
+        "fcpMs": 36,
+        "ttfbMs": 14.7,
+        "lcpFallbackToFcp": false
+      },
+      "checks": {
+        "lcp": true,
+        "fcp": true,
+        "ttfb": true
+      },
+      "pass": true
+    },
+    {
+      "route": "/services/septic-cleaning",
+      "budget": {
+        "lcpMs": 2800,
+        "fcpMs": 1800,
+        "ttfbMs": 1000
+      },
+      "measured": {
+        "lcpMs": 52,
+        "fcpMs": 36,
+        "ttfbMs": 6.2,
+        "lcpFallbackToFcp": false
+      },
+      "checks": {
+        "lcp": true,
+        "fcp": true,
+        "ttfb": true
+      },
+      "pass": true
+    }
+  ],
+  "failedRoutes": []
+}

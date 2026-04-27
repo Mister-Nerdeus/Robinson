@@ -1,5 +1,11 @@
 # Homepage Apple-UX Gate
 
+## Executable Companion
+- Gate test: `tests/homepage-apple-ux-contract.spec.ts`
+- Gate runner: `scripts/check-homepage-apple-ux-gate.mjs`
+- Package command: `npm run test:homepage-apple-ux-contract`
+- Synthetic fail mode (proof): `node scripts/check-homepage-apple-ux-gate.mjs --synthetic-fail`
+
 ## Checklist
 - Hero calmness: first viewport stays stable; headline/CTA remain clear.
 - CTA clarity: call action is primary; request action is secondary and clear.
@@ -14,6 +20,7 @@
 - `docs/screenshots/home-mobile-390.png`
 - `docs/screenshots/header-desktop-1440.png`
 - `docs/screenshots/home-footer-desktop-1440.png`
+- Manifest binding: `docs/screenshots/homepage-ux-evidence-manifest.json`
 
 ## Contract Cross-Checks
 - Footer checked against `docs/footer-surface-contract.md`.

@@ -10,6 +10,7 @@ import { trackEvent } from "@/lib/analytics/client";
 import { analyticsEvents } from "@/lib/analytics/events";
 import { MobileNav } from "@/components/site/MobileNav";
 import { publicBusinessFacts } from "@/content/businessFacts";
+import { publicCta } from "@/content/cta";
 
 export function Header() {
   const pathname = usePathname();
@@ -71,11 +72,11 @@ export function Header() {
               }}
               className="rounded-md bg-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-white"
             >
-              {isTaskRoute ? "Emergency Call" : "Call Now"}
+              {publicCta.global.call.label}
             </a>
             {!isTaskRoute ? (
               <Link href="/contact" className="rounded-md border border-[#d3c3c3] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--brand)]">
-                Request Service
+                {publicCta.global.request.label}
               </Link>
             ) : null}
           </div>

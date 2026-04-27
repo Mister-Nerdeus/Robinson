@@ -7,6 +7,7 @@ import { footerFastPathLinks } from "@/content/navigation";
 import { TrackedPhoneLink } from "@/components/site/TrackedPhoneLink";
 import { serviceAreaContent } from "@/content/serviceArea";
 import { publicBusinessFacts } from "@/content/businessFacts";
+import { buildFooterCallLabel } from "@/content/cta";
 
 export function Footer() {
   const primaryAddress = publicBusinessFacts.primaryAddress;
@@ -33,7 +34,7 @@ export function Footer() {
             </div>
             <TrackedPhoneLink
               href={`tel:${sharedPrimaryNumber}`}
-              label={`Call ${sharedPrimaryNumber}`}
+              label={buildFooterCallLabel(sharedPrimaryNumber)}
               location="footer-primary"
               className="inline-flex min-h-11 items-center rounded-md bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white"
             />
@@ -50,7 +51,7 @@ export function Footer() {
             {secondaryLine ? <p className="text-slate-600">Office support line: {secondaryLine}</p> : null}
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-700">
+          <div data-secondary-route-links="footer-fast-paths" className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-700">
             {footerFastPathLinks.map((link) => (
               <Link key={link.href} className="underline decoration-[#b8a0a0]/70 underline-offset-2" href={link.href}>
                 {link.label}

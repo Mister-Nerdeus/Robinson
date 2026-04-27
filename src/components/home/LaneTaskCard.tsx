@@ -28,6 +28,7 @@ export function LaneTaskCard({ lane }: { lane: HomeLaneCard }) {
             ? "bg-[var(--brand)] text-white hover:opacity-95"
             : "border border-[var(--brand)] text-[var(--brand)] hover:bg-[#fff3f2]"
         }`}
+        data-cta-family="route-specific-service"
         href={lane.href}
         onClick={() => {
           void trackEvent({ event: analyticsEvents.laneClick, lane: lane.title });
