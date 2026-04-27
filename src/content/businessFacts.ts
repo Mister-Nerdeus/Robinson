@@ -62,6 +62,7 @@ export const publicBusinessFacts = {
   hoursSummary: `${company.serviceHoursContract.normalBusinessHoursLabel} routine scheduling; 24/7 emergency call-first response.`,
   normalBusinessHours: company.serviceHoursContract.normalBusinessHoursLabel,
   emergencyResponsePolicy: company.serviceHoursContract.emergencyResponsePolicy,
+  usesSharedDispatchNumber: true,
 };
 
 export const publicPhoneSemanticsMap: PublicPhoneSemantic[] = [

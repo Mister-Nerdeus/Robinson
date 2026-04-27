@@ -61,7 +61,7 @@ export const trustClaimRegistry: TrustClaim[] = [
   {
     id: "service-lane-coverage",
     class: "service-area",
-    label: "Residential, evaluation, rental, and commercial lanes route to one dispatch operation",
+    label: "Residential, evaluation, rental, and commercial services are coordinated by one dispatch operation",
     owner: "operations",
     status: "approved",
     evidenceRef: "service-lane-contract",
@@ -72,7 +72,7 @@ export const trustClaimRegistry: TrustClaim[] = [
   {
     id: "realtor-evaluation-support",
     class: "service-area",
-    label: "Realtor and home-sale evaluation workflow support",
+    label: "Realtor and home-sale evaluation coordination support",
     owner: "operations",
     status: "approved",
     evidenceRef: "legacy-realtor-materials",
@@ -171,7 +171,7 @@ export const trustContent = {
   points: approvedPublicClaims.map((claim) => claim.label),
   trustStatementStatus: "marketing" as const,
   trustStatement:
-    "Robinson keeps service promises concise: clear routing, realistic follow-up expectations, and lane-specific intake detail.",
+    "Robinson keeps service promises concise with clear scheduling expectations and practical service communication.",
   sourcePolicy:
     "Every public trust claim must map to evidenceRef and ownerApprovalRef; blocked classes stay internal-only.",
 };

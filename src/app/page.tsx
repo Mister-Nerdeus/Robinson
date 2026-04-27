@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { LaneGrid } from "@/components/home/LaneGrid";
 import { FaqPreview } from "@/components/home/FaqPreview";
+import { HeroMedia } from "@/components/home/HeroMedia";
 import { homeContent } from "@/content/home";
 import { trustContent } from "@/content/trust";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -22,9 +22,9 @@ export const metadata: Metadata = buildMetadata(
 export default function HomePage() {
   return (
     <div
-      data-homepage-contract="home-hero-router-trust-proof-faq-final-v2"
+      data-homepage-contract="home-hero-services-trust-realtor-faq-final-v3"
       data-homepage-route="/"
-      data-homepage-structure="hero-lane-router-conversion-proof-faq-final-cta"
+      data-homepage-structure="hero-services-trust-realtor-faq-final-cta"
     >
       <JsonLd data={localBusinessSchema()} />
 
@@ -43,49 +43,42 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="overflow-hidden rounded-2xl border border-[#d3c0c0] bg-[var(--surface)] shadow-sm">
-            <Image
-              src="/images/enhanced/truck_full_ai_enhanced.jpg"
-              alt="Robinson Septic service truck ready for dispatch"
-              width={1200}
-              height={780}
-              className="h-[280px] w-full object-cover sm:h-[330px]"
-            />
-          </div>
+          <HeroMedia src="/images/enhanced/truck_full_ai_enhanced.jpg" alt="Robinson Septic service truck ready for dispatch" />
         </div>
       </Section>
 
-      <Section title="Choose your task lane" layout="marketing">
+      <Section title="Choose your service" layout="marketing">
         <LaneGrid lanes={homeContent.lanes} />
       </Section>
 
-      <Section title={homeContent.conversionProof.title} layout="marketing">
-        <div className="grid gap-5 md:grid-cols-[1.15fr,0.85fr] md:items-start">
-          <div className="rounded-2xl border border-[#c5d3bd] bg-[linear-gradient(145deg,#edf4e7,#e2edd8)] p-5">
-            <h3 className="font-display text-[1.75rem] leading-tight text-[var(--brand)]">Local proof customers can trust</h3>
-            <ul className="mt-3 grid gap-1.5 pl-5 text-sm text-slate-800">
-              {trustContent.points.map((point) => (
-                <li key={point} className="list-disc">
-                  {point}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-sm text-slate-700">{trustContent.trustStatement}</p>
-          </div>
-          <div className="rounded-2xl border border-[#d9cbc1] bg-[#fffaf3] p-5">
-            <p className="text-sm text-slate-800">{homeContent.conversionProof.body}</p>
-            <ul className="mt-3 grid gap-2 text-sm text-slate-700">
-              {homeContent.conversionProof.highlights.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
-            <Link
-              href={homeContent.conversionProof.ctaHref}
-              className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)]"
-            >
-              {homeContent.conversionProof.ctaLabel}
-            </Link>
-          </div>
+      <Section title={homeContent.trustBand.title} layout="marketing">
+        <div className="rounded-2xl border border-[#c5d3bd] bg-[linear-gradient(145deg,#edf4e7,#e2edd8)] p-5">
+          <p className="text-sm text-slate-800">{homeContent.trustBand.body}</p>
+          <ul className="mt-3 grid gap-1.5 pl-5 text-sm text-slate-800">
+            {trustContent.points.map((point) => (
+              <li key={point} className="list-disc">
+                {point}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-sm text-slate-700">{trustContent.trustStatement}</p>
+        </div>
+      </Section>
+
+      <Section title={homeContent.realtorBand.title} layout="marketing">
+        <div className="rounded-2xl border border-[#d9cbc1] bg-[#fffaf3] p-5">
+          <p className="text-sm text-slate-800">{homeContent.realtorBand.body}</p>
+          <ul className="mt-3 grid gap-2 text-sm text-slate-700">
+            {homeContent.realtorBand.highlights.map((item) => (
+              <li key={item}>• {item}</li>
+            ))}
+          </ul>
+          <Link
+            href={homeContent.realtorBand.ctaHref}
+            className="mt-4 inline-flex min-h-11 items-center rounded-md border border-[var(--brand)] px-4 py-3 text-sm font-semibold text-[var(--brand)]"
+          >
+            {homeContent.realtorBand.ctaLabel}
+          </Link>
         </div>
       </Section>
 
@@ -94,7 +87,7 @@ export default function HomePage() {
       </Section>
 
       <Section layout="marketing">
-        <CtaBand heading="Need help right now? Emergency response is call-first 24/7. Routine scheduling is Mon-Fri 8:00 AM-5:00 PM." href="/contact" label="Open Contact Intake Lanes" />
+        <CtaBand heading="Need help right now? Emergency response is call-first 24/7. Routine scheduling is Mon-Fri 8:00 AM-5:00 PM." href="/contact" label="Request Service" />
       </Section>
     </div>
   );

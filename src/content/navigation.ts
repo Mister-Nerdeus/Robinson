@@ -29,11 +29,9 @@ export function getHeaderNavLinks(context: HeaderNavContext): NavItem[] {
 }
 
 export const footerFastPathLinks: NavItem[] = [
-  { href: "/services/septic-cleaning", label: "Septic Service Lane" },
-  { href: "/services/well-septic-evaluations", label: "Evaluation Lane" },
-  { href: "/services/portable-toilets", label: "Rental Lane" },
-  { href: "/services/commercial", label: "Commercial Lane" },
-  { href: "/realtors", label: "Realtor Resources" },
+  { href: "/services", label: "Services" },
+  { href: "/realtors", label: "Realtors" },
+  { href: "/faq", label: "FAQ" },
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
   { href: "/accessibility", label: "Accessibility" },

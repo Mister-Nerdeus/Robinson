@@ -3,10 +3,11 @@ import "./globals.css";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { AnalyticsPageView } from "@/components/site/AnalyticsPageView";
-import { company } from "@/config/company";
 import { MobileActionRail } from "@/components/site/MobileActionRail";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { validateRuntimeIdentityForRender } from "@/lib/runtime/env";
+
+import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(company.publicBrand, company.tagline, "/");
 
@@ -20,9 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main>{children}</main>
         <Footer />
-        <div className="border-t border-[#d7caca] bg-[#f3edec] py-3 text-center text-xs text-slate-600">
-          {company.tagline}
-        </div>
         <MobileActionRail />
       </body>
     </html>

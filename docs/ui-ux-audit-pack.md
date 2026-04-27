@@ -44,6 +44,15 @@
 | Service pages have route-specific first CTA | PASS | Each route contains explicit request action/form |
 | Obvious CTA hierarchy regressions detected | PASS | No blocked conversion flows observed |
 
+## Homepage UX Gate
+- Gate document: `docs/homepage-apple-ux-gate.md`
+- Result: `PASS`
+- Evidence screenshots:
+- `docs/screenshots/home-desktop-1440.png`
+- `docs/screenshots/home-mobile-390.png`
+- `docs/screenshots/header-desktop-1440.png`
+- `docs/screenshots/home-footer-desktop-1440.png`
+
 ## File Manifest
 - `scripts/capture-screenshots.mjs` (updated capture workflow)
 - `docs/screenshots/*.png` (fresh artifacts)

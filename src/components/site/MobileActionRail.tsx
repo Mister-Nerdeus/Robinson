@@ -18,10 +18,10 @@ export function MobileActionRail() {
           }}
           className="rounded-md bg-[var(--brand)] px-3 py-3 text-center text-sm font-semibold text-white"
         >
-          Call Service Line
+          Call Now
         </a>
         <Link href="/contact" className="rounded-md border border-[var(--brand)] bg-white px-3 py-3 text-center text-sm font-semibold text-[var(--brand)]">
-          Request Service
+          Schedule Service
         </Link>
       </div>
     </div>
