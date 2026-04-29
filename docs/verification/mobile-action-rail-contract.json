@@ -1,21 +1,21 @@
 {
   "artifactVersion": "mobile-action-rail-contract-v1",
-  "measuredAtUtc": "2026-04-27T23:49:20.912Z",
-  "baseUrl": "http://127.0.0.1:4850",
+  "measuredAtUtc": "2026-04-29T22:58:45.708Z",
+  "baseUrl": "http://127.0.0.1:3010",
   "routes": [
     {
       "route": "/",
       "kind": "homepage",
       "pass": true,
       "overlapPx": 0,
-      "documentBottomPx": 4509,
+      "documentBottomPx": 5525,
       "reservedRailZonePx": 84,
       "candidate": {
         "selector": "main a[href^='/contact']",
         "label": "Request Service",
-        "top": 2064.625,
-        "bottom": 2081.625,
-        "absoluteBottom": 3975.625
+        "top": 69.421875,
+        "bottom": 117.421875,
+        "absoluteBottom": 4798.421875
       },
       "screenshotPath": "docs\\screenshots\\mobile-action-rail-home-390.png"
     },
@@ -24,14 +24,14 @@
       "kind": "form",
       "pass": true,
       "overlapPx": 0,
-      "documentBottomPx": 2924,
+      "documentBottomPx": 3851,
       "reservedRailZonePx": 84,
       "candidate": {
-        "selector": "main a.rounded-md",
-        "label": "Directions",
-        "top": 294.46875,
-        "bottom": 311.46875,
-        "absoluteBottom": 2391.46875
+        "selector": "main form button:last-of-type",
+        "label": "Next Step",
+        "top": 687,
+        "bottom": 735,
+        "absoluteBottom": 3742
       },
       "screenshotPath": "docs\\screenshots\\mobile-action-rail-contact-390.png"
     },
@@ -40,14 +40,14 @@
       "kind": "form",
       "pass": true,
       "overlapPx": 0,
-      "documentBottomPx": 3373,
+      "documentBottomPx": 3736,
       "reservedRailZonePx": 84,
       "candidate": {
-        "selector": "main a[href^='tel:']",
-        "label": "Call (616) 636-5565",
-        "top": 2065.3125,
-        "bottom": 2082.3125,
-        "absoluteBottom": 2840.3125
+        "selector": "main form button:last-of-type",
+        "label": "Next Step",
+        "top": 687,
+        "bottom": 735,
+        "absoluteBottom": 3627
       },
       "screenshotPath": "docs\\screenshots\\mobile-action-rail-service-390.png"
     },
@@ -56,7 +56,7 @@
       "kind": "non-form",
       "pass": true,
       "overlapPx": 0,
-      "documentBottomPx": 2786,
+      "documentBottomPx": 2691,
       "reservedRailZonePx": 84,
       "candidate": null,
       "screenshotPath": "docs\\screenshots\\mobile-action-rail-faq-390.png"

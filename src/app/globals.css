@@ -27,6 +27,7 @@
   --request-footer-handoff-space: clamp(2.8rem, 6vw, 5.5rem);
   --sticky-header-offset: 5.8rem;
   --mobile-action-rail-height: 5.25rem;
+  --wizard-mobile-actions-bottom-offset: calc(var(--mobile-action-rail-height) + env(safe-area-inset-bottom) + 0.75rem);
 }
 
 * {
@@ -114,9 +115,9 @@ img {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--wizard-mobile-actions-bottom-offset);
   z-index: 40;
-  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  padding-bottom: 0;
   pointer-events: none;
 }
 
@@ -226,7 +227,7 @@ img {
 
   .request-form-shell,
   .task-page-form-shell {
-    padding-bottom: calc(var(--mobile-action-rail-height) + env(safe-area-inset-bottom) + 1rem);
+    padding-bottom: calc(var(--wizard-mobile-actions-bottom-offset) + 5.5rem);
   }
 }
 

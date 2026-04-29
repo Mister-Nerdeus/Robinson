@@ -69,6 +69,20 @@ Cloudflare recommends service mode for stability.
 
 If SCM access is denied, rerun from elevated Administrator session.
 
+Repo helper for permanent setup on this machine:
+- `powershell -ExecutionPolicy Bypass -File scripts/windows/install-cloudflare-tunnel-service.ps1`
+
+## Error 1033 Recovery (Windows)
+If Cloudflare returns `Error 1033`, it means Cloudflare cannot find a healthy connected tunnel instance.
+
+Use the recovery helper:
+- `powershell -ExecutionPolicy Bypass -File scripts/windows/recover-cloudflare-tunnel.ps1 -PublicHostname robinson-demo.hearthcore.app`
+
+What it does:
+- Starts `cloudflared` service if installed but stopped.
+- If service is unavailable, starts `cloudflared` in user mode with safe quoting for `%USERPROFILE%` paths that include spaces.
+- Verifies `https://<public-hostname>` after startup and fails if `Error 1033` is still present.
+
 ## Verification Workflow
 1. Local app check: `http://localhost:3011` returns 200.
 2. Public hostname check: `https://<demo-hostname>` returns 200.

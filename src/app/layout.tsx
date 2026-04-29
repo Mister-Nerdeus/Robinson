@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/site/Header";
@@ -11,6 +11,11 @@ import { validateRuntimeIdentityForRender } from "@/lib/runtime/env";
 import { company } from "@/config/company";
 
 export const metadata: Metadata = buildMetadata(company.publicBrand, company.tagline, "/");
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 const displayFont = Archivo_Black({
   weight: "400",
@@ -29,8 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   validateRuntimeIdentityForRender();
 
   return (
-    <html lang="en">
-      <body className={`${displayFont.variable} ${bodyFont.variable} site-shell`}>
+    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
+      <body className="site-shell">
         <AnalyticsPageView />
         <Header />
         <main>{children}</main>
