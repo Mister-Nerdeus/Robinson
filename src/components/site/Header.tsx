@@ -30,30 +30,13 @@ export function Header() {
       data-site-header-mode={isTaskRoute ? "compact-task" : "marketing"}
       className="sticky top-0 z-30 border-b border-[#cec2c2] bg-[var(--surface-strong)] shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
     >
-      {!isTaskRoute ? (
-      <div className="border-b border-[#d7caca] bg-[#efe7e6] text-slate-800">
-        <div className="container flex items-center justify-between gap-3 py-1.5 text-xs font-semibold sm:text-sm">
-          <p>24/7 emergency call-first support</p>
-          <a
-            href={`tel:${emergencyLine}`}
-            onClick={() => {
-              void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "header-topbar" } });
-            }}
-            className="inline-flex min-h-11 items-center rounded-md px-3 text-[var(--brand)] underline underline-offset-2"
-          >
-            Call {emergencyLine}
-          </a>
-        </div>
-      </div>
-      ) : null}
-
-      <div className={`container ${isTaskRoute ? "py-2" : "py-2"}`}>
+      <div className="container py-2">
         <div className="hidden items-center justify-between gap-6 md:flex">
           <Link href="/" className="flex items-center gap-3.5">
             <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[155px]" priority />
             <div>
               <p className={`font-display leading-none text-[var(--brand)] ${isTaskRoute ? "text-[1.25rem]" : "text-[1.4rem]"}`}>{company.publicBrand}</p>
-              <p className={`text-slate-700 ${isTaskRoute ? "mt-0.5 text-xs" : "mt-1 text-xs"}`}>Family owned and operated since 1979</p>
+              <p className={`text-slate-700 ${isTaskRoute ? "mt-0.5 text-xs" : "mt-1 text-xs"}`}>Local service since 1979</p>
             </div>
           </Link>
 
@@ -70,12 +53,17 @@ export function Header() {
               onClick={() => {
                 void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "header-primary" } });
               }}
+              data-homepage-cta-surface="header-call"
               className="rounded-md bg-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-white"
             >
               {publicCta.global.call.label}
             </a>
             {!isTaskRoute ? (
-              <Link href="/contact" className="rounded-md border border-[#d3c3c3] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--brand)]">
+              <Link
+                href="/contact"
+                data-homepage-cta-surface="header-request"
+                className="rounded-md border border-[#d3c3c3] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--brand)]"
+              >
                 {publicCta.global.request.label}
               </Link>
             ) : null}
@@ -88,7 +76,7 @@ export function Header() {
               <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[90px] shrink-0" priority />
               <div className="min-w-0">
                 <p className="truncate font-display text-[1.02rem] leading-tight text-[var(--brand)]">{company.publicBrand}</p>
-                <p className="text-[0.74rem] text-slate-700">Call-first emergency support</p>
+                <p className="text-[0.74rem] text-slate-700">Local service since 1979</p>
               </div>
             </Link>
 

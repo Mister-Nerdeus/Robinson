@@ -20,19 +20,20 @@ export const homeContent = {
     "final-cta",
   ] as const,
   hero: {
-    eyebrow: "24/7 Emergency Service • Family owned and operated since 1979",
-    heading: "Need septic help now or want to schedule service?",
+    eyebrow: "24/7 emergency septic service • Family owned and operated since 1979",
+    heading: "Need septic service now or want to schedule ahead?",
     subheading:
-      "Emergency calls stay call-first. You can also request pumping, evaluations, portable toilets, and commercial service below.",
+      "Call right away for backups, alarms, and overflows. Use the service options below for pumping, home-sale evaluations, portable toilet rentals, and commercial support.",
     ctaHref: "/contact",
     ctaLabel: publicCta.global.request.label,
   },
+  chooserHeading: "Choose your service",
   lanes: [
     {
       id: "emergency-septic",
       title: "Emergency septic service",
       userProblem: "Backup, overflow, alarm, or strong sewage odor right now.",
-      laneValue: "Call first for 24/7 dispatch, then share details so the crew arrives prepared.",
+      laneValue: "Call first for urgent dispatch, then share property details so the crew arrives prepared.",
       href: "/contact?lane=septic-service",
       ctaLabel: publicCta.routeSpecific.emergencySeptic,
       emphasis: "high",
@@ -41,7 +42,7 @@ export const homeContent = {
       id: "routine-pumping",
       title: "Routine pumping",
       userProblem: "System is due for pumping before it turns into a failure call.",
-      laneValue: "Schedule preventive pumping with property and access details captured up front.",
+      laneValue: "Schedule preventive pumping with property location and access notes included up front.",
       href: "/contact?lane=septic-service",
       ctaLabel: publicCta.routeSpecific.routinePumping,
     },
@@ -49,7 +50,7 @@ export const homeContent = {
       id: "evaluation",
       title: "Well and septic evaluations",
       userProblem: "A buyer, seller, or Realtor deadline is approaching.",
-      laneValue: "Share deadline, role, and property access details for home-sale scheduling.",
+      laneValue: "Share the deadline, role, and property access details needed for home-sale scheduling.",
       href: "/contact?lane=evaluation",
       ctaLabel: publicCta.routeSpecific.evaluation,
     },
@@ -57,7 +58,7 @@ export const homeContent = {
       id: "rental",
       title: "Portable toilet rentals",
       userProblem: "You need restroom units for an event, project, or jobsite.",
-      laneValue: "Request units with quantity, duration, and delivery access details.",
+      laneValue: "Request units with quantity, timing, and delivery access details.",
       href: "/contact?lane=rental",
       ctaLabel: publicCta.routeSpecific.rental,
     },
@@ -71,24 +72,18 @@ export const homeContent = {
     },
   ] satisfies HomeLaneCard[],
   trustBand: {
-    title: "Why West Michigan customers trust Robinson",
+    title: "Why West Michigan trusts Robinson",
     body:
-      "Family ownership, proven emergency response, and clear service communication are kept front and center.",
-    highlights: [
-      "Family owned and operated since 1979.",
-      "24/7 emergency septic response remains call-first.",
-      "One team supports emergency, routine, evaluations, rentals, and commercial service.",
-      "Service area coverage is focused across West Michigan communities.",
-    ],
+      "The homepage trust stack stays limited to verified facts about longevity, service scope, and the kinds of jobs Robinson handles every week.",
   },
   realtorBand: {
-    title: "Selling a home? Keep evaluation timing on track",
+    title: "Selling a home? Keep evaluations on schedule",
     body:
-      "Realtor and home-sale requests are handled with deadline-first coordination so buyers, sellers, and agents get clear scheduling updates.",
+      "Buyers, sellers, and Realtors can share deadlines, property access details, and contact handoffs before scheduling starts.",
     highlights: [
-      "Closing timelines and preferred windows are captured immediately.",
-      "Property access and contact handoff details are collected early.",
-      "Coordination support stays clear for buyers, sellers, and agents.",
+      "Home-sale requests stay separate from routine pumping so deadlines do not get buried.",
+      "Property access, occupancy context, and contact handoffs are gathered before scheduling.",
+      "Realtor communication stays centered on timing, not generic service copy.",
     ],
     ctaHref: "/realtors",
     ctaLabel: publicCta.routeSpecific.realtorBand,
@@ -115,4 +110,9 @@ export const homeContent = {
         "Yes. Portable rentals can include regular pumping and cleaning for longer projects and events.",
     },
   ],
+  finalCta: {
+    heading: "Need septic help now? Call for emergencies or request routine service.",
+    href: "/contact",
+    label: publicCta.global.request.label,
+  },
 };

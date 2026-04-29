@@ -42,9 +42,8 @@ export function Footer() {
 
           <div className="mt-4 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
             <p>{canonicalBusinessName} serves West Michigan with emergency response and scheduled septic service.</p>
-            <p>{serviceAreaContent.summary}</p>
             <p>Routine scheduling hours: {publicBusinessFacts.normalBusinessHours}</p>
-            <p>{publicBusinessFacts.emergencyResponsePolicy}</p>
+            <p>{serviceAreaContent.summary}</p>
             <p>
               {primaryAddress.line1}, {primaryAddress.city}, {primaryAddress.state} {primaryAddress.postalCode}
             </p>

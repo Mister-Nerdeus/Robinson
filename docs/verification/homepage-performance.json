@@ -1,0 +1,83 @@
+{
+  "artifactVersion": "homepage-performance-v1",
+  "measuredAtUtc": "2026-04-29T01:14:18.120Z",
+  "measurementMode": "playwright-local",
+  "baseUrl": "http://127.0.0.1:3011",
+  "heroMediaMode": "static-image",
+  "results": [
+    {
+      "mode": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "thresholds": {
+        "lcpMs": 2500,
+        "fcpMs": 1800,
+        "ttfbMs": 1000
+      },
+      "measured": {
+        "lcpMs": 468,
+        "fcpMs": 168,
+        "ttfbMs": 28
+      },
+      "firstViewport": {
+        "heroHeadingVisible": true,
+        "heroCallVisible": true,
+        "heroRequestVisible": true,
+        "mobileRailVisible": true,
+        "expectedRail": true,
+        "heroToRailClearancePx": 293.86
+      },
+      "checks": {
+        "lcp": true,
+        "fcp": true,
+        "ttfb": true,
+        "heroHeadingVisible": true,
+        "heroCallVisible": true,
+        "heroRequestVisible": true,
+        "railVisibility": true,
+        "railClearance": true
+      },
+      "pass": true
+    },
+    {
+      "mode": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1400
+      },
+      "thresholds": {
+        "lcpMs": 2500,
+        "fcpMs": 1800,
+        "ttfbMs": 1000
+      },
+      "measured": {
+        "lcpMs": 128,
+        "fcpMs": 128,
+        "ttfbMs": 12.5
+      },
+      "firstViewport": {
+        "heroHeadingVisible": true,
+        "heroCallVisible": true,
+        "heroRequestVisible": true,
+        "mobileRailVisible": false,
+        "expectedRail": false,
+        "heroToRailClearancePx": -469.28
+      },
+      "checks": {
+        "lcp": true,
+        "fcp": true,
+        "ttfb": true,
+        "heroHeadingVisible": true,
+        "heroCallVisible": true,
+        "heroRequestVisible": true,
+        "railVisibility": true,
+        "railClearance": true
+      },
+      "pass": true
+    }
+  ],
+  "failedModes": [],
+  "pass": true
+}

@@ -1,0 +1,230 @@
+{
+  "artifactVersion": "homepage-mobile-conversion-v1",
+  "measuredAtUtc": "2026-04-29T01:14:17.151Z",
+  "baseUrl": "http://127.0.0.1:3011",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "screenshots": {
+    "firstViewport": "docs/screenshots/home-mobile-first-viewport-390.png",
+    "midpage": "docs/screenshots/home-mobile-midpage-390.png",
+    "finalCta": "docs/screenshots/home-mobile-final-cta-390.png"
+  },
+  "states": [
+    {
+      "state": "first-viewport",
+      "measurements": {
+        "headerRect": {
+          "top": 0,
+          "bottom": 66.75,
+          "left": 0,
+          "right": 390
+        },
+        "railRect": {
+          "top": 781,
+          "bottom": 844,
+          "left": 0,
+          "right": 390
+        },
+        "heroCallRect": {
+          "top": 377.14,
+          "bottom": 425.14,
+          "left": 15.59,
+          "right": 224.42
+        },
+        "heroRequestRect": {
+          "top": 437.14,
+          "bottom": 487.14,
+          "left": 15.59,
+          "right": 166.89
+        },
+        "chooserRect": {
+          "top": 921.92,
+          "bottom": 2681.92,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "trustRect": {
+          "top": 2846.7,
+          "bottom": 3104.7,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "realtorRect": {
+          "top": 3305.48,
+          "bottom": 3617.48,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalRect": {
+          "top": 4621.42,
+          "bottom": 4819.42,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalButtonRect": {
+          "top": 4750.42,
+          "bottom": 4798.42,
+          "left": 36.59,
+          "right": 177.89
+        },
+        "heroClearancePx": 293.86,
+        "finalClearancePx": -4017.42,
+        "visibleHeaderCtas": 0
+      },
+      "checks": {
+        "stickyHeaderVisible": true,
+        "mobileRailVisible": true,
+        "heroCallVisible": true,
+        "heroRequestVisible": true,
+        "noHeaderCompetition": true,
+        "heroClearance": true
+      },
+      "pass": true
+    },
+    {
+      "state": "midpage",
+      "measurements": {
+        "headerRect": {
+          "top": 0,
+          "bottom": 66.75,
+          "left": 0,
+          "right": 390
+        },
+        "railRect": {
+          "top": 781,
+          "bottom": 844,
+          "left": 0,
+          "right": 390
+        },
+        "heroCallRect": {
+          "top": -2056.86,
+          "bottom": -2008.86,
+          "left": 15.59,
+          "right": 224.42
+        },
+        "heroRequestRect": {
+          "top": -1996.86,
+          "bottom": -1946.86,
+          "left": 15.59,
+          "right": 166.89
+        },
+        "chooserRect": {
+          "top": -1512.08,
+          "bottom": 247.92,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "trustRect": {
+          "top": 412.7,
+          "bottom": 670.7,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "realtorRect": {
+          "top": 871.48,
+          "bottom": 1183.48,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalRect": {
+          "top": 2187.42,
+          "bottom": 2385.42,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalButtonRect": {
+          "top": 2316.42,
+          "bottom": 2364.42,
+          "left": 36.59,
+          "right": 177.89
+        },
+        "heroClearancePx": 2727.86,
+        "finalClearancePx": -1583.42,
+        "visibleHeaderCtas": 0
+      },
+      "checks": {
+        "stickyHeaderVisible": true,
+        "mobileRailVisible": true,
+        "chooserVisible": true,
+        "trustVisible": true,
+        "noHeaderCompetition": true
+      },
+      "pass": true
+    },
+    {
+      "state": "final-cta",
+      "measurements": {
+        "headerRect": {
+          "top": 0,
+          "bottom": 66.75,
+          "left": 0,
+          "right": 390
+        },
+        "railRect": {
+          "top": 781,
+          "bottom": 844,
+          "left": 0,
+          "right": 390
+        },
+        "heroCallRect": {
+          "top": -3840.86,
+          "bottom": -3792.86,
+          "left": 15.59,
+          "right": 224.42
+        },
+        "heroRequestRect": {
+          "top": -3780.86,
+          "bottom": -3730.86,
+          "left": 15.59,
+          "right": 166.89
+        },
+        "chooserRect": {
+          "top": -3296.08,
+          "bottom": -1536.08,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "trustRect": {
+          "top": -1371.3,
+          "bottom": -1113.3,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "realtorRect": {
+          "top": -912.52,
+          "bottom": -600.52,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalRect": {
+          "top": 403.42,
+          "bottom": 601.42,
+          "left": 15.59,
+          "right": 374.39
+        },
+        "finalButtonRect": {
+          "top": 532.42,
+          "bottom": 580.42,
+          "left": 36.59,
+          "right": 177.89
+        },
+        "heroClearancePx": 4511.86,
+        "finalClearancePx": 200.58,
+        "visibleHeaderCtas": 0
+      },
+      "checks": {
+        "stickyHeaderVisible": true,
+        "mobileRailVisible": true,
+        "finalBandVisible": true,
+        "finalButtonVisible": true,
+        "finalClearance": true,
+        "noHeaderCompetition": true
+      },
+      "pass": true
+    }
+  ],
+  "failingStates": [],
+  "pass": true
+}

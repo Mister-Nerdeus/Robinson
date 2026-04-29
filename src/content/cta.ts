@@ -17,7 +17,7 @@ export const publicCta = {
     evaluation: "Request Evaluation",
     rental: "Request Rentals",
     commercial: "Get Commercial Help",
-    realtorBand: "View Realtor Services",
+    realtorBand: "Plan a Home-Sale Evaluation",
   },
   bannedGenericLabels: ["Learn More", "Contact Us", "Click Here"],
 } as const;

@@ -20,7 +20,7 @@ export function LaneTaskCard({ lane }: { lane: HomeLaneCard }) {
       <h3 className="font-display text-[1.55rem] leading-tight text-[var(--brand)]">{lane.title}</h3>
       <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">Your situation</p>
       <p className="mt-1 text-sm text-slate-800">{lane.userProblem}</p>
-      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">What we help with</p>
+      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-700">How we help</p>
       <p className="mt-1 flex-1 text-sm text-slate-800">{lane.laneValue}</p>
       <Link
         className={`mt-4 inline-flex min-h-11 w-fit items-center rounded-md px-4 py-3 text-sm font-semibold transition ${
@@ -29,6 +29,7 @@ export function LaneTaskCard({ lane }: { lane: HomeLaneCard }) {
             : "border border-[var(--brand)] text-[var(--brand)] hover:bg-[#fff3f2]"
         }`}
         data-cta-family="route-specific-service"
+        data-homepage-cta-surface={`chooser-${lane.id}`}
         href={lane.href}
         onClick={() => {
           void trackEvent({ event: analyticsEvents.laneClick, lane: lane.title });

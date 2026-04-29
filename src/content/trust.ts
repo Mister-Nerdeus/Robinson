@@ -35,6 +35,14 @@ export type TrustClaim = {
   lastReviewed: string;
 };
 
+export type HomepageTrustClaim = {
+  id: string;
+  statement: string;
+  classification: "verified-source";
+  sourceRefs: string[];
+  notes: string;
+};
+
 export const trustClaimRegistry: TrustClaim[] = [
   {
     id: "family-owned-1979",
@@ -165,13 +173,73 @@ export const trustGovernance = [
 
 const approvedPublicClaims = trustClaimRegistry.filter((claim) => claim.status === "approved");
 
+export const homepageTrustStack: HomepageTrustClaim[] = [
+  {
+    id: "family-owned-operated",
+    statement: "Family owned and operated.",
+    classification: "verified-source",
+    sourceRefs: ["company.claims.family_owned", "docs/business-truth/owner-truth-dashboard.md"],
+    notes: "Core heritage proof kept concise on the homepage.",
+  },
+  {
+    id: "founded-1979",
+    statement: "Founded in 1979.",
+    classification: "verified-source",
+    sourceRefs: ["company.claims.founded_1979", "docs/final-copy-proof-map.md"],
+    notes: "Separated from family-owned phrasing to reduce repetition.",
+  },
+  {
+    id: "residential-commercial-service",
+    statement: "Residential and commercial septic service.",
+    classification: "verified-source",
+    sourceRefs: ["company.claims.residential_commercial", "docs/final-copy-proof-map.md"],
+    notes: "Broader service credibility stays scoped to publishable service facts.",
+  },
+  {
+    id: "home-sale-evaluations",
+    statement: "Well and septic evaluations for home sales.",
+    classification: "verified-source",
+    sourceRefs: ["company.claims.home_sale_evaluations", "docs/final-copy-proof-map.md"],
+    notes: "Protects the Realtor lane as a verified premium service path.",
+  },
+  {
+    id: "rentals-and-support-services",
+    statement: "Portable toilet rentals, grease trap cleaning, and lift pump support.",
+    classification: "verified-source",
+    sourceRefs: [
+      "company.claims.portable_toilet_rentals",
+      "company.claims.grease_trap_cleaning",
+      "company.claims.lift_pump_service",
+      "docs/final-copy-proof-map.md",
+    ],
+    notes: "Represents broader support credibility without drifting into legacy filler.",
+  },
+];
+
+export const homepageTrustClaimSourceMap = homepageTrustStack.map((claim) => ({
+  claimId: claim.id,
+  statement: claim.statement,
+  sourceRefs: claim.sourceRefs,
+  classification: claim.classification,
+}));
+
+export const blockedHomepageTrustPatterns = [
+  "coupon",
+  "discount",
+  "facebook",
+  "bbb",
+  "association membership",
+  "review count",
+  "speed dial",
+];
+
 export const trustContent = {
   status: "verified" as const,
   pointsStatus: "verified" as const,
-  points: approvedPublicClaims.map((claim) => claim.label),
-  trustStatementStatus: "marketing" as const,
+  points: homepageTrustStack.map((claim) => claim.statement),
+  trustStatementStatus: "verified" as const,
   trustStatement:
-    "Robinson keeps service promises concise with clear scheduling expectations and practical service communication.",
+    "The homepage trust section uses only verified longevity and service-scope facts.",
   sourcePolicy:
     "Every public trust claim must map to evidenceRef and ownerApprovalRef; blocked classes stay internal-only.",
 };

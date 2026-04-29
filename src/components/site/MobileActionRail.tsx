@@ -20,11 +20,16 @@ export function MobileActionRail() {
           onClick={() => {
             void trackEvent({ event: analyticsEvents.callCtaClick, metadata: { location: "mobile-sticky-rail" } });
           }}
+          data-homepage-cta-surface="mobile-rail-call"
           className="rounded-md bg-[var(--brand)] px-3 py-3 text-center text-sm font-semibold text-white"
         >
           {publicCta.global.call.label}
         </a>
-        <Link href="/contact" className="rounded-md border border-[var(--brand)] bg-white px-3 py-3 text-center text-sm font-semibold text-[var(--brand)]">
+        <Link
+          href="/contact"
+          data-homepage-cta-surface="mobile-rail-request"
+          className="rounded-md border border-[var(--brand)] bg-white px-3 py-3 text-center text-sm font-semibold text-[var(--brand)]"
+        >
           {publicCta.global.request.label}
         </Link>
       </div>
