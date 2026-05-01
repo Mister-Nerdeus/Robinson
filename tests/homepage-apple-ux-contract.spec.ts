@@ -66,7 +66,16 @@ function run() {
 
   assert.ok(laneGridSource.includes("md:grid-cols-2"), "Service chooser calmness requires 2-column medium breakpoint");
   assert.ok(laneGridSource.includes("xl:grid-cols-3"), "Service chooser calmness requires 3-column xl breakpoint");
-  assert.ok(laneCardSource.includes("min-h-[21rem]"), "Service chooser cards must maintain calm minimum height");
+  assert.ok(!headerSource.includes("truncate font-display"), "Mobile brand lockup must not truncate the brand name");
+  assert.ok(headerSource.includes("min-[380px]:block"), "Mobile header should hide secondary metadata on the narrowest widths");
+  assert.ok(
+    laneCardSource.includes('min-h-[17.5rem] md:min-h-[14.5rem] xl:min-h-[13.75rem]'),
+    "High-emphasis chooser card must use responsive min-height tuning",
+  );
+  assert.ok(
+    laneCardSource.includes('min-h-[16rem] md:min-h-[14.25rem] xl:min-h-[13.5rem]'),
+    "Standard chooser cards must use responsive min-height tuning",
+  );
 
   assertOrder(
     pageSource,

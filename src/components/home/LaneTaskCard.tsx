@@ -7,10 +7,13 @@ import type { HomeLaneCard } from "@/content/home";
 
 export function LaneTaskCard({ lane }: { lane: HomeLaneCard }) {
   const highEmphasis = lane.emphasis === "high";
+  const heightClass = highEmphasis
+    ? "min-h-[17.5rem] md:min-h-[14.5rem] xl:min-h-[13.75rem]"
+    : "min-h-[16rem] md:min-h-[14.25rem] xl:min-h-[13.5rem]";
 
   return (
     <article
-      className={`flex h-full min-h-[21rem] flex-col rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+      className={`flex h-full ${heightClass} flex-col rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
         highEmphasis ? "border-[var(--brand)] bg-[#fff4f1]" : "border-[#cfc3b2] bg-[#fffdfa]"
       }`}
       data-lane-card-id={lane.id}

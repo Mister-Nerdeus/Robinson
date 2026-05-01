@@ -73,10 +73,12 @@ export function Header() {
         <div className="md:hidden">
           <div className="flex items-center justify-between gap-2">
             <Link href="/" className="flex min-w-0 items-center gap-2.5" onClick={() => setMobileMenuOpen(false)}>
-              <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[90px] shrink-0" priority />
+              <Image src="/branding/logo-legacy-clean.png" alt={`${company.publicBrand} logo`} width={220} height={88} className="h-auto w-[74px] shrink-0 min-[380px]:w-[82px]" priority />
               <div className="min-w-0">
-                <p className="truncate font-display text-[1.02rem] leading-tight text-[var(--brand)]">{company.publicBrand}</p>
-                <p className="text-[0.74rem] text-slate-700">Local service since 1979</p>
+                <p className="font-display text-[0.92rem] leading-[1.05] text-[var(--brand)] [text-wrap:balance] min-[380px]:text-[0.98rem]">
+                  {company.publicBrand}
+                </p>
+                <p className="hidden text-[0.72rem] text-slate-700 min-[380px]:block">Local service since 1979</p>
               </div>
             </Link>
 
