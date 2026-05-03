@@ -130,7 +130,15 @@ async function run() {
 
   const serialized = JSON.stringify(entries);
   assert.ok(
-    !serialized.includes("notify@example.com") && !serialized.includes("555-2200") && !serialized.includes("44 Alert Rd"),
+    !serialized.includes("notify@example.com") &&
+      !serialized.includes("555-2200") &&
+      !serialized.includes("44 Alert Rd") &&
+      !serialized.includes("Notify Failure") &&
+      !serialized.includes("Abuse User") &&
+      !serialized.includes("Validation User") &&
+      !serialized.includes("Pierson") &&
+      !serialized.includes("49339") &&
+      !serialized.includes("203.0.113."),
     "sensitive fields must be redacted in observability output",
   );
 

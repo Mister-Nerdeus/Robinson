@@ -8,9 +8,11 @@ Environment and secret policy for production/public runtime operations.
 - `ADMIN_OPS_TOKEN`
 - `SMTP_PASS`
 - `RESEND_API_KEY`
+- `ABUSE_CHALLENGE_SECRET`
 
 ## Rules
 - Secrets must be supplied via environment variables only.
+- Secrets must be runtime-only and must not be supplied as Docker build arguments.
 - Never hardcode secrets in source files.
 - Secrets must never be committed to Git.
 - Secrets must not be copied into screenshots, logs, or proof-pack exports.

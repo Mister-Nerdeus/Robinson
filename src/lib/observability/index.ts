@@ -37,11 +37,26 @@ function redactValue(key: string, value: unknown): unknown {
   }
 
   const lower = key.toLowerCase();
+  if (lower === "ip" || lower === "clientip" || lower === "remoteip" || lower.includes("ipaddress")) {
+    return `redacted:ip:${hashValue(value)}`;
+  }
+  if (lower === "useragent" || lower === "user-agent") {
+    return `redacted:user-agent:${hashValue(value)}`;
+  }
   if (lower.includes("email")) {
     return `redacted:email:${hashValue(value.toLowerCase())}`;
   }
   if (lower.includes("phone")) {
     return `redacted:phone:${hashValue(value.replace(/\D/g, ""))}`;
+  }
+  if (
+    lower === "fullname" ||
+    lower.endsWith("name") ||
+    lower === "city" ||
+    lower === "zip" ||
+    lower === "postalcode"
+  ) {
+    return `redacted:text:${hashValue(value)}`;
   }
   if (lower.includes("message") || lower.includes("note") || lower.includes("address")) {
     return `redacted:text:${hashValue(value)}`;

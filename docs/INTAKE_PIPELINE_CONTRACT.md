@@ -5,7 +5,8 @@
 2. API enforces abuse controls via `enforceAbuseProtection`.
 3. Server-side validation uses `submissionSchema`.
 4. Valid records persist via `saveSubmission` in `src/lib/storage/submissions.ts`.
-5. Internal notification and customer acknowledgement flow through `src/lib/email/provider.ts`.
+5. Internal notification flows through `src/lib/email/provider.ts`.
+6. Customer acknowledgement templates are rendered by `src/lib/email/provider.ts`, but customer delivery must report `abandoned` until a real customer-send provider path is configured.
 
 ## Abuse Controls
 - Honeypot

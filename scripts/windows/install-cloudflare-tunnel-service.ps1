@@ -1,7 +1,7 @@
 param(
-  [string]$TunnelId = "7ceb48b6-2820-4be7-8b2f-1cff79ca93b6",
+  [string]$TunnelId = "",
   [string]$SourceConfigPath = "$env:USERPROFILE\.cloudflared\config.yml",
-  [string]$SourceCredentialPath = "$env:USERPROFILE\.cloudflared\7ceb48b6-2820-4be7-8b2f-1cff79ca93b6.json",
+  [string]$SourceCredentialPath = "",
   [string]$SourceCertPath = "$env:USERPROFILE\.cloudflared\cert.pem",
   [string]$ServiceBinDirectory = "C:\Cloudflared\bin",
   [string]$ServiceConfigDirectory = "C:\Windows\System32\config\systemprofile\.cloudflared"
@@ -32,8 +32,22 @@ if (-not (Test-IsAdministrator)) {
 }
 
 Assert-PathExists -Path $SourceConfigPath -Label "Source config"
-Assert-PathExists -Path $SourceCredentialPath -Label "Source credentials"
 Assert-PathExists -Path $SourceCertPath -Label "Source cert"
+
+$rawConfig = Get-Content -LiteralPath $SourceConfigPath -Raw
+if ($rawConfig -notmatch "(?m)^\s*tunnel\s*:\s*(?<tunnel>[^\s#]+)") {
+  throw "Source config is missing required 'tunnel' entry."
+}
+
+if (-not $TunnelId) {
+  $TunnelId = $Matches["tunnel"].Trim().Trim("'").Trim('"')
+}
+
+if (-not $SourceCredentialPath) {
+  $SourceCredentialPath = Join-Path "$env:USERPROFILE\.cloudflared" "$TunnelId.json"
+}
+
+Assert-PathExists -Path $SourceCredentialPath -Label "Source credentials"
 
 $cloudflaredCommand = Get-Command cloudflared -ErrorAction Stop
 $sourceBinaryPath = $cloudflaredCommand.Source
@@ -50,11 +64,6 @@ New-Item -ItemType Directory -Path $ServiceConfigDirectory -Force | Out-Null
 Copy-Item -LiteralPath $sourceBinaryPath -Destination $serviceBinaryPath -Force
 Copy-Item -LiteralPath $SourceCredentialPath -Destination $serviceCredentialPath -Force
 Copy-Item -LiteralPath $SourceCertPath -Destination $serviceCertPath -Force
-
-$rawConfig = Get-Content -LiteralPath $SourceConfigPath -Raw
-if ($rawConfig -notmatch "(?m)^\s*tunnel\s*:\s*") {
-  throw "Source config is missing required 'tunnel' entry."
-}
 
 if ($rawConfig -match "(?m)^\s*credentials-file\s*:") {
   $rawConfig = [regex]::Replace(

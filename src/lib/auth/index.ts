@@ -22,6 +22,19 @@ function parseBool(value: string | undefined, fallback = false): boolean {
   return normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on";
 }
 
+function isUsableConfiguredToken(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (normalized.length < 24) {
+    return false;
+  }
+
+  return (
+    !normalized.includes("replace-with") &&
+    !normalized.includes("example") &&
+    !normalized.startsWith("local-")
+  );
+}
+
 function localRuntimeEnabled(): boolean {
   const mode = (process.env.RUNTIME_MODE || "").trim().toLowerCase();
   if (mode === "local") {
@@ -50,10 +63,10 @@ export function getAdminAuthConfig() {
 
 function roleFromToken(token: string): AdminRole | null {
   const { ownerToken, opsToken } = getAdminAuthConfig();
-  if (token && token === ownerToken) {
+  if (token && token === ownerToken && isUsableConfiguredToken(ownerToken)) {
     return "owner";
   }
-  if (token && token === opsToken) {
+  if (token && token === opsToken && isUsableConfiguredToken(opsToken)) {
     return "ops";
   }
   return null;
@@ -176,5 +189,5 @@ export function roleFromAccessToken(accessToken: string): AdminRole | null {
 
 export function hasConfiguredAdminTokens(): boolean {
   const { ownerToken, opsToken } = getAdminAuthConfig();
-  return ownerToken.length >= 16 || opsToken.length >= 16;
+  return isUsableConfiguredToken(ownerToken) || isUsableConfiguredToken(opsToken);
 }

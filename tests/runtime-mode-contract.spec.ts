@@ -24,6 +24,18 @@ function run() {
     "admin review must remain blocked without owner/ops tokens",
   );
 
+  process.env.ADMIN_OWNER_TOKEN = "replace-with-long-random-owner-token";
+  assert.equal(
+    isAdminReviewEnabled(),
+    false,
+    "admin review must remain blocked with placeholder-shaped owner/ops tokens",
+  );
+  assert.throws(
+    () => validateRuntimeIdentityForRender(),
+    /owner token is too weak or placeholder-shaped/,
+    "demo runtime must reject placeholder-shaped admin tokens when review is enabled",
+  );
+
   process.env.ADMIN_OWNER_TOKEN = "demo-owner-access-token-012345";
   assert.equal(isAdminReviewEnabled(), true, "admin review opens only with policy + auth token");
   assert.equal(

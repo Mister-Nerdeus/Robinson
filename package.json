@@ -14,12 +14,14 @@
     "check:provisional-claims": "node scripts/check-provisional-claims.mjs",
     "test:smoke": "tsx tests/smoke-routes.ts",
     "test:runtime-contract": "tsx tests/runtime-mode-contract.spec.ts",
+    "test:analytics-contract": "tsx tests/analytics-contract.spec.ts",
     "test:admin-auth-contract": "tsx tests/admin-auth-contract.spec.ts",
     "test:submission-contract": "tsx tests/submission-contract.spec.ts",
     "test:commercial-submission": "tsx tests/commercial-submission.spec.ts",
     "test:submission-persistence-contract": "tsx tests/submission-persistence-contract.spec.ts",
     "test:sqlite-persistence-contract": "tsx tests/sqlite-persistence-contract.spec.ts",
     "test:resend-provider": "tsx tests/resend-provider.spec.ts",
+    "test:customer-acknowledgement-contract": "tsx tests/customer-acknowledgement-contract.spec.ts",
     "test:mailbox-contract": "tsx tests/mailbox-contract.spec.ts",
     "test:email-domain-readiness": "tsx tests/email-domain-readiness.spec.ts",
     "test:net-domain-canonicality": "tsx tests/net-domain-canonicality.spec.ts",
@@ -96,7 +98,7 @@
     "verify:request-route-parity": "node scripts/verify-request-route-parity.mjs --manifest=artifacts/deploy-manifest.json --output=artifacts/request-route-parity.json",
     "verify:live-parity:test": "powershell -ExecutionPolicy Bypass -File scripts/verify-live-render-parity.ps1 -TargetHost http://localhost:3001",
     "verify:provenance": "tsx tests/runtime-mode-contract.spec.ts",
-    "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run test:runtime-contract && npm run test:admin-auth-contract && npm run test:submission-contract && npm run test:commercial-submission && npm run test:submission-persistence-contract && npm run test:sqlite-persistence-contract && npm run test:resend-provider && npm run test:mailbox-contract && npm run test:email-domain-readiness && npm run test:net-domain-canonicality && npm run test:cloudflare-cutover-contract && npm run test:canonical-host-topology && npm run test:m365-net-mailbox-contract && npm run test:dns-record-matrix-contract && npm run test:net-env-topology && npm run test:smtp-config-contract && npm run test:observability-contract && npm run test:territory-routing && npm run test:notification-delivery-state && npm run test:data-retention-auth && npm run test:form-ux-accessibility && npm run test:release-readiness-gate && npm run test:cutover-rehearsal-gate && npm run test:net-cutover-rehearsal-gate && npm run test:lead-lifecycle && npm run test:public-facts-consistency && npm run test:public-hours-truth && npm run test:external-listing-truth && npm run test:lane-conversion-contract && npm run test:owner-report-pack && npm run test:anti-spam-contract && npm run test:claim-registry-guard && npm run test:seo-contract && npm run test:navigation-contract && npm run test:homepage-structure-contract && npm run test:homepage-content-contract && npm run test:homepage-apple-ux-contract && npm run test:public-cta-contract && npm run test:homepage-evidence-manifest && npm run test:service-template-contract && npm run test:field-purpose-contract && npm run test:multistep-form-contract && npm run test:accessibility-contract && npm run test:visual-token-contract && npm run test:schema-source-contract && npm run test:form-lane-contract && npm run test:request-layout-contract && npm run test:task-page-composition-contract && npm run test:routes-public-contract && npm run test:deploy-traceability-contract && npm run test:request-flow-behavior && npm run test:security-headers-contract && npm run test:public-mode-hardening && npm run test:backup-restore-gate && npm run test:maintenance-gate && npm run test:content-trust-policy && npm run test:content-copy-rules && npm run test:business-facts-contract && npm run test:content-media-contract && npm run test:visual-public-evidence && npm run check:hardcoded-contact && npm run check:identity-contract && npm run check:content-driven-claims && npm run check:provisional-claims",
+    "verify:v1": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run test:runtime-contract && npm run test:analytics-contract && npm run test:admin-auth-contract && npm run test:submission-contract && npm run test:commercial-submission && npm run test:submission-persistence-contract && npm run test:sqlite-persistence-contract && npm run test:resend-provider && npm run test:customer-acknowledgement-contract && npm run test:mailbox-contract && npm run test:email-domain-readiness && npm run test:net-domain-canonicality && npm run test:cloudflare-cutover-contract && npm run test:canonical-host-topology && npm run test:m365-net-mailbox-contract && npm run test:dns-record-matrix-contract && npm run test:net-env-topology && npm run test:smtp-config-contract && npm run test:observability-contract && npm run test:territory-routing && npm run test:notification-delivery-state && npm run test:data-retention-auth && npm run test:form-ux-accessibility && npm run test:release-readiness-gate && npm run test:cutover-rehearsal-gate && npm run test:net-cutover-rehearsal-gate && npm run test:lead-lifecycle && npm run test:public-facts-consistency && npm run test:public-hours-truth && npm run test:external-listing-truth && npm run test:lane-conversion-contract && npm run test:owner-report-pack && npm run test:anti-spam-contract && npm run test:claim-registry-guard && npm run test:seo-contract && npm run test:navigation-contract && npm run test:homepage-structure-contract && npm run test:homepage-content-contract && npm run test:homepage-apple-ux-contract && npm run test:public-cta-contract && npm run test:homepage-evidence-manifest && npm run test:service-template-contract && npm run test:field-purpose-contract && npm run test:multistep-form-contract && npm run test:accessibility-contract && npm run test:visual-token-contract && npm run test:schema-source-contract && npm run test:form-lane-contract && npm run test:request-layout-contract && npm run test:task-page-composition-contract && npm run test:routes-public-contract && npm run test:deploy-traceability-contract && npm run test:request-flow-behavior && npm run test:security-headers-contract && npm run test:public-mode-hardening && npm run test:backup-restore-gate && npm run test:maintenance-gate && npm run test:content-trust-policy && npm run test:content-copy-rules && npm run test:business-facts-contract && npm run test:content-media-contract && npm run test:visual-public-evidence && npm run check:hardcoded-contact && npm run check:identity-contract && npm run check:content-driven-claims && npm run check:provisional-claims",
     "test-stack:up": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-up.ps1",
     "test-stack:down": "powershell -ExecutionPolicy Bypass -File scripts/test-stack-down.ps1",
     "test-stack:smoke": "node scripts/test-smoke.mjs",
@@ -139,9 +141,12 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.1.5",
     "playwright": "^1.58.2",
-    "postcss": "^8.4.49",
+    "postcss": "8.5.13",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "postcss": "$postcss"
   }
 }

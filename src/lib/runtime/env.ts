@@ -68,6 +68,21 @@ function hasPlaceholderSecret(value: string): boolean {
   );
 }
 
+function hasNonProductionPlaceholderSecret(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return false;
+  return (
+    normalized.includes("replace-with") ||
+    normalized.includes("example") ||
+    normalized.startsWith("local-")
+  );
+}
+
+function isStrongNonProductionAdminToken(value: string): boolean {
+  const normalized = value.trim();
+  return normalized.length >= 24 && !hasNonProductionPlaceholderSecret(normalized);
+}
+
 export function getRuntimeEnv() {
   const mode = readRuntimeMode();
   const localOnlyMode = parseBool(process.env.LOCAL_ONLY_MODE, mode !== "production");
@@ -210,6 +225,10 @@ export function validateRuntimeIdentityForRender() {
   const opsToken = (process.env.ADMIN_OPS_TOKEN || "").trim();
   const reviewAccessKey = (process.env.REVIEW_ACCESS_KEY || "").trim();
   const localBypassEnabled = parseBool(process.env.ENABLE_LOCAL_DEV_ADMIN_BYPASS, false);
+  const configuredNonProductionAdminTokens = [
+    { label: "owner", value: ownerToken },
+    { label: "ops", value: opsToken },
+  ].filter((entry) => entry.value.trim().length > 0);
 
   if (env.mode === "production") {
     if (env.reviewSurfacesVisible) {
@@ -235,8 +254,19 @@ export function validateRuntimeIdentityForRender() {
     }
   }
 
-  if (env.mode !== "production" && env.enableAdminSubmissionsReview && !isReviewAccessConfigured()) {
-    throw new Error("Admin review requires configured owner/ops auth tokens.");
+  if (env.mode !== "production" && env.enableAdminSubmissionsReview) {
+    const weakTokens = configuredNonProductionAdminTokens.filter(
+      (entry) => !isStrongNonProductionAdminToken(entry.value),
+    );
+    if (weakTokens.length > 0) {
+      throw new Error(
+        `Admin review ${weakTokens.map((entry) => entry.label).join("/")} token is too weak or placeholder-shaped.`,
+      );
+    }
+
+    if (!isReviewAccessConfigured()) {
+      throw new Error("Admin review requires configured owner/ops auth tokens.");
+    }
   }
 
   if (env.mode === "production" && !env.seoAllowIndexing) {

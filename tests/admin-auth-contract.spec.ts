@@ -26,6 +26,17 @@ async function run() {
   const apiAnonymous = await GET(new Request("http://localhost/api/submissions"));
   assert.equal(apiAnonymous.status, 401, "anonymous submissions api request must be blocked");
 
+  process.env.ADMIN_OWNER_TOKEN = "replace-with-long-random-owner-token";
+  const apiPlaceholderOwner = await GET(
+    new Request("http://localhost/api/submissions", {
+      headers: {
+        cookie: "robinson_admin_session=replace-with-long-random-owner-token",
+      },
+    }),
+  );
+  assert.equal(apiPlaceholderOwner.status, 401, "placeholder-shaped admin token must not authenticate");
+
+  process.env.ADMIN_OWNER_TOKEN = "owner-auth-contract-token-012345";
   const apiOwner = await GET(
     new Request("http://localhost/api/submissions", {
       headers: {

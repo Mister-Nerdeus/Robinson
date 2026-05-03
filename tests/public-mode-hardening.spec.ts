@@ -16,6 +16,12 @@ function run() {
   const secretsPolicy = read("docs/secrets-and-env-policy.md").toLowerCase();
   const footerSource = read("src/components/site/Footer.tsx");
   const adminSource = read("src/app/admin/submissions/page.tsx");
+  const dockerfile = read("Dockerfile");
+  const composeFiles = [
+    read("compose.yaml"),
+    read("compose.test.yaml"),
+    read("docker-compose.yml"),
+  ].join("\n");
 
   const expectedHeaders = [
     "Content-Security-Policy",
@@ -33,6 +39,12 @@ function run() {
   assert.ok(runtimeContract.includes("enable_admin_submissions_review=false"), "runtime security contract must lock admin review in production");
   assert.ok(runtimeContract.includes("enable_local_dev_admin_bypass=false"), "runtime security contract must lock local bypass in production");
   assert.ok(secretsPolicy.includes("never hardcode secrets"), "secrets policy must block hardcoded secrets");
+  assert.ok(!dockerfile.includes("ARG ADMIN_OWNER_TOKEN"), "admin tokens must not be accepted as Docker build args");
+  assert.ok(!dockerfile.includes("ARG SMTP_PASS"), "SMTP password must not be accepted as Docker build args");
+  assert.ok(!dockerfile.includes("ARG RESEND_API_KEY"), "Resend API key must not be accepted as Docker build args");
+  assert.ok(!composeFiles.includes("ADMIN_OWNER_TOKEN:"), "compose build args must not pass admin tokens");
+  assert.ok(!composeFiles.includes("SMTP_PASS:"), "compose build args must not pass SMTP password");
+  assert.ok(!composeFiles.includes("RESEND_API_KEY:"), "compose build args must not pass Resend API key");
   assert.ok(footerSource.includes("publicBusinessFacts.businessName"), "footer must source business name from canonical public facts");
   assert.ok(!adminSource.includes("Runtime mode:"), "admin page copy should not expose runtime diagnostics");
 

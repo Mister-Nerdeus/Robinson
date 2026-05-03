@@ -4,7 +4,7 @@ Date: 2026-03-26
 Operator: Codex + local operator token
 Public Hostname: robinson-demo.hearthcore.app
 Tunnel Name: robinson-demo
-Tunnel ID: 7ceb48b6-2820-4be7-8b2f-1cff79ca93b6
+Tunnel ID: `<redacted-live-tunnel-id>`
 
 ## 1) Local Origin Check
 Command:
@@ -25,7 +25,7 @@ Result:
 ## 3) Tunnel Runtime Check
 Evidence:
 - Tunnel created via Cloudflare API.
-- DNS CNAME created: `robinson-demo.hearthcore.app` -> `7ceb48b6-2820-4be7-8b2f-1cff79ca93b6.cfargotunnel.com`.
+- DNS CNAME created: `robinson-demo.hearthcore.app` -> `<redacted-live-tunnel-id>.cfargotunnel.com`.
 - Tunnel config applied (ingress only for app hostname -> `http://localhost:3001`).
 - `cloudflared` runtime log shows registered connections and active config.
 

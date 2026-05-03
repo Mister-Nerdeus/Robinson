@@ -18,12 +18,11 @@ export async function deliverSubmissionEmail(record: SubmissionRecord): Promise<
   });
 
   const customer = {
-    ok: true,
-    channel: internal.channel,
-    messageId: `ack-${record.id}`,
-    error: undefined,
-    state: "sent",
-    attempts: 1,
+    ok: false,
+    channel: "log",
+    error: "Customer acknowledgement delivery is not configured.",
+    state: "abandoned",
+    attempts: 0,
     dedupeKey: `submission:${record.id}:customer-ack-v1`,
   } as const;
 

@@ -5,10 +5,11 @@ async function run() {
   process.env.RATE_LIMIT_MAX = "100";
   process.env.RATE_LIMIT_WINDOW_MS = "60000";
   process.env.ABUSE_CHALLENGE_MODE = "shadow";
+  process.env.ABUSE_CHALLENGE_SECRET = "contract-abuse-challenge-secret-0123456789";
   process.env.ABUSE_TRUSTED_IPS = "";
   process.env.ABUSE_TRUSTED_EMAILS = "";
 
-  const { enforceAbuseProtection } = await import("../src/lib/forms/abuseProtection");
+  const { createAbuseChallengeToken, enforceAbuseProtection } = await import("../src/lib/forms/abuseProtection");
 
   const accepted = await enforceAbuseProtection({
     ip: "198.51.100.10",
@@ -43,7 +44,7 @@ async function run() {
   assert.equal(challenged.allowed, false, "suspicious traffic should be challenge-blocked when required");
   assert.equal(challenged.abuseOutcome, "challenged", "challenge outcome should be explicit");
 
-  const challengePassed = await enforceAbuseProtection({
+  const forgedChallenge = await enforceAbuseProtection({
     ip: "198.51.100.13",
     userAgent: "contract-agent",
     fullName: "Call us now!!!!!",
@@ -52,7 +53,22 @@ async function run() {
     submissionType: "general",
     challengeToken: "token-accepted",
   });
-  assert.equal(challengePassed.allowed, true, "challenge token should allow suspicious submission path");
+  assert.equal(forgedChallenge.allowed, false, "arbitrary challenge tokens must not satisfy required verification");
+
+  const signedChallengeToken = createAbuseChallengeToken({
+    ip: "198.51.100.13",
+    userAgent: "contract-agent",
+  });
+  const challengePassed = await enforceAbuseProtection({
+    ip: "198.51.100.13",
+    userAgent: "contract-agent",
+    fullName: "Call us now!!!!!",
+    email: "suspicious@example.com",
+    message: "Need SEO SEO SEO",
+    submissionType: "general",
+    challengeToken: signedChallengeToken,
+  });
+  assert.equal(challengePassed.allowed, true, "signed challenge token should allow suspicious submission path");
 
   process.env.ABUSE_TRUSTED_EMAILS = "owner-approved@example.com";
   const trustedOverride = await enforceAbuseProtection({

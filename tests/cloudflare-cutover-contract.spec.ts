@@ -31,6 +31,12 @@ function run() {
   const checklist = read("docs/production-cutover-checklist.md").toLowerCase();
   assert.ok(checklist.includes("pre-cutover dns inventory"), "checklist must include pre-cutover dns inventory gate");
 
+  const tunnelInstaller = read("scripts/windows/install-cloudflare-tunnel-service.ps1");
+  const tunnelProof = read("docs/verification/cloudflare-tunnel-demo-proof.md");
+  const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+  assert.ok(!uuidPattern.test(tunnelInstaller), "service installer must not hardcode a live tunnel UUID");
+  assert.ok(!uuidPattern.test(tunnelProof), "proof docs must not publish a live tunnel UUID");
+
   console.log("[cloudflare-cutover-contract] authoritative dns cutover contract verified");
 }
 

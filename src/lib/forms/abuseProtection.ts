@@ -1,3 +1,4 @@
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { evaluateSpam } from "@/lib/forms/antiSpam";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { logAbuse } from "@/lib/forms/abuseLog";
@@ -48,6 +49,56 @@ function isTrustedOverride(input: AbuseProtectionInput): boolean {
   return trustedIps.includes(ip) || (email.length > 0 && trustedEmails.includes(email));
 }
 
+function challengeSecret(): string {
+  return (process.env.ABUSE_CHALLENGE_SECRET || "").trim();
+}
+
+function challengeSignaturePayload(input: AbuseProtectionInput, expiresAt: number, nonce: string): string {
+  return [expiresAt, nonce, input.ip, input.userAgent].join(":");
+}
+
+function signChallengePayload(payload: string): string {
+  return createHmac("sha256", challengeSecret()).update(payload).digest("hex");
+}
+
+export function createAbuseChallengeToken(
+  input: Pick<AbuseProtectionInput, "ip" | "userAgent">,
+  ttlMs = 10 * 60 * 1000,
+): string {
+  if (!challengeSecret()) {
+    throw new Error("ABUSE_CHALLENGE_SECRET is required to issue challenge tokens.");
+  }
+
+  const expiresAt = Date.now() + ttlMs;
+  const nonce = randomBytes(12).toString("hex");
+  const payload = challengeSignaturePayload(
+    { ...input, userAgent: input.userAgent || "unknown" },
+    expiresAt,
+    nonce,
+  );
+  return `v1:${expiresAt}:${nonce}:${signChallengePayload(payload)}`;
+}
+
+function isChallengeSatisfied(input: AbuseProtectionInput): boolean {
+  const token = (input.challengeToken || "").trim();
+  const secret = challengeSecret();
+  if (!token || !secret) {
+    return false;
+  }
+
+  const [version, expiresAtRaw, nonce, signature] = token.split(":");
+  const expiresAt = Number(expiresAtRaw);
+  if (version !== "v1" || !Number.isFinite(expiresAt) || expiresAt < Date.now() || !nonce || !signature) {
+    return false;
+  }
+
+  const payload = challengeSignaturePayload(input, expiresAt, nonce);
+  const expected = signChallengePayload(payload);
+  const expectedBuffer = Buffer.from(expected, "hex");
+  const receivedBuffer = Buffer.from(signature, "hex");
+  return expectedBuffer.length === receivedBuffer.length && timingSafeEqual(expectedBuffer, receivedBuffer);
+}
+
 export async function enforceAbuseProtection(input: AbuseProtectionInput): Promise<AbuseProtectionResult> {
   const trustedOverride = isTrustedOverride(input);
   const challengeMode = readChallengeMode();
@@ -91,8 +142,7 @@ export async function enforceAbuseProtection(input: AbuseProtectionInput): Promi
     return { allowed: false as const, status: 400, error: "Submission blocked by abuse controls." };
   }
 
-  const challengeToken = (input.challengeToken || "").trim();
-  const challengeSatisfied = challengeToken.length >= 8;
+  const challengeSatisfied = isChallengeSatisfied(input);
   if (spam.suspicious && !trustedOverride) {
     const entry = {
       ts: new Date().toISOString(),
