@@ -40,8 +40,10 @@ function run() {
   assert.ok(runtimeContract.includes("enable_local_dev_admin_bypass=false"), "runtime security contract must lock local bypass in production");
   assert.ok(secretsPolicy.includes("never hardcode secrets"), "secrets policy must block hardcoded secrets");
   assert.ok(!dockerfile.includes("ARG ADMIN_OWNER_TOKEN"), "admin tokens must not be accepted as Docker build args");
+  assert.ok(!dockerfile.includes("ARG ENABLE_ADMIN_SUBMISSIONS_REVIEW"), "admin review enablement must stay runtime-only");
   assert.ok(!dockerfile.includes("ARG SMTP_PASS"), "SMTP password must not be accepted as Docker build args");
   assert.ok(!dockerfile.includes("ARG RESEND_API_KEY"), "Resend API key must not be accepted as Docker build args");
+  assert.ok(!composeFiles.includes("ENABLE_ADMIN_SUBMISSIONS_REVIEW:"), "compose build args must not pass admin review enablement");
   assert.ok(!composeFiles.includes("ADMIN_OWNER_TOKEN:"), "compose build args must not pass admin tokens");
   assert.ok(!composeFiles.includes("SMTP_PASS:"), "compose build args must not pass SMTP password");
   assert.ok(!composeFiles.includes("RESEND_API_KEY:"), "compose build args must not pass Resend API key");
